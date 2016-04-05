@@ -5,10 +5,16 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.HeaderViewListAdapter;
+import android.widget.ListAdapter;
 
-public class PinnedHeaderListView extends ListView implements OnScrollListener {
+import com.sjl.lib.swipemenulistview.SwipeMenuAdapter;
+import com.sjl.lib.swipemenulistview.SwipeMenuListView;
+
+public class PinnedHeaderListView extends SwipeMenuListView implements OnScrollListener {
 
     private OnScrollListener mOnScrollListener;
 
@@ -178,6 +184,9 @@ public class PinnedHeaderListView extends ListView implements OnScrollListener {
             SectionedBaseAdapter adapter;
             if (adapterView.getAdapter().getClass().equals(HeaderViewListAdapter.class)) {
                 HeaderViewListAdapter wrapperAdapter = (HeaderViewListAdapter) adapterView.getAdapter();
+                adapter = (SectionedBaseAdapter) wrapperAdapter.getWrappedAdapter();
+            } else if (adapterView.getAdapter() instanceof SwipeMenuAdapter) {
+            	SwipeMenuAdapter wrapperAdapter = (SwipeMenuAdapter) adapterView.getAdapter();
                 adapter = (SectionedBaseAdapter) wrapperAdapter.getWrappedAdapter();
             } else {
                 adapter = (SectionedBaseAdapter) adapterView.getAdapter();

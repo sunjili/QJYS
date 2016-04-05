@@ -115,6 +115,10 @@ public class PtrFrameLayout extends ViewGroup {
         final ViewConfiguration conf = ViewConfiguration.get(getContext());
         mPagingTouchSlop = conf.getScaledTouchSlop() * 2;
     }
+    
+    public void setPagingTouchSlop(int slop){
+    	mPagingTouchSlop = slop;
+    }
 
     @Override
     protected void onFinishInflate() {

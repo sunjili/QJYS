@@ -1,13 +1,14 @@
 package com.sjl.lib.pinnedheaderlistview;
 
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView.PinnedSectionedHeaderAdapter;
+import com.sjl.lib.swipemenulistview.BaseSwipListAdapter;
 
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public abstract class SectionedBaseAdapter extends BaseAdapter implements PinnedSectionedHeaderAdapter {
+public abstract class SectionedBaseAdapter extends BaseSwipListAdapter implements PinnedSectionedHeaderAdapter {
 
     private static int HEADER_VIEW_TYPE = 0;
     private static int ITEM_VIEW_TYPE = 0;
@@ -101,6 +102,10 @@ public abstract class SectionedBaseAdapter extends BaseAdapter implements Pinned
             return getItemViewTypeCount() + getSectionHeaderViewType(getSectionForPosition(position));
         }
         return getItemViewType(getSectionForPosition(position), getPositionInSectionForPosition(position));
+    }
+    
+    public boolean getSwipEnableByPosition(int position){
+        return !isSectionHeader(position);
     }
 
     @Override
