@@ -1,10 +1,10 @@
 package com.sjl.lib.http.okhttp.builder;
 
-import com.sjl.lib.http.okhttp.request.GetRequest;
-import com.sjl.lib.http.okhttp.request.RequestCall;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import com.sjl.lib.http.okhttp.request.GetRequest;
+import com.sjl.lib.http.okhttp.request.RequestCall;
 
 /**
  * Created by jilisun on 15/12/14.
