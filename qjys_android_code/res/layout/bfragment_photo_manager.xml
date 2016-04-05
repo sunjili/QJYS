@@ -8,6 +8,8 @@
         android:id="@+id/dynamic_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="@integer/column_count" />
+        android:clipToPadding="false"
+        android:numColumns="@integer/column_count"
+        android:paddingTop="95dip" />
 
 </LinearLayout>
