@@ -1,43 +1,93 @@
-/**
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.rmtech.qjys.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.hyphenate.easeui.ui.EaseBaseActivity;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.view.TopTitleView;
 
 public class BaseActivity extends EaseBaseActivity {
 
-    @Override
-    protected void onCreate(Bundle arg0) {
-        super.onCreate(arg0);
+	private ViewGroup mRootLayout;
+
+	protected TopTitleView mTopTitleView;
+
+	private String mTitle;
+	private static final String TITLE_KEY = "TITLE_KEY";
+
+	@Override
+	protected void onCreate(Bundle arg0) {
+		super.onCreate(arg0);
+		
+	}
+
+	protected boolean showTitleBar() {
+		return false;
+	}
+
+	@Override
+    public void startActivity(Intent intent) {
+    	if(!TextUtils.isEmpty(mTitle)) {
+    		intent.putExtra(TITLE_KEY, mTitle);
+    	}
+        super.startActivity(intent);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // umeng
-//        MobclickAgent.onResume(this);
-    }
+	@Override
+	public void setContentView(int layoutResID) {
+		if (showTitleBar()) {
+			mRootLayout = (ViewGroup) View.inflate(this, R.layout.activity_base, null);
+			View child = View.inflate(this, layoutResID, null);
+			if (mRootLayout == null) {
+				super.setContentView(layoutResID);
+				return;
+			}
+			mTopTitleView = (TopTitleView) mRootLayout.findViewById(R.id.title_view);
+			mRootLayout.addView(child, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // umeng
-//        MobclickAgent.onPause(this);
-    }
+			Intent intent = getIntent();
+			String leftTitle = null;
+			if (intent != null) {
+				leftTitle = intent.getStringExtra(TITLE_KEY);
+				if (!TextUtils.isEmpty(leftTitle) && showTitleBar()) {
+					if (mTopTitleView != null) {
+						mTopTitleView.setLeftView(leftTitle);
+					}
+				}
 
+			}
+			super.setContentView(mRootLayout);
+		} else {
+			super.setContentView(layoutResID);
+		}
+		
+		
+	}
+
+	protected void setTitle(String title) {
+		mTitle = title;
+		if (mTopTitleView != null) {
+			mTopTitleView.setTitle(title);
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// umeng
+		// MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// umeng
+		// MobclickAgent.onPause(this);
+	}
 
 }

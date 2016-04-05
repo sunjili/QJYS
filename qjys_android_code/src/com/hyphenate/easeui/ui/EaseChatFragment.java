@@ -615,7 +615,7 @@ public class EaseChatFragment extends EaseBaseFragment {
                 selectPicFromLocal(); // 图库选择图片
                 break;
             case ITEM_LOCATION: // 位置
-                startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
+//                startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
                 break;
 
             default:

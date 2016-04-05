@@ -38,7 +38,7 @@ import com.hyphenate.chat.EMCallStateChangeListener;
 import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
 import com.hyphenate.util.EMLog;
-import com.rmtech.qjys.DemoHelper;
+import com.rmtech.qjys.QjHelper;
 
 /**
  * 语音通话页面
@@ -73,7 +73,7 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
         }
 		setContentView(R.layout.em_activity_voice_call);
 		
-		DemoHelper.getInstance().isVoiceCalling = true;
+		QjHelper.getInstance().isVoiceCalling = true;
 		callType = 0;
 
 		comingBtnContainer = (LinearLayout) findViewById(R.id.ll_coming_call);
@@ -337,7 +337,7 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DemoHelper.getInstance().isVoiceCalling = false;
+        QjHelper.getInstance().isVoiceCalling = false;
     }
 
 	@Override

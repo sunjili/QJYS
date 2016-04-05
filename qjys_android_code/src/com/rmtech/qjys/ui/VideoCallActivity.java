@@ -41,7 +41,7 @@ import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
 import com.hyphenate.media.EMLocalSurfaceView;
 import com.hyphenate.media.EMOppositeSurfaceView;
-import com.rmtech.qjys.DemoHelper;
+import com.rmtech.qjys.QjHelper;
 
 public class VideoCallActivity extends CallActivity implements OnClickListener {
 
@@ -79,7 +79,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
         }
         setContentView(R.layout.em_activity_video_call);
         
-        DemoHelper.getInstance().isVideoCalling = true;
+        QjHelper.getInstance().isVideoCalling = true;
         callType = 1;
         
         getWindow().addFlags(
@@ -380,7 +380,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
 
     @Override
     protected void onDestroy() {
-        DemoHelper.getInstance().isVideoCalling = false;
+        QjHelper.getInstance().isVideoCalling = false;
         stopMonitor();
         localSurface = null;
 		oppositeSurface = null;

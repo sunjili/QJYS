@@ -17,7 +17,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
 import com.hyphenate.exceptions.HyphenateException;
-import com.rmtech.qjys.DemoHelper;
+import com.rmtech.qjys.QjHelper;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -85,7 +85,7 @@ public class RegisterActivity extends BaseActivity {
 								if (!RegisterActivity.this.isFinishing())
 									pd.dismiss();
 								// 保存用户名
-								DemoHelper.getInstance().setCurrentUserName(username);
+								QjHelper.getInstance().setCurrentUserName(username);
 								Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registered_successfully), 0).show();
 								finish();
 							}

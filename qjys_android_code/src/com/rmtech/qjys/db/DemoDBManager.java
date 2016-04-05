@@ -9,7 +9,7 @@ import java.util.Map;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.util.HanziToPinyin;
 import com.rmtech.qjys.Constant;
-import com.rmtech.qjys.DemoApplication;
+import com.rmtech.qjys.QjApplication;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.RobotUser;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
@@ -24,7 +24,7 @@ public class DemoDBManager {
     private DbOpenHelper dbHelper;
     
     private DemoDBManager(){
-        dbHelper = DbOpenHelper.getInstance(DemoApplication.getInstance().getApplicationContext());
+        dbHelper = DbOpenHelper.getInstance(QjApplication.getInstance().getApplicationContext());
     }
     
     public static synchronized DemoDBManager getInstance(){

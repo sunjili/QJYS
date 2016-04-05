@@ -17,7 +17,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMContactManager;
 import com.rmtech.qjys.R;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
-import com.rmtech.qjys.DemoHelper;
+import com.rmtech.qjys.QjHelper;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -95,7 +95,7 @@ public class AddContactActivity extends BaseActivity{
 			return;
 		}
 		
-		if(DemoHelper.getInstance().getContactList().containsKey(nameText.getText().toString())){
+		if(QjHelper.getInstance().getContactList().containsKey(nameText.getText().toString())){
 		    //提示已在好友列表中(在黑名单列表里)，无需添加
 		    if(EMClient.getInstance().contactManager().getBlackListUsernames().contains(nameText.getText().toString())){
 		        new EaseAlertDialog(this, R.string.user_already_in_contactlist).show();

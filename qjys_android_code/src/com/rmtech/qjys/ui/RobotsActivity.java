@@ -23,7 +23,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMContact;
 import com.rmtech.qjys.R;
 import com.hyphenate.exceptions.HyphenateException;
-import com.rmtech.qjys.DemoHelper;
+import com.rmtech.qjys.QjHelper;
 import com.rmtech.qjys.db.UserDao;
 import com.rmtech.qjys.domain.RobotUser;
 
@@ -73,7 +73,7 @@ public class RobotsActivity extends BaseActivity {
 				getRobotNamesFromServer();
 			}
 		});
-		Map<String, RobotUser> robotMap = DemoHelper.getInstance().getRobotList();
+		Map<String, RobotUser> robotMap = QjHelper.getInstance().getRobotList();
 		if (robotMap != null) {
 			robotList.addAll(robotMap.values());
 		} else {
@@ -128,7 +128,7 @@ public class RobotsActivity extends BaseActivity {
 						robotList.clear();
 						robotList.addAll(mMap.values());
 						// 存入内存
-						DemoHelper.getInstance().setRobotList(mMap);
+						QjHelper.getInstance().setRobotList(mMap);
 						// 存入db
 						UserDao dao = new UserDao(RobotsActivity.this);
 						dao.saveRobotUser(robotList);

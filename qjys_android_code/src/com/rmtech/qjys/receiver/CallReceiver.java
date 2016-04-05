@@ -19,7 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.hyphenate.util.EMLog;
-import com.rmtech.qjys.DemoHelper;
+import com.rmtech.qjys.QjHelper;
 import com.rmtech.qjys.ui.VideoCallActivity;
 import com.rmtech.qjys.ui.VoiceCallActivity;
 
@@ -27,7 +27,7 @@ public class CallReceiver extends BroadcastReceiver{
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if(!DemoHelper.getInstance().isLoggedIn())
+		if(!QjHelper.getInstance().isLoggedIn())
 		    return;
 		//拨打方username
 		String from = intent.getStringExtra("from");

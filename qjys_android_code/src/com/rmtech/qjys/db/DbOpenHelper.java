@@ -18,7 +18,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.hyphenate.chat.EMChatManager;
-import com.rmtech.qjys.DemoHelper;
+import com.rmtech.qjys.QjHelper;
 
 public class DbOpenHelper extends SQLiteOpenHelper{
 
@@ -67,7 +67,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 	}
 	
 	private static String getUserDatabaseName() {
-        return  DemoHelper.getInstance().getCurrentUsernName() + "_demo.db";
+        return  QjHelper.getInstance().getCurrentUsernName() + "_demo.db";
     }
 	
 	@Override

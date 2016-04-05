@@ -44,11 +44,15 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.EMLog;
 import com.rmtech.qjys.Constant;
-import com.rmtech.qjys.DemoHelper;
+import com.rmtech.qjys.QjHelper;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.db.UserDao;
 import com.rmtech.qjys.domain.InviteMessage;
+import com.rmtech.qjys.ui.fragment.CaseFragment;
+import com.rmtech.qjys.ui.fragment.ContactListFragment;
+import com.rmtech.qjys.ui.fragment.ConversationListFragment;
+import com.rmtech.qjys.ui.fragment.SettingsFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -63,6 +67,8 @@ public class MainActivity extends BaseActivity {
 	// private conversationListFragment conversationListFragment;
 //	private ChatAllHistoryFragment conversationListFragment;
 	private SettingsFragment settingFragment;
+	private CaseFragment caseFragment;
+	
 	private Fragment[] fragments;
 	private int index;
 	// 当前fragment的index
@@ -87,7 +93,7 @@ public class MainActivity extends BaseActivity {
 		if (savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)) {
 			// 防止被移除后，没点确定按钮然后按了home键，长期在后台又进app导致的crash
 			// 三个fragment里加的判断同理
-		    DemoHelper.getInstance().logout(true,null);
+		    QjHelper.getInstance().logout(true,null);
 			finish();
 			startActivity(new Intent(this, LoginActivity.class));
 			return;
@@ -100,7 +106,6 @@ public class MainActivity extends BaseActivity {
 		}
 		setContentView(R.layout.em_activity_main);
 		initView();
-
 		//umeng api
 //		MobclickAgent.updateOnlineConfig(this);
 //		UmengUpdateAgent.setUpdateOnlyWifi(false);
@@ -117,10 +122,14 @@ public class MainActivity extends BaseActivity {
 		conversationListFragment = new ConversationListFragment();
 		contactListFragment = new ContactListFragment();
 		settingFragment = new SettingsFragment();
-		fragments = new Fragment[] { conversationListFragment, contactListFragment, settingFragment };
+		caseFragment = new CaseFragment();
+		fragments = new Fragment[] { conversationListFragment, caseFragment, contactListFragment, settingFragment };
 		// 添加显示第一个fragment
-		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, conversationListFragment)
-				.add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(conversationListFragment)
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.fragment_container, conversationListFragment)
+				.add(R.id.fragment_container, contactListFragment)
+				.hide(contactListFragment)
+				.show(conversationListFragment)
 				.commit();
 		
 		//注册local广播接收者，用于接收demohelper中发出的群组联系人的变动通知
@@ -154,10 +163,11 @@ public class MainActivity extends BaseActivity {
 	private void initView() {
 		unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
 		unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
-		mTabs = new Button[3];
+		mTabs = new Button[4];
 		mTabs[0] = (Button) findViewById(R.id.btn_conversation);
-		mTabs[1] = (Button) findViewById(R.id.btn_address_list);
-		mTabs[2] = (Button) findViewById(R.id.btn_setting);
+		mTabs[1] = (Button) findViewById(R.id.btn_case);
+		mTabs[2] = (Button) findViewById(R.id.btn_address_list);
+		mTabs[3] = (Button) findViewById(R.id.btn_setting);
 		// 把第一个tab设为选中状态
 		mTabs[0].setSelected(true);
 	}
@@ -172,12 +182,16 @@ public class MainActivity extends BaseActivity {
 		case R.id.btn_conversation:
 			index = 0;
 			break;
-		case R.id.btn_address_list:
+		case R.id.btn_case:
 			index = 1;
 			break;
-		case R.id.btn_setting:
+		case R.id.btn_address_list:
 			index = 2;
 			break;
+		case R.id.btn_setting:
+			index = 3;
+			break;
+		
 		}
 		if (currentTabIndex != index) {
 			FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
@@ -199,7 +213,7 @@ public class MainActivity extends BaseActivity {
 		public void onMessageReceived(List<EMMessage> messages) {
 			// 提示新消息
 		    for (EMMessage message : messages) {
-		        DemoHelper.getInstance().getNotifier().onNewMsg(message);
+		        QjHelper.getInstance().getNotifier().onNewMsg(message);
 		    }
 			refreshUIWithMessage();
 		}
@@ -390,7 +404,7 @@ public class MainActivity extends BaseActivity {
 	private void notifyNewIviteMessage(InviteMessage msg) {
 		saveInviteMsg(msg);
 		// 提示有新消息
-		DemoHelper.getInstance().getNotifier().viberateAndPlayTone(null);
+		QjHelper.getInstance().getNotifier().viberateAndPlayTone(null);
 
 		// 刷新bottom bar消息未读数
 		updateUnreadAddressLable();
@@ -423,7 +437,7 @@ public class MainActivity extends BaseActivity {
 
 		// unregister this event listener when this activity enters the
 		// background
-		DemoHelper sdkHelper = DemoHelper.getInstance();
+		QjHelper sdkHelper = QjHelper.getInstance();
 		sdkHelper.pushActivity(this);
 
 		EMClient.getInstance().chatManager().addMessageListener(messageListener);
@@ -432,7 +446,7 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onStop() {
 		EMClient.getInstance().chatManager().removeMessageListener(messageListener);
-		DemoHelper sdkHelper = DemoHelper.getInstance();
+		QjHelper sdkHelper = QjHelper.getInstance();
 		sdkHelper.popActivity(this);
 
 		super.onStop();
@@ -468,7 +482,7 @@ public class MainActivity extends BaseActivity {
 	 */
 	private void showConflictDialog() {
 		isConflictDialogShow = true;
-		DemoHelper.getInstance().logout(false,null);
+		QjHelper.getInstance().logout(false,null);
 		String st = getResources().getString(R.string.Logoff_notification);
 		if (!MainActivity.this.isFinishing()) {
 			// clear up global variables
@@ -505,7 +519,7 @@ public class MainActivity extends BaseActivity {
 	 */
 	private void showAccountRemovedDialog() {
 		isAccountRemovedDialogShow = true;
-		DemoHelper.getInstance().logout(false,null);
+		QjHelper.getInstance().logout(false,null);
 		String st5 = getResources().getString(R.string.Remove_the_notification);
 		if (!MainActivity.this.isFinishing()) {
 			// clear up global variables
@@ -553,7 +567,7 @@ public class MainActivity extends BaseActivity {
             
             @Override
             public void onReceive(Context context, Intent intent) {
-                DemoHelper.getInstance().logout(false,new EMCallBack() {
+                QjHelper.getInstance().logout(false,new EMCallBack() {
                     
                     @Override
                     public void onSuccess() {

@@ -16,6 +16,8 @@
 
 package com.sjl.lib.filechooser;
 
+import java.io.File;
+
 import android.app.ActionBar;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,7 +36,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.File;
+import com.rmtech.qjys.R;
 
 /**
  * Main Activity that handles the FileListFragments

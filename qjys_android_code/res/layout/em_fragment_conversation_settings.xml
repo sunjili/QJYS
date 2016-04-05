@@ -8,7 +8,7 @@
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleBarTitle="@string/set"
+        app:titleBarTitle="我"
         />
 
     <ScrollView

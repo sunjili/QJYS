@@ -7,8 +7,8 @@ import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
-import com.rmtech.qjys.DemoHelper;
-import com.rmtech.qjys.DemoHelper.DataSyncListener;
+import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.QjHelper.DataSyncListener;
 import com.rmtech.qjys.utils.PreferenceManager;
 
 import android.content.Context;
@@ -78,7 +78,7 @@ public class UserProfileManager {
 				isSyncingContactInfosWithServer = false;
 				// in case that logout already before server returns,we should
 				// return immediately
-				if (!DemoHelper.getInstance().isLoggedIn()) {
+				if (!QjHelper.getInstance().isLoggedIn()) {
 					return;
 				}
 				if (callback != null) {

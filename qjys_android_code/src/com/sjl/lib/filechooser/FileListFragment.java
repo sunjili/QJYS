@@ -16,6 +16,9 @@
 
 package com.sjl.lib.filechooser;
 
+import java.io.File;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,8 +28,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
-import java.io.File;
-import java.util.List;
+import com.rmtech.qjys.R;
 
 /**
  * Fragment that displays a list of Files in a given path.

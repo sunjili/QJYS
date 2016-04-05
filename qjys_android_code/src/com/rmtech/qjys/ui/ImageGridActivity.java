@@ -1,5 +1,7 @@
 package com.rmtech.qjys.ui;
 
+import com.rmtech.qjys.ui.fragment.ImageGridFragment;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;

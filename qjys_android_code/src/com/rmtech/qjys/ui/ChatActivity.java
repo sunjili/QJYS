@@ -1,6 +1,7 @@
 package com.rmtech.qjys.ui;
 
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.fragment.ChatFragment;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.util.EasyUtils;
 
