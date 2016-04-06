@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar"/>
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar" />
 
     <style name="chat_content_date_style">
         <item name="android:minHeight">50dp</item>
@@ -78,7 +78,7 @@
     <!--
     <style name="horizontal_slide2" parent="android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/AnimFade2</item>
-    </style>
+    </style>
     -->
 
     <style name="MyDialogStyle">
@@ -161,6 +161,7 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@drawable/ease_edit_text_bg</item>
     </style>
+
     <style name="fileChooserName">
         <item name="android:drawablePadding">@dimen/list_item_padding</item>
         <item name="android:ellipsize">end</item>
@@ -170,7 +171,6 @@
         <item name="android:paddingRight">@dimen/list_item_padding</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
-
 
     <style name="DefaultText">
         <item name="android:text">Default</item>
@@ -248,8 +248,10 @@
     <style name="SuperCardToast_Button_RootLayout" parent="DefaultRootLayout">
         <item name="android:background">@drawable/selector_undobutton</item>
     </style>
-        <style name="AlertActivity_AlertStyle" parent="android:Theme.Dialog">
-        <!--<item name="android:windowAnimationStyle">@style/AnimAlert</item>-->
+
+    <style name="AlertActivity_AlertStyle" parent="android:Theme.Dialog">
+
+        <!-- <item name="android:windowAnimationStyle">@style/AnimAlert</item> -->
         <!-- 边框 -->
         <item name="android:windowFrame">@null</item>
         <!-- 是否浮现在activity之上 -->
@@ -264,5 +266,45 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="qj_add_case_left_name_tv">
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginLeft">10dip</item>
+    </style>
+    
+     <style name="qj_add_case_right_name_tv">
+        <item name="android:textSize">12sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginRight">10dip</item>
+    </style>
+
+    <style name="qj_add_case_right_hit_et">
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColorHint">@color/gray_normal</item>
+        <item name="android:layout_marginRight">10dip</item>
+    </style>
 
 </resources>

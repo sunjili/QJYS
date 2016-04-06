@@ -16,7 +16,7 @@ public class AddCaseActivity extends BaseActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.qjactivity_add_case);
 		setTitle("添加病例");
-		findViewById(R.id.rl_nickname).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.photo_data_layout).setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
