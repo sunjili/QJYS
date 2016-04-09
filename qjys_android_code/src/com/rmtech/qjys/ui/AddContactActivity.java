@@ -13,11 +13,18 @@
  */
 package com.rmtech.qjys.ui;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
+import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMContactManager;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.model.MUser;
+import com.sjl.lib.http.okhttp.callback.Callback;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -32,22 +39,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AddContactActivity extends BaseActivity{
+public class AddContactActivity extends BaseActivity {
 	private EditText editText;
 	private LinearLayout searchedUserLayout;
-	private TextView nameText,mTextView;
+	private TextView nameText, mTextView;
 	private Button searchBtn;
 	private ImageView avatar;
 	private InputMethodManager inputMethodManager;
 	private String toAddUsername;
 	private ProgressDialog progressDialog;
+	private TextView search_resurt_tv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.em_activity_add_contact);
 		mTextView = (TextView) findViewById(R.id.add_list_friends);
-		
+		search_resurt_tv = (TextView) findViewById(R.id.search_resurt_tv);
+
 		editText = (EditText) findViewById(R.id.edit_note);
 		String strAdd = getResources().getString(R.string.add_friend);
 		mTextView.setText(strAdd);
@@ -59,63 +68,96 @@ public class AddContactActivity extends BaseActivity{
 		avatar = (ImageView) findViewById(R.id.avatar);
 		inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 	}
-	
-	
+
 	/**
 	 * 查找contact
+	 * 
 	 * @param v
 	 */
 	public void searchContact(View v) {
 		final String name = editText.getText().toString();
 		String saveText = searchBtn.getText().toString();
-		
+
 		if (getString(R.string.button_search).equals(saveText)) {
 			toAddUsername = name;
-			if(TextUtils.isEmpty(name)) {
+			if (TextUtils.isEmpty(name)) {
 				new EaseAlertDialog(this, R.string.Please_enter_a_username).show();
 				return;
 			}
-			
+
 			// TODO 从服务器获取此contact,如果不存在提示不存在此用户
-			
-			//服务器存在此用户，显示此用户和添加按钮
-			searchedUserLayout.setVisibility(View.VISIBLE);
-			nameText.setText(toAddUsername);
-			
-		} 
-	}	
-	
+			QjHttp.serchContact(toAddUsername, new Callback<MUser>() {
+
+				@Override
+				public MUser parseNetworkResponse(Response response) throws Exception {
+					String string = response.body().string();
+					MUser user = new Gson().fromJson(string, MUser.class);
+					return user;
+
+				}
+
+				@Override
+				public void onError(Call call, Exception e) {
+					// TODO Auto-generated method stub
+					search_resurt_tv.setText("没找到");
+					searchedUserLayout.setVisibility(View.VISIBLE);
+				}
+
+				@Override
+				public void onResponse(MUser response) {
+					// 服务器存在此用户，显示此用户和添加按钮
+					searchedUserLayout.setVisibility(View.VISIBLE);
+					if (response.data != null) {
+						if (!TextUtils.isEmpty(response.data.name)) {
+							nameText.setText(response.data.name);
+						}else if(!TextUtils.isEmpty(response.data.phone)){
+							nameText.setText(response.data.phone);
+						} else {
+							search_resurt_tv.setText("没找到");
+
+						}
+
+					} else {
+						search_resurt_tv.setText("没找到");
+
+					}
+				}
+			});
+		}
+	}
+
 	/**
-	 *  添加contact
+	 * 添加contact
+	 * 
 	 * @param view
 	 */
-	public void addContact(View view){
-		if(EMClient.getInstance().getCurrentUser().equals(nameText.getText().toString())){
+	public void addContact(View view) {
+		if (EMClient.getInstance().getCurrentUser().equals(nameText.getText().toString())) {
 			new EaseAlertDialog(this, R.string.not_add_myself).show();
 			return;
 		}
-		
-		if(QjHelper.getInstance().getContactList().containsKey(nameText.getText().toString())){
-		    //提示已在好友列表中(在黑名单列表里)，无需添加
-		    if(EMClient.getInstance().contactManager().getBlackListUsernames().contains(nameText.getText().toString())){
-		        new EaseAlertDialog(this, R.string.user_already_in_contactlist).show();
-		        return;
-		    }
+
+		if (QjHelper.getInstance().getContactList().containsKey(nameText.getText().toString())) {
+			// 提示已在好友列表中(在黑名单列表里)，无需添加
+			if (EMClient.getInstance().contactManager().getBlackListUsernames().contains(nameText.getText().toString())) {
+				new EaseAlertDialog(this, R.string.user_already_in_contactlist).show();
+				return;
+			}
 			new EaseAlertDialog(this, R.string.This_user_is_already_your_friend).show();
 			return;
 		}
-		
+
 		progressDialog = new ProgressDialog(this);
 		String stri = getResources().getString(R.string.Is_sending_a_request);
 		progressDialog.setMessage(stri);
 		progressDialog.setCanceledOnTouchOutside(false);
 		progressDialog.show();
-		
+
 		new Thread(new Runnable() {
 			public void run() {
-				
+
 				try {
-					//demo写死了个reason，实际应该让用户手动填入
+					// demo写死了个reason，实际应该让用户手动填入
 					String s = getResources().getString(R.string.Add_a_friend);
 					EMClient.getInstance().contactManager().addContact(toAddUsername, s);
 					runOnUiThread(new Runnable() {
@@ -137,7 +179,7 @@ public class AddContactActivity extends BaseActivity{
 			}
 		}).start();
 	}
-	
+
 	public void back(View v) {
 		finish();
 	}

@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity {
 	private ContactListFragment contactListFragment;
 	// private conversationListFragment conversationListFragment;
 //	private ChatAllHistoryFragment conversationListFragment;
+    private ConversationListFragment conversationListFragment;
 	private SettingsFragment settingFragment;
 	private CaseFragment caseFragment;
 	
@@ -77,6 +78,15 @@ public class MainActivity extends BaseActivity {
 	public boolean isConflict = false;
 	// 账号被移除
 	private boolean isCurrentAccountRemoved = false;
+
+	private android.app.AlertDialog.Builder conflictBuilder;
+	private android.app.AlertDialog.Builder accountRemovedBuilder;
+	private boolean isConflictDialogShow;
+	private boolean isAccountRemovedDialogShow;
+    private BroadcastReceiver internalDebugReceiver;
+    private BroadcastReceiver broadcastReceiver;
+    private LocalBroadcastManager broadcastManager;
+
 	
 
 	/**
@@ -467,15 +477,6 @@ public class MainActivity extends BaseActivity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
-	private android.app.AlertDialog.Builder conflictBuilder;
-	private android.app.AlertDialog.Builder accountRemovedBuilder;
-	private boolean isConflictDialogShow;
-	private boolean isAccountRemovedDialogShow;
-    private BroadcastReceiver internalDebugReceiver;
-    private ConversationListFragment conversationListFragment;
-    private BroadcastReceiver broadcastReceiver;
-    private LocalBroadcastManager broadcastManager;
 
 	/**
 	 * 显示帐号在别处登录dialog

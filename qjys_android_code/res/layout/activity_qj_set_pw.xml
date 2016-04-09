@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/pw_et1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="请输入登录密码"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/pw_et12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="重复登录密码"
+        android:inputType="textPassword"
+        android:paddingLeft="10dip"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/em_button_register_bg"
+        android:gravity="center"
+        android:onClick="setPasswordClick"
+        android:text="设置登录密码"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+</LinearLayout>

@@ -1,5 +1,7 @@
 package com.rmtech.qjys.ui.view;
 
+import okhttp3.Call;
+import okhttp3.Response;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -10,14 +12,17 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.MBase;
+import com.rmtech.qjys.model.MBase.BaseCallback;
 import com.rmtech.qjys.ui.LoginActivity;
+import com.sjl.lib.http.okhttp.callback.Callback;
 
 @SuppressLint("NewApi")
-public class LoginVcodeView extends RelativeLayout implements View.OnClickListener {
+public class LoginVcodeView extends LoginBaseView implements View.OnClickListener {
 
 	private boolean isGettingCode;
 
@@ -48,11 +53,11 @@ public class LoginVcodeView extends RelativeLayout implements View.OnClickListen
 
 	private void initView() {
 		View.inflate(getContext(), R.layout.qj_vcode_login_view, this);
-		findViewById(R.id.login_button).setOnClickListener(this);
 		code_button = (Button) findViewById(R.id.code_button);
 		code_button.setOnClickListener(this);
 		phone_edit = (EditText) findViewById(R.id.phone_edit);
 		code_edit = (EditText) findViewById(R.id.code_edit);
+		// findViewById(R.id.change_button).setOnClickListener(this);
 		isGettingCode = false;
 		mHandler = new Handler();
 	}
@@ -64,25 +69,27 @@ public class LoginVcodeView extends RelativeLayout implements View.OnClickListen
 	}
 
 	@Override
+	public void login(View view) {
+		String inuptPhoneStr = phone_edit.getEditableText().toString();
+		int errorCode = checkInput(inuptPhoneStr);
+		if (errorCode != 0) {
+			Toast.makeText(getContext(), "用户名请输入11位手机号码！", Toast.LENGTH_LONG).show();
+			return;
+		}
+		String codeStr = code_edit.getEditableText().toString();
+		if (TextUtils.isEmpty(codeStr)) {
+			Toast.makeText(getContext(), "请输入验证码！", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		httpLogin(inuptPhoneStr, codeStr);
+	}
+	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		String inuptPhoneStr = phone_edit.getEditableText().toString();
 		switch (v.getId()) {
-		case R.id.login_button: {
-			int errorCode = checkInput(inuptPhoneStr);
-			if (errorCode != 0) {
-				Toast.makeText(getContext(), "用户名请输入11位手机号码！", Toast.LENGTH_LONG).show();
-				return;
-			}
-			String codeStr = code_edit.getEditableText().toString();
-			if (TextUtils.isEmpty(codeStr)) {
-				Toast.makeText(getContext(), "请输入验证码！", Toast.LENGTH_SHORT).show();
-				return;
-			}
-			httpLogin(inuptPhoneStr, codeStr);
-			break;
-		}
 		case R.id.code_button: {
+			String inuptPhoneStr = phone_edit.getEditableText().toString();
+
 			int errorCode = checkInput(inuptPhoneStr);
 			if (errorCode != 0) {
 				Toast.makeText(getContext(), "用户名请输入11位手机号码！", Toast.LENGTH_LONG).show();
@@ -92,8 +99,21 @@ public class LoginVcodeView extends RelativeLayout implements View.OnClickListen
 				return;
 			}
 			isGettingCode = true;
-			// Applycode loader = new Applycode(inuptPhoneStr);
-			// loader.reload();
+			QjHttp.getVcode(inuptPhoneStr, new BaseCallback() {
+				
+				@Override
+				public void onResponse(MBase response) {
+					if(response == null || response.ret != 0) {
+						Toast.makeText(getContext(), "获取验证码失败", Toast.LENGTH_LONG).show();
+					}
+					
+				}
+				
+				@Override
+				public void onError(Call call, Exception e) {
+					Toast.makeText(getContext(), "获取验证码失败", Toast.LENGTH_LONG).show();
+				}
+			});
 			mHandler.postDelayed(mTimerRunnable, 1000);
 			break;
 		}
@@ -121,30 +141,10 @@ public class LoginVcodeView extends RelativeLayout implements View.OnClickListen
 		}
 	};
 
-	boolean logining = false;
 
 	private void httpLogin(String inuptPhoneStr, String codeStr) {
 		logining = true;
-		// UserLogin.get(this, inuptPhoneStr, codeStr, new
-		// LoaderListener<User>() {
-		//
-		// @Override
-		// public void onLoadEnd(int pageflag, User obj) {
-		// logining = false;
-		// Toast.makeText(LoginActivity.this, "登录成功！",
-		// Toast.LENGTH_LONG).show();
-		// backToHome();
-		// }
-		//
-		// @Override
-		// public void onLoadError(int pageflag, int errCode, String errMsg) {
-		// // TODO Auto-generated method stub
-		// Toast.makeText(LoginActivity.this, "登录失败！＝" + errMsg,
-		// Toast.LENGTH_LONG).show();
-		// logining = false;
-		// }
-		//
-		// });
+		QjHttp.login(inuptPhoneStr, codeStr, mOnLoginListener);
 	}
 
 	private void backToHome() {

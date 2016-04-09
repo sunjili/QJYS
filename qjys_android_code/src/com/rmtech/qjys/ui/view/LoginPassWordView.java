@@ -27,7 +27,7 @@ import com.rmtech.qjys.db.DemoDBManager;
 import com.rmtech.qjys.ui.MainActivity;
 
 @SuppressLint("NewApi")
-public class LoginPassWordView extends RelativeLayout implements View.OnClickListener {
+public class LoginPassWordView extends LoginBaseView implements View.OnClickListener {
 
 	private static final String TAG = "LoginActivity";
 	public static final int REQUEST_CODE_SETNICK = 1;
@@ -61,12 +61,12 @@ public class LoginPassWordView extends RelativeLayout implements View.OnClickLis
 		View.inflate(getContext(), R.layout.qj_pw_login_view, this);
 
 		// 如果登录成功过，直接进入主页面
-		if (QjHelper.getInstance().isLoggedIn()) {
-			autoLogin = true;
-			((Activity) getContext()).startActivity(new Intent(getContext(), MainActivity.class));
-
-			return;
-		}
+//		if (QjHelper.getInstance().isLoggedIn()) {
+//			autoLogin = true;
+//			((Activity) getContext()).startActivity(new Intent(getContext(), MainActivity.class));
+//
+//			return;
+//		}
 
 		usernameEditText = (EditText) findViewById(R.id.username);
 		passwordEditText = (EditText) findViewById(R.id.password);

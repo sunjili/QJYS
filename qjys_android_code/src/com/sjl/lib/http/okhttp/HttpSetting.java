@@ -5,7 +5,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
+import com.rmtech.qjys.model.UserContext;
+
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class HttpSetting {
@@ -18,11 +21,9 @@ public class HttpSetting {
 
 	// 测试环境
 	public static final String TEST_BASE_URL = "http://101.200.130.188";
-	
-	public static String AGENT = "qijiyisheng/"
-			+ AppGlobalSetting.APP_VERSION_NAME + "(" + Build.MANUFACTURER
-			+ ";" + Build.MODEL + ";" + "os" + Build.VERSION.RELEASE + ";"
-			+ AndroidDeviceManager.getCpuType() + ";"
+
+	public static String AGENT = "qijiyisheng/" + AppGlobalSetting.APP_VERSION_NAME + "(" + Build.MANUFACTURER + ";"
+			+ Build.MODEL + ";" + "os" + Build.VERSION.RELEASE + ";" + AndroidDeviceManager.getCpuType() + ";"
 			+ AppGlobalSetting.APP_VERSION_CODE + ")".replaceAll(" ", "");
 
 	public enum RequestType {
@@ -30,13 +31,10 @@ public class HttpSetting {
 	}
 
 	public static void refreshAgent() {
-		AGENT = "qijiyisheng/" + AppGlobalSetting.APP_VERSION_NAME + "("
-				+ Build.MANUFACTURER + ";" + Build.MODEL + ";" + "os"
-				+ Build.VERSION.RELEASE + ";"
-				+ AndroidDeviceManager.getCpuType() + ";"
+		AGENT = "qijiyisheng/" + AppGlobalSetting.APP_VERSION_NAME + "(" + Build.MANUFACTURER + ";" + Build.MODEL + ";"
+				+ "os" + Build.VERSION.RELEASE + ";" + AndroidDeviceManager.getCpuType() + ";"
 				+ AppGlobalSetting.APP_VERSION_CODE + ")".replaceAll(" ", "");
 	}
-	
 
 	public static void addHttpParams(HashMap<String, String> params, String url) {
 		if (params == null) {
@@ -57,7 +55,9 @@ public class HttpSetting {
 	public static void addHttpHeader(HashMap<String, String> headers) {
 		headers.put("Referer", HttpSetting.REFER_URL);
 		headers.put("User-Agent", HttpSetting.AGENT);
-		headers.put("Cookie", OkHttpCookieManager.getInstance().getCookie());
+		if (!TextUtils.isEmpty(UserContext.getInstance().getCookie())) {
+			headers.put("Cookie", UserContext.getInstance().getCookie());
+		}
 	}
 
 	private static String getWTK() {

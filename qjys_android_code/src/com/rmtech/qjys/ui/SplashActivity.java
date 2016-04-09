@@ -1,19 +1,17 @@
 package com.rmtech.qjys.ui;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMGroupManager;
-import com.rmtech.qjys.R;
 import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.UserContext;
+import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 
 /**
  * 开屏页
@@ -45,7 +43,8 @@ public class SplashActivity extends BaseActivity {
 
 		new Thread(new Runnable() {
 			public void run() {
-				if (QjHelper.getInstance().isLoggedIn()) {
+				UserContext.getInstance().loadCookie();
+				if(!TextUtils.isEmpty(UserContext.getInstance().getCookie()) && QjHelper.getInstance().isLoggedIn()) {
 					// ** 免登陆情况 加载所有本地群和会话
 					//不是必须的，不加sdk也会自动异步去加载(不会重复加载)；
 					//加上的话保证进了主页面会话和群组都已经load完毕
@@ -69,7 +68,7 @@ public class SplashActivity extends BaseActivity {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
 					}
-					startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+					startActivity(new Intent(SplashActivity.this, QjLoginActivity.class));
 					finish();
 				}
 			}

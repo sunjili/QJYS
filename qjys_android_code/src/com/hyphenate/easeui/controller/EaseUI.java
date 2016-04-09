@@ -111,7 +111,11 @@ public final class EaseUI {
         if(options == null){
             EMClient.getInstance().init(context, initChatOptions());
         }else{
-            EMClient.getInstance().init(context, options);
+            try {
+				EMClient.getInstance().init(context, options);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         }
         
         initNotifier();

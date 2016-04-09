@@ -126,4 +126,16 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/change_button"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="40dip"
+        android:onClick="onChangeClick"
+        android:text="切换密码登录"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
+
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.sjl.lib.http.okhttp.request;
 
+import android.text.TextUtils;
+
 import com.sjl.lib.http.okhttp.callback.Callback;
 import com.sjl.lib.http.okhttp.utils.Exceptions;
 
@@ -82,7 +84,9 @@ public abstract class OkHttpRequest
 
         for (String key : headers.keySet())
         {
-            headerBuilder.add(key, headers.get(key));
+        	if(headers.get(key) != null) {
+        		headerBuilder.add(key, headers.get(key));
+        	}
         }
         builder.headers(headerBuilder.build());
     }

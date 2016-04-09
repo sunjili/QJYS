@@ -54,6 +54,17 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ease_mm_listitem"
         android:visibility="gone" >
+        
+        <TextView
+                android:id="@+id/search_resurt_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19dp"
+                android:layout_toRightOf="@id/avatar"
+                android:textColor="#0F0F0F"
+                android:textSize="16sp" />
+        
 
         <RelativeLayout
             android:layout_width="match_parent"

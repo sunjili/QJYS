@@ -168,6 +168,7 @@ public class OkHttpUtils {
 
 			@Override
 			public void onResponse(final Call call, final Response response) {
+
 				if (response.code() >= 400 && response.code() <= 599) {
 					try {
 						sendFailResultCallback(call, new RuntimeException(response.body().string()), finalCallback);
@@ -179,8 +180,17 @@ public class OkHttpUtils {
 
 				try {
 					Object o = finalCallback.parseNetworkResponse(response);
+					if (response.body() != null) {
+						try {
+							Log.e("sssssssssssss", o.toString());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 					sendSuccessResultCallback(o, finalCallback);
 				} catch (Exception e) {
+					Log.e("ssssssssss", "okresponse parse erro :", e);
 					sendFailResultCallback(call, e, finalCallback);
 				}
 
@@ -188,21 +198,17 @@ public class OkHttpUtils {
 		});
 	}
 
-	public CookieStore getCookieStore()
-    {
-        final CookieJar cookieJar = mOkHttpClient.cookieJar();
-        if (cookieJar == null)
-        {
-            Exceptions.illegalArgument("you should invoked okHttpClientBuilder.cookieJar() to set a cookieJar.");
-        }
-        if (cookieJar instanceof HasCookieStore)
-        {
-            return ((HasCookieStore) cookieJar).getCookieStore();
-        } else
-        {
-            return null;
-        }
-    }
+	public CookieStore getCookieStore() {
+		final CookieJar cookieJar = mOkHttpClient.cookieJar();
+		if (cookieJar == null) {
+			Exceptions.illegalArgument("you should invoked okHttpClientBuilder.cookieJar() to set a cookieJar.");
+		}
+		if (cookieJar instanceof HasCookieStore) {
+			return ((HasCookieStore) cookieJar).getCookieStore();
+		} else {
+			return null;
+		}
+	}
 
 	public void sendFailResultCallback(final Call call, final Exception e, final Callback callback) {
 		if (callback == null)
@@ -283,7 +289,6 @@ public class OkHttpUtils {
 	public void setWriteTimeout(int timeout, TimeUnit units) {
 		mOkHttpClient = getOkHttpClient().newBuilder().writeTimeout(timeout, units).build();
 	}
-
 
 	public static <T> void post(String url, Callback<T> callback) {
 		HashMap<String, String> headers = new HashMap<String, String>();

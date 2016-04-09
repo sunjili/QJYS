@@ -136,9 +136,15 @@
             </intent-filter>
         </activity>
 
-        <!-- 登陆 -->
+        <!-- 登陆 
         <activity
             android:name="com.rmtech.qjys.ui.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>-->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.QjLoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize|stateVisible" >
@@ -441,7 +447,7 @@
         <!-- 设置环信应用的appkey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="easemob-demo#chatdemoui" />
+            android:value="qijiyiliao#qijiyisheng-test" />
         <!-- 声明sdk所需的service -->
         <service
             android:name="com.hyphenate.chat.EMChatService"
