@@ -28,6 +28,7 @@ import com.rmtech.qjys.ui.GroupsActivity;
 import com.rmtech.qjys.ui.NewFriendsMsgActivity;
 import com.rmtech.qjys.ui.PublicChatRoomsActivity;
 import com.rmtech.qjys.ui.RobotsActivity;
+import com.rmtech.qjys.ui.qjactivity.QjAddContactActivity;
 import com.rmtech.qjys.widget.ContactItemView;
 
 import android.app.ProgressDialog;
@@ -97,7 +98,8 @@ public class ContactListFragment extends EaseContactListFragment {
             
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AddContactActivity.class));
+//                startActivity(new Intent(getActivity(), AddContactActivity.class));
+                QjAddContactActivity.show(getActivity());
             }
         });
         
@@ -120,7 +122,9 @@ public class ContactListFragment extends EaseContactListFragment {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AddContactActivity.class));
+//                startActivity(new Intent(getActivity(), AddContactActivity.class));
+                QjAddContactActivity.show(getActivity());
+
             }
         });
         

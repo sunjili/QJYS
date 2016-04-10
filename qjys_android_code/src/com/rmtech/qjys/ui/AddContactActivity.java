@@ -15,19 +15,9 @@ package com.rmtech.qjys.ui;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
-import com.google.gson.Gson;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMContactManager;
-import com.rmtech.qjys.QjHttp;
-import com.rmtech.qjys.R;
-import com.hyphenate.easeui.widget.EaseAlertDialog;
-import com.rmtech.qjys.QjHelper;
-import com.rmtech.qjys.model.MUser;
-import com.sjl.lib.http.okhttp.callback.Callback;
-
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -39,6 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.widget.EaseAlertDialog;
+import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.QjHttp;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.MUser;
+import com.sjl.lib.http.okhttp.callback.Callback;
+
 public class AddContactActivity extends BaseActivity {
 	private EditText editText;
 	private LinearLayout searchedUserLayout;
@@ -48,14 +47,22 @@ public class AddContactActivity extends BaseActivity {
 	private InputMethodManager inputMethodManager;
 	private String toAddUsername;
 	private ProgressDialog progressDialog;
-	private TextView search_resurt_tv;
+	private View search_resurt_tv;
+
+	public static void show(Context context, String number) {
+		Intent intent = new Intent();
+		intent.setClass(context, AddContactActivity.class);
+		intent.putExtra("phone_number", number);
+		context.startActivity(intent);
+
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.em_activity_add_contact);
 		mTextView = (TextView) findViewById(R.id.add_list_friends);
-		search_resurt_tv = (TextView) findViewById(R.id.search_resurt_tv);
+		search_resurt_tv = findViewById(R.id.no_data_view);
 
 		editText = (EditText) findViewById(R.id.edit_note);
 		String strAdd = getResources().getString(R.string.add_friend);
@@ -67,6 +74,23 @@ public class AddContactActivity extends BaseActivity {
 		searchBtn = (Button) findViewById(R.id.search);
 		avatar = (ImageView) findViewById(R.id.avatar);
 		inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		parseIntent(getIntent());
+	}
+
+	private void parseIntent(Intent intent) {
+		if (intent == null) {
+			return;
+		}
+		String number = intent.getStringExtra("phone_number");
+		if (!TextUtils.isEmpty(number)) {
+			editText.setText(number);
+		}
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		parseIntent(intent);
+		super.onNewIntent(intent);
 	}
 
 	/**
@@ -99,31 +123,38 @@ public class AddContactActivity extends BaseActivity {
 				@Override
 				public void onError(Call call, Exception e) {
 					// TODO Auto-generated method stub
-					search_resurt_tv.setText("没找到");
-					searchedUserLayout.setVisibility(View.VISIBLE);
+					onNoData();
 				}
 
 				@Override
 				public void onResponse(MUser response) {
 					// 服务器存在此用户，显示此用户和添加按钮
-					searchedUserLayout.setVisibility(View.VISIBLE);
+					onHasData();
 					if (response.data != null) {
 						if (!TextUtils.isEmpty(response.data.name)) {
 							nameText.setText(response.data.name);
-						}else if(!TextUtils.isEmpty(response.data.phone)){
+						} else if (!TextUtils.isEmpty(response.data.phone)) {
 							nameText.setText(response.data.phone);
 						} else {
-							search_resurt_tv.setText("没找到");
+							onNoData();
 
 						}
 
 					} else {
-						search_resurt_tv.setText("没找到");
-
+						onNoData();
 					}
 				}
 			});
 		}
+	}
+	
+	private void onNoData() {
+		search_resurt_tv.setVisibility(View.VISIBLE);
+		searchedUserLayout.setVisibility(View.GONE);
+	}
+	private void onHasData() {
+		search_resurt_tv.setVisibility(View.GONE);
+		searchedUserLayout.setVisibility(View.VISIBLE);
 	}
 
 	/**

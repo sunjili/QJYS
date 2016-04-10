@@ -240,7 +240,7 @@ public class CaseFragment extends QjBaseFragment {
 			public void run() {
 				displayData();
 			}
-		}, 2000);
+		}, 500);
 
 	}
 

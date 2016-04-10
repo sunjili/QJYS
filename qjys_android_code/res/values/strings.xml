@@ -34,5 +34,8 @@
     <string name="action_done">Done</string>
     <string name="photo_unit">Shot</string>
     <string name="tip_take_photo">Take photo</string>
+    <string name="label_search">Search</string>
+    <string name="label_multiple_numbers">Multiple numbers</string>
+
 
 </resources>
