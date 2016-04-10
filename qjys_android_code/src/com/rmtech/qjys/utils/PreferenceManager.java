@@ -21,9 +21,9 @@ public class PreferenceManager {
 	 * 保存Preference的name
 	 */
 	public static final String PREFERENCE_NAME = "saveInfo";
-	private static SharedPreferences mSharedPreferences;
+	private SharedPreferences mSharedPreferences;
 	private static PreferenceManager mPreferencemManager;
-	private static SharedPreferences.Editor editor;
+	private SharedPreferences.Editor editor;
 
 	private String SHARED_KEY_SETTING_NOTIFICATION = "shared_key_setting_notification";
 	private String SHARED_KEY_SETTING_SOUND = "shared_key_setting_sound";
@@ -31,25 +31,33 @@ public class PreferenceManager {
 	private String SHARED_KEY_SETTING_SPEAKER = "shared_key_setting_speaker";
 
 	private static String SHARED_KEY_SETTING_CHATROOM_OWNER_LEAVE = "shared_key_setting_chatroom_owner_leave";
-    private static String SHARED_KEY_SETTING_DELETE_MESSAGES_WHEN_EXIT_GROUP = "shared_key_setting_delete_messages_when_exit_group";
-    private static String SHARED_KEY_SETTING_AUTO_ACCEPT_GROUP_INVITATION = "shared_key_setting_auto_accept_group_invitation";
+	private static String SHARED_KEY_SETTING_DELETE_MESSAGES_WHEN_EXIT_GROUP = "shared_key_setting_delete_messages_when_exit_group";
+	private static String SHARED_KEY_SETTING_AUTO_ACCEPT_GROUP_INVITATION = "shared_key_setting_auto_accept_group_invitation";
 	private static String SHARED_KEY_SETTING_GROUPS_SYNCED = "SHARED_KEY_SETTING_GROUPS_SYNCED";
 	private static String SHARED_KEY_SETTING_CONTACT_SYNCED = "SHARED_KEY_SETTING_CONTACT_SYNCED";
 	private static String SHARED_KEY_SETTING_BALCKLIST_SYNCED = "SHARED_KEY_SETTING_BALCKLIST_SYNCED";
-	
+
 	private static String SHARED_KEY_CURRENTUSER_USERNAME = "SHARED_KEY_CURRENTUSER_USERNAME";
 	private static String SHARED_KEY_CURRENTUSER_NICK = "SHARED_KEY_CURRENTUSER_NICK";
 	private static String SHARED_KEY_CURRENTUSER_AVATAR = "SHARED_KEY_CURRENTUSER_AVATAR";
-	
+
 	private PreferenceManager(Context cxt) {
 		mSharedPreferences = cxt.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
 		editor = mSharedPreferences.edit();
 	}
 
-	public static synchronized void init(Context cxt){
-	    if(mPreferencemManager == null){
-	        mPreferencemManager = new PreferenceManager(cxt);
-	    }
+	public static synchronized void init(Context cxt) {
+		if (mPreferencemManager == null) {
+			mPreferencemManager = new PreferenceManager(cxt);
+		}
+	}
+
+	public SharedPreferences getSharedPreferences() {
+		return mSharedPreferences;
+	}
+
+	public SharedPreferences.Editor getEditor() {
+		return editor;
 	}
 
 	/**
@@ -62,10 +70,10 @@ public class PreferenceManager {
 		if (mPreferencemManager == null) {
 			throw new RuntimeException("please init first!");
 		}
-		
+
 		return mPreferencemManager;
 	}
-	
+
 	public void setSettingMsgNotification(boolean paramBoolean) {
 		editor.putBoolean(SHARED_KEY_SETTING_NOTIFICATION, paramBoolean);
 		editor.commit();
@@ -102,61 +110,61 @@ public class PreferenceManager {
 	public boolean getSettingMsgSpeaker() {
 		return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_SPEAKER, true);
 	}
-	
-	public void setSettingAllowChatroomOwnerLeave(boolean value) {
-        editor.putBoolean(SHARED_KEY_SETTING_CHATROOM_OWNER_LEAVE, value);
-        editor.commit();
-    }
-	
-	public boolean getSettingAllowChatroomOwnerLeave() {
-        return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_CHATROOM_OWNER_LEAVE, true);
-    }
-	
-    public void setDeleteMessagesAsExitGroup(boolean value){
-        editor.putBoolean(SHARED_KEY_SETTING_DELETE_MESSAGES_WHEN_EXIT_GROUP, value);
-        editor.commit();
-    }    
-    
-    public boolean isDeleteMessagesAsExitGroup() {
-        return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_DELETE_MESSAGES_WHEN_EXIT_GROUP, true);
-    }
 
-    public void setAutoAcceptGroupInvitation(boolean value) {
-        editor.putBoolean(SHARED_KEY_SETTING_AUTO_ACCEPT_GROUP_INVITATION, value);
-        editor.commit();
-    }
-    
-    public boolean isAutoAcceptGroupInvitation() {
-        return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_AUTO_ACCEPT_GROUP_INVITATION, true);
-    }
-    
-	public void setGroupsSynced(boolean synced){
-	    editor.putBoolean(SHARED_KEY_SETTING_GROUPS_SYNCED, synced);
-        editor.commit();
+	public void setSettingAllowChatroomOwnerLeave(boolean value) {
+		editor.putBoolean(SHARED_KEY_SETTING_CHATROOM_OWNER_LEAVE, value);
+		editor.commit();
 	}
-	
-	public boolean isGroupsSynced(){
-	    return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_GROUPS_SYNCED, false);
+
+	public boolean getSettingAllowChatroomOwnerLeave() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_CHATROOM_OWNER_LEAVE, true);
 	}
-	
-	public void setContactSynced(boolean synced){
-        editor.putBoolean(SHARED_KEY_SETTING_CONTACT_SYNCED, synced);
-        editor.commit();
-    }
-    
-    public boolean isContactSynced(){
-        return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_CONTACT_SYNCED, false);
-    }
-    
-    public void setBlacklistSynced(boolean synced){
-        editor.putBoolean(SHARED_KEY_SETTING_BALCKLIST_SYNCED, synced);
-        editor.commit();
-    }
-    
-    public boolean isBacklistSynced(){
-        return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_BALCKLIST_SYNCED, false);
-    }
-    
+
+	public void setDeleteMessagesAsExitGroup(boolean value) {
+		editor.putBoolean(SHARED_KEY_SETTING_DELETE_MESSAGES_WHEN_EXIT_GROUP, value);
+		editor.commit();
+	}
+
+	public boolean isDeleteMessagesAsExitGroup() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_DELETE_MESSAGES_WHEN_EXIT_GROUP, true);
+	}
+
+	public void setAutoAcceptGroupInvitation(boolean value) {
+		editor.putBoolean(SHARED_KEY_SETTING_AUTO_ACCEPT_GROUP_INVITATION, value);
+		editor.commit();
+	}
+
+	public boolean isAutoAcceptGroupInvitation() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_AUTO_ACCEPT_GROUP_INVITATION, true);
+	}
+
+	public void setGroupsSynced(boolean synced) {
+		editor.putBoolean(SHARED_KEY_SETTING_GROUPS_SYNCED, synced);
+		editor.commit();
+	}
+
+	public boolean isGroupsSynced() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_GROUPS_SYNCED, false);
+	}
+
+	public void setContactSynced(boolean synced) {
+		editor.putBoolean(SHARED_KEY_SETTING_CONTACT_SYNCED, synced);
+		editor.commit();
+	}
+
+	public boolean isContactSynced() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_CONTACT_SYNCED, false);
+	}
+
+	public void setBlacklistSynced(boolean synced) {
+		editor.putBoolean(SHARED_KEY_SETTING_BALCKLIST_SYNCED, synced);
+		editor.commit();
+	}
+
+	public boolean isBacklistSynced() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_SETTING_BALCKLIST_SYNCED, false);
+	}
+
 	public void setCurrentUserNick(String nick) {
 		editor.putString(SHARED_KEY_CURRENTUSER_NICK, nick);
 		editor.commit();
@@ -174,16 +182,15 @@ public class PreferenceManager {
 	public String getCurrentUserAvatar() {
 		return mSharedPreferences.getString(SHARED_KEY_CURRENTUSER_AVATAR, null);
 	}
-	
-	public void setCurrentUserName(String username){
+
+	public void setCurrentUserName(String username) {
 		editor.putString(SHARED_KEY_CURRENTUSER_USERNAME, username);
 		editor.commit();
 	}
-	
-	public String getCurrentUsername(){
+
+	public String getCurrentUsername() {
 		return mSharedPreferences.getString(SHARED_KEY_CURRENTUSER_USERNAME, null);
 	}
-
 
 	public void removeCurrentUserInfo() {
 		editor.remove(SHARED_KEY_CURRENTUSER_NICK);

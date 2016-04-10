@@ -220,22 +220,22 @@ public class QjLoginActivity extends BaseActivity {
 			Toast.makeText(this, R.string.network_isnot_available, Toast.LENGTH_SHORT).show();
 			return;
 		}
+		
+		if(mCurrentLoginView.login(view)) {
+			progressShow = true;
+			mProgressDialog = new ProgressDialog(QjLoginActivity.this);
+			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setOnCancelListener(new OnCancelListener() {
 
-		progressShow = true;
-		mProgressDialog = new ProgressDialog(QjLoginActivity.this);
-		mProgressDialog.setCanceledOnTouchOutside(false);
-		mProgressDialog.setOnCancelListener(new OnCancelListener() {
-
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				Log.d("sssssss", "EMClient.getInstance().onCancel");
-				progressShow = false;
-			}
-		});
-		mProgressDialog.setMessage(getString(R.string.Is_landing));
-		mProgressDialog.show();
-
-		mCurrentLoginView.login(view);
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					Log.d("sssssss", "EMClient.getInstance().onCancel");
+					progressShow = false;
+				}
+			});
+			mProgressDialog.setMessage(getString(R.string.Is_landing));
+			mProgressDialog.show();
+		}
 	}
 
 	/**

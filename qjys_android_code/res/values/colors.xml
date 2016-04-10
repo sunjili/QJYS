@@ -46,5 +46,7 @@
     <color name="cd9">#d9d9d9</color>
     <color name="transparent">#00000000</color>
     <color name="c6">#666666</color>
-
+    <color name="cf4714b">#f4714b</color>
+    <!-- 5%黑色半透明，列表点击为true状态 -->
+    <color name="transparent5">#0d000000</color>
 </resources>

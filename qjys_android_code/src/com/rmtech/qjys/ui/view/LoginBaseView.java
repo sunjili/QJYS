@@ -41,8 +41,8 @@ public class LoginBaseView extends RelativeLayout {
 	 * 
 	 * @param view
 	 */
-	public void login(View view) {
-		
+	public boolean login(View view) {
+		return false;
 	}
 
 }

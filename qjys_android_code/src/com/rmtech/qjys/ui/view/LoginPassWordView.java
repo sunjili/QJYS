@@ -98,21 +98,21 @@ public class LoginPassWordView extends LoginBaseView implements View.OnClickList
 	 * 
 	 * @param view
 	 */
-	public void login(View view) {
+	public boolean login(View view) {
 		if (!EaseCommonUtils.isNetWorkConnected(getContext())) {
 			Toast.makeText(getContext(), R.string.network_isnot_available, Toast.LENGTH_SHORT).show();
-			return;
+			return false;
 		}
 		currentUsername = usernameEditText.getText().toString().trim();
 		currentPassword = passwordEditText.getText().toString().trim();
 
 		if (TextUtils.isEmpty(currentUsername)) {
 			Toast.makeText(getContext(), R.string.User_name_cannot_be_empty, Toast.LENGTH_SHORT).show();
-			return;
+			return false;
 		}
 		if (TextUtils.isEmpty(currentPassword)) {
 			Toast.makeText(getContext(), R.string.Password_cannot_be_empty, Toast.LENGTH_SHORT).show();
-			return;
+			return false;
 		}
 
 		progressShow = true;
@@ -190,6 +190,7 @@ public class LoginPassWordView extends LoginBaseView implements View.OnClickList
 				});
 			}
 		});
+		return true;
 	}
 
 	@Override

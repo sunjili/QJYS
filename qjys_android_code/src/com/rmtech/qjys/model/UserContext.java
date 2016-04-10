@@ -1,13 +1,12 @@
 package com.rmtech.qjys.model;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.rmtech.qjys.QjApplication;
+import com.rmtech.qjys.utils.PreferenceManager;
 
 public class UserContext {
 
@@ -26,22 +25,19 @@ public class UserContext {
 	}
 
 	public void clearCookie() {
-		SharedPreferences settings = QjApplication.getInstance().getSharedPreferences("cookie", Activity.MODE_PRIVATE);
-		if (settings != null) {
-			SharedPreferences.Editor editor = settings.edit();
-			if (editor != null) {
-				editor.remove("user");
-				editor.putString("user", "");
-				editor.commit();
-			}
+
+		SharedPreferences.Editor editor = PreferenceManager.getInstance().getEditor();
+		if (editor != null) {
+			editor.remove("user");
+			editor.putString("user", "");
+			editor.commit();
 		}
 		cookie = null;
 	}
 
 	public boolean loadCookie() {
 		isLogined = false;
-		SharedPreferences preferences = QjApplication.getInstance().getSharedPreferences("cookie",
-				Activity.MODE_PRIVATE);
+		SharedPreferences preferences = PreferenceManager.getInstance().getSharedPreferences();
 		String json = preferences.getString("user", "");
 
 		if (TextUtils.isEmpty(json)) {
@@ -77,16 +73,12 @@ public class UserContext {
 			@Override
 			protected Void doInBackground(Void... params) {
 				try {
-					SharedPreferences settings = QjApplication.getInstance().getSharedPreferences("cookie",
-							Activity.MODE_PRIVATE);
-					if (settings != null) {
-						SharedPreferences.Editor editor = settings.edit();
-						if (editor != null) {
-							Gson gson = new Gson();
-							String json = gson.toJson(mUser);
-							editor.putString("user", json);
-							editor.commit();
-						}
+					SharedPreferences.Editor editor = PreferenceManager.getInstance().getEditor();
+					if (editor != null) {
+						Gson gson = new Gson();
+						String json = gson.toJson(mUser);
+						editor.putString("user", json);
+						editor.commit();
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

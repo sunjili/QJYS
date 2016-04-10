@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MeItemView">
+        <attr name="leftText" format="string" />
+        <attr name="rightText" format="string" />
+        <attr name="rightTextColor" format="reference|color" />
+        <attr name="visibleLinePadding" format="boolean" />
+    </declare-styleable>
+
+</resources>

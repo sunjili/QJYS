@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg"
+    android:orientation="vertical" >
+
+    <com.hyphenate.easeui.widget.EaseTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleBarTitle="我" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cf4f5f9"
+        android:fadingEdge="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftText="名字"
+                app:rightText="测试111"
+                app:visibleLinePadding="true" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_sex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftText="性别"
+                app:rightText="测试111"
+                app:visibleLinePadding="true" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_hospital"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftText="医院"
+                app:rightText="测试111"
+                app:visibleLinePadding="true" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:leftText="科室"
+                app:rightText="测试111"
+                app:visibleLinePadding="false" />
+
+            <include layout="@layout/qj_me_split_line" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftText="手机号"
+                app:rightText="测试111"
+                app:visibleLinePadding="true" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:leftText="登录密码"
+                app:rightTextColor="@color/cf4714b"
+                app:visibleLinePadding="false" />
+
+            <include layout="@layout/qj_me_split_line" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_treatment_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftText="病例就诊状态"
+                app:visibleLinePadding="true" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_standard_and_flow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftText="临床诊疗规范及流程"
+                app:visibleLinePadding="true" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_clear_memory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftText="清理存储空间"
+                app:visibleLinePadding="true" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_recycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftText="病例回收站"
+                app:visibleLinePadding="true" />
+
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:leftText="关于奇迹医生"
+                app:visibleLinePadding="false" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

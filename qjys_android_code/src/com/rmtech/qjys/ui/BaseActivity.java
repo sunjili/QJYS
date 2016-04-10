@@ -76,6 +76,11 @@ public class BaseActivity extends EaseBaseActivity {
 		}
 	}
 
+	protected void setRightTitle(String title,View.OnClickListener listener) {
+		if (mTopTitleView != null) {
+			mTopTitleView.setRightTitle(title, listener);
+		}
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();

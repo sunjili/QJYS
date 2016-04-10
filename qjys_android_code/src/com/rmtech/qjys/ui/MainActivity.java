@@ -52,7 +52,7 @@ import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.fragment.ContactListFragment;
 import com.rmtech.qjys.ui.fragment.ConversationListFragment;
-import com.rmtech.qjys.ui.fragment.SettingsFragment;
+import com.rmtech.qjys.ui.fragment.MeFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity {
 	// private conversationListFragment conversationListFragment;
 //	private ChatAllHistoryFragment conversationListFragment;
     private ConversationListFragment conversationListFragment;
-	private SettingsFragment settingFragment;
+	private MeFragment meFragment;
 	private CaseFragment caseFragment;
 	
 	private Fragment[] fragments;
@@ -131,9 +131,9 @@ public class MainActivity extends BaseActivity {
 		userDao = new UserDao(this);
 		conversationListFragment = new ConversationListFragment();
 		contactListFragment = new ContactListFragment();
-		settingFragment = new SettingsFragment();
+		meFragment = new MeFragment();
 		caseFragment = new CaseFragment();
-		fragments = new Fragment[] { conversationListFragment, caseFragment, contactListFragment, settingFragment };
+		fragments = new Fragment[] { conversationListFragment, caseFragment, contactListFragment, meFragment };
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment_container, conversationListFragment)

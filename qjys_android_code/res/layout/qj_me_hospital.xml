@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+    <EditText
+        android:id="@+id/et_hospital"
+        style="@style/qj_et_style"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="请输入医院名称" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+    <ListView
+        android:visibility="invisible"
+        android:id="@+id/lv_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/qj_me_listview_background"
+        android:divider="@color/cd9"
+        android:dividerHeight="1px" >
+    </ListView>
+
+</LinearLayout>

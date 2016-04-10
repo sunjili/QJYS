@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+    <RelativeLayout
+        android:id="@+id/ll_man"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/qj_me_item_selector"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/qj_add_case_left_name_tv"
+            android:layout_alignParentLeft="true"
+            android:text="男" />
+
+        <ImageView
+            android:id="@+id/iv_man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/btn_choice_press"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/cd9" />
+
+    <RelativeLayout
+        android:id="@+id/ll_woman"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/qj_me_item_selector"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/qj_add_case_left_name_tv"
+            android:layout_alignParentLeft="true"
+            android:text="女" />
+
+        <ImageView
+            android:id="@+id/iv_woman"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/btn_choice_press"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <include layout="@layout/qj_me_split_line" />
+
+</LinearLayout>

@@ -69,19 +69,20 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 	}
 
 	@Override
-	public void login(View view) {
+	public boolean login(View view) {
 		String inuptPhoneStr = phone_edit.getEditableText().toString();
 		int errorCode = checkInput(inuptPhoneStr);
 		if (errorCode != 0) {
 			Toast.makeText(getContext(), "用户名请输入11位手机号码！", Toast.LENGTH_LONG).show();
-			return;
+			return false;
 		}
 		String codeStr = code_edit.getEditableText().toString();
 		if (TextUtils.isEmpty(codeStr)) {
 			Toast.makeText(getContext(), "请输入验证码！", Toast.LENGTH_SHORT).show();
-			return;
+			return false;
 		}
 		httpLogin(inuptPhoneStr, codeStr);
+		return true;
 	}
 	@Override
 	public void onClick(View v) {
