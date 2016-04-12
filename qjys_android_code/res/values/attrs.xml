@@ -7,5 +7,14 @@
         <attr name="rightTextColor" format="reference|color" />
         <attr name="visibleLinePadding" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="ContactItemView">
+        <attr name="contactItemImage" format="reference" />
+        <attr name="contactItemName" format="string" />
+    </declare-styleable>
+    <declare-styleable name="ItemSet">
+        <attr name="leftName" format="string" />
+        <attr name="rightName" format="string" />
+        <attr name="showDivider" format="boolean" />
+    </declare-styleable>
 
 </resources>
