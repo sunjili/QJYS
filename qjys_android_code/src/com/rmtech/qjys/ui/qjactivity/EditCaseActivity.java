@@ -12,7 +12,7 @@ public class EditCaseActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		setContentView(R.layout.qjactivity_add_case);
+		setContentView(R.layout.qjactivity_edit_case);
 		setTitle("编辑病例");
 
 	}
