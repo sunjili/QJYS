@@ -10,6 +10,7 @@ import java.util.List;
 
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,12 @@ public class CheeseDynamicAdapter extends BaseDynamicGridAdapter {
 
         void build(String title) {
             titleText.setText(title);
-            image.setImageResource(R.drawable.ic_launcher);
+            if(TextUtils.isEmpty(title)) {
+            	image.setImageResource(R.drawable.ic_case_folder);
+
+            } else {
+            	image.setImageResource(R.drawable.ic_launcher);
+            }
         }
     }
 }

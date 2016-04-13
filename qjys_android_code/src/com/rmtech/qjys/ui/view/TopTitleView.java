@@ -61,12 +61,22 @@ public class TopTitleView extends FrameLayout {
 		}
 	}
 
-	public void setRightTitle(String title, View.OnClickListener listener) {
+	public View setRightTitle(String title, View.OnClickListener listener) {
 		if (mRightView != null) {
 			mRightView.setText(title);
 			mRightView.setVisibility(View.VISIBLE);
 			setView(mRightView, 0, listener);
 		}
+		return mRightView;
+	}
+	
+	public View setRightTitle(int drawRid, View.OnClickListener listener) {
+		if (mRightView != null) {
+			mRightView.setText("");
+			mRightView.setVisibility(View.VISIBLE);
+			setView(mRightView, drawRid, listener);
+		}
+		return mRightView;
 	}
 	public void setLeftTitle(String title, View.OnClickListener listener) {
 		if (mLeftView != null) {

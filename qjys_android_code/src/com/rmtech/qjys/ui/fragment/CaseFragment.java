@@ -21,8 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.ui.qjactivity.AddCaseActivity;
 import com.rmtech.qjys.ui.qjactivity.EditCaseActivity;
+import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView.OnItemClickListener;
 import com.sjl.lib.pinnedheaderlistview.SectionedBaseAdapter;
@@ -221,7 +221,9 @@ public class CaseFragment extends QjBaseFragment {
 
 			@Override
 			public void onClick(View v) {
-				AddCaseActivity.show(getActivity());
+//				AddCaseActivity.show(getActivity());
+				PhotoDataManagerActivity.show(getActivity());
+				
 			}
 		});
 

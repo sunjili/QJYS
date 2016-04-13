@@ -76,11 +76,21 @@ public class BaseActivity extends EaseBaseActivity {
 		}
 	}
 
-	protected void setRightTitle(String title,View.OnClickListener listener) {
+	protected View setRightTitle(String title,View.OnClickListener listener) {
 		if (mTopTitleView != null) {
-			mTopTitleView.setRightTitle(title, listener);
+			return mTopTitleView.setRightTitle(title, listener);
 		}
+		return null;
 	}
+	
+	protected View setRightTitle(int drawRId,View.OnClickListener listener) {
+		if (mTopTitleView != null) {
+			return mTopTitleView.setRightTitle(drawRId, listener);
+		}
+		return null;
+	}
+	
+	
 	@Override
 	protected void onResume() {
 		super.onResume();

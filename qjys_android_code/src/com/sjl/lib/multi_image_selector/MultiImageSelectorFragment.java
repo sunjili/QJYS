@@ -35,11 +35,11 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
+import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.adapter.FolderAdapter;
 import com.sjl.lib.multi_image_selector.adapter.ImageGridAdapter;
 import com.sjl.lib.multi_image_selector.bean.Folder;
 import com.sjl.lib.multi_image_selector.bean.Image;
-import com.sjl.lib.multi_image_selector.utils.FileUtils;
 import com.sjl.lib.multi_image_selector.utils.ScreenUtils;
 
 /**

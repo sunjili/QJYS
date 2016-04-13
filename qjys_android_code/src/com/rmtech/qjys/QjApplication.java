@@ -25,6 +25,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.sjl.lib.http.okhttp.AndroidDeviceManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.sjl.lib.multi_image_selector.utils.ScreenUtils;
+import com.sjl.lib.utils.ScreenUtil;
 
 public class QjApplication extends Application {
 
@@ -51,6 +53,7 @@ public class QjApplication extends Application {
         //init demo helper
         QjHelper.getInstance().init(applicationContext);
         initImageLoader(getApplicationContext());
+        ScreenUtil.init(applicationContext);
 	}
 
 	public static void initImageLoader(Context context) {
