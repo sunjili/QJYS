@@ -19,13 +19,14 @@
         android:hint="请输入医院名称" />
 
     <include layout="@layout/qj_me_split_line" />
-
+	    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
     <ListView
         android:visibility="invisible"
         android:id="@+id/lv_hospital"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:background="@drawable/qj_me_listview_background"
         android:divider="@color/cd9"
         android:dividerHeight="1px" >

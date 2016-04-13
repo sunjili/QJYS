@@ -8,12 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.qjactivity.MeAboutActivity;
+import com.rmtech.qjys.ui.qjactivity.MeCleanMemoryActivity;
 import com.rmtech.qjys.ui.qjactivity.MeHospitalActivity;
 import com.rmtech.qjys.ui.qjactivity.MeNameActivity;
+import com.rmtech.qjys.ui.qjactivity.MePasswordChangeActivity;
+import com.rmtech.qjys.ui.qjactivity.MePhoneActivity;
+import com.rmtech.qjys.ui.qjactivity.MeRoomActivity;
 import com.rmtech.qjys.ui.qjactivity.MeSexActivity;
+import com.rmtech.qjys.ui.qjactivity.MeTreatmentStateActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
 
 /**
@@ -22,6 +31,10 @@ import com.rmtech.qjys.ui.view.MeItemLayout;
  * 
  */
 public class MeFragment extends Fragment implements OnClickListener {
+	/***  头像  */
+	private ImageView iv_head;
+	/***   */
+	private RelativeLayout rl_head;
 	/**  名字         */
 	private MeItemLayout  me_name;
 	/**  性别         */
@@ -44,7 +57,9 @@ public class MeFragment extends Fragment implements OnClickListener {
 	private MeItemLayout  me_recycle;
 	/**  关于奇迹医生         */
 	private MeItemLayout  me_about;
-	
+	/**   退出登录	 */
+	private Button btn_logout;
+
 	private FragmentActivity context;
 	
 	private void setViewValue() {
@@ -66,6 +81,9 @@ public class MeFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.rl_head:
+			Toast.makeText(context, "头像", Toast.LENGTH_SHORT).show();
+			break;
 		case R.id.me_name:
 			jumpActivity(MeNameActivity.class);
 			break;
@@ -76,34 +94,41 @@ public class MeFragment extends Fragment implements OnClickListener {
 			jumpActivity(MeHospitalActivity.class);
 		break;
 		case R.id.me_room:
-			Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
+			jumpActivity(MeRoomActivity.class);
 		break;
 		
 		
 		case R.id.me_phone:
-			Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
+			jumpActivity(MePhoneActivity.class);
 		break;
 		case R.id.me_password:
-			Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
+			//设置新密码
+//			jumpActivity(MePasswordNewActivity.class);
+			//更改密码
+			jumpActivity(MePasswordChangeActivity.class);
 		break;
 		
 		
 		case R.id.me_treatment_state:
-			Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
+			jumpActivity(MeTreatmentStateActivity.class);
 		break;
 		case R.id.me_standard_and_flow:
 			Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
 		break;
-		case R.id.me_clear_memory:
-			Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
+		case R.id.me_clear_memory:    
+		jumpActivity(MeCleanMemoryActivity.class);
 		break;
 		case R.id.me_recycle:
 			Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
 		break;
 		
 		case R.id.me_about:
-			Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
+			jumpActivity(MeAboutActivity.class);
+
 		break;
+		case R.id.btn_logout:
+			Toast.makeText(context, "退出登录", Toast.LENGTH_SHORT).show();
+			break;
 		default:
 			break;
 		}
@@ -155,6 +180,13 @@ public class MeFragment extends Fragment implements OnClickListener {
 		me_about=(MeItemLayout) inflate.findViewById(R.id.me_about);
 		me_about.setOnClickListener(this);
 		
+		
+		btn_logout=(Button) inflate.findViewById(R.id.btn_logout);
+		btn_logout.setOnClickListener(this);
+		
+		iv_head=(ImageView) inflate.findViewById(R.id.iv_head);
+		rl_head=(RelativeLayout) inflate.findViewById(R.id.rl_head);
+		rl_head.setOnClickListener(this);
 	}
 
 	@Override

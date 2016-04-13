@@ -47,6 +47,14 @@
     <color name="transparent">#00000000</color>
     <color name="c6">#666666</color>
     <color name="cf4714b">#f4714b</color>
+    <color name="cf43631">#f43631</color>
     <!-- 5%黑色半透明，列表点击为true状态 -->
     <color name="transparent5">#0d000000</color>
+    <color name="c3eb248">#3eb248</color>
+    <!-- 20%绿色按钮点击状态 -->
+    <color name="c20_3eb248">#328E3B</color>
+    <!-- 20%蓝色按钮点击状态 -->
+    <color name="c20_3264aa">#284F88</color>
+    <!-- 20%红色按钮点击状态 -->
+    <color name="c20_f43631">#C32927</color>
 </resources>

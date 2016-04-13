@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:fadingEdge="none" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_address_list_change_number" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="奇迹医生   V2.0" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <include layout="@layout/qj_me_split_line" />
+
+        <com.rmtech.qjys.ui.view.MeItemLayout
+            android:id="@+id/me_about_erweima"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftText="奇迹医生二维码"
+            app:visibleLinePadding="true" />
+
+        <com.rmtech.qjys.ui.view.MeItemLayout
+            android:id="@+id/me_about_pingfen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftText="去评分"
+            app:visibleLinePadding="true" />
+
+        <com.rmtech.qjys.ui.view.MeItemLayout
+            android:id="@+id/me_about_jianjie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftText="奇迹医生简介"
+            app:visibleLinePadding="true" />
+
+        <com.rmtech.qjys.ui.view.MeItemLayout
+            android:id="@+id/me_about_gongneng"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftText="功能简介"
+            app:visibleLinePadding="true" />
+
+        <com.rmtech.qjys.ui.view.MeItemLayout
+            android:id="@+id/me_about_xieyi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftText="用户使用协议"
+            app:visibleLinePadding="true" />
+
+        <com.rmtech.qjys.ui.view.MeItemLayout
+            android:id="@+id/me_about_fankui"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftText="反馈建议"
+            app:visibleLinePadding="false" />
+    </LinearLayout>
+
+</ScrollView>

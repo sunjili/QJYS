@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.CommonAdapter;
@@ -80,9 +81,17 @@ public class MeHospitalActivity extends BaseActivity {
 						listems, R.layout.qj_me_hospital_item)
 				{
 					@Override
-					public void convert(ViewHolder viewHolder, String item)
+					public void convert(ViewHolder viewHolder, final String item)
 					{
 						viewHolder.setTextAndColor(R.id.tv_name, item,s.toString(),Color.rgb(52, 100, 169));
+						viewHolder.getView(R.id.rl_hospital_item).setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) { 
+								Toast.makeText(context, item, Toast.LENGTH_SHORT).show();
+								et_hospital.setText(item);
+							}
+						});
 					}
 				};
 				lv_hospital.setAdapter(mAdapter);

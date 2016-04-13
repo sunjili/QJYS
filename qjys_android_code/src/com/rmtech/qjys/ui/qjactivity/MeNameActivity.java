@@ -17,12 +17,21 @@ import com.rmtech.qjys.ui.BaseActivity;
 public class MeNameActivity extends BaseActivity {
 	/**  姓名    */
 	private EditText et_name;
-
+	private String name;
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_name);
 		setTitle("姓名");
+		setRightTitle("保存", new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//TODO 保存姓名
+				name=et_name.getText().toString().trim();
+				finish();
+			}
+		});
 		initView();
 	}
 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/qj_text_small_explain_style"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:text="@string/_qj_me_phone_change" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+    <RelativeLayout
+        android:id="@+id/ll_man"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/qj_me_item_selector"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/et_phone"
+            style="@style/qj_et_style"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="请输入你当前手机号"
+            android:inputType="phone"
+            android:singleLine="true" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/cd9" />
+
+    <RelativeLayout
+        android:id="@+id/ll_woman"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/qj_me_item_selector"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/et_verify"
+            style="@style/qj_et_style"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:hint="请输入验证码"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/btn_get_verify"
+            style="@style/qj_green_button_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="获取验证码" />
+    </RelativeLayout>
+
+    <include layout="@layout/qj_me_split_line" />
+
+</LinearLayout>

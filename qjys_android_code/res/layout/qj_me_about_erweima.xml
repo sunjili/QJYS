@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="71dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/qj_me_edit_normal"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_address_list_change_number" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="奇迹医生   V2.0" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_default_avatar" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="扫描以上二维码 ，下载奇迹医生APP" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
+    </LinearLayout>
+
+    <include layout="@layout/qj_me_split_line" />
+
+</RelativeLayout>

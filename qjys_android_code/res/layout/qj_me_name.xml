@@ -16,7 +16,7 @@
         style="@style/qj_et_style"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="请输入您的姓名" />
+        android:hint="请输入你的姓名" />
 
     <include layout="@layout/qj_me_split_line" />
 

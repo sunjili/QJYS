@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/qj_text_small_explain_style"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:text="请描述您的问题" />
+
+    <EditText
+        android:paddingTop="10dp"
+        android:id="@+id/et_string"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:background="@drawable/qj_me_edit_selector"
+        android:gravity="top|left"
+        android:hint="请输入您的问题"
+        android:inputType="text"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <TextView
+        style="@style/qj_text_small_explain_style"
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:text="请填写您的联系方式" />
+
+    <EditText
+        android:id="@+id/et_phone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/qj_me_edit_selector"
+        android:hint="电话/邮箱/QQ/微信"
+        android:inputType="text"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true" />
+
+</LinearLayout>

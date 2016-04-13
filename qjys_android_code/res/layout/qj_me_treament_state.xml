@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_explain_text"
+        style="@style/qj_text_small_explain_style"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:text="常用状态" />
+
+    <ListView
+        android:id="@+id/lv_state"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="999"
+        android:background="@drawable/qj_me_listview_treament_state_background"
+        android:divider="@color/cd9"
+        android:dividerHeight="1px" >
+    </ListView>
+	<View 
+	    android:layout_height="0dp"
+	    android:layout_width="match_parent"
+	    android:layout_weight="1"
+	    />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@color/white" >
+
+        <Button
+            android:id="@+id/btn_state_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/qj_me_bluebutton_selector"
+            android:padding="10dp"
+            android:text="添加"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <EditText
+            android:singleLine="true"
+            android:id="@+id/et_state_add"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/btn_state_add"
+            android:background="@drawable/qj_me_edit_selector"
+            android:hint="输入就诊状态"
+            android:inputType="text"
+            android:paddingLeft="10dp" />
+    </RelativeLayout>
+
+</LinearLayout>

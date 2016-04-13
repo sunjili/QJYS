@@ -76,6 +76,66 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
+        <!-- 科室 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeRoomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <!-- 手机号 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MePhoneActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <!-- 更改手机号 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MePhoneChangeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <!-- 设置新密码 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MePasswordNewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <!-- 更改密码 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MePasswordChangeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <!-- 病例就诊状态 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeTreatmentStateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <!-- 清理存储空间 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeCleanMemoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <!--关于奇迹医生-->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeAboutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+            <!--关于奇迹医生  二维码-->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeAboutErweimaActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+                    <!--关于奇迹医生  反馈与建议-->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeAboutFankuiActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.AddCaseActivity"
             android:screenOrientation="portrait"
