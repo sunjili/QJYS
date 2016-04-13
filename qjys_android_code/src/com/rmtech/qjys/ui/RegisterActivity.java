@@ -17,7 +17,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
 import com.hyphenate.exceptions.HyphenateException;
-import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.hx.QjHelper;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;

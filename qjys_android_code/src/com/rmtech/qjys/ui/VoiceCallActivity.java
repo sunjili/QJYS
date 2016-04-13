@@ -38,7 +38,7 @@ import com.hyphenate.chat.EMCallStateChangeListener;
 import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
 import com.hyphenate.util.EMLog;
-import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.hx.QjHelper;
 
 /**
  * 语音通话页面

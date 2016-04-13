@@ -23,9 +23,9 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMContact;
 import com.rmtech.qjys.R;
 import com.hyphenate.exceptions.HyphenateException;
-import com.rmtech.qjys.QjHelper;
 import com.rmtech.qjys.db.UserDao;
 import com.rmtech.qjys.domain.RobotUser;
+import com.rmtech.qjys.hx.QjHelper;
 
 import android.content.Context;
 import android.content.Intent;

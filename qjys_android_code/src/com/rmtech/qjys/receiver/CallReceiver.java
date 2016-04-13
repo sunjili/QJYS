@@ -19,7 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.hyphenate.util.EMLog;
-import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.ui.VideoCallActivity;
 import com.rmtech.qjys.ui.VoiceCallActivity;
 

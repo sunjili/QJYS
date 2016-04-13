@@ -43,10 +43,8 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 /**
- * @version 2009-07-03
- * @author Peli
  * @version 2013-12-11
- * @author paulburke (ipaulpro)
+ * @author jilisun
  */
 @SuppressLint("NewApi")
 public class FileUtils {

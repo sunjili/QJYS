@@ -21,8 +21,8 @@ import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.rmtech.qjys.QjApplication;
-import com.rmtech.qjys.QjHelper;
 import com.rmtech.qjys.db.DemoDBManager;
+import com.rmtech.qjys.hx.QjHelper;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
 import com.sjl.lib.http.okhttp.callback.Callback;
 

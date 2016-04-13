@@ -39,10 +39,9 @@ import android.widget.Toast;
 import com.rmtech.qjys.R;
 
 /**
- * Main Activity that handles the FileListFragments
  *
  * @version 2013-06-25
- * @author paulburke (ipaulpro)
+ * @author jilisun
  */
 public class FileChooserActivity extends FragmentActivity implements
         OnBackStackChangedListener, FileListFragment.Callbacks {

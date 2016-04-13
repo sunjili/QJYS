@@ -8,7 +8,7 @@ import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseUserUtils;
-import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.hx.QjHelper;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;

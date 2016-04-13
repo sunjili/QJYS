@@ -8,8 +8,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.QjHelper;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 

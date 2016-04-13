@@ -32,9 +32,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
-import com.rmtech.qjys.QjHelper;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.MUser;
 import com.sjl.lib.http.okhttp.callback.Callback;
 

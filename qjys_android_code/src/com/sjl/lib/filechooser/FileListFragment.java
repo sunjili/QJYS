@@ -34,7 +34,7 @@ import com.rmtech.qjys.R;
  * Fragment that displays a list of Files in a given path.
  * 
  * @version 2013-12-11
- * @author paulburke (ipaulpro)
+ * @author jilisun
  */
 public class FileListFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<List<File>> {

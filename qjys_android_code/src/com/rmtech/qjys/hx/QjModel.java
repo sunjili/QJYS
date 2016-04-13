@@ -1,4 +1,4 @@
-package com.rmtech.qjys;
+package com.rmtech.qjys.hx;
 
 import java.util.HashMap;
 import java.util.List;

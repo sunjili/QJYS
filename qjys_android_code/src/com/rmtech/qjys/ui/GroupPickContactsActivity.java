@@ -25,7 +25,7 @@ import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.widget.EaseSidebar;
 import com.rmtech.qjys.Constant;
-import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.hx.QjHelper;
 
 import android.content.Context;
 import android.content.Intent;

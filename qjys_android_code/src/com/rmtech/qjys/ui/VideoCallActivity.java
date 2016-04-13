@@ -41,7 +41,7 @@ import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
 import com.hyphenate.media.EMLocalSurfaceView;
 import com.hyphenate.media.EMOppositeSurfaceView;
-import com.rmtech.qjys.QjHelper;
+import com.rmtech.qjys.hx.QjHelper;
 
 public class VideoCallActivity extends CallActivity implements OnClickListener {
 

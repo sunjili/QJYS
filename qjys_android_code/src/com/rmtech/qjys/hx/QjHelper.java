@@ -1,4 +1,4 @@
-package com.rmtech.qjys;
+package com.rmtech.qjys.hx;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +23,7 @@ import com.hyphenate.chat.EMMessage.Status;
 import com.hyphenate.chat.EMMessage.Type;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.rmtech.qjys.Constant;
 import com.rmtech.qjys.R;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseEmojiconInfoProvider;
@@ -36,6 +37,7 @@ import com.hyphenate.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
+import com.rmtech.qjys.R.string;
 import com.rmtech.qjys.db.DemoDBManager;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.db.UserDao;

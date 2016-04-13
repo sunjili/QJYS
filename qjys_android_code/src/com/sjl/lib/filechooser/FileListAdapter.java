@@ -33,7 +33,7 @@ import com.rmtech.qjys.R;
  * List adapter for Files.
  * 
  * @version 2013-12-11
- * @author paulburke (ipaulpro)
+ * @author jilisun
  */
 public class FileListAdapter extends BaseAdapter {
 
