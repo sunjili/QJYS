@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.qjactivity.PhotoDataBrowseActivity;
+import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
 import com.sjl.lib.alertview.AlertView;
+import com.sjl.lib.alertview.OnDismissListener;
 import com.sjl.lib.alertview.OnItemClickListener;
 import com.sjl.lib.dynamicgrid.DynamicGridView;
 import com.sjl.lib.dynamicgrid.example.CheeseDynamicAdapter;
@@ -69,60 +72,56 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	}
 
 	public boolean onBackPressed() {
-		if (mGridView.isEditMode()) {
-			mGridView.stopEditMode();
+
+		if (mAlertViewExt != null && mAlertViewExt.isShowing()) {
+			mAlertViewExt.dismiss();
 			return true;
 		}
+
 		return false;
 	}
 
 	@Override
 	protected void setUpView() {
 		mDataList = new ArrayList<String>(Arrays.asList(Cheeses.sCheeseStrings));
-		mAdapter = new CheeseDynamicAdapter(getActivity(),
-				mDataList,
+		mAdapter = new CheeseDynamicAdapter(getActivity(), mDataList,
 				getResources().getInteger(R.integer.column_count));
 		// TODO Auto-generated method stub
 		mGridView.setAdapter(mAdapter);
-		// add callback to stop edit mode if needed
-		// gridView.setOnDropListener(new DynamicGridView.OnDropListener()
-		// {
-		// @Override
-		// public void onActionDrop()
-		// {
-		// gridView.stopEditMode();
-		// }
-		// });
-		mGridView.setOnDragListener(new DynamicGridView.OnDragListener() {
-			@Override
-			public void onDragStarted(int position) {
-				Log.d(TAG, "drag started at position " + position);
-			}
-
-			@Override
-			public void onDragPositionsChanged(int oldPosition, int newPosition) {
-				Log.d(TAG, String.format(
-						"drag item position changed from %d to %d",
-						oldPosition, newPosition));
-			}
-		});
-		mGridView
-				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-					@Override
-					public boolean onItemLongClick(AdapterView<?> parent,
-							View view, int position, long id) {
-						mGridView.startEditMode(position);
-						return true;
-					}
-				});
-
+		mGridView.setEditModeEnabled(false);
 		mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(getActivity(),
-						parent.getAdapter().getItem(position).toString(),
+				PhotoDataBrowseActivity.show(getActivity());
+			}
+		});
+		mGridView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Toast.makeText(getActivity(), " onItemLongClick",
 						Toast.LENGTH_SHORT).show();
+				new AlertView(null, null, "取消", null, new String[] { "删除",
+						"重命名" }, getActivity(), AlertView.Style.ActionSheet,
+						new com.sjl.lib.alertview.OnItemClickListener() {
+
+							@Override
+							public void onItemClick(Object o, int position) {
+								switch (position) {
+								case 0:
+									// showCameraAction();
+									break;
+								case 1:
+									// startImageSelector();
+									// ImageSelectorMainActivity.show(PhotoDataManagerActivity.this);
+									break;
+								}
+
+							}
+						}).show();
+				return true;
 			}
 		});
 
@@ -262,16 +261,22 @@ public class PhotoManagerFragment extends QjBaseFragment {
 					// 输入框出来则往上移动
 					boolean isOpen = imm.isActive();
 					mAlertViewExt.setMarginBottom(isOpen && focus ? 120 : 0);
-					System.out.println(isOpen);
 				}
 			});
 			mAlertViewExt.addExtView(extView);
+			mAlertViewExt.setOnDismissListener(new OnDismissListener() {
+
+				@Override
+				public void onDismiss(Object o) {
+					closeKeyboard();
+				}
+			});
 		}
 		mAlertViewExt.show();
 
 	}
 
 	protected void addFolderToGrid() {
-		mAdapter.add(0,"");
+		mAdapter.add(0, "");
 	}
 }

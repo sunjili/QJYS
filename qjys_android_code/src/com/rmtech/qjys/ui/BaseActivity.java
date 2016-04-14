@@ -9,6 +9,7 @@ import android.widget.LinearLayout.LayoutParams;
 
 import com.hyphenate.easeui.ui.EaseBaseActivity;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.qjactivity.PhotoDataSelectActivity;
 import com.rmtech.qjys.ui.view.TopTitleView;
 
 public class BaseActivity extends EaseBaseActivity {
@@ -30,6 +31,11 @@ public class BaseActivity extends EaseBaseActivity {
 		return false;
 	}
 
+	protected BaseActivity getActivity() {
+		return BaseActivity.this;
+	}
+
+	
 	@Override
     public void startActivity(Intent intent) {
     	if(!TextUtils.isEmpty(mTitle)) {

@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@color/cf4f5f9"
+        android:orientation="horizontal"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip" >
+
+        <TextView
+            android:id="@+id/wjm_sort_view"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_below="@id/divider_view"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/btn_choice_nor"
+            android:drawablePadding="5dip"
+            android:gravity="center_vertical"
+            android:text="按文件名排序"
+            android:textColor="@color/c3"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/scsj_sort_view"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_below="@id/divider_view"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/btn_choice_nor"
+            android:drawablePadding="5dip"
+            android:gravity="center_vertical"
+            android:text="按上传时间排序"
+            android:textColor="@color/c3"
+            android:textSize="13sp" />
+
+        <RelativeLayout
+            android:id="@+id/zdy_sort_view"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/zdy_sort_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/btn_choice_press" />
+
+            <TextView
+                android:id="@+id/zdy_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_marginTop="12dip"
+                android:layout_toRightOf="@id/zdy_sort_imageview"
+                android:gravity="center_vertical"
+                android:text="自定义排序"
+                android:textColor="@color/c3"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/zdy_text"
+                android:layout_marginLeft="5dip"
+                android:layout_toRightOf="@id/zdy_sort_imageview"
+                android:gravity="center_vertical"
+                android:text="拖拽文件进行操作"
+                android:textColor="@color/c9"
+                android:textSize="10sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentTop="true"
+        android:background="@color/cd9" />
+
+    <com.sjl.lib.dynamicgrid.DynamicGridView
+        android:id="@+id/dynamic_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:numColumns="@integer/column_count" />
+
+</LinearLayout>

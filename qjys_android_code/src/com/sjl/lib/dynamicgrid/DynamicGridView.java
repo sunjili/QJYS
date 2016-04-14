@@ -35,7 +35,7 @@ import android.widget.ListAdapter;
 import com.rmtech.qjys.R;
 
 /**
- * Author: alex askerov
+ * Author: jilisun
  * Date: 9/6/13
  * Time: 12:31 PM
  */

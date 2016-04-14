@@ -21,8 +21,6 @@ import com.rmtech.qjys.R;
 import com.sjl.lib.dynamicgrid.BaseDynamicGridAdapter;
 
 /**
- * Author: alex askerov
- * Date: 9/7/13
  * Time: 10:56 PM
  */
 public class CheeseDynamicAdapter extends BaseDynamicGridAdapter {

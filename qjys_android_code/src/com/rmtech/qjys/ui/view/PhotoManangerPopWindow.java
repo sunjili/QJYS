@@ -1,5 +1,6 @@
 package com.rmtech.qjys.ui.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.rmtech.qjys.R;
 import com.sjl.lib.utils.ScreenUtil;
 
+@SuppressLint("NewApi")
 public class PhotoManangerPopWindow {
 
 	public static ListPopupWindow createPopupList(Context context, View anchorView,
@@ -31,6 +33,8 @@ public class PhotoManangerPopWindow {
 		mFolderPopupWindow.setAnchorView(anchorView);
 		mFolderPopupWindow.setModal(true);
 		mFolderPopupWindow.setVerticalOffset(ScreenUtil.dp2px(10));
+		mFolderPopupWindow.setBackgroundDrawable(context.getDrawable(R.drawable.popping_box));
+		mFolderPopupWindow.setListSelector(context.getDrawable(R.drawable.bg_transparent));
 //	    android:background="@color/c3164aa"
 //		Window自适应宽度的方案，设置adapter后，检测每
 		mFolderPopupWindow.setOnItemClickListener(listener);

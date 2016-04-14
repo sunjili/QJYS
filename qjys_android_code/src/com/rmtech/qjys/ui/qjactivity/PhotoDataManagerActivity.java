@@ -134,8 +134,7 @@ public class PhotoDataManagerActivity extends BaseActivity {
 		}
 	}
 
-	private Activity getActivity() {
-		// TODO Auto-generated method stub
+	protected BaseActivity getActivity() {
 		return PhotoDataManagerActivity.this;
 	}
 
@@ -209,7 +208,8 @@ public class PhotoDataManagerActivity extends BaseActivity {
 										.show(PhotoDataManagerActivity.this);
 								break;
 							}
-
+							mFolderPopupWindow.dismiss();
+							
 						}
 					});
 		}
@@ -219,7 +219,6 @@ public class PhotoDataManagerActivity extends BaseActivity {
 		} else {
 			mFolderPopupWindow.show();
 		}
-
 	}
 
 	private File mTmpFile;

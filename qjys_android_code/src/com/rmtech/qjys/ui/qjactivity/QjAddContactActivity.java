@@ -38,7 +38,7 @@ public class QjAddContactActivity extends BaseActivity {
 		startActivity(new Intent(getActivity(), AddContactActivity.class));
 	}
 
-	private BaseActivity getActivity() {
+	protected BaseActivity getActivity() {
 		return QjAddContactActivity.this;
 	}
 
