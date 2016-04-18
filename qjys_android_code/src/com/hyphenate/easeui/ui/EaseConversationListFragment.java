@@ -365,6 +365,7 @@ public class EaseConversationListFragment extends QjBaseFragment {
 			@Override
 			public void onError(Call call, Exception e) {
 				// TODO Auto-generated method stub
+				initConversationList(sortList);
 
 			}
 
