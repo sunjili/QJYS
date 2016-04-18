@@ -18,7 +18,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.hyphenate.util.NetUtils;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.ui.ChatActivity;
@@ -91,14 +91,14 @@ public class ConversationListFragment extends EaseConversationListFragment {
 					if (conversation.isGroup()) {
 						if (conversation.getType() == EMConversationType.ChatRoom) {
 							// it's group chat
-							intent.putExtra(Constant.EXTRA_CHAT_TYPE, Constant.CHATTYPE_CHATROOM);
+							intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_CHATROOM);
 						} else {
-							intent.putExtra(Constant.EXTRA_CHAT_TYPE, Constant.CHATTYPE_GROUP);
+							intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
 						}
 
 					}
 					// it's single chat
-					intent.putExtra(Constant.EXTRA_USER_ID, username);
+					intent.putExtra(QjConstant.EXTRA_USER_ID, username);
 					startActivity(intent);
 				}
 			}
@@ -107,6 +107,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 			no_data_view.setVisibility(View.VISIBLE);
 			errorItemContainer.setVisibility(View.VISIBLE);
 			conversationListView.setVisibility(View.GONE);
+			errormsg_layout.setVisibility(View.GONE);
 		}
 	}
 

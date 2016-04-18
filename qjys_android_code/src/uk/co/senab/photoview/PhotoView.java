@@ -248,6 +248,11 @@ public class PhotoView extends ImageView implements IPhotoView {
     public void setScale(float scale) {
         mAttacher.setScale(scale);
     }
+    
+    @Override
+    public void setMirror() {
+    	mAttacher.setMirror();
+    }
 
     @Override
     public void setScale(float scale, boolean animate) {

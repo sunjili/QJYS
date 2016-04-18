@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.CommonAdapter;
 import com.rmtech.qjys.adapter.ViewHolder;
@@ -36,16 +38,19 @@ public class MeHospitalActivity extends BaseActivity {
 	private CommonAdapter mAdapter;
 	private Context context;
 	List<String> listems;
-	
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		context = MeHospitalActivity.this;
 		setContentView(R.layout.qj_me_hospital);
 		setRightTitle("保存", new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("hospital", et_hospital.getEditableText().toString());
+				setResult(RESULT_OK, intent);
 				MeHospitalActivity.this.finish();
 			}
 		});
@@ -56,7 +61,6 @@ public class MeHospitalActivity extends BaseActivity {
 
 	private void setValue() {
 		listems = new ArrayList<String>();
-		
 
 	}
 
@@ -66,28 +70,24 @@ public class MeHospitalActivity extends BaseActivity {
 		et_hospital.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onTextChanged(final CharSequence s, int start, int before,
-					int count) {
-				if(s.length()==0){
+			public void onTextChanged(final CharSequence s, int start, int before, int count) {
+				if (s.length() == 0) {
 					lv_hospital.setVisibility(View.INVISIBLE);
-				}else{
+				} else {
 					lv_hospital.setVisibility(View.VISIBLE);
 				}
 				listems.clear();
 				for (int i = 0; i < s.length(); i++) {
 					listems.add("测试" + i);
 				}
-				mAdapter = new CommonAdapter<String>(getApplicationContext(),
-						listems, R.layout.qj_me_hospital_item)
-				{
+				mAdapter = new CommonAdapter<String>(getApplicationContext(), listems, R.layout.qj_me_hospital_item) {
 					@Override
-					public void convert(ViewHolder viewHolder, final String item)
-					{
-						viewHolder.setTextAndColor(R.id.tv_name, item,s.toString(),Color.rgb(52, 100, 169));
+					public void convert(ViewHolder viewHolder, final String item) {
+						viewHolder.setTextAndColor(R.id.tv_name, item, s.toString(), Color.rgb(52, 100, 169));
 						viewHolder.getView(R.id.rl_hospital_item).setOnClickListener(new OnClickListener() {
-							
+
 							@Override
-							public void onClick(View v) { 
+							public void onClick(View v) {
 								Toast.makeText(context, item, Toast.LENGTH_SHORT).show();
 								et_hospital.setText(item);
 							}
@@ -96,13 +96,11 @@ public class MeHospitalActivity extends BaseActivity {
 				};
 				lv_hospital.setAdapter(mAdapter);
 				mAdapter.notifyDataSetChanged();
-			
-				
+
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 				// TODO Auto-generated method stub
 
 			}
@@ -119,9 +117,9 @@ public class MeHospitalActivity extends BaseActivity {
 		return true;
 	}
 
-	public static void show(Context context) {
+	public static void show(Activity context) {
 		Intent intent = new Intent();
 		intent.setClass(context, MeHospitalActivity.class);
-		context.startActivity(intent);
+		context.startActivityForResult(intent, QjConstant.REQUEST_CODE_ADD_HOSPITAL);
 	}
 }

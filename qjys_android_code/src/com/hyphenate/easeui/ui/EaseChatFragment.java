@@ -56,6 +56,7 @@ import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 
 /**
  * 可以直接new出来使用的聊天对话页面fragment，
@@ -66,7 +67,7 @@ import com.rmtech.qjys.R;
  * 参数传入示例可查看demo里的ChatActivity
  *
  */
-public class EaseChatFragment extends EaseBaseFragment {
+public class EaseChatFragment extends QjBaseFragment {
     protected static final String TAG = "EaseChatFragment";
     protected static final int REQUEST_CODE_MAP = 1;
     protected static final int REQUEST_CODE_CAMERA = 2;

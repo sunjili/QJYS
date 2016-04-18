@@ -35,6 +35,8 @@
         android:background="@drawable/di_case_divider_nor" />
 
     <LinearLayout
+        android:id="@+id/zy_layout"
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -61,6 +63,8 @@
         android:background="@drawable/di_case_divider_nor" />
 
     <LinearLayout
+        android:id="@+id/gf_layout"
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -87,6 +91,8 @@
         android:background="@drawable/di_case_divider_nor" />
 
     <LinearLayout
+        android:id="@+id/yhz_layout"
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

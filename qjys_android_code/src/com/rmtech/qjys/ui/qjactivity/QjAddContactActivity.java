@@ -27,6 +27,8 @@ import com.rmtech.qjys.ui.BaseActivity;
 
 public class QjAddContactActivity extends BaseActivity {
 
+	private static final int REQUEST_CODE = 1;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,8 +45,11 @@ public class QjAddContactActivity extends BaseActivity {
 	}
 
 	public void onContactPickClick(View view) {
-		Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-		getActivity().startActivityForResult(intent, 1);
+//		Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+//		getActivity().startActivityForResult(intent, 1);
+		
+		Intent intent = new Intent(getActivity(), PhoneContactsActivity.class); 
+		startActivityForResult(intent, REQUEST_CODE); 
 	}
 
 	protected boolean showTitleBar() {
@@ -62,13 +67,16 @@ public class QjAddContactActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
-		case 1:
+		case REQUEST_CODE:
 			if (resultCode == RESULT_OK) {
-				Uri contactData = data.getData();
-				Cursor cursor = managedQuery(contactData, null, null, null, null);
-				cursor.moveToFirst();
-				String num = this.getContactPhone(cursor);
-				AddContactActivity.show(getActivity(), num);
+//				Uri contactData = data.getData();
+//				Cursor cursor = managedQuery(contactData, null, null, null, null);
+//				cursor.moveToFirst();
+//				String num = this.getContactPhone(cursor);
+//				AddContactActivity.show(getActivity(), num);
+				
+//				String phone = data.getStringExtra("phone"); 
+//				phoneEditText.setText(phone); 
 			}
 			break;
 

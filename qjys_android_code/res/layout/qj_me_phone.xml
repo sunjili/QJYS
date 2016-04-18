@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical|left"
-            android:text="测试111111"
+            android:text="13812345678"
             android:textColor="@color/c3264aa"
             android:textSize="17sp" />
     </LinearLayout>
@@ -55,6 +55,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="测试11111" />
+        android:text="更换手机号" />
 
 </LinearLayout>

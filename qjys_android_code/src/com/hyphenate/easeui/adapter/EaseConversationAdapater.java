@@ -29,6 +29,7 @@ import com.hyphenate.easeui.utils.EaseSmileUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.util.DateUtils;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.utils.DoctorListManager;
 
 /**
  * 会话列表adapter
@@ -41,12 +42,12 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
     private ConversationFilter conversationFilter;
     private boolean notiyfyByFilter;
     
-    protected int primaryColor;
-    protected int secondaryColor;
-    protected int timeColor;
-    protected int primarySize;
-    protected int secondarySize;
-    protected float timeSize;
+//    protected int primaryColor;
+//    protected int secondaryColor;
+//    protected int timeColor;
+//    protected int primarySize;
+//    protected int secondarySize;
+//    protected float timeSize;
 
     public EaseConversationAdapater(Context context, int resource,
             List<EMConversation> objects) {
@@ -88,16 +89,19 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
             holder.time = (TextView) convertView.findViewById(R.id.time);
             holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
             holder.msgState = convertView.findViewById(R.id.msg_state);
-            holder.list_itease_layout = (RelativeLayout) convertView.findViewById(R.id.list_itease_layout);
+//            holder.list_itease_layout = (RelativeLayout) convertView.findViewById(R.id.list_itease_layout);
             convertView.setTag(holder);
         }
-        holder.list_itease_layout.setBackgroundResource(R.drawable.ease_mm_listitem);
-
+//        holder.list_itease_layout.setBackgroundResource(R.drawable.ease_mm_listitem);
+//
         // 获取与此用户/群组的会话
         EMConversation conversation = getItem(position);
         // 获取用户username或者群组groupid
         String username = conversation.getUserName();
-        
+        String nick = DoctorListManager.getInstance().getNickByHXid(username);
+        if(nick != null) {
+        	username = nick;
+        }
         if (conversation.getType() == EMConversationType.GroupChat) {
             // 群聊消息，显示群聊头像
             holder.avatar.setImageResource(R.drawable.ease_group_icon);
@@ -135,15 +139,15 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         }
         
         //设置自定义属性
-        holder.name.setTextColor(primaryColor);
-        holder.message.setTextColor(secondaryColor);
-        holder.time.setTextColor(timeColor);
-        if(primarySize != 0)
-            holder.name.setTextSize(TypedValue.COMPLEX_UNIT_PX, primarySize);
-        if(secondarySize != 0)
-            holder.message.setTextSize(TypedValue.COMPLEX_UNIT_PX, secondarySize);
-        if(timeSize != 0)
-            holder.time.setTextSize(TypedValue.COMPLEX_UNIT_PX, timeSize);
+//        holder.name.setTextColor(primaryColor);
+//        holder.message.setTextColor(secondaryColor);
+//        holder.time.setTextColor(timeColor);
+//        if(primarySize != 0)
+//            holder.name.setTextSize(TypedValue.COMPLEX_UNIT_PX, primarySize);
+//        if(secondarySize != 0)
+//            holder.message.setTextSize(TypedValue.COMPLEX_UNIT_PX, secondarySize);
+//        if(timeSize != 0)
+//            holder.time.setTextSize(TypedValue.COMPLEX_UNIT_PX, timeSize);
 
         return convertView;
     }
@@ -167,29 +171,29 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
     }
     
 
-    public void setPrimaryColor(int primaryColor) {
-        this.primaryColor = primaryColor;
-    }
-
-    public void setSecondaryColor(int secondaryColor) {
-        this.secondaryColor = secondaryColor;
-    }
-
-    public void setTimeColor(int timeColor) {
-        this.timeColor = timeColor;
-    }
-
-    public void setPrimarySize(int primarySize) {
-        this.primarySize = primarySize;
-    }
-
-    public void setSecondarySize(int secondarySize) {
-        this.secondarySize = secondarySize;
-    }
-
-    public void setTimeSize(float timeSize) {
-        this.timeSize = timeSize;
-    }
+//    public void setPrimaryColor(int primaryColor) {
+//        this.primaryColor = primaryColor;
+//    }
+//
+//    public void setSecondaryColor(int secondaryColor) {
+//        this.secondaryColor = secondaryColor;
+//    }
+//
+//    public void setTimeColor(int timeColor) {
+//        this.timeColor = timeColor;
+//    }
+//
+//    public void setPrimarySize(int primarySize) {
+//        this.primarySize = primarySize;
+//    }
+//
+//    public void setSecondarySize(int secondarySize) {
+//        this.secondarySize = secondarySize;
+//    }
+//
+//    public void setTimeSize(float timeSize) {
+//        this.timeSize = timeSize;
+//    }
 
 
 
@@ -284,7 +288,7 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         /** 最后一条消息的发送状态 */
         View msgState;
         /** 整个list中每一行总布局 */
-        RelativeLayout list_itease_layout;
+//        RelativeLayout list_itease_layout;
 
     }
 }

@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.util.HanziToPinyin;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.QjApplication;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.RobotUser;
@@ -79,8 +79,8 @@ public class DemoDBManager {
                     headerName = user.getUsername();
                 }
                 
-                if (username.equals(Constant.NEW_FRIENDS_USERNAME) || username.equals(Constant.GROUP_USERNAME)
-                        || username.equals(Constant.CHAT_ROOM)|| username.equals(Constant.CHAT_ROBOT)) {
+                if (username.equals(QjConstant.NEW_FRIENDS_USERNAME) || username.equals(QjConstant.GROUP_USERNAME)
+                        || username.equals(QjConstant.CHAT_ROOM)|| username.equals(QjConstant.CHAT_ROBOT)) {
                     user.setInitialLetter("");
                 } else if (Character.isDigit(headerName.charAt(0))) {
                     user.setInitialLetter("#");

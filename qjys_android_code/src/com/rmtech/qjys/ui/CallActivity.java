@@ -12,7 +12,7 @@ import com.hyphenate.media.EMLocalSurfaceView;
 import com.hyphenate.media.EMOppositeSurfaceView;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.NetUtils;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -302,9 +302,9 @@ public class CallActivity extends BaseActivity {
         }
         // 设置扩展属性
         if(callType == 0)
-            message.setAttribute(Constant.MESSAGE_ATTR_IS_VOICE_CALL, true);
+            message.setAttribute(QjConstant.MESSAGE_ATTR_IS_VOICE_CALL, true);
         else
-            message.setAttribute(Constant.MESSAGE_ATTR_IS_VIDEO_CALL, true);
+            message.setAttribute(QjConstant.MESSAGE_ATTR_IS_VIDEO_CALL, true);
 
         // 设置消息body
         message.addBody(txtBody);

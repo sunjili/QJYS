@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
@@ -54,6 +55,14 @@ public class PhotoDataBrowseActivity extends BaseActivity implements
 		mReturnTv = (TextView) findViewById(R.id.return_tv);
 		mTitleTv = (TextView) findViewById(R.id.title_tv);
 		mEditTv = (TextView) findViewById(R.id.edit_tv);
+		mEditTv.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				PhotoDataEditActivity.show(getActivity());
+				
+			}
+		});
 		mBottomLayout = (RelativeLayout) findViewById(R.id.bottom_layout);
 		mBottomTimeTv = (TextView) findViewById(R.id.bottom_time_tv);
 		mBottomAuthTv = (TextView) findViewById(R.id.bottom_auth_tv);

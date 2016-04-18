@@ -19,7 +19,7 @@ import android.view.View;
 
 import com.hyphenate.chat.EMMessage;
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 
 public class ContextMenuActivity extends BaseActivity {
     public static final int RESULT_CODE_COPY = 1;
@@ -33,10 +33,10 @@ public class ContextMenuActivity extends BaseActivity {
 		
 		int type = message.getType().ordinal();
 		if (type == EMMessage.Type.TXT.ordinal()) {
-		    if(message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VIDEO_CALL, false) ||
-		            message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VOICE_CALL, false)){
+		    if(message.getBooleanAttribute(QjConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false) ||
+		            message.getBooleanAttribute(QjConstant.MESSAGE_ATTR_IS_VOICE_CALL, false)){
 		        setContentView(R.layout.em_context_menu_for_location);
-		    }else if(message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)){
+		    }else if(message.getBooleanAttribute(QjConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)){
 		        setContentView(R.layout.em_context_menu_for_image);
 		    }else{
 		        setContentView(R.layout.em_context_menu_for_text);

@@ -122,4 +122,9 @@ public class UserContext {
 		return mUser.name;
 	}
 
+	public CharSequence getUserId() {
+		// TODO Auto-generated method stub
+		return mUser.id;
+	}
+
 }

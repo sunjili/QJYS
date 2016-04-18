@@ -23,7 +23,7 @@ import com.hyphenate.chat.EMMessage.Status;
 import com.hyphenate.chat.EMMessage.Type;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.chat.EMTextMessageBody;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseEmojiconInfoProvider;
@@ -45,6 +45,7 @@ import com.rmtech.qjys.domain.EmojiconExampleGroupData;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.RobotUser;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.parse.UserProfileManager;
 import com.rmtech.qjys.receiver.CallReceiver;
 import com.rmtech.qjys.ui.ChatActivity;
@@ -59,6 +60,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -330,14 +332,14 @@ public class QjHelper {
                     ChatType chatType = message.getChatType();
                     if (chatType == ChatType.Chat) { // 单聊信息
                         intent.putExtra("userId", message.getFrom());
-                        intent.putExtra("chatType", Constant.CHATTYPE_SINGLE);
+                        intent.putExtra("chatType", QjConstant.CHATTYPE_SINGLE);
                     } else { // 群聊信息
                         // message.getTo()为群聊id
                         intent.putExtra("userId", message.getTo());
                         if(chatType == ChatType.GroupChat){
-                            intent.putExtra("chatType", Constant.CHATTYPE_GROUP);
+                            intent.putExtra("chatType", QjConstant.CHATTYPE_GROUP);
                         }else{
-                            intent.putExtra("chatType", Constant.CHATTYPE_CHATROOM);
+                            intent.putExtra("chatType", QjConstant.CHATTYPE_CHATROOM);
                         }
                         
                     }
@@ -454,7 +456,7 @@ public class QjHelper {
             Log.d(TAG, "收到邀请加入群聊：" + groupName);
             msg.setStatus(InviteMesageStatus.GROUPINVITATION);
             notifyNewIviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -485,7 +487,7 @@ public class QjHelper {
             Log.d(TAG, invitee + "同意加入群聊：" + _group == null ? groupId : _group.getGroupName());
             msg.setStatus(InviteMesageStatus.GROUPINVITATION_ACCEPTED);
             notifyNewIviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
         }
         
         @Override
@@ -516,20 +518,20 @@ public class QjHelper {
             Log.d(TAG, invitee + "拒绝加入群聊：" + group == null ? groupId : group.getGroupName());
             msg.setStatus(InviteMesageStatus.GROUPINVITATION_DECLINED);
             notifyNewIviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
         public void onUserRemoved(String groupId, String groupName) {
             //TODO 提示用户被T了，demo省略此步骤
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
         public void onGroupDestroy(String groupId, String groupName) {
             // 群被解散
             //TODO 提示用户群被解散,demo省略
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -545,7 +547,7 @@ public class QjHelper {
             Log.d(TAG, applyer + " 申请加入群聊：" + groupName);
             msg.setStatus(InviteMesageStatus.BEAPPLYED);
             notifyNewIviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -565,7 +567,7 @@ public class QjHelper {
             // 提醒新消息
             getNotifier().viberateAndPlayTone(msg);
 
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -577,20 +579,30 @@ public class QjHelper {
         public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String inviteMessage) {
             // 被邀请
             String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
+            boolean isMyself = false;
+            if(TextUtils.equals(inviter, UserContext.getInstance().getUserId())) {
+            	isMyself = true;//st3 = "你创建了讨论组";
+            }
             EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
             msg.setChatType(ChatType.GroupChat);
             msg.setFrom(inviter);
             msg.setTo(groupId);
             msg.setMsgId(UUID.randomUUID().toString());
-            msg.addBody(new EMTextMessageBody(inviter + " " +st3));
+            if(isMyself) {
+            	msg.addBody(new EMTextMessageBody("你创建了讨论组"));
+            } else {
+            	msg.addBody(new EMTextMessageBody(inviter + " " +st3));
+            }
             msg.setStatus(EMMessage.Status.SUCCESS);
             // 保存邀请消息
             EMClient.getInstance().chatManager().saveMessage(msg);
             // 提醒新消息
-            getNotifier().viberateAndPlayTone(msg);
+            if(!isMyself) {
+            	getNotifier().viberateAndPlayTone(msg);
+            }
             EMLog.d(TAG, "onAutoAcceptInvitationFromGroup groupId:" + groupId);
             //发送local广播
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
         }
     }
     
@@ -614,7 +626,7 @@ public class QjHelper {
             localUsers.putAll(toAddUsers);
 
            //发送好友变动广播
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
@@ -626,7 +638,7 @@ public class QjHelper {
             inviteMessgeDao.deleteMessage(username);
 
             //发送好友变动广播
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
@@ -648,7 +660,7 @@ public class QjHelper {
             // 设置相应status
             msg.setStatus(InviteMesageStatus.BEINVITEED);
             notifyNewIviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
@@ -666,7 +678,7 @@ public class QjHelper {
             Log.d(TAG, username + "同意了你的好友请求");
             msg.setStatus(InviteMesageStatus.BEAGREED);
             notifyNewIviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
@@ -697,7 +709,7 @@ public class QjHelper {
     protected void onConnectionConflict(){
         Intent intent = new Intent(appContext, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(Constant.ACCOUNT_CONFLICT, true);
+        intent.putExtra(QjConstant.ACCOUNT_CONFLICT, true);
         appContext.startActivity(intent);
     }
     
@@ -707,7 +719,7 @@ public class QjHelper {
     protected void onCurrentAccountRemoved(){
         Intent intent = new Intent(appContext, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(Constant.ACCOUNT_REMOVED, true);
+        intent.putExtra(QjConstant.ACCOUNT_REMOVED, true);
         appContext.startActivity(intent);
     }
 	

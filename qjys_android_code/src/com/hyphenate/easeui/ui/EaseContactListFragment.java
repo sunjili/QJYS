@@ -48,12 +48,13 @@ import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.widget.EaseContactList;
 import com.hyphenate.exceptions.HyphenateException;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 
 /**
  * 联系人列表页
  * 
  */
-public class EaseContactListFragment extends EaseBaseFragment {
+public class EaseContactListFragment extends QjBaseFragment {
     private static final String TAG = "EaseContactListFragment";
     protected List<EaseUser> contactList;
     protected ListView listView;
@@ -102,10 +103,9 @@ public class EaseContactListFragment extends EaseBaseFragment {
         //黑名单列表
         contactList = new ArrayList<EaseUser>();
         // 获取设置contactlist
-        getContactList();
-        //init list
-        contactListLayout.init(contactList);
-        
+//        getContactList();
+//        //init list
+//        contactListLayout.init(contactList);
         if(listItemClickListener != null){
             listView.setOnItemClickListener(new OnItemClickListener() {
     
@@ -232,6 +232,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
      */
     protected void getContactList() {
         contactList.clear();
+        
             //获取联系人列表
         if(contactsMap == null){
             return;

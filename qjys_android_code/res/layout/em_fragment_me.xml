@@ -32,9 +32,9 @@
                     android:id="@+id/ll_bottom_line"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:layout_alignParentBottom="true" >
+                    android:paddingRight="10dp" >
 
                     <View
                         android:layout_width="match_parent"
@@ -43,9 +43,9 @@
                 </LinearLayout>
 
                 <TextView
-                    android:text="头像"
                     android:id="@+id/tv_left"
-                    style="@style/qj_me_item_left_tv" />
+                    style="@style/qj_me_item_left_tv"
+                    android:text="头像" />
 
                 <ImageView
                     android:id="@+id/iv_head"
@@ -154,14 +154,10 @@
 
             <Button
                 android:id="@+id/btn_logout"
+                style="@style/redbutton"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/qj_me_redbutton_selector"
-                android:text="退出登录"
-                android:textColor="@color/white" />
+                android:text="退出登录" />
         </LinearLayout>
     </ScrollView>
 

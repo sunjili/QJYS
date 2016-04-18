@@ -20,7 +20,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import com.rmtech.qjys.R;
 import com.hyphenate.exceptions.HyphenateException;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.adapter.GroupAdapter;
 
 import android.content.Context;
@@ -118,7 +118,7 @@ public class GroupsActivity extends BaseActivity {
 					// 进入群聊
 					Intent intent = new Intent(GroupsActivity.this, ChatActivity.class);
 					// it is group chat
-					intent.putExtra("chatType", Constant.CHATTYPE_GROUP);
+					intent.putExtra("chatType", QjConstant.CHATTYPE_GROUP);
 					intent.putExtra("userId", groupAdapter.getItem(position - 3).getGroupId());
 					startActivityForResult(intent, 0);
 				}

@@ -2,7 +2,7 @@ package com.rmtech.qjys.model;
 
 import java.io.Serializable;
 
-public class UserInfo extends MBase implements Serializable {
+public class UserInfo implements Serializable {
 
 	/**
 	 * 

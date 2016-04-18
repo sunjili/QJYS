@@ -43,7 +43,7 @@ import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.EMLog;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.db.UserDao;
@@ -53,6 +53,7 @@ import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.fragment.ContactListFragment;
 import com.rmtech.qjys.ui.fragment.ConversationListFragment;
 import com.rmtech.qjys.ui.fragment.MeFragment;
+import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -65,12 +66,12 @@ public class MainActivity extends BaseActivity {
 	private Button[] mTabs;
 	private ContactListFragment contactListFragment;
 	// private conversationListFragment conversationListFragment;
-//	private ChatAllHistoryFragment conversationListFragment;
-    private ConversationListFragment conversationListFragment;
+	// private ChatAllHistoryFragment conversationListFragment;
+	private ConversationListFragment conversationListFragment;
 	private MeFragment meFragment;
 	private CaseFragment caseFragment;
-	
-	private Fragment[] fragments;
+
+	private QjBaseFragment[] fragments;
 	private int index;
 	// 当前fragment的index
 	private int currentTabIndex;
@@ -83,11 +84,9 @@ public class MainActivity extends BaseActivity {
 	private android.app.AlertDialog.Builder accountRemovedBuilder;
 	private boolean isConflictDialogShow;
 	private boolean isAccountRemovedDialogShow;
-    private BroadcastReceiver internalDebugReceiver;
-    private BroadcastReceiver broadcastReceiver;
-    private LocalBroadcastManager broadcastManager;
-
-	
+	private BroadcastReceiver internalDebugReceiver;
+	private BroadcastReceiver broadcastReceiver;
+	private LocalBroadcastManager broadcastManager;
 
 	/**
 	 * 检查当前用户是否被删除
@@ -99,11 +98,11 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		if (savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)) {
+
+		if (savedInstanceState != null && savedInstanceState.getBoolean(QjConstant.ACCOUNT_REMOVED, false)) {
 			// 防止被移除后，没点确定按钮然后按了home键，长期在后台又进app导致的crash
 			// 三个fragment里加的判断同理
-		    QjHelper.getInstance().logout(true,null);
+			QjHelper.getInstance().logout(true, null);
 			finish();
 			startActivity(new Intent(this, LoginActivity.class));
 			return;
@@ -116,14 +115,14 @@ public class MainActivity extends BaseActivity {
 		}
 		setContentView(R.layout.em_activity_main);
 		initView();
-		//umeng api
-//		MobclickAgent.updateOnlineConfig(this);
-//		UmengUpdateAgent.setUpdateOnlyWifi(false);
-//		UmengUpdateAgent.update(this);
+		// umeng api
+		// MobclickAgent.updateOnlineConfig(this);
+		// UmengUpdateAgent.setUpdateOnlyWifi(false);
+		// UmengUpdateAgent.update(this);
 
-		if (getIntent().getBooleanExtra(Constant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
+		if (getIntent().getBooleanExtra(QjConstant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
 			showConflictDialog();
-		} else if (getIntent().getBooleanExtra(Constant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
+		} else if (getIntent().getBooleanExtra(QjConstant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
 			showAccountRemovedDialog();
 		}
 
@@ -133,40 +132,35 @@ public class MainActivity extends BaseActivity {
 		contactListFragment = new ContactListFragment();
 		meFragment = new MeFragment();
 		caseFragment = new CaseFragment();
-		fragments = new Fragment[] { conversationListFragment, caseFragment, contactListFragment, meFragment };
+		fragments = new QjBaseFragment[] { conversationListFragment, caseFragment, contactListFragment, meFragment };
 		// 添加显示第一个fragment
-		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment_container, conversationListFragment)
-				.add(R.id.fragment_container, contactListFragment)
-				.hide(contactListFragment)
-				.show(conversationListFragment)
-				.commit();
-		
-		//注册local广播接收者，用于接收demohelper中发出的群组联系人的变动通知
+		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, conversationListFragment)
+				.add(R.id.fragment_container, contactListFragment).hide(contactListFragment)
+				.show(conversationListFragment).commit();
+
+		// 注册local广播接收者，用于接收demohelper中发出的群组联系人的变动通知
 		registerBroadcastReceiver();
-		
-		
+
 		EMClient.getInstance().contactManager().setContactListener(new MyContactListener());
-		//内部测试方法，请忽略
-        registerInternalDebugReceiver();
-        
-        EMLog.d(TAG, "width:" + getScreenWidth(this) + "  height:" + getScreenHeight(this));
+		// 内部测试方法，请忽略
+		registerInternalDebugReceiver();
+
+		EMLog.d(TAG, "width:" + getScreenWidth(this) + "  height:" + getScreenHeight(this));
 	}
 
-	public static int getScreenWidth(Context context) {    
-	    WindowManager manager = (WindowManager) context    
-	            .getSystemService(Context.WINDOW_SERVICE);    
-	    Display display = manager.getDefaultDisplay();    
-	    return display.getWidth();    
-	}    
-	//获取屏幕的高度    
-	public static int getScreenHeight(Context context) {    
-	    WindowManager manager = (WindowManager) context    
-	            .getSystemService(Context.WINDOW_SERVICE);    
-	    Display display = manager.getDefaultDisplay();    
-	    return display.getHeight();    
-	} 
-	
+	public static int getScreenWidth(Context context) {
+		WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		Display display = manager.getDefaultDisplay();
+		return display.getWidth();
+	}
+
+	// 获取屏幕的高度
+	public static int getScreenHeight(Context context) {
+		WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		Display display = manager.getDefaultDisplay();
+		return display.getHeight();
+	}
+
 	/**
 	 * 初始化组件
 	 */
@@ -201,7 +195,7 @@ public class MainActivity extends BaseActivity {
 		case R.id.btn_setting:
 			index = 3;
 			break;
-		
+
 		}
 		if (currentTabIndex != index) {
 			FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
@@ -218,30 +212,31 @@ public class MainActivity extends BaseActivity {
 	}
 
 	EMMessageListener messageListener = new EMMessageListener() {
-		
+
 		@Override
 		public void onMessageReceived(List<EMMessage> messages) {
 			// 提示新消息
-		    for (EMMessage message : messages) {
-		        QjHelper.getInstance().getNotifier().onNewMsg(message);
-		    }
+			for (EMMessage message : messages) {
+				QjHelper.getInstance().getNotifier().onNewMsg(message);
+			}
 			refreshUIWithMessage();
 		}
-		
+
 		@Override
 		public void onCmdMessageReceived(List<EMMessage> messages) {
 		}
-		
+
 		@Override
 		public void onMessageReadAckReceived(List<EMMessage> messages) {
 		}
-		
+
 		@Override
 		public void onMessageDeliveryAckReceived(List<EMMessage> message) {
 		}
-		
+
 		@Override
-		public void onMessageChanged(EMMessage message, Object change) {}
+		public void onMessageChanged(EMMessage message, Object change) {
+		}
 	};
 
 	private void refreshUIWithMessage() {
@@ -263,72 +258,80 @@ public class MainActivity extends BaseActivity {
 	public void back(View view) {
 		super.back(view);
 	}
-	
+
 	private void registerBroadcastReceiver() {
-        broadcastManager = LocalBroadcastManager.getInstance(this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constant.ACTION_CONTACT_CHANAGED);
-        intentFilter.addAction(Constant.ACTION_GROUP_CHANAGED);
-        broadcastReceiver = new BroadcastReceiver() {
-            
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                updateUnreadLabel();
-                updateUnreadAddressLable();
-                if (currentTabIndex == 0) {
-                    // 当前页面如果为聊天历史页面，刷新此页面
-                    if (conversationListFragment != null) {
-                        conversationListFragment.refresh();
-                    }
-                } else if (currentTabIndex == 1) {
-                    if(contactListFragment != null) {
-                        contactListFragment.refresh();
-                    }
-                }
-                String action = intent.getAction();
-                if(action.equals(Constant.ACTION_GROUP_CHANAGED)){
-                    if (EaseCommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-                        GroupsActivity.instance.onResume();
-                    }
-                }
-            }
-        };
-        broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
-    }
-	
-	public class MyContactListener implements EMContactListener {
-        @Override
-        public void onContactAdded(String username) {}
-        @Override
-        public void onContactDeleted(final String username) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-					if (ChatActivity.activityInstance != null && ChatActivity.activityInstance.toChatUsername != null &&
-							username.equals(ChatActivity.activityInstance.toChatUsername)) {
-					    String st10 = getResources().getString(R.string.have_you_removed);
-					    Toast.makeText(MainActivity.this, ChatActivity.activityInstance.getToChatUsername() + st10, 1)
-					    .show();
-					    ChatActivity.activityInstance.finish();
+		broadcastManager = LocalBroadcastManager.getInstance(this);
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(QjConstant.ACTION_CONTACT_CHANAGED);
+		intentFilter.addAction(QjConstant.ACTION_GROUP_CHANAGED);
+		broadcastReceiver = new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				updateUnreadLabel();
+				updateUnreadAddressLable();
+				if (currentTabIndex == 0) {
+					// 当前页面如果为聊天历史页面，刷新此页面
+					if (conversationListFragment != null) {
+						conversationListFragment.refresh();
 					}
-                }
-            });
-        }
-        @Override
-        public void onContactInvited(String username, String reason) {}
-        @Override
-        public void onContactAgreed(String username) {}
-        @Override
-        public void onContactRefused(String username) {}
+				} else if (currentTabIndex == 1) {
+					if (contactListFragment != null) {
+						contactListFragment.refresh();
+					}
+				}
+				String action = intent.getAction();
+				if (action.equals(QjConstant.ACTION_GROUP_CHANAGED)) {
+					if (EaseCommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
+						GroupsActivity.instance.onResume();
+					}
+				}
+			}
+		};
+		broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
 	}
-	
-	private void unregisterBroadcastReceiver(){
-	    broadcastManager.unregisterReceiver(broadcastReceiver);
+
+	public class MyContactListener implements EMContactListener {
+		@Override
+		public void onContactAdded(String username) {
+		}
+
+		@Override
+		public void onContactDeleted(final String username) {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					if (ChatActivity.activityInstance != null && ChatActivity.activityInstance.toChatUsername != null
+							&& username.equals(ChatActivity.activityInstance.toChatUsername)) {
+						String st10 = getResources().getString(R.string.have_you_removed);
+						Toast.makeText(MainActivity.this, ChatActivity.activityInstance.getToChatUsername() + st10, 1)
+								.show();
+						ChatActivity.activityInstance.finish();
+					}
+				}
+			});
+		}
+
+		@Override
+		public void onContactInvited(String username, String reason) {
+		}
+
+		@Override
+		public void onContactAgreed(String username) {
+		}
+
+		@Override
+		public void onContactRefused(String username) {
+		}
+	}
+
+	private void unregisterBroadcastReceiver() {
+		broadcastManager.unregisterReceiver(broadcastReceiver);
 	}
 
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();		
-		
+		super.onDestroy();
+
 		if (conflictBuilder != null) {
 			conflictBuilder.create().dismiss();
 			conflictBuilder = null;
@@ -336,10 +339,10 @@ public class MainActivity extends BaseActivity {
 		unregisterBroadcastReceiver();
 
 		try {
-            unregisterReceiver(internalDebugReceiver);
-        } catch (Exception e) {
-        }
-		
+			unregisterReceiver(internalDebugReceiver);
+		} catch (Exception e) {
+		}
+
 	}
 
 	/**
@@ -363,7 +366,7 @@ public class MainActivity extends BaseActivity {
 			public void run() {
 				int count = getUnreadAddressCountTotal();
 				if (count > 0) {
-//					unreadAddressLable.setText(String.valueOf(count));
+					// unreadAddressLable.setText(String.valueOf(count));
 					unreadAddressLable.setVisibility(View.VISIBLE);
 				} else {
 					unreadAddressLable.setVisibility(View.INVISIBLE);
@@ -393,18 +396,15 @@ public class MainActivity extends BaseActivity {
 		int unreadMsgCountTotal = 0;
 		int chatroomUnreadMsgCount = 0;
 		unreadMsgCountTotal = EMClient.getInstance().chatManager().getUnreadMsgsCount();
-		for(EMConversation conversation:EMClient.getInstance().chatManager().getAllConversations().values()){
-			if(conversation.getType() == EMConversationType.ChatRoom)
-			chatroomUnreadMsgCount=chatroomUnreadMsgCount+conversation.getUnreadMsgCount();
+		for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
+			if (conversation.getType() == EMConversationType.ChatRoom)
+				chatroomUnreadMsgCount = chatroomUnreadMsgCount + conversation.getUnreadMsgCount();
 		}
-		return unreadMsgCountTotal-chatroomUnreadMsgCount;
+		return unreadMsgCountTotal - chatroomUnreadMsgCount;
 	}
 
 	private InviteMessgeDao inviteMessgeDao;
 	private UserDao userDao;
-
-
-
 
 	/**
 	 * 保存提示新消息
@@ -431,15 +431,14 @@ public class MainActivity extends BaseActivity {
 	private void saveInviteMsg(InviteMessage msg) {
 		// 保存msg
 		inviteMessgeDao.saveMessage(msg);
-		//保存未读数，这里没有精确计算
+		// 保存未读数，这里没有精确计算
 		inviteMessgeDao.saveUnreadMessageCount(1);
 	}
-
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		if (!isConflict && !isCurrentAccountRemoved) {
 			updateUnreadLabel();
 			updateUnreadAddressLable();
@@ -465,7 +464,7 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putBoolean("isConflict", isConflict);
-		outState.putBoolean(Constant.ACCOUNT_REMOVED, isCurrentAccountRemoved);
+		outState.putBoolean(QjConstant.ACCOUNT_REMOVED, isCurrentAccountRemoved);
 		super.onSaveInstanceState(outState);
 	}
 
@@ -483,7 +482,7 @@ public class MainActivity extends BaseActivity {
 	 */
 	private void showConflictDialog() {
 		isConflictDialogShow = true;
-		QjHelper.getInstance().logout(false,null);
+		QjHelper.getInstance().logout(false, null);
 		String st = getResources().getString(R.string.Logoff_notification);
 		if (!MainActivity.this.isFinishing()) {
 			// clear up global variables
@@ -520,7 +519,7 @@ public class MainActivity extends BaseActivity {
 	 */
 	private void showAccountRemovedDialog() {
 		isAccountRemovedDialogShow = true;
-		QjHelper.getInstance().logout(false,null);
+		QjHelper.getInstance().logout(false, null);
 		String st5 = getResources().getString(R.string.Remove_the_notification);
 		if (!MainActivity.this.isFinishing()) {
 			// clear up global variables
@@ -553,51 +552,61 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		if (intent.getBooleanExtra(Constant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
+		if (intent.getBooleanExtra(QjConstant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
 			showConflictDialog();
-		} else if (intent.getBooleanExtra(Constant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
+		} else if (intent.getBooleanExtra(QjConstant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
 			showAccountRemovedDialog();
 		}
 	}
-	
+
 	/**
 	 * 内部测试代码，开发者请忽略
 	 */
 	private void registerInternalDebugReceiver() {
-	    internalDebugReceiver = new BroadcastReceiver() {
-            
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                QjHelper.getInstance().logout(false,new EMCallBack() {
-                    
-                    @Override
-                    public void onSuccess() {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                // 重新显示登陆页面
-                                finish();
-                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                                
-                            }
-                        });
-                    }
-                    
-                    @Override
-                    public void onProgress(int progress, String status) {}
-                    
-                    @Override
-                    public void onError(int code, String message) {}
-                });
-            }
-        };
-        IntentFilter filter = new IntentFilter(getPackageName() + ".em_internal_debug");
-        registerReceiver(internalDebugReceiver, filter);
-    }
+		internalDebugReceiver = new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				QjHelper.getInstance().logout(false, new EMCallBack() {
+
+					@Override
+					public void onSuccess() {
+						runOnUiThread(new Runnable() {
+							public void run() {
+								// 重新显示登陆页面
+								finish();
+								startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+							}
+						});
+					}
+
+					@Override
+					public void onProgress(int progress, String status) {
+					}
+
+					@Override
+					public void onError(int code, String message) {
+					}
+				});
+			}
+		};
+		IntentFilter filter = new IntentFilter(getPackageName() + ".em_internal_debug");
+		registerReceiver(internalDebugReceiver, filter);
+	}
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		//getMenuInflater().inflate(R.menu.context_tab_contact, menu);
+		// getMenuInflater().inflate(R.menu.context_tab_contact, menu);
 	}
-	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		QjBaseFragment fragment = fragments[currentTabIndex];
+		fragment.onActivityResult(requestCode, resultCode, data);
+
+	}
+
 }

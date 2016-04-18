@@ -32,7 +32,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.widget.EaseSwitchButton;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.hx.QjModel;
@@ -369,7 +369,7 @@ public class SettingsFragment extends Fragment implements OnClickListener {
         if(((MainActivity)getActivity()).isConflict){
         	outState.putBoolean("isConflict", true);
         }else if(((MainActivity)getActivity()).getCurrentAccountRemoved()){
-        	outState.putBoolean(Constant.ACCOUNT_REMOVED, true);
+        	outState.putBoolean(QjConstant.ACCOUNT_REMOVED, true);
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.rmtech.qjys.ui.view;
 
 import okhttp3.Call;
-import okhttp3.Response;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -16,10 +15,9 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.MBase;
-import com.rmtech.qjys.model.MBase.BaseCallback;
 import com.rmtech.qjys.ui.LoginActivity;
-import com.sjl.lib.http.okhttp.callback.Callback;
 
 @SuppressLint("NewApi")
 public class LoginVcodeView extends LoginBaseView implements View.OnClickListener {
@@ -43,7 +41,8 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 	}
 
 	public LoginVcodeView(Context context, AttributeSet attrs, int defStyleAttr) {
-		this(context, attrs, defStyleAttr, 0);
+		super(context, attrs, defStyleAttr);
+		initView();
 	}
 
 	public LoginVcodeView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -100,19 +99,17 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 				return;
 			}
 			isGettingCode = true;
-			QjHttp.getVcode(inuptPhoneStr, new BaseCallback() {
-				
-				@Override
-				public void onResponse(MBase response) {
-					if(response == null || response.ret != 0) {
-						Toast.makeText(getContext(), "获取验证码失败", Toast.LENGTH_LONG).show();
-					}
-					
-				}
+			QjHttp.getVcode(inuptPhoneStr, new BaseModelCallback() {
 				
 				@Override
 				public void onError(Call call, Exception e) {
 					Toast.makeText(getContext(), "获取验证码失败", Toast.LENGTH_LONG).show();
+				}
+
+				@Override
+				public void onResponseSucces(MBase response) {
+					// TODO Auto-generated method stub
+					
 				}
 			});
 			mHandler.postDelayed(mTimerRunnable, 1000);

@@ -11,7 +11,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 /**
- * @author baoyz
+ * @author jilisun
  * @date 2014-8-18
  */
 public class SwipeMenuListView extends ListView {

@@ -12,21 +12,21 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Pair;
-import android.widget.ListView;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.adapter.EaseConversationAdapater;
 import com.rmtech.qjys.R;
+import com.sjl.lib.swipemenulistview.SwipeMenuListView;
 
-public class EaseConversationList extends ListView {
+public class EaseConversationList extends SwipeMenuListView {
     
-    protected int primaryColor;
-    protected int secondaryColor;
-    protected int timeColor;
-    protected int primarySize;
-    protected int secondarySize;
-    protected float timeSize;
+//    protected int primaryColor;
+//    protected int secondaryColor;
+//    protected int timeColor;
+//    protected int primarySize;
+//    protected int secondarySize;
+//    protected float timeSize;
     
 
     protected final int MSG_REFRESH_ADAPTER_DATA = 0;
@@ -50,15 +50,15 @@ public class EaseConversationList extends ListView {
     
     private void init(Context context, AttributeSet attrs) {
         this.context = context;
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EaseConversationList);
-        primaryColor = ta.getColor(R.styleable.EaseConversationList_cvsListPrimaryTextColor, R.color.list_itease_primary_color);
-        secondaryColor = ta.getColor(R.styleable.EaseConversationList_cvsListSecondaryTextColor, R.color.list_itease_secondary_color);
-        timeColor = ta.getColor(R.styleable.EaseConversationList_cvsListTimeTextColor, R.color.list_itease_secondary_color);
-        primarySize = ta.getDimensionPixelSize(R.styleable.EaseConversationList_cvsListPrimaryTextSize, 0);
-        secondarySize = ta.getDimensionPixelSize(R.styleable.EaseConversationList_cvsListSecondaryTextSize, 0);
-        timeSize = ta.getDimension(R.styleable.EaseConversationList_cvsListTimeTextSize, 0);
-        
-        ta.recycle();
+//        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EaseConversationList);
+//        primaryColor = ta.getColor(R.styleable.EaseConversationList_cvsListPrimaryTextColor, R.color.list_itease_primary_color);
+//        secondaryColor = ta.getColor(R.styleable.EaseConversationList_cvsListSecondaryTextColor, R.color.list_itease_secondary_color);
+//        timeColor = ta.getColor(R.styleable.EaseConversationList_cvsListTimeTextColor, R.color.list_itease_secondary_color);
+//        primarySize = ta.getDimensionPixelSize(R.styleable.EaseConversationList_cvsListPrimaryTextSize, 0);
+//        secondarySize = ta.getDimensionPixelSize(R.styleable.EaseConversationList_cvsListSecondaryTextSize, 0);
+//        timeSize = ta.getDimension(R.styleable.EaseConversationList_cvsListTimeTextSize, 0);
+//        
+//        ta.recycle();
         
     }
     
@@ -67,12 +67,12 @@ public class EaseConversationList extends ListView {
         conversations.addAll(conversationList);
         
         adapter = new EaseConversationAdapater(context, 0, conversations);
-        adapter.setPrimaryColor(primaryColor);
-        adapter.setPrimarySize(primarySize);
-        adapter.setSecondaryColor(secondaryColor);
-        adapter.setSecondarySize(secondarySize);
-        adapter.setTimeColor(timeColor);
-        adapter.setTimeSize(timeSize);
+//        adapter.setPrimaryColor(primaryColor);
+//        adapter.setPrimarySize(primarySize);
+//        adapter.setSecondaryColor(secondaryColor);
+//        adapter.setSecondarySize(secondarySize);
+//        adapter.setTimeColor(timeColor);
+//        adapter.setTimeSize(timeSize);
         setAdapter(adapter);
     }
     

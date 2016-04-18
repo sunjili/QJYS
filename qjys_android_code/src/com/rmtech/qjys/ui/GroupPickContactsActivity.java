@@ -24,7 +24,7 @@ import com.rmtech.qjys.R;
 import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.widget.EaseSidebar;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.hx.QjHelper;
 
 import android.content.Context;
@@ -70,7 +70,7 @@ public class GroupPickContactsActivity extends BaseActivity {
 		// 获取好友列表
 		final List<EaseUser> alluserList = new ArrayList<EaseUser>();
 		for (EaseUser user : QjHelper.getInstance().getContactList().values()) {
-			if (!user.getUsername().equals(Constant.NEW_FRIENDS_USERNAME) & !user.getUsername().equals(Constant.GROUP_USERNAME) & !user.getUsername().equals(Constant.CHAT_ROOM) & !user.getUsername().equals(Constant.CHAT_ROBOT))
+			if (!user.getUsername().equals(QjConstant.NEW_FRIENDS_USERNAME) & !user.getUsername().equals(QjConstant.GROUP_USERNAME) & !user.getUsername().equals(QjConstant.CHAT_ROOM) & !user.getUsername().equals(QjConstant.CHAT_ROBOT))
 				alluserList.add(user);
 		}
 		// 对list进行排序

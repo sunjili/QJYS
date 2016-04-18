@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_itease_layout"
     android:layout_width="match_parent"
-    android:layout_height="59dp"
-     android:id="@+id/list_itease_layout"
-     android:background="#fff"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
     android:gravity="center_vertical" >
 
     <RelativeLayout
         android:id="@+id/avatar_container"
         android:layout_width="59dp"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
         android:layout_alignParentLeft="true" >
 
-      <ImageView
+        <ImageView
             android:id="@+id/avatar"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:src="@drawable/ease_default_avatar" />
 
         <TextView
@@ -32,7 +32,7 @@
             android:gravity="center"
             android:text="7"
             android:textColor="@android:color/white"
-            android:textSize="12sp" />
+            android:textSize="11sp" />
     </RelativeLayout>
 
     <TextView
@@ -40,9 +40,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="7dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="20dp"
         android:layout_toRightOf="@id/avatar_container"
-        android:textColor="@color/list_itease_primary_color"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
     <TextView
@@ -51,8 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="7dp"
-        android:layout_marginTop="6dp"
-        android:textColor="@color/list_itease_secondary_color"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/cb2"
         android:textSize="13sp" />
 
     <ImageView
@@ -68,15 +68,22 @@
 
     <TextView
         android:id="@+id/message"
-        android:layout_toLeftOf="@id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/time"
         android:layout_toRightOf="@id/msg_state"
-        android:singleLine="true"
+        android:layout_below="@id/name"
         android:ellipsize="end"
-        android:padding="7dp"
-        android:textColor="@color/list_itease_secondary_color"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:singleLine="true"
+        android:textColor="@color/c9d"
         android:textSize="14sp" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/cd9" />
 
 </RelativeLayout>

@@ -29,6 +29,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.rmtech.qjys.QjApplication;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.OnLoginListener;
 import com.rmtech.qjys.db.DemoDBManager;
 import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.MUser;
@@ -37,7 +38,6 @@ import com.rmtech.qjys.model.UserInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.RegisterActivity;
-import com.rmtech.qjys.ui.callback.OnLoginListener;
 import com.rmtech.qjys.ui.view.LoginBaseView;
 import com.rmtech.qjys.ui.view.LoginPassWordView;
 import com.rmtech.qjys.ui.view.LoginVcodeView;
@@ -103,20 +103,20 @@ public class QjLoginActivity extends BaseActivity {
 			onLoginError();
 		}
 
-		@Override
-		public void onResponse(MUser muser) {
-			// TODO Auto-generated method stub
-			mCurrentLoginView.logining = false;
-			if (muser.data == null) {
-				onLoginError();
-			} else {
-				onQjLogined(muser.data);
-			}
-		}
 
 		@Override
 		public void onChange() {
 
+		}
+
+		@Override
+		public void onResponseSucces(MUser response) {
+			mCurrentLoginView.logining = false;
+			if (response.data == null) {
+				onLoginError();
+			} else {
+				onQjLogined(response.data);
+			}
 		}
 	};
 	private ProgressDialog mProgressDialog;

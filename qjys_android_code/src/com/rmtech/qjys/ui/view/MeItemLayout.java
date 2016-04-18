@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rmtech.qjys.R;
+import com.sjl.lib.utils.ScreenUtil;
 
 @SuppressLint("NewApi")
 public class MeItemLayout extends RelativeLayout implements
@@ -71,7 +72,8 @@ public class MeItemLayout extends RelativeLayout implements
 			case R.styleable.MeItemView_visibleLinePadding:
 				boolean visibleLinePadding = a.getBoolean(attr, true);
 				if(visibleLinePadding){
-					v_bottom_line.setPadding(30, 0, 30, 0);
+					int dp2px = ScreenUtil.dp2px(10);
+					v_bottom_line.setPadding(dp2px, 0, dp2px, 0);
 				}
 			}
 		}

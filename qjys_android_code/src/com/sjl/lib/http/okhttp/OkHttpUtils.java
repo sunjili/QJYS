@@ -157,9 +157,13 @@ public class OkHttpUtils {
 
 	public void execute(final RequestCall requestCall, Callback callback) {
 
+		
+		
 		if (callback == null)
 			callback = Callback.CALLBACK_DEFAULT;
 		final Callback finalCallback = callback;
+		
+		
 		requestCall.getCall().enqueue(new okhttp3.Callback() {
 			@Override
 			public void onFailure(Call call, final IOException e) {
@@ -168,26 +172,22 @@ public class OkHttpUtils {
 
 			@Override
 			public void onResponse(final Call call, final Response response) {
-
-				if (response.code() >= 400 && response.code() <= 599) {
-					try {
-						sendFailResultCallback(call, new RuntimeException(response.body().string()), finalCallback);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return;
-				}
-
 				try {
-					Object o = finalCallback.parseNetworkResponse(response);
-					if (response.body() != null) {
+					if (null == finalCallback) {
+						Log.e("ssssssssss", "Callback == null response = " + response.body().string());
+
+					}
+
+					if (response.code() >= 400 && response.code() <= 599) {
 						try {
-							Log.e("sssssssssssss", o.toString());
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
+							sendFailResultCallback(call, new RuntimeException(response.body().string()), finalCallback);
+						} catch (IOException e) {
 							e.printStackTrace();
 						}
+						return;
 					}
+
+					Object o = finalCallback.parseNetworkResponse(response);
 					sendSuccessResultCallback(o, finalCallback);
 				} catch (Exception e) {
 					Log.e("ssssssssss", "okresponse parse erro :", e);
@@ -304,7 +304,9 @@ public class OkHttpUtils {
 		HttpSetting.addHttpHeader(headers);
 		HashMap<String, String> newparams = new HashMap<String, String>();
 		HttpSetting.addHttpParams(newparams, url);
-		newparams.putAll(params);
+		if(params != null && params.size() > 0) {
+			newparams.putAll(params);
+		}
 		OkHttpUtils.post().url(HttpSetting.BASE_URL + url).headers(headers).params(newparams).build().execute(callback);
 	}
 

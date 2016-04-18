@@ -1,9 +1,15 @@
 package com.rmtech.qjys.ui.fragment;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,9 +19,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.qjactivity.ImageCropActivity;
 import com.rmtech.qjys.ui.qjactivity.MeAboutActivity;
 import com.rmtech.qjys.ui.qjactivity.MeCleanMemoryActivity;
+import com.rmtech.qjys.ui.qjactivity.MeFlowActivity;
 import com.rmtech.qjys.ui.qjactivity.MeHospitalActivity;
 import com.rmtech.qjys.ui.qjactivity.MeNameActivity;
 import com.rmtech.qjys.ui.qjactivity.MePasswordChangeActivity;
@@ -24,13 +33,17 @@ import com.rmtech.qjys.ui.qjactivity.MeRoomActivity;
 import com.rmtech.qjys.ui.qjactivity.MeSexActivity;
 import com.rmtech.qjys.ui.qjactivity.MeTreatmentStateActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
+import com.rmtech.qjys.utils.PhotoUtil;
+import com.sjl.lib.alertview.AlertView;
+import com.sjl.lib.filechooser.FileUtils;
+import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 
 /**
  *我  界面
  * 
  * 
  */
-public class MeFragment extends Fragment implements OnClickListener {
+public class MeFragment extends QjBaseFragment implements OnClickListener {
 	/***  头像  */
 	private ImageView iv_head;
 	/***   */
@@ -78,11 +91,103 @@ public class MeFragment extends Fragment implements OnClickListener {
 //		me_about.setRightText("111111");
 
 	}
+	private File mTmpFile;
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case QjConstant.REQUEST_CODE:
+			// If the file selection was successful
+			if (resultCode == getActivity().RESULT_OK) {
+				if (data != null) {
+					// Get the URI of the selected file
+					final Uri uri = data.getData();
+					Log.i("ssssssssss", "Uri = " + uri.toString());
+					try {
+						// Get the file path from the URI
+						final String path = FileUtils.getPath(getActivity(), uri);
+						Toast.makeText(getActivity(), "File Selected: " + path, Toast.LENGTH_LONG).show();
+					} catch (Exception e) {
+						Log.e("FileSelectorTestActivity", "File select error", e);
+					}
+				}
+			}
+			break;
+
+		case QjConstant.REQUEST_IMAGE:
+
+			if (resultCode == getActivity().RESULT_OK) {
+				ArrayList<String> mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+				// StringBuilder sb = new StringBuilder();
+				// for(String p: mSelectPath){
+				// sb.append(p);
+				// sb.append("\n");
+				// }
+				// mResultText.setText(sb.toString());
+			}
+			break;
+
+		case QjConstant.REQUEST_CAMERA:
+
+			if (resultCode == Activity.RESULT_OK) {
+				if (mTmpFile != null) {
+					if (mTmpFile != null) {
+						getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mTmpFile)));
+
+						// Intent data = new Intent();
+						// resultList.add(imageFile.getAbsolutePath());
+						// data.putStringArrayListExtra(EXTRA_RESULT,
+						// resultList);
+						// setResult(RESULT_OK, data);
+						// finish();
+						// mCallback.onCameraShot(mTmpFile);
+					}
+				} else {
+					while (mTmpFile != null && mTmpFile.exists()) {
+						boolean success = mTmpFile.delete();
+						if (success) {
+							mTmpFile = null;
+						}
+					}
+				}
+			}
+			break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.rl_head:
 			Toast.makeText(context, "头像", Toast.LENGTH_SHORT).show();
+
+			new AlertView(null, null, "取消", null, new String[] { "拍照", "从手机相册中选择", "从资源管理器中选择" },
+					getActivity(), AlertView.Style.ActionSheet,
+					new com.sjl.lib.alertview.OnItemClickListener() {
+
+						@Override
+						public void onItemClick(Object o, int position) {
+							switch (position) {
+							case 0:
+								try {
+									mTmpFile = FileUtils.createTmpFile(context);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+								PhotoUtil.showCameraAction(getActivity(), mTmpFile);
+								break;
+							case 1:
+								PhotoUtil.startImageSelector(getActivity(), false);
+								// ImageSelectorMainActivity.show(PhotoDataManagerActivity.this);
+								break;
+							case 2:
+								PhotoUtil.showChooser(getActivity());
+								break;
+							}
+
+						}
+					}).show();
 			break;
 		case R.id.me_name:
 			jumpActivity(MeNameActivity.class);
@@ -113,7 +218,7 @@ public class MeFragment extends Fragment implements OnClickListener {
 			jumpActivity(MeTreatmentStateActivity.class);
 		break;
 		case R.id.me_standard_and_flow:
-			Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
+			jumpActivity(MeFlowActivity.class);
 		break;
 		case R.id.me_clear_memory:    
 		jumpActivity(MeCleanMemoryActivity.class);
@@ -192,6 +297,44 @@ public class MeFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+	}
+
+	@Override
+	protected void initView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void setUpView() {
+		// TODO Auto-generated method stub
+	}
+	
+
+	private void startPhotoZoom(Uri uri) {
+
+		String fileName = PhotoUtil.getPhotoFileName();
+//		SharedPreferences share = UserInfoActivity.this.getSharedPreferences(
+//				CameraUtil.PIC_ZOOM_OUTPUT_DB, 0);
+//		share.edit().putString(CameraUtil.PIC_ZOOM_OUTPUT_FILE_KEY2, fileName)
+//				.commit();
+
+		Uri imageUri = Uri.fromFile(new File(PhotoUtil.IMAGE_FINAL_FILE_DIR,
+				fileName));
+		Intent intent = new Intent(getActivity(),
+				ImageCropActivity.class);
+		intent.setDataAndType(uri, "image/*");
+		intent.putExtra("outputX", 120);// 输出图片大小
+		intent.putExtra("outputY", 120);
+		intent.putExtra("type", ImageCropActivity.TYPE_USER_HEAD);
+		intent.putExtra("output", imageUri.toString());
+
+		try {
+			getActivity().startActivityForResult(intent,
+					PhotoUtil.PHOTO_REQUEST_CUT_HEADER);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

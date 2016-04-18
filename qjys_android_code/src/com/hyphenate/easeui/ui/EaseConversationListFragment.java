@@ -1,5 +1,12 @@
 package com.hyphenate.easeui.ui;
 
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.PtrUIHandler;
+import in.srain.cube.views.ptr.indicator.PtrIndicator;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,24 +14,22 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMConversationListener;
@@ -33,12 +38,18 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.widget.EaseConversationList;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.fragment.QjBaseFragment;
+import com.sjl.lib.swipemenulistview.SwipeMenu;
+import com.sjl.lib.swipemenulistview.SwipeMenuCreator;
+import com.sjl.lib.swipemenulistview.SwipeMenuItem;
+import com.sjl.lib.swipemenulistview.SwipeMenuListView;
+import com.sjl.lib.utils.ScreenUtil;
 
 /**
  * 会话列表fragment
  *
  */
-public class EaseConversationListFragment extends EaseBaseFragment{
+public class EaseConversationListFragment extends QjBaseFragment{
 	private final static int MSG_REFRESH = 2;
 //    protected EditText query;
 //    protected ImageButton clearSearch;
@@ -48,7 +59,8 @@ public class EaseConversationListFragment extends EaseBaseFragment{
     protected ViewGroup errorItemContainer;
 
     protected boolean isConflict;
-    
+	private PtrClassicFrameLayout mPtrFrame;
+
     protected EMConversationListener convListener = new EMConversationListener(){
 
 		@Override
@@ -65,7 +77,6 @@ public class EaseConversationListFragment extends EaseBaseFragment{
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         if(savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
             return;
         super.onActivityCreated(savedInstanceState);
@@ -81,7 +92,142 @@ public class EaseConversationListFragment extends EaseBaseFragment{
         // 搜索框中清除button
 //        clearSearch = (ImageButton) getView().findViewById(R.id.search_clear);
         errorItemContainer = (FrameLayout) getView().findViewById(R.id.fl_error_item);
+        
+    	mPtrFrame = (PtrClassicFrameLayout) getView().findViewById(
+				R.id.list_view_with_empty_view_fragment_ptr_frame);
+    	
+    	mPtrFrame.setLastUpdateTimeRelateObject(this);
+		mPtrFrame.disableWhenHorizontalMove(true);
+		mPtrFrame.setPtrHandler(new PtrHandler() {
+			@Override
+			public boolean checkCanDoRefresh(PtrFrameLayout frame,
+					View content, View header) {
+
+				// here check $mListView instead of $content
+				return PtrDefaultHandler.checkContentCanBePulledDown(frame,
+						conversationListView, header);
+			}
+
+			@Override
+			public void onRefreshBegin(PtrFrameLayout frame) {
+			}
+
+		});
+		mPtrFrame.addPtrUIHandler(new PtrUIHandler() {
+			
+			@Override
+			public void onUIReset(PtrFrameLayout frame) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onUIRefreshPrepare(PtrFrameLayout frame) {
+				// TODO Auto-generated method stub
+				conversationListView.smoothCloseMenu();
+				Log.d("ssssssss","onUIRefreshPrepare");
+
+			}
+			
+			@Override
+			public void onUIRefreshComplete(PtrFrameLayout frame) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onUIRefreshBegin(PtrFrameLayout frame) {
+				// TODO Auto-generated method stub
+				conversationListView.smoothCloseMenu();
+				Log.d("ssssssss","onUIRefreshBegin");
+				updateData();
+			}
+			
+			@Override
+			public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		// default is false
+		mPtrFrame.setPullToRefresh(false);
+		mPtrFrame.setPagingTouchSlop(0);
+		
+		SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(ScreenUtil.dp2px(90));
+                // set a icon
+                deleteItem.setIcon(R.drawable.ic_delete);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        // set creator
+        conversationListView.setMenuCreator(creator);
+
+        // step 2. listener item click event
+        conversationListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        // delete
+//					delete(item);
+//                        mAppList.remove(position);
+//                        mAdapter.notifyDataSetChanged();
+                        break;
+                }
+                return false;
+            }
+        });
+
+        // set SwipeListener
+        conversationListView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
+
+            @Override
+            public void onSwipeStart(int position) {
+                // swipe start
+            }
+
+            @Override
+            public void onSwipeEnd(int position) {
+                // swipe end
+            }
+        });
+
+        // set MenuStateChangeListener
+        conversationListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+            @Override
+            public void onMenuOpen(int position) {
+            }
+
+            @Override
+            public void onMenuClose(int position) {
+            }
+        });
     }
+    private void updateData() {
+		// TODO Auto-generated method stub
+    	conversationListView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				mPtrFrame.refreshComplete();
+//				mAdapter.notifyDataSetChanged();
+			}
+		}, 1000);
+
+	}
+
     
     @Override
     protected void setUpView() {

@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.rmtech.qjys.ui.callback.OnLoginListener;
+import com.rmtech.qjys.callback.OnLoginListener;
 
 public class LoginBaseView extends RelativeLayout {
 	

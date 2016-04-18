@@ -31,7 +31,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -49,8 +49,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dip"
-                android:drawableLeft="@drawable/umeng_update_button_check_selector"
-                android:drawablePadding="5dip"
+                android:drawableLeft="@drawable/btn_choice_nor"
+                android:drawablePadding="7dip"
                 android:text="女"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -62,8 +62,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dip"
                 android:layout_toLeftOf="@id/gender_woman_tv"
-                android:drawableLeft="@drawable/umeng_update_button_check_selector"
-                android:drawablePadding="5dip"
+                android:drawableLeft="@drawable/btn_choice_press"
+                android:drawablePadding="7dip"
                 android:text="男"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -74,7 +74,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -104,9 +104,10 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
+            android:id="@+id/hospital_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
             android:gravity="center_vertical" >
@@ -136,7 +137,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -160,7 +161,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -190,7 +191,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -220,7 +221,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -250,7 +251,7 @@
                 android:layout_height="1px"
                 android:layout_marginLeft="100dip"
                 android:layout_marginRight="10dip"
-                android:background="@color/gray_pressed" />
+                android:background="@color/cd9" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -279,7 +280,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:id="@+id/state_layout"
@@ -305,7 +306,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:id="@+id/photo_data_layout"
@@ -331,7 +332,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:id="@+id/doctors_layout"
@@ -357,7 +358,7 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/gray_pressed" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:id="@+id/rule_layout"
@@ -381,7 +382,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="20dip"
-            android:background="@color/gray_normal" />
+            android:background="@color/cd9" />
 
         <RelativeLayout
             android:id="@+id/abstract_layout"

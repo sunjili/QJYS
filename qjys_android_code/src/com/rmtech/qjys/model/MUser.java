@@ -9,5 +9,4 @@ public class MUser extends MBase {
 
 	public UserInfo data;
 
-
 }

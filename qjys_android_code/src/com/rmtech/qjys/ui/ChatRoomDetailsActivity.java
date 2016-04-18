@@ -410,7 +410,7 @@ public class ChatRoomDetailsActivity extends BaseActivity implements OnClickList
 							EMLog.d(TAG, st11);
 							// 进入选人页面
 //							startActivityForResult(
-//									(new Intent(ChatRoomDetailsActivity.this, GroupPickContactsActivity.class).putExtra("groupId", groupId)),
+//									(new Intent(ChatRoomDetailsActivity.this, DoctorPickActivity.class).putExtra("groupId", groupId)),
 //									REQUEST_CODE_ADD_USER);
 						}
 					});

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/iv_empty_flow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/ic_case_addspecification"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/ll_flow_my"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/qj_text_small_explain_style"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:text="以下是你的诊疗规范模板" />
+
+        <ListView
+            android:id="@+id/lv_flow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/qj_me_listview_treament_state_background"
+            android:divider="@color/cd9"
+            android:dividerHeight="1px" >
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>

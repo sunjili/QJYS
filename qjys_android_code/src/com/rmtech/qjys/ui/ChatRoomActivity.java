@@ -19,7 +19,7 @@ import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.adapter.ChatRoomAdapter;
 
 import android.content.Context;
@@ -64,7 +64,7 @@ public class ChatRoomActivity extends BaseActivity {
 					// 进入群聊
 					Intent intent = new Intent(ChatRoomActivity.this, ChatActivity.class);
 					// it is group chat
-					intent.putExtra("chatType", Constant.CHATTYPE_CHATROOM);
+					intent.putExtra("chatType", QjConstant.CHATTYPE_CHATROOM);
 					intent.putExtra("userId", chatRoomAdapter.getItem(position - 2).getId());
 					startActivityForResult(intent, 0);
 				}

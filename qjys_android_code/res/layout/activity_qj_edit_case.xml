@@ -1,7 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
     android:orientation="vertical" >
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/case_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="姓名"
+        app:visibleLinePadding="true" />
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/case_sex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="性别"
+        app:visibleLinePadding="true" />
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/case_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="年龄"
+        app:visibleLinePadding="true" />
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/case_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="医院"
+        app:visibleLinePadding="true" />
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/case_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="科室"
+        app:visibleLinePadding="true" />
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/case_room_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="病房号"
+        app:visibleLinePadding="true" />
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/case_diagnosis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="诊断"
+        app:visibleLinePadding="true" />
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/case_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="就诊状态"
+        app:visibleLinePadding="false" />
 
 </LinearLayout>

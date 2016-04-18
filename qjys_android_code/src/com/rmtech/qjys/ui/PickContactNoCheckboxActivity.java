@@ -32,7 +32,7 @@ import com.rmtech.qjys.R;
 import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.widget.EaseSidebar;
-import com.rmtech.qjys.Constant;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.hx.QjHelper;
 
 public class PickContactNoCheckboxActivity extends BaseActivity {
@@ -83,7 +83,7 @@ public class PickContactNoCheckboxActivity extends BaseActivity {
 		Iterator<Entry<String, EaseUser>> iterator = users.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<String, EaseUser> entry = iterator.next();
-			if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME) && !entry.getKey().equals(Constant.GROUP_USERNAME) && !entry.getKey().equals(Constant.CHAT_ROOM) && !entry.getKey().equals(Constant.CHAT_ROBOT))
+			if (!entry.getKey().equals(QjConstant.NEW_FRIENDS_USERNAME) && !entry.getKey().equals(QjConstant.GROUP_USERNAME) && !entry.getKey().equals(QjConstant.CHAT_ROOM) && !entry.getKey().equals(QjConstant.CHAT_ROBOT))
 				contactList.add(entry.getValue());
 		}
 		// 排序
