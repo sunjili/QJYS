@@ -19,6 +19,7 @@ import com.rmtech.qjys.callback.QjHttpCallbackWitchSaveCache;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.MBase;
 import com.rmtech.qjys.model.MDoctorList;
+import com.rmtech.qjys.model.MGroupList;
 import com.rmtech.qjys.model.MIdData;
 import com.rmtech.qjys.model.MPatientList;
 import com.rmtech.qjys.model.MUser;
@@ -36,7 +37,13 @@ public class QjHttp {
 	public static final String URL_FRIEND_LIST = "/doctor/friendlist";
 	public static final String URL_ADD_MEMBERS = "/patient/addmembers";
 	public static final String URL_UPDATE_PATIENT = "/patient/updatepatient";
+	public static final String URL_PATIENT_GROUPINFO = "/patient/groupinfo";
 
+	public static void getGroupinfo(String group_ids, QjHttpCallback<MGroupList> callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("group_ids", group_ids);
+		OkHttpUtils.post(URL_PATIENT_GROUPINFO, params, callback);
+	}
 	public static void addMembers(String patient_id, String doctor_ids, BaseModelCallback callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("patient_id", patient_id);
