@@ -77,6 +77,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
         	finish();
         	return;
         }
+       
         setContentView(R.layout.em_activity_video_call);
         
         QjHelper.getInstance().isVideoCalling = true;
