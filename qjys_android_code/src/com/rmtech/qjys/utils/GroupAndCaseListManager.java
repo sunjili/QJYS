@@ -41,7 +41,7 @@ public class GroupAndCaseListManager {
 
 	public void getGroupCaseInfo(String groupIds, final QjHttpCallbackNoParse<MGroupList> callback) {
 
-		if (mMGroupList == null || mMGroupList.isEmpty()) {
+//		if (mMGroupList == null || mMGroupList.isEmpty()) {
 
 			QjHttp.getGroupinfo(groupIds, new QjHttpCallback<MGroupList>() {
 
@@ -53,18 +53,23 @@ public class GroupAndCaseListManager {
 				@Override
 				public void onResponseSucces(MGroupList response) {
 					mMGroupList = response;
+					if (callback != null) {
+						callback.onResponseSucces(response);
+					}
 				}
 
 				@Override
 				public void onError(Call call, Exception e) {
-
+					if (callback != null) {
+						callback.onError(call, e);
+					}
 				}
 			});
-		} else {
-			if (callback != null) {
-				callback.onResponseSucces(true, mMGroupList);
-			}
-		}
+//		} else {
+//			if (callback != null) {
+//				callback.onResponseSucces(true, mMGroupList);
+//			}
+//		}
 	}
 
 	protected void updateIdDoctorMap() {
@@ -100,7 +105,7 @@ public class GroupAndCaseListManager {
 			}
 		}
 		String groupIds = sb.toString();
-		if (TextUtils.isEmpty(groupIds)) {
+		if (!TextUtils.isEmpty(groupIds)) {
 			GroupAndCaseListManager.getInstance().getGroupCaseInfo(groupIds, callback);
 		}
 		try {
