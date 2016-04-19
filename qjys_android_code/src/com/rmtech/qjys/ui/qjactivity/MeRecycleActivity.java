@@ -36,8 +36,8 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
-import com.rmtech.qjys.model.MPatientList;
-import com.rmtech.qjys.model.MPatientList.HospitalCaseInfo;
+import com.rmtech.qjys.model.gson.MPatientList;
+import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView.OnItemClickListener;
@@ -122,7 +122,7 @@ public class MeRecycleActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
 				// TODO Auto-generated method stub
-				PhotoDataManagerActivity.show(getActivity());
+				PhotoDataManagerActivity.show(getActivity(),"");
 				
 			}
 		});

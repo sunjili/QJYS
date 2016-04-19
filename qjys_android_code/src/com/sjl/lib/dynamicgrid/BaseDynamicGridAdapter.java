@@ -62,6 +62,11 @@ public abstract class BaseDynamicGridAdapter extends AbstractDynamicGridAdapter 
         this.mItems.addAll(items);
         notifyDataSetChanged();
     }
+    public void add(int position, List<?> items) {
+    	addAllStableId(items);
+    	this.mItems.addAll(position, items);
+    	notifyDataSetChanged();
+    }
 
 
     public void remove(Object item) {

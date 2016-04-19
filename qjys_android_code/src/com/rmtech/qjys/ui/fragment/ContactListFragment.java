@@ -43,7 +43,7 @@ import com.rmtech.qjys.db.UserDao;
 import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.hx.QjHelper.DataSyncListener;
 import com.rmtech.qjys.model.DoctorInfo;
-import com.rmtech.qjys.model.MDoctorList;
+import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.GroupsActivity;
 import com.rmtech.qjys.ui.NewFriendsMsgActivity;

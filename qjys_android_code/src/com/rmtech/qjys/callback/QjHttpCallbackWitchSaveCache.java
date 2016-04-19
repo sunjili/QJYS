@@ -2,7 +2,7 @@ package com.rmtech.qjys.callback;
 
 import okhttp3.Call;
 
-import com.rmtech.qjys.model.MBase;
+import com.rmtech.qjys.model.gson.MBase;
 import com.sjl.lib.db.DBUtil;
 
 public class QjHttpCallbackWitchSaveCache extends QjHttpCallback {

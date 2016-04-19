@@ -32,17 +32,16 @@ public class UploadingView extends RelativeLayout {
 		initView();
 	}
 
-	public UploadingView(Context context, AttributeSet attrs, int defStyleAttr,
-			int defStyleRes) {
+	public UploadingView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		initView();
 	}
 
 	private void initView() {
 		View.inflate(getContext(), R.layout.bview_uploading, this);
-		
-		unread_msg_number = (TextView)findViewById(R.id.unread_msg_number);
-		
+
+		unread_msg_number = (TextView) findViewById(R.id.unread_msg_number);
+
 		this.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -51,7 +50,7 @@ public class UploadingView extends RelativeLayout {
 
 			}
 		});
-		
+
 	}
 
 	@Override
@@ -70,11 +69,13 @@ public class UploadingView extends RelativeLayout {
 
 	@Subscribe
 	public void onEvent(ImageUploadEvent event) {
-		// mAdapter.add();
+		if (!this.isAttachedToWindow()) {
+			return;
+		}
 		L.d("onEvent " + event.uploadingNumber);
 		if (event.uploadingNumber > 0) {
 			this.setVisibility(View.VISIBLE);
-			unread_msg_number.setText(event.uploadingNumber);
+			unread_msg_number.setText("" + event.uploadingNumber);
 		} else {
 			this.setVisibility(View.GONE);
 		}

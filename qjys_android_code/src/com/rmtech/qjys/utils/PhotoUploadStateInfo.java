@@ -6,8 +6,8 @@ import okhttp3.Request;
 import com.google.gson.Gson;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.callback.QjHttpCallback;
-import com.rmtech.qjys.model.MUploadImageInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
+import com.rmtech.qjys.model.gson.MUploadImageInfo;
 
 public class PhotoUploadStateInfo extends QjHttpCallback<MUploadImageInfo> {
 	private String caseId;

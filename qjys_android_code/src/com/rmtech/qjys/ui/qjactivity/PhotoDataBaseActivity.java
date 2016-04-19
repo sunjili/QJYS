@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.NewFolderManager;
@@ -210,7 +211,8 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 
 	public void showNewFolderDialog() {
 		if (mNewFolderManager != null) {
-			mNewFolderManager.showNewFolderDialog(this);
+			String parentId = "";
+			mNewFolderManager.showNewFolderDialog(caseId,parentId,this);
 		}
 
 	}
@@ -226,7 +228,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 	}
 
 	@Override
-	public void onAddNewFolder(String name) {
+	public void onAddNewFolder(FolderDataInfo info) {
 		// TODO Auto-generated method stub
 
 	}
@@ -240,13 +242,16 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 	public void onUploadError(PhotoUploadStateInfo state, Exception e) {
 		// TODO Auto-generated method stub
 		L.e("Upload onUploadError" + e);
+		Toast.makeText(getActivity(), "上传失败！" + e.getMessage(),
+				Toast.LENGTH_SHORT).show();
 
 	}
 
 	@Override
 	public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info) {
 		// TODO Auto-generated method stub
-		
+		Toast.makeText(getActivity(), "上传成功！",
+				Toast.LENGTH_SHORT).show();
 	}
 
 

@@ -45,7 +45,7 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
-import com.rmtech.qjys.model.MGroupList;
+import com.rmtech.qjys.model.gson.MGroupList;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.swipemenulistview.SwipeMenu;

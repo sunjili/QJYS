@@ -1159,15 +1159,21 @@ public class DynamicGridView extends GridView {
     public void computeScrollY() {
         mHeight = getPaddingTop();
         mItemCount = getAdapter().getCount();
+//		Log.d("ssssssssss","mItemCount ="+mItemCount);
+
         int numColumn = getNumColumns();
         int halfNumColumn = (numColumn + 1) / 2;
         int rowNumber = (mItemCount + halfNumColumn) / numColumn;
-        if (mItemOffsetY == null) {
+        if (mItemOffsetY == null || rowNumber != mItemOffsetY.length) {
             mItemOffsetY = new int[rowNumber];
-        }
+        } 
         for (int i = 0; i < mItemCount; i += numColumn) {
             View view = getAdapter().getView(i, null, this);
             int realIndex = i / numColumn;
+            if(realIndex >= mItemOffsetY.length) {
+            	scrollIsComputed = false;
+            	return;
+            }
             mItemOffsetY[realIndex] = mHeight;
             view.measure(
                 MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
@@ -1187,6 +1193,10 @@ public class DynamicGridView extends GridView {
         pos = getFirstVisiblePosition();
         int numColumn = getNumColumns();
         int rowPos = pos / numColumn;
+        if(rowPos >= mItemOffsetY.length) {
+			computeScrollY();
+        	return 0;
+        }
         view = getChildAt(0);
         nItemY = view.getTop();
         nScrollY = mItemOffsetY[rowPos] - nItemY;

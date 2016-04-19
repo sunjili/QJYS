@@ -33,8 +33,8 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
-import com.rmtech.qjys.model.MPatientList;
-import com.rmtech.qjys.model.MPatientList.HospitalCaseInfo;
+import com.rmtech.qjys.model.gson.MPatientList;
+import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
 import com.rmtech.qjys.ui.qjactivity.AddCaseActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
@@ -99,7 +99,8 @@ public class CaseFragment extends QjBaseFragment {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
 				// TODO Auto-generated method stub
-				PhotoDataManagerActivity.show(getActivity());
+				CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
+				PhotoDataManagerActivity.show(getActivity(), info.id);
 				
 			}
 		});

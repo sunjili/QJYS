@@ -28,8 +28,8 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
-import com.rmtech.qjys.model.MBase;
-import com.rmtech.qjys.model.MDoctorList;
+import com.rmtech.qjys.model.gson.MBase;
+import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.utils.DoctorListManager;
 
 public class DoctorPickActivity extends CaseWithIdActivity {

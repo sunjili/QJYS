@@ -1,7 +1,7 @@
 package com.rmtech.qjys.callback;
 
 import com.google.gson.Gson;
-import com.rmtech.qjys.model.MUser;
+import com.rmtech.qjys.model.gson.MUser;
 
 public abstract class OnLoginListener extends QjHttpCallback<MUser> {
 	public abstract void onChange();

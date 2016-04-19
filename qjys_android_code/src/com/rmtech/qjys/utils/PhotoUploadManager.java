@@ -11,8 +11,8 @@ import android.util.SparseArray;
 
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.event.ImageUploadEvent;
-import com.rmtech.qjys.model.MUploadImageInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
+import com.rmtech.qjys.model.gson.MUploadImageInfo;
 
 public class PhotoUploadManager {
 	static private PhotoUploadManager mInstance = null;

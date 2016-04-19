@@ -1,7 +1,10 @@
-package com.rmtech.qjys.model;
+package com.rmtech.qjys.model.gson;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.rmtech.qjys.model.FolderDataInfo;
+import com.rmtech.qjys.model.PhotoDataInfo;
 
 public class MImageList extends MBase {
 

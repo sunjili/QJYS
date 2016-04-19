@@ -1,6 +1,8 @@
-package com.rmtech.qjys.model;
+package com.rmtech.qjys.model.gson;
 
 import java.util.List;
+
+import com.rmtech.qjys.model.DoctorInfo;
 
 public class MDoctorList extends MBase {
 

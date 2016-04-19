@@ -12,7 +12,7 @@ import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.DoctorInfo;
-import com.rmtech.qjys.model.MDoctorList;
+import com.rmtech.qjys.model.gson.MDoctorList;
 
 public class DoctorListManager {
 	static private DoctorListManager mInstance = null;

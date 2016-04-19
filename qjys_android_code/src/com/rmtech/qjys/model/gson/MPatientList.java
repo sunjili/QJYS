@@ -1,7 +1,9 @@
-package com.rmtech.qjys.model;
+package com.rmtech.qjys.model.gson;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.rmtech.qjys.model.CaseInfo;
 
 public class MPatientList extends MBase {
 

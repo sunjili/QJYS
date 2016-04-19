@@ -41,7 +41,7 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.db.DbOpenHelper;
-import com.rmtech.qjys.model.MBase;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
 
 public class CopyOfPhoneContactsActivity extends BaseActivity {

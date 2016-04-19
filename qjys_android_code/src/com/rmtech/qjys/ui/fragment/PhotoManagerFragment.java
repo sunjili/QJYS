@@ -1,11 +1,13 @@
 package com.rmtech.qjys.ui.fragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
+import okhttp3.Call;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +19,20 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
+import com.rmtech.qjys.callback.QjHttpCallback;
+import com.rmtech.qjys.model.FolderDataInfo;
+import com.rmtech.qjys.model.PhotoDataInfo;
+import com.rmtech.qjys.model.gson.MImageList;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataBrowseActivity;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
-import com.rmtech.qjys.utils.NewFolderManager;
-import com.rmtech.qjys.utils.NewFolderManager.OnNewFolderListener;
+import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.dynamicgrid.DynamicGridView;
-import com.sjl.lib.dynamicgrid.example.CheeseDynamicAdapter;
-import com.sjl.lib.dynamicgrid.example.Cheeses;
+import com.sjl.lib.utils.L;
 
 public class PhotoManagerFragment extends QjBaseFragment {
 
@@ -44,9 +51,10 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	private int mMinRawY = 0;
 	private TranslateAnimation anim;
 
-	private ArrayList<String> mDataList;
-	private CheeseDynamicAdapter mAdapter;
-	private NewFolderManager mNewFolderManager;
+	private PhotoDataGridAdapter mAdapter;
+	private View nodata_layout;
+	private String caseId;
+	private String folderId;
 
 	public PhotoManagerFragment() {
 	}
@@ -59,8 +67,8 @@ public class PhotoManagerFragment extends QjBaseFragment {
 
 	@Override
 	protected void initView() {
-		// TODO Auto-generated method stub
 		mGridView = (DynamicGridView) getView().findViewById(R.id.dynamic_grid);
+		nodata_layout = getView().findViewById(R.id.nodata_layout);
 
 	}
 
@@ -71,12 +79,21 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	// return false;
 	// }
 
+	private void onDataChanged() {
+		if (mAdapter.getCount() > 0) {
+			if (nodata_layout.getVisibility() == View.VISIBLE) {
+				nodata_layout.setVisibility(View.GONE);
+			}
+		} else {
+			nodata_layout.setVisibility(View.VISIBLE);
+		}
+		mAdapter.notifyDataSetChanged();
+
+	}
+
 	@Override
 	protected void setUpView() {
-		mDataList = new ArrayList<String>(Arrays.asList(Cheeses.sCheeseStrings));
-		mAdapter = new CheeseDynamicAdapter(getActivity(), mDataList, getResources().getInteger(R.integer.column_count));
-		// TODO Auto-generated method stub
-		mGridView.setAdapter(mAdapter);
+		
 		mGridView.setEditModeEnabled(false);
 		mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -113,6 +130,11 @@ public class PhotoManagerFragment extends QjBaseFragment {
 		mGridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
+//				Log.d("ssssssssss","onGlobalLayout");
+
+				if(mAdapter == null || mAdapter.getCount() == 0) {
+					return;
+				}
 				mQuickReturnHeight = mQuickReturnView.getHeight();
 				mGridView.computeScrollY();
 				mCachedVerticalScrollRange = mGridView.getListHeight();
@@ -124,6 +146,9 @@ public class PhotoManagerFragment extends QjBaseFragment {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
+				if(mAdapter == null || mAdapter.getCount() == 0) {
+					return;
+				}
 				mScrollY = 0;
 				int translationY = 0;
 
@@ -132,6 +157,10 @@ public class PhotoManagerFragment extends QjBaseFragment {
 				}
 
 				int rawY = mGridView.getTop() - Math.min(mCachedVerticalScrollRange - mGridView.getHeight(), mScrollY);
+//				Log.d("sssssssssss","mGridView.getTop() = "+mGridView.getTop());
+//				Log.d("sssssssssss","mCachedVerticalScrollRange = "+mCachedVerticalScrollRange);
+//				Log.d("sssssssssss"," mGridView.getHeight() = "+ mGridView.getHeight());
+//				Log.d("sssssssssss"," mScrollY = "+ mScrollY);
 
 				switch (mState) {
 				case STATE_OFFSCREEN:
@@ -169,6 +198,11 @@ public class PhotoManagerFragment extends QjBaseFragment {
 					}
 					break;
 				}
+				if(translationY > 0) {
+					translationY = 0;
+				}
+				
+//				Log.d("ssssssssss","translationY = "+ translationY);
 
 				/** this can be used if the build is below honeycomb **/
 				if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
@@ -194,8 +228,65 @@ public class PhotoManagerFragment extends QjBaseFragment {
 
 	}
 
-	public void addFolderToGrid(String name) {
-		mAdapter.add(0, "");
+	public void addFolderToGrid(FolderDataInfo info) {
+		mAdapter.add(0, info);
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void setIds(String caseId, String folderId) {
+		this.caseId = caseId;
+		this.folderId = folderId;
+		QjHttp.getImageList(caseId, folderId, new QjHttpCallback<MImageList>() {
+
+			@Override
+			public void onError(Call call, Exception e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onResponseSucces(MImageList response) {
+				ArrayList<FolderDataInfo> list = new ArrayList<FolderDataInfo>();
+
+				if (response.data != null) {
+					if (response.data.folders != null) {
+						list.addAll(0, response.data.folders);
+					}
+					if (response.data.images != null) {
+						list.addAll(response.data.images);
+					}
+				}
+//				for(int i = 0; i<20;i++) {
+//					list.add(new FolderDataInfo());
+//				}
+				mAdapter = new PhotoDataGridAdapter(getActivity(), list, getResources().getInteger(R.integer.column_count));
+				mGridView.setAdapter(mAdapter);
+				onDataChanged();
+			}
+
+			@Override
+			public MImageList parseNetworkResponse(String str) throws Exception {
+				return new Gson().fromJson(str, MImageList.class);
+			}
+
+		});
+
+	}
+
+	public void onImagePicked(List<String> paths) {
+		Log.d("ssssssssssssssss", "onImagePicked");
+		for (String path : paths) {
+			PhotoDataInfo info = new PhotoDataInfo();
+			info.localPath = path;
+			L.e("localPath = " + path);
+			int index = path.lastIndexOf('/');
+			info.name = path.substring(index + 1, path.length());
+			L.e("info.name = " + info.name);
+			info.state = PhotoDataInfo.STATE_UPLOADING;
+			mAdapter.add(info);
+			PhotoUploadManager.getInstance().addUploadTask(caseId, "", info);
+		}
+		onDataChanged();
 	}
 
 }

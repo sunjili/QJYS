@@ -1,4 +1,4 @@
-package com.rmtech.qjys.model;
+package com.rmtech.qjys.model.gson;
 
 import java.io.Serializable;
 

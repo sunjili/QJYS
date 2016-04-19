@@ -1,7 +1,7 @@
 package com.rmtech.qjys.callback;
 
 import com.google.gson.Gson;
-import com.rmtech.qjys.model.MBase;
+import com.rmtech.qjys.model.gson.MBase;
 
 public abstract class BaseModelCallback extends QjHttpCallback<MBase> {
 

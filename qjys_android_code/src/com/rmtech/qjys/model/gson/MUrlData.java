@@ -1,4 +1,6 @@
-package com.rmtech.qjys.model;
+package com.rmtech.qjys.model.gson;
+
+import com.rmtech.qjys.model.UrlData;
 
 public class MUrlData extends MBase {
 

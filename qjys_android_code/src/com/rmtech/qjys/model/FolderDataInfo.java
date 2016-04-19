@@ -16,4 +16,8 @@ public class FolderDataInfo implements Serializable {
 
 	public String name; // 名称
 
+	public String patient_id;// : 病例
+	public String update_time;// : 更新时间
+	public String create_time;// : 创建时间
+
 }

@@ -1,6 +1,8 @@
-package com.rmtech.qjys.model;
+package com.rmtech.qjys.model.gson;
 
 import java.util.List;
+
+import com.rmtech.qjys.model.CaseInfo;
 
 public class MGroupList extends MBase {
 

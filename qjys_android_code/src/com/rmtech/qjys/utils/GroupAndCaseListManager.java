@@ -22,8 +22,8 @@ import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
-import com.rmtech.qjys.model.MDoctorList;
-import com.rmtech.qjys.model.MGroupList;
+import com.rmtech.qjys.model.gson.MDoctorList;
+import com.rmtech.qjys.model.gson.MGroupList;
 
 public class GroupAndCaseListManager {
 	static private GroupAndCaseListManager mInstance = null;

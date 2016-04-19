@@ -1,5 +1,6 @@
 package com.rmtech.qjys.utils;
 
+import okhttp3.Call;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.QjHttpCallback;
+import com.rmtech.qjys.model.FolderDataInfo;
+import com.rmtech.qjys.model.gson.MFolderInfo;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.alertview.OnDismissListener;
 import com.sjl.lib.alertview.OnItemClickListener;
@@ -25,10 +31,10 @@ public class NewFolderManager {
 	}
 
 	public interface OnNewFolderListener {
-		void onAddNewFolder(String name);
+		void onAddNewFolder(FolderDataInfo data);
 	}
 
-	public void showNewFolderDialog(final OnNewFolderListener listener) {
+	public void showNewFolderDialog(final String caseid, final String parentId, final OnNewFolderListener listener) {
 		if (imm == null) {
 			imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		}
@@ -44,9 +50,32 @@ public class NewFolderManager {
 								if (name.isEmpty()) {
 									Toast.makeText(context, "请输入文件名", Toast.LENGTH_SHORT).show();
 								} else {
-									if (listener != null) {
-										listener.onAddNewFolder(name);
-									}
+
+									QjHttp.createFolder(caseid, name, parentId, new QjHttpCallback<MFolderInfo>() {
+
+										@Override
+										public void onError(Call call, Exception e) {
+											// TODO Auto-generated method stub
+											Toast.makeText(context, "创建文件夹失败！", Toast.LENGTH_SHORT).show();
+
+										}
+
+										@Override
+										public void onResponseSucces(MFolderInfo response) {
+											// TODO Auto-generated method stub
+											if (listener != null) {
+												listener.onAddNewFolder(response.data);
+											}
+										}
+
+										@Override
+										public MFolderInfo parseNetworkResponse(String str) throws Exception {
+											// TODO Auto-generated method stub
+											return new Gson().fromJson(str, MFolderInfo.class);
+										}
+
+									});
+									
 								}
 								return;
 							}

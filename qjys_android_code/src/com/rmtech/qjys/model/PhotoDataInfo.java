@@ -16,10 +16,6 @@ public class PhotoDataInfo extends FolderDataInfo {
 
 	public String doc_id;// : 上传医生id
 
-	public int create_time;// : 上传时间戳
-
-	public int update_time;// : 更新时间戳
-
 	public int state = STATE_NORMAL; // 上传状态
 
 	public void buildFromOther(PhotoDataInfo data) {
