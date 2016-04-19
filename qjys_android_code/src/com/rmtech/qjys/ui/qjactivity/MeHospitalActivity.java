@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,10 +49,13 @@ public class MeHospitalActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.putExtra("hospital", et_hospital.getEditableText().toString());
-				setResult(RESULT_OK, intent);
-				MeHospitalActivity.this.finish();
+				String hospital = et_hospital.getEditableText().toString();
+				if (!TextUtils.isEmpty(hospital)) {
+					Intent data=new Intent();
+					data.putExtra("string", hospital);
+					setResult(MeNameActivity.RESULT_OK, data);
+				}
+				finish();
 			}
 		});
 		setTitle("医院");

@@ -38,4 +38,12 @@
         android:layout_marginBottom="13dip"
         android:src="@drawable/btn_case_camera_nor" />
 
+    <com.rmtech.qjys.ui.view.UploadingView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="10dip"
+        android:visibility="gone" />
+
 </RelativeLayout>

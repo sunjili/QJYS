@@ -15,7 +15,9 @@ public class UserInfo implements Serializable {
 	public int sex;// : 性别
 	public String hxpasswd;// : 环信密码
 	public String hos_id;// : 医院id
+	public String hos_name;// : 医院名称
 	public String department;// : 科室
+	public boolean passwordFlag;//密码
 	public AuthInfo authinfo;
 
 	public static class AuthInfo {

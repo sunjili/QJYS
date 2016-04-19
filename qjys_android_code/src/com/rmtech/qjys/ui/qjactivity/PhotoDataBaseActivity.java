@@ -17,16 +17,21 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.NewFolderManager;
 import com.rmtech.qjys.utils.NewFolderManager.OnNewFolderListener;
+import com.rmtech.qjys.utils.PhotoUploadManager;
+import com.rmtech.qjys.utils.PhotoUploadManager.OnPhotoUploadListener;
+import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.rmtech.qjys.utils.PhotoUtil;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 import com.sjl.lib.utils.L;
 
-public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFolderListener {
+public class PhotoDataBaseActivity extends CaseWithIdActivity implements
+		OnNewFolderListener, OnPhotoUploadListener {
 
 	private NewFolderManager mNewFolderManager;
 
@@ -35,6 +40,20 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 		super.setContentView(layoutResID);
 		mNewFolderManager = new NewFolderManager(getActivity());
 
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		PhotoUploadManager.getInstance().registerPhotoUploadListener(this);
+
+	}
+
+	@Override
+	protected void onDestroy() {
+
+		PhotoUploadManager.getInstance().unregisterPhotoUploadListener(this);
+		super.onDestroy();
 	}
 
 	protected void initPhotoSelector() {
@@ -46,8 +65,9 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 
-					new AlertView(null, null, "取消", null, new String[] { "拍照", "从手机相册中选择", "从资源管理器中选择" },
-							getActivity(), AlertView.Style.ActionSheet,
+					new AlertView(null, null, "取消", null, new String[] { "拍照",
+							"从手机相册中选择", "从资源管理器中选择" }, getActivity(),
+							AlertView.Style.ActionSheet,
 							new com.sjl.lib.alertview.OnItemClickListener() {
 
 								@Override
@@ -55,14 +75,17 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 									switch (position) {
 									case 0:
 										try {
-											mTmpFile = FileUtils.createTmpFile(getActivity());
+											mTmpFile = FileUtils
+													.createTmpFile(getActivity());
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
-										PhotoUtil.showCameraAction(getActivity(), mTmpFile);
+										PhotoUtil.showCameraAction(
+												getActivity(), mTmpFile);
 										break;
 									case 1:
-										PhotoUtil.startImageSelector(getActivity(), true);
+										PhotoUtil.startImageSelector(
+												getActivity(), true);
 										// ImageSelectorMainActivity.show(PhotoDataManagerActivity.this);
 										break;
 									case 2:
@@ -82,7 +105,8 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+	public void onSaveInstanceState(Bundle outState,
+			PersistableBundle outPersistentState) {
 	}
 
 	protected boolean showTitleBar() {
@@ -117,14 +141,17 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 					final Uri uri = data.getData();
 					try {
 						// Get the file path from the URI
-						final String path = FileUtils.getPath(getActivity(), uri);
+						final String path = FileUtils.getPath(getActivity(),
+								uri);
 						L.e("文件选择：path = " + path);
 						ArrayList<String> list = new ArrayList<String>();
 						list.add(path);
 						onImagePicked(list);
-						Toast.makeText(getActivity(), "File Selected: " + path, Toast.LENGTH_LONG).show();
+						Toast.makeText(getActivity(), "File Selected: " + path,
+								Toast.LENGTH_LONG).show();
 					} catch (Exception e) {
-						Log.e("FileSelectorTestActivity", "File select error", e);
+						Log.e("FileSelectorTestActivity", "File select error",
+								e);
 					}
 				}
 			}
@@ -133,7 +160,8 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 		case QjConstant.REQUEST_IMAGE:
 
 			if (resultCode == RESULT_OK) {
-				ArrayList<String> mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+				ArrayList<String> mSelectPath = data
+						.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
 				// StringBuilder sb = new StringBuilder();
 				// for(String p: mSelectPath){
 				// sb.append(p);
@@ -149,7 +177,9 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 			if (resultCode == Activity.RESULT_OK) {
 				if (mTmpFile != null) {
 					if (mTmpFile != null) {
-						sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mTmpFile)));
+						sendBroadcast(new Intent(
+								Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+								Uri.fromFile(mTmpFile)));
 						ArrayList<String> list = new ArrayList<String>();
 						list.add(mTmpFile.getAbsolutePath());
 						L.e("相机选择：path = " + mTmpFile.getAbsolutePath());
@@ -200,5 +230,24 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void onUploadProgress(PhotoUploadStateInfo state) {
+		L.e("Upload progress" + state.progress);
+	}
+
+	@Override
+	public void onUploadError(PhotoUploadStateInfo state, Exception e) {
+		// TODO Auto-generated method stub
+		L.e("Upload onUploadError" + e);
+
+	}
+
+	@Override
+	public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

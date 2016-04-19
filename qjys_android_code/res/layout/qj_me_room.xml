@@ -12,7 +12,7 @@
     <include layout="@layout/qj_me_split_line" />
 
     <EditText
-        android:id="@+id/et_name"
+        android:id="@+id/et_room_name"
         style="@style/qj_et_style"
         android:layout_width="match_parent"
         android:layout_height="50dp"

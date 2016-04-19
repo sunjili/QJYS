@@ -6,17 +6,17 @@ import okhttp3.Request;
 import com.google.gson.Gson;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.callback.QjHttpCallback;
-import com.rmtech.qjys.model.MUrlData;
+import com.rmtech.qjys.model.MUploadImageInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 
-public class PhotoUploadStateInfo extends QjHttpCallback<MUrlData> {
+public class PhotoUploadStateInfo extends QjHttpCallback<MUploadImageInfo> {
 	private String caseId;
 
 	private String folder_id = "";
 	private String localPath;
 	public int progress;
 	private PhotoDataInfo imageInfo;
-	private QjHttpCallback<MUrlData> callback;
+	private QjHttpCallback<MUploadImageInfo> callback;
 
 	public PhotoUploadStateInfo() {
 
@@ -31,7 +31,7 @@ public class PhotoUploadStateInfo extends QjHttpCallback<MUrlData> {
 
 	}
 
-	public void setCallback(QjHttpCallback<MUrlData> qjHttpCallback) {
+	public void setCallback(QjHttpCallback<MUploadImageInfo> qjHttpCallback) {
 		callback = qjHttpCallback;
 	}
 
@@ -79,18 +79,22 @@ public class PhotoUploadStateInfo extends QjHttpCallback<MUrlData> {
 	}
 
 	@Override
-	public void onResponseSucces(MUrlData response) {
+	public void onResponseSucces(MUploadImageInfo response) {
+		if(imageInfo == null) {
+			imageInfo = response.data;
+		} else {
+			imageInfo.buildFromOther(response.data);
+		}
 		imageInfo.state = PhotoDataInfo.STATE_NORMAL;
-		imageInfo.url = response.data.url;
 		if (callback != null) {
 			callback.onResponseSucces(response);
 		}
 	}
 
 	@Override
-	public MUrlData parseNetworkResponse(String str) throws Exception {
+	public MUploadImageInfo parseNetworkResponse(String str) throws Exception {
 		// TODO Auto-generated method stub
-		return new Gson().fromJson(str, MUrlData.class);
+		return new Gson().fromJson(str, MUploadImageInfo.class);
 	}
 
 	public String getCaseId() {

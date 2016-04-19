@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,15 +21,21 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.utils.PhotoUploadManager;
-import com.rmtech.qjys.utils.PhotoUploadManager.OnPhotoUploadListener;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.sjl.lib.utils.L;
 
-public class PhotoDataUploadActivity extends PhotoDataBaseActivity implements
-		OnPhotoUploadListener {
+public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 
+
+	protected Context mContext;
+	protected GridView mGridView;
+	protected View nodata_layout;
+
+	private SelectGridAdapter mAdapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,19 +58,12 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity implements
 		context.startActivity(intent);
 	}
 
-	protected Context mContext;
-	protected GridView mGridView;
-	protected View nodata_layout;
-	private ArrayList<PhotoDataInfo> mDataList;
-
-	private SelectGridAdapter mAdapter;
 
 	private void initViews() {
 		initPhotoSelector();
 		mContext = this;
 		mGridView = (GridView) findViewById(R.id.dynamic_grid);
 		nodata_layout = findViewById(R.id.nodata_layout);
-		mDataList = new ArrayList<>();
 		mAdapter = new SelectGridAdapter();
 		mGridView.setAdapter(mAdapter);
 
@@ -76,58 +76,70 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity implements
 
 		});
 
-		PhotoUploadManager.getInstance().registerPhotoUploadListener(this);
-
 	}
 
 	@Override
 	public void onAddNewFolder(String name) {
-		PhotoDataInfo info = new PhotoDataInfo(PhotoDataInfo.TYPE_FOLDER);
+		FolderDataInfo info = new FolderDataInfo();
 		info.name = name;
-		mDataList.add(0, info);
+		mAdapter.add(0, info);
 		mAdapter.notifyDataSetChanged();
 	}
 
-	protected void onImagePicked(List<String> paths) {
+	protected synchronized void onImagePicked(List<String> paths) {
+		Log.d("ssssssssssssssss","onImagePicked");
 		super.onImagePicked(paths);
 		for (String path : paths) {
-			PhotoDataInfo info = new PhotoDataInfo(PhotoDataInfo.TYPE_IMAGE);
+			PhotoDataInfo info = new PhotoDataInfo();
 			info.localPath = path;
 			L.e("localPath = " + path);
 			int index = path.lastIndexOf('/');
 			info.name = path.substring(index + 1, path.length());
 			L.e("info.name = " + info.name);
 			info.state = PhotoDataInfo.STATE_UPLOADING;
-			mDataList.add(info);
+			mAdapter.add(info);
 			PhotoUploadManager.getInstance().addUploadTask(caseId, "", info);
 		}
-
 		mAdapter.notifyDataSetChanged();
+
 	}
 
 	public class SelectGridAdapter extends BaseAdapter {
 
+		ArrayList<FolderDataInfo> mList;
+
+		public SelectGridAdapter() {
+			mList = new ArrayList<FolderDataInfo>();
+		}
+
+		public void add(int position, FolderDataInfo info) {
+			mList.add(position, info);
+		}
+
+		public void add(PhotoDataInfo info) {
+			mList.add(info);
+		}
+
 		@Override
 		public int getCount() {
-			return mDataList.size();
+			return mList.size();
 		}
 
 		@Override
 		public void notifyDataSetChanged() {
-			super.notifyDataSetChanged();
-			if (getCount() > 0) {
+			if (mList.size() > 0) {
 				if (nodata_layout.getVisibility() == View.VISIBLE) {
 					nodata_layout.setVisibility(View.GONE);
 				}
 			} else {
 				nodata_layout.setVisibility(View.VISIBLE);
 			}
-
+			super.notifyDataSetChanged();
 		}
 
 		@Override
-		public PhotoDataInfo getItem(int position) {
-			return mDataList.get(position);
+		public FolderDataInfo getItem(int position) {
+			return mList.get(position);
 		}
 
 		@Override
@@ -137,7 +149,10 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity implements
 
 		@Override
 		public int getItemViewType(int position) {
-			return getItem(position).type;
+			if (mList.get(position) instanceof PhotoDataInfo) {
+				return 1;
+			}
+			return 0;
 		}
 
 		@Override
@@ -148,9 +163,9 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity implements
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder;
-			PhotoDataInfo info = getItem(position);
+			FolderDataInfo info = getItem(position);
 			if (convertView == null) {
-				if (info.type == PhotoDataInfo.TYPE_IMAGE) {
+				if (getItemViewType(position) == 1) {
 					convertView = LayoutInflater.from(getActivity()).inflate(
 							R.layout.item_grid_photodata_image, null);
 
@@ -184,10 +199,11 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity implements
 			itemName = (TextView) container.findViewById(R.id.item_name);
 		}
 
-		public void build(PhotoDataInfo data) {
-			if (data.type == PhotoDataInfo.TYPE_IMAGE) {
+		public void build(FolderDataInfo data) {
+			if (data instanceof PhotoDataInfo) {
 				ImageLoader.getInstance().displayImage(
-						"file://" + data.localPath, itemImg, options);
+						"file://" + ((PhotoDataInfo) data).localPath, itemImg,
+						options);
 			}
 			itemName.setText(data.name);
 		}
@@ -195,20 +211,22 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity implements
 
 	@Override
 	public void onUploadProgress(PhotoUploadStateInfo state) {
+		super.onUploadProgress(state);
 		L.e("Upload progress" + state.progress);
 	}
 
 	@Override
 	public void onUploadError(PhotoUploadStateInfo state, Exception e) {
+		super.onUploadError(state, e);
 		// TODO Auto-generated method stub
 		L.e("Upload onUploadError" + e);
 
 	}
 
 	@Override
-	public void onUploadComplete(PhotoUploadStateInfo state, String url) {
-		L.e("Upload onUploadComplete =" + url);
-		// TODO Auto-generated method stub
+	public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info) {
+		super.onUploadComplete(state, info);
+		L.e("Upload onUploadComplete =" + info.origin_url);
 
 	}
 

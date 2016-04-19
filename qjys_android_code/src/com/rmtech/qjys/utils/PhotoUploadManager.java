@@ -2,13 +2,16 @@ package com.rmtech.qjys.utils;
 
 import java.util.ArrayList;
 
-import okhttp3.Call;
+import org.greenrobot.eventbus.EventBus;
 
+import okhttp3.Call;
+import android.app.usage.UsageEvents.Event;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
 import com.rmtech.qjys.callback.QjHttpCallback;
-import com.rmtech.qjys.model.MUrlData;
+import com.rmtech.qjys.event.ImageUploadEvent;
+import com.rmtech.qjys.model.MUploadImageInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 
 public class PhotoUploadManager {
@@ -43,6 +46,10 @@ public class PhotoUploadManager {
 
 	}
 
+	public SparseArray<PhotoUploadStateInfo> getUploadTaskArray() {
+		return taskMap;
+	}
+
 	public void addUploadTask(String caseId, String folder_id,
 			PhotoDataInfo info) {
 		final int key = createKey(caseId, folder_id, info);
@@ -51,19 +58,21 @@ public class PhotoUploadManager {
 		} else {
 			final PhotoUploadStateInfo task = new PhotoUploadStateInfo(caseId,
 					folder_id, info);//
-			task.setCallback(new QjHttpCallback<MUrlData>() {
+			task.setCallback(new QjHttpCallback<MUploadImageInfo>() {
 
 				@Override
-				public MUrlData parseNetworkResponse(String str)
+				public MUploadImageInfo parseNetworkResponse(String str)
 						throws Exception {
 					return null;
 				}
 
 				@Override
-				public void onResponseSucces(MUrlData response) {
+				public void onResponseSucces(MUploadImageInfo response) {
 					for (OnPhotoUploadListener listener : mListenerList) {
-						listener.onUploadComplete(task, response.data.url);
+						listener.onUploadComplete(task, response.data);
 					}
+					taskMap.remove(key);
+					postUploadEvent();
 				}
 
 				@Override
@@ -71,6 +80,9 @@ public class PhotoUploadManager {
 					for (OnPhotoUploadListener listener : mListenerList) {
 						listener.onUploadError(task, e);
 					}
+					taskMap.remove(key);
+					postUploadEvent();
+
 				}
 
 				public void inProgress(float progress) {
@@ -81,8 +93,13 @@ public class PhotoUploadManager {
 			});
 			taskMap.put(key, task);
 			task.upload();//
+			postUploadEvent();
 		}
 
+	}
+
+	private void postUploadEvent() {
+		EventBus.getDefault().post(new ImageUploadEvent(taskMap.size()));
 	}
 
 	public interface OnPhotoUploadListener {
@@ -91,7 +108,8 @@ public class PhotoUploadManager {
 
 		public void onUploadError(PhotoUploadStateInfo state, Exception e);
 
-		public void onUploadComplete(PhotoUploadStateInfo state, String url);
+		public void onUploadComplete(PhotoUploadStateInfo state,
+				PhotoDataInfo info);
 	}
 
 }

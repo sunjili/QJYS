@@ -112,6 +112,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
+         <!-- 病例回收站-->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeRecycleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <!-- 清理存储空间 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeCleanMemoryActivity"

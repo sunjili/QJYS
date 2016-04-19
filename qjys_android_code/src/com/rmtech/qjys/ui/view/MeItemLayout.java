@@ -91,6 +91,7 @@ public class MeItemLayout extends RelativeLayout implements
 			tv_right.setTextColor(Color.rgb(244, 113, 75));
 		}else{
 			tv_right.setText(str);
+			tv_right.setTextColor(Color.rgb(126, 126, 126));
 		}
 	}
 	public String getRightText(){

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="40dip"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dip"
+        android:drawablePadding="5dp"
+        android:drawableTop="@drawable/btn_case_upload"
+        android:gravity="center_horizontal"
+        android:text="正在上传"
+        android:textColor="@color/cb2"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/unread_msg_number"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@id/textview"
+        android:background="@drawable/qj_red_circle"
+        android:gravity="center"
+        android:text="7"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
+</RelativeLayout>

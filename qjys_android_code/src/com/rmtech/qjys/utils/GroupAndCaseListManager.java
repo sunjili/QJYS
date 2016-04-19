@@ -105,9 +105,7 @@ public class GroupAndCaseListManager {
 			}
 		}
 		String groupIds = sb.toString();
-		if (!TextUtils.isEmpty(groupIds)) {
-			GroupAndCaseListManager.getInstance().getGroupCaseInfo(groupIds, callback);
-		}
+		
 		try {
 			sortConversationByLastChatTime(sortList);
 		} catch (Exception e) {
@@ -115,6 +113,12 @@ public class GroupAndCaseListManager {
 		}
 		for (Pair<Long, EMConversation> sortItem : sortList) {
 			list.add(sortItem.second);
+		}
+		
+		if (!TextUtils.isEmpty(groupIds)) {
+			GroupAndCaseListManager.getInstance().getGroupCaseInfo(groupIds, callback);
+		} else {
+			callback.onError(null, new Exception("no group"));
 		}
 
 	}

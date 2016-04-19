@@ -6,5 +6,10 @@
     <dimen name="buttontoast_hover">24dp</dimen>
     <dimen name="buttontoast_x_padding">12dp</dimen>
     <dimen name="cardtoast_margin">4dp</dimen>
-
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="selectcity_group_item_padding">14dp</dimen>
+    <dimen name="bladeview_popup_height">80dp</dimen>
+    
+    <dimen name="bladeview_fontsize">12sp</dimen>
+    <dimen name="bladeview_popup_fontsize">20sp</dimen>
 </resources>

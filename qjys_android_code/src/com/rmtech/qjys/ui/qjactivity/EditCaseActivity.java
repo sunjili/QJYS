@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.UserInfo;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.ui.view.MeItemLayout;
+import com.sjl.lib.utils.L;
 
 public class EditCaseActivity extends BaseActivity implements
 		View.OnClickListener {
@@ -29,33 +34,38 @@ public class EditCaseActivity extends BaseActivity implements
 	/**就诊状态*/
 	private MeItemLayout case_state;
 	private Context context;
-	private void setValue() {
-		case_name.setRightText("测试111");
-		case_sex.setRightText("测试111");
-		case_age.setRightText("测试111");
-		case_hospital.setRightText("测试111");
-		case_room.setRightText("测试111");
-		case_room_number.setRightText("测试111");
-		case_diagnosis.setRightText("测试111");
-		case_state.setRightText("测试111");	
+	private CaseInfo meValue;
+	private void setViewValue() {
+		case_name.setRightText(meValue.name);
+		if (meValue.sex==0) {
+			case_sex.setRightText("男");
+		} else {
+			case_sex.setRightText("女");
+		}
+		case_age.setRightText(meValue.age);
+		case_hospital.setRightText(meValue.hos_name);
+		case_room.setRightText(meValue.department);
+		case_room_number.setRightText(meValue.ward_no);
+		case_diagnosis.setRightText(meValue.diagnose);
+		case_state.setRightText(meValue.treat_state);
 		}
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.case_name:
-			jumpActivity(MeNameActivity.class);
+			 jumpActivity(MeNameActivity.class,MeFragment.REQUEST_ME_NAME);
 			break;
 		case R.id.case_sex:
-			jumpActivity(MeSexActivity.class);
+			jumpActivity(MeSexActivity.class,MeFragment.REQUEST_ME_SEX);
 			break;
 		case R.id.case_age:
 			jumpActivity(CaseAgeActivity.class);
 			break;
 		case R.id.case_hospital:
-			jumpActivity(MeHospitalActivity.class);
+			jumpActivity(MeHospitalActivity.class,MeFragment.REQUEST_ME_HOSPITAL);
 			break;
 		case R.id.case_room:
-			jumpActivity(MeRoomActivity.class);
+			jumpActivity(MeRoomActivity.class,MeFragment.REQUEST_ME_ROOM);
 			break;
 		case R.id.case_room_number:
 			jumpActivity(CaseRoomNumberActivity.class);
@@ -78,7 +88,15 @@ public class EditCaseActivity extends BaseActivity implements
 		Intent intent = new Intent(context, cls);
 		startActivity(intent);
 	}
-
+	private void jumpActivity(Class<?> cls,int  requestCode) {
+		Intent intent = new Intent(context,cls);
+		startActivityForResult(intent, requestCode);
+	}
+	private void jumpActivity(Class<?> cls,int  requestCode,String str) {
+		Intent intent = new Intent(context,cls);
+		intent.putExtra("string", str);
+		startActivityForResult(intent, requestCode);
+	}
 	private void initView() {
 		case_name = (MeItemLayout) findViewById(R.id.case_name);
 		case_name.setOnClickListener(this);
@@ -105,9 +123,49 @@ public class EditCaseActivity extends BaseActivity implements
 		setTitle("编辑病例");
 		context = EditCaseActivity.this;
 		initView();
-		setValue();
+		meValue=new CaseInfo();
+		setViewValue();
 	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		String string;
+		switch (requestCode) {
+		case MeFragment.REQUEST_ME_NAME:
+			if(resultCode == Activity.RESULT_OK){
+				string = data.getStringExtra("string");
+				meValue.name=string;
+				setViewValue();
+			} 
+			break;
+		case MeFragment.REQUEST_ME_SEX:
+			if(resultCode == Activity.RESULT_OK){
+				 int sex = data.getIntExtra("int", meValue.sex);
+				meValue.sex=sex;
+				setViewValue();
+			}
+				break;
+			case MeFragment.REQUEST_ME_HOSPITAL:
+				if(resultCode == Activity.RESULT_OK){
+					string = data.getStringExtra("string");
+					meValue.hos_name=string;
+					setViewValue();
+				}
+			
+				break;
+			case MeFragment.REQUEST_ME_ROOM:
+				if(resultCode == Activity.RESULT_OK){
+					string = data.getStringExtra("string");
+					meValue.department=string;
+					setViewValue();
+				}
 
+				break;
+		
+		default:
+			break;
+		}
+		super.onActivityResult( requestCode,  resultCode,  data);
+	}
 
 
 	protected boolean showTitleBar() {

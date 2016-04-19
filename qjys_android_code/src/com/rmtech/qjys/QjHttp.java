@@ -23,8 +23,9 @@ import com.rmtech.qjys.model.MBase;
 import com.rmtech.qjys.model.MDoctorList;
 import com.rmtech.qjys.model.MGroupList;
 import com.rmtech.qjys.model.MIdData;
+import com.rmtech.qjys.model.MImageList;
 import com.rmtech.qjys.model.MPatientList;
-import com.rmtech.qjys.model.MUrlData;
+import com.rmtech.qjys.model.MUploadImageInfo;
 import com.rmtech.qjys.model.MUser;
 import com.rmtech.qjys.model.UserContext;
 import com.sjl.lib.db.DBUtil;
@@ -47,10 +48,11 @@ public class QjHttp {
 	public static final String URL_UPDATE_PATIENT = "/patient/updatepatient";
 	public static final String URL_UPLOAD_IMAGE = "/patient/uploadimage";
 	public static final String URL_PATIENT_GROUPINFO = "/patient/groupinfo";
+	public static final String URL_PATIENT_IMAGE_LIST = "/patient/imagelist";
 
 
 	public static void uploadImage(String patient_id, String folder_id, String name,
-			String path, QjHttpCallback<MUrlData> callback) {
+			String path, QjHttpCallback<MUploadImageInfo> callback) {
 		HashMap<String, String> newparams = new HashMap<String, String>();
 		HttpSetting.addHttpParams(newparams, URL_UPLOAD_IMAGE);
 		newparams.put("patient_id", patient_id);
@@ -74,6 +76,14 @@ public class QjHttp {
 		params.put("group_ids", group_ids);
 		OkHttpUtils.post(URL_PATIENT_GROUPINFO, params, callback);
 	}
+	
+	public static void getImageList(String patient_id, String folder_id, QjHttpCallback<MGroupList> callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("patient_id", patient_id);
+		params.put("folder_id", folder_id );
+		OkHttpUtils.post(URL_PATIENT_IMAGE_LIST, params, callback);
+	}
+	
 	public static void addMembers(String patient_id, String doctor_ids, BaseModelCallback callback) {
 
 		HashMap<String, String> params = new HashMap<>();

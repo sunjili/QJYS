@@ -33,7 +33,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="14dp"
             android:src="@drawable/btn_choice_press"
-            android:visibility="invisible" />
+            android:visibility="visible" />
     </RelativeLayout>
 
     <View

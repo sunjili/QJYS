@@ -44,8 +44,11 @@ public class MePasswordNewActivity extends BaseActivity implements
 				password2=et_password_2.getText().toString().trim();
 				if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)) {
 					//TODO  保存新密码到服务器
-					finish();
+					Intent data=new Intent();
+					data.putExtra("boolean", true);
+					setResult(MeNameActivity.RESULT_OK, data);
 				}
+				finish();
 			}
 		});
 		initView();

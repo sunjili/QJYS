@@ -3,6 +3,8 @@ package com.rmtech.qjys.ui.qjactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -39,9 +41,14 @@ public class MePhoneChangeActivity extends BaseActivity implements
 
 			@Override
 			public void onClick(View v) {
-				//TODO  校验验证码
 				phone=et_phone.getText().toString().trim();
 				verify=et_verify.getText().toString().trim();
+				//TODO  校验验证码
+				if(!TextUtils.isEmpty(phone)&&!TextUtils.isEmpty(verify)){
+					Intent data=new Intent();
+					data.putExtra("string", phone);
+					setResult(MePhoneActivity.RESULT_OK,data);
+				}
 				finish();
 			}
 		});
@@ -69,6 +76,7 @@ public class MePhoneChangeActivity extends BaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_get_verify:
+			timer.start();
 			//TODO 获取验证码
 			Toast.makeText(context, "获取验证码", Toast.LENGTH_LONG).show();
 			break;
@@ -77,4 +85,22 @@ public class MePhoneChangeActivity extends BaseActivity implements
 			break;
 		}
 	}
+	CountDownTimer timer = new CountDownTimer(60000, 1000) {
+		@Override
+		public void onTick(long millisUntilFinished) {
+			et_phone.setFocusable(false);
+			btn_get_verify.setText((millisUntilFinished / 1000) + "秒后可重发");
+			btn_get_verify.setEnabled(false);
+		}
+
+		@Override
+		public void onFinish() {
+			et_phone.setFocusable(true);
+			btn_get_verify.setText("获取验证码");
+			btn_get_verify.setEnabled(true);
+			btn_get_verify
+					.setBackgroundResource(R.drawable.qj_me_greenbutton_selector);
+		}
+	};
+	
 }

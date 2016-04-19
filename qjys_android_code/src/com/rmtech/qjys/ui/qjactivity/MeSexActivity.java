@@ -3,6 +3,7 @@ package com.rmtech.qjys.ui.qjactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -11,10 +12,12 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
+
 /**
  * 性别 界面
+ * 
  * @author Administrator
- *
+ * 
  */
 public class MeSexActivity extends BaseActivity implements OnClickListener {
 	private RelativeLayout ll_man;
@@ -22,6 +25,7 @@ public class MeSexActivity extends BaseActivity implements OnClickListener {
 	private ImageView iv_man;
 	private ImageView iv_woman;
 	private Context context;
+	private int man = 0;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -29,6 +33,18 @@ public class MeSexActivity extends BaseActivity implements OnClickListener {
 		setContentView(R.layout.qj_me_sex);
 		context = MeSexActivity.this;
 		setTitle("性別");
+		setRightTitle("保存", new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO 保存性别
+				Intent data = new Intent();
+				data.putExtra("int", man);
+				setResult(MeNameActivity.RESULT_OK, data);
+				finish();
+
+			}
+		});
 		initView();
 	}
 
@@ -56,11 +72,13 @@ public class MeSexActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ll_man:
+			man = 0;
 			iv_man.setVisibility(View.VISIBLE);
 			iv_woman.setVisibility(View.INVISIBLE);
 
 			break;
 		case R.id.ll_woman:
+			man = 1;
 			iv_woman.setVisibility(View.VISIBLE);
 			iv_man.setVisibility(View.INVISIBLE);
 

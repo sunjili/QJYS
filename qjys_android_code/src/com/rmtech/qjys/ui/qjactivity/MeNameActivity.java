@@ -3,12 +3,14 @@ package com.rmtech.qjys.ui.qjactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.fragment.MeFragment;
 /***
  * 编辑姓名    页面
  * @author Administrator
@@ -27,8 +29,12 @@ public class MeNameActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				//TODO 保存姓名
 				name=et_name.getText().toString().trim();
+				if (!TextUtils.isEmpty(name)) {
+					Intent data=new Intent();
+					data.putExtra("string", name);
+					setResult(MeNameActivity.RESULT_OK, data);
+				}
 				finish();
 			}
 		});
