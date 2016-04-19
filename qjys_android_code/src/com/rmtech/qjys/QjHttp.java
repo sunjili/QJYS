@@ -19,14 +19,21 @@ import com.rmtech.qjys.callback.QjHttpCallbackWitchSaveCache;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.MBase;
 import com.rmtech.qjys.model.MDoctorList;
+import com.rmtech.qjys.model.MGroupList;
 import com.rmtech.qjys.model.MIdData;
 import com.rmtech.qjys.model.MPatientList;
+import com.rmtech.qjys.model.MUrlData;
 import com.rmtech.qjys.model.MUser;
 import com.rmtech.qjys.model.UserContext;
 import com.sjl.lib.db.DBUtil;
+import com.sjl.lib.http.okhttp.HttpSetting;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
 
 public class QjHttp {
+
+	private static final MediaType MEDIA_TYPE_PNG = MediaType
+			.parse("image/png");
+
 	public static final String URL_DOCTOR_APPLYCODE = "/doctor/applycode";
 	public static final String URL_DOCTOR_SMSLOGIN = "/doctor/smslogin";
 	public static final String URL_DOCTOR_SEARCH = "/doctor/search";
@@ -36,8 +43,39 @@ public class QjHttp {
 	public static final String URL_FRIEND_LIST = "/doctor/friendlist";
 	public static final String URL_ADD_MEMBERS = "/patient/addmembers";
 	public static final String URL_UPDATE_PATIENT = "/patient/updatepatient";
+	public static final String URL_UPLOAD_IMAGE = "/patient/uploadimage";
+	public static final String URL_PATIENT_GROUPINFO = "/patient/groupinfo";
 
+
+	public static void uploadImage(String patient_id, String folder_id, String name,
+			String path, QjHttpCallback<MUrlData> callback) {
+		HashMap<String, String> newparams = new HashMap<String, String>();
+		HttpSetting.addHttpParams(newparams, URL_UPLOAD_IMAGE);
+		newparams.put("patient_id", patient_id);
+		newparams.put("folder_id", folder_id);
+
+		HashMap<String, String> headers = new HashMap<String, String>();
+		HttpSetting.addHttpHeader(headers);
+		OkHttpUtils.post()//
+				.addFile("image", name, new File(path))//
+				.url(HttpSetting.BASE_URL + URL_UPLOAD_IMAGE)//
+//				.mediaType(MediaType.parse("application/json; charset=utf-8"))
+				.params(newparams)//
+				.headers(headers)//
+				.build()//
+				.execute(callback);
+
+	}
+
+
+
+	public static void getGroupinfo(String group_ids, QjHttpCallback<MGroupList> callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("group_ids", group_ids);
+		OkHttpUtils.post(URL_PATIENT_GROUPINFO, params, callback);
+	}
 	public static void addMembers(String patient_id, String doctor_ids, BaseModelCallback callback) {
+
 		HashMap<String, String> params = new HashMap<>();
 		params.put("patient_id", patient_id);
 		params.put("doctor_ids", doctor_ids);
