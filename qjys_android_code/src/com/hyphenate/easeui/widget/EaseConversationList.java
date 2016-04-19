@@ -63,17 +63,24 @@ public class EaseConversationList extends SwipeMenuListView {
     }
     
     public void init(List<EMConversation> conversationList){
+    	if(passedListRef == conversationList) {
+    		return;
+    	}
     	passedListRef = conversationList;
+    	conversations.clear();
         conversations.addAll(conversationList);
-        
-        adapter = new EaseConversationAdapater(context, 0, conversations);
+        if(adapter == null) {
+        	adapter = new EaseConversationAdapater(context, 0, conversations);
+            setAdapter(adapter);
+        } else {
+        	adapter.notifyDataSetChanged();
+        }
 //        adapter.setPrimaryColor(primaryColor);
 //        adapter.setPrimarySize(primarySize);
 //        adapter.setSecondaryColor(secondaryColor);
 //        adapter.setSecondarySize(secondarySize);
 //        adapter.setTimeColor(timeColor);
 //        adapter.setTimeSize(timeSize);
-        setAdapter(adapter);
     }
     
     Handler handler = new Handler() {

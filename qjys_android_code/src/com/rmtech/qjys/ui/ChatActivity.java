@@ -1,12 +1,14 @@
 package com.rmtech.qjys.ui;
 
-import com.rmtech.qjys.R;
-import com.rmtech.qjys.ui.fragment.ChatFragment;
-import com.hyphenate.easeui.ui.EaseChatFragment;
-import com.hyphenate.util.EasyUtils;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.hyphenate.easeui.ui.EaseChatFragment;
+import com.hyphenate.util.EasyUtils;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.fragment.ChatFragment;
+import com.rmtech.qjys.ui.fragment.ChatGroupFragment;
 
 /**
  * 聊天页面，需要fragment的使用{@link #EaseChatFragment}
@@ -24,8 +26,14 @@ public class ChatActivity extends BaseActivity{
         activityInstance = this;
         //聊天人或群id
         toChatUsername = getIntent().getExtras().getString("userId");
+        int chatType = getIntent().getExtras().getInt(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_SINGLE);
         //可以直接new EaseChatFratFragment使用
-        chatFragment = new ChatFragment();
+        if(chatType == QjConstant.CHATTYPE_GROUP) {
+        	chatFragment = new ChatGroupFragment();
+
+        } else {
+        	chatFragment = new ChatFragment();
+        }
         //传入参数
         chatFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
