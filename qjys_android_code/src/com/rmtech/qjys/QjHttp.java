@@ -68,15 +68,7 @@ public class QjHttp {
 				.execute(callback);
 
 	}
-<<<<<<< HEAD
 
-
-
-=======
-
-
-
->>>>>>> develop
 	public static void getGroupinfo(String group_ids, QjHttpCallback<MGroupList> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("group_ids", group_ids);
