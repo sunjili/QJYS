@@ -14,6 +14,7 @@ public class CaseInfo implements Serializable {
 	private static final long serialVersionUID = -7846017874522166789L;
 
 	public String id;// : 病例id
+	public String group_id;// : 群组id
 	public String name;// : 姓名
 	public String hos_id;// ：医院id
 	public String hos_name;// ：医院名
@@ -31,6 +32,7 @@ public class CaseInfo implements Serializable {
 	public int create_time;// : 病例时间
 	public DoctorInfo admin_doctor;// : 管理员
 	public List<DoctorInfo> participate_doctor;// : 管理员
+	
 
 	public static class DoctorInfo implements Serializable {
 		/**

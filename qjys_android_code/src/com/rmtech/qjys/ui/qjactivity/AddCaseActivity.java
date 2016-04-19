@@ -77,24 +77,28 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 			@Override
 			public void onClick(View v) {
-				if(TextUtils.isEmpty(tempCaseId)) {
-				save(0, 0);
+				if (TextUtils.isEmpty(tempCaseId)) {
+					save(0, 0);
 				} else {
 					CaseInfo info = createCaseInfo(0);
 
-					QjHttp.updatepatient(info,new BaseModelCallback() {
+					QjHttp.updatepatient(info, new BaseModelCallback() {
 
 						@Override
 						public void onError(Call call, Exception e) {
-							Toast.makeText(getActivity(), "新病例创建失败 " + e.getMessage(), Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(),
+									"新病例创建失败 " + e.getMessage(),
+									Toast.LENGTH_SHORT).show();
 
 						}
 
 						@Override
 						public void onResponseSucces(MBase response) {
-							Toast.makeText(getActivity(), "新病例创建成功", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), "新病例创建成功",
+									Toast.LENGTH_SHORT).show();
 
-						}});
+						}
+					});
 				}
 			}
 		});
@@ -126,6 +130,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		diagnoseEt2 = (EditText) findViewById(R.id.diagnose_et2);
 		stateLayout = (RelativeLayout) findViewById(R.id.state_layout);
 		photoDataLayout = (RelativeLayout) findViewById(R.id.photo_data_layout);
+		photoDataLayout.setOnClickListener(this);
 		doctorsLayout = (RelativeLayout) findViewById(R.id.doctors_layout);
 		doctorsLayout.setOnClickListener(this);
 		ruleLayout = (RelativeLayout) findViewById(R.id.rule_layout);
@@ -153,13 +158,15 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.state = state;
 		return info;
 	}
+
 	protected void save(final int state, final int targetId) {
 		CaseInfo info = createCaseInfo(state);
 		QjHttp.createpatient(info, new QjHttpCallback<MIdData>() {
 
 			@Override
 			public void onError(Call call, Exception e) {
-				Toast.makeText(getActivity(), "新病例创建失败 " + e.getMessage(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "新病例创建失败 " + e.getMessage(),
+						Toast.LENGTH_SHORT).show();
 
 			}
 
@@ -169,18 +176,23 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 				if (response.data != null) {
 					if (state == 1) {
 						if (targetId == R.id.photo_data_layout) {
-							PhotoDataUploadActivity.show(getActivity());
+							PhotoDataUploadActivity.show(getActivity(),
+									response.data.id);
 						} else if (targetId == R.id.doctors_layout) {
-							DoctorPickActivity.show(getActivity(), response.data.id);
+							DoctorPickActivity.show(getActivity(),
+									response.data.id);
 						}
 						// PhotoDataManagerActivity.show(getActivity());
 					} else {
-						Toast.makeText(getActivity(), "新病例创建成功", Toast.LENGTH_SHORT).show();
-						EventBus.getDefault().post(new CaseEvent(CaseEvent.TYPE_ADD));
+						Toast.makeText(getActivity(), "新病例创建成功",
+								Toast.LENGTH_SHORT).show();
+						EventBus.getDefault().post(
+								new CaseEvent(CaseEvent.TYPE_ADD));
 						finish();
 					}
 				} else {
-					Toast.makeText(getActivity(), "新临时病例创建失败 ", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "新临时病例创建失败 ",
+							Toast.LENGTH_SHORT).show();
 
 				}
 			}
@@ -233,17 +245,17 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.gender_man_tv:
-			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_nor), null, null,
-					null);
-			genderManTv.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_press), null, null,
-					null);
+			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(
+					getDrawable(R.drawable.btn_choice_nor), null, null, null);
+			genderManTv.setCompoundDrawablesWithIntrinsicBounds(
+					getDrawable(R.drawable.btn_choice_press), null, null, null);
 			selectSex = 1;
 			break;
 		case R.id.gender_woman_tv:
-			genderManTv.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_nor), null, null,
-					null);
-			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_press), null, null,
-					null);
+			genderManTv.setCompoundDrawablesWithIntrinsicBounds(
+					getDrawable(R.drawable.btn_choice_nor), null, null, null);
+			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(
+					getDrawable(R.drawable.btn_choice_press), null, null, null);
 			selectSex = 2;
 			break;
 		case R.id.photo_data_layout:
@@ -265,7 +277,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
 			case QjConstant.REQUEST_CODE_ADD_DOCTORS:// 添加群成员
-//				currentDoctors = data.getStringArrayListExtra("newmembers");
+				// currentDoctors = data.getStringArrayListExtra("newmembers");
 				break;
 			case QjConstant.REQUEST_CODE_ADD_HOSPITAL:// 添加群成员
 				currentHospital = data.getStringExtra("hospital");

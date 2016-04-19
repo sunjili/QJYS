@@ -26,7 +26,7 @@ import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 import com.sjl.lib.utils.L;
 
-public class PhotoDataBaseActivity extends BaseActivity implements OnNewFolderListener {
+public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFolderListener {
 
 	private NewFolderManager mNewFolderManager;
 

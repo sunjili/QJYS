@@ -1,5 +1,7 @@
 package com.rmtech.qjys.ui.fragment;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -103,6 +105,12 @@ public class ConversationListFragment extends EaseConversationListFragment {
 				}
 			}
 		});
+		
+	}
+	
+	@Override
+	protected void initConversationList(List<EMConversation> sortList) {
+		super.initConversationList(sortList);
 		if (noData()) {
 			no_data_view.setVisibility(View.VISIBLE);
 			errorItemContainer.setVisibility(View.VISIBLE);

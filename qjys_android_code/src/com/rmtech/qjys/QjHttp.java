@@ -1,5 +1,6 @@
 package com.rmtech.qjys;
 
+import java.io.File;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
@@ -66,9 +68,15 @@ public class QjHttp {
 				.execute(callback);
 
 	}
+<<<<<<< HEAD
 
 
 
+=======
+
+
+
+>>>>>>> develop
 	public static void getGroupinfo(String group_ids, QjHttpCallback<MGroupList> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("group_ids", group_ids);
@@ -94,20 +102,23 @@ public class QjHttp {
 		OkHttpUtils.post(URL_ADD_FRIEND, params, callback);
 	}
 
-	public static void login(String inuptPhoneStr, String codeStr, QjHttpCallback<MUser> callback) {
+	public static void login(String inuptPhoneStr, String codeStr,
+			QjHttpCallback<MUser> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", inuptPhoneStr);
 		params.put("code", codeStr);
 		OkHttpUtils.post(URL_DOCTOR_SMSLOGIN, params, callback);
 	}
 
-	public static void serchContact(String toAddUsername, QjHttpCallback<MUser> callback) {
+	public static void serchContact(String toAddUsername,
+			QjHttpCallback<MUser> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", toAddUsername);
 		OkHttpUtils.post(URL_DOCTOR_SEARCH, params, callback);
 	}
 
-	public static void createpatient(CaseInfo info, QjHttpCallback<MIdData> baseModelCallback) {
+	public static void createpatient(CaseInfo info,
+			QjHttpCallback<MIdData> baseModelCallback) {
 
 		// public String abstractStr;// ： 摘要
 		HashMap<String, String> params = new HashMap<>();
@@ -149,10 +160,12 @@ public class QjHttp {
 		OkHttpUtils.post(URL_CREATE_PATIENT, params, baseModelCallback);
 
 	}
-	public static void updatepatient(CaseInfo info, BaseModelCallback baseModelCallback) {
-		
+
+	public static void updatepatient(CaseInfo info,
+			BaseModelCallback baseModelCallback) {
+
 		// public String abstractStr;// ： 摘要
-		if(TextUtils.isEmpty(info.id)) {
+		if (TextUtils.isEmpty(info.id)) {
 			return;
 		}
 		HashMap<String, String> params = new HashMap<>();
@@ -192,7 +205,7 @@ public class QjHttp {
 		}
 		params.put("state", 0 + "");
 		OkHttpUtils.post(URL_UPDATE_PATIENT, params, baseModelCallback);
-		
+
 	}
 
 	public static ParameterizedType type(final Class clazz, final Type... args) {
@@ -211,67 +224,79 @@ public class QjHttp {
 		};
 	}
 
-	public static void getDoctorList(boolean needCache, final QjHttpCallbackNoParse<MDoctorList> callback) {
-		postWitchCache(needCache, URL_FRIEND_LIST, null, new QjHttpCallbackNoParse<MDoctorList>() {
+	public static void getDoctorList(boolean needCache,
+			final QjHttpCallbackNoParse<MDoctorList> callback) {
+		postWitchCache(needCache, URL_FRIEND_LIST, null,
+				new QjHttpCallbackNoParse<MDoctorList>() {
 
-			@Override
-			public MDoctorList parseNetworkResponse(String str) throws Exception {
-				Type objectType = type(MDoctorList.class, new TypeToken<Map<String, List<CaseInfo>>>() {
-				}.getType());
+					@Override
+					public MDoctorList parseNetworkResponse(String str)
+							throws Exception {
+						Type objectType = type(MDoctorList.class,
+								new TypeToken<Map<String, List<CaseInfo>>>() {
+								}.getType());
 
-				return new Gson().fromJson(str, objectType);
-			}
+						return new Gson().fromJson(str, objectType);
+					}
 
-			@Override
-			public void onResponseSucces(boolean isCache, MDoctorList response) {
-				if (callback != null) {
-					callback.onResponseSucces(isCache, response);
-				}
-			}
+					@Override
+					public void onResponseSucces(boolean isCache,
+							MDoctorList response) {
+						if (callback != null) {
+							callback.onResponseSucces(isCache, response);
+						}
+					}
 
-			@Override
-			public void onError(Call call, Exception e) {
-				if (callback != null) {
-					callback.onError(call, e);
-				}
-			}
-		});
-
-	}
-
-	public static void getPatientList(boolean needCache, final QjHttpCallbackNoParse<MPatientList> callback) {
-		postWitchCache(needCache, URL_PATIENT_LIST, null, new QjHttpCallbackNoParse<MPatientList>() {
-
-			@Override
-			public MPatientList parseNetworkResponse(String str) throws Exception {
-				Type objectType = type(MPatientList.class, new TypeToken<Map<String, List<CaseInfo>>>() {
-				}.getType());
-
-				return new Gson().fromJson(str, objectType);
-			}
-
-			@Override
-			public void onResponseSucces(boolean isCache, MPatientList response) {
-				if (callback != null) {
-					callback.onResponseSucces(isCache, response);
-				}
-			}
-
-			@Override
-			public void onError(Call call, Exception e) {
-				if (callback != null) {
-					callback.onError(call, e);
-				}
-			}
-		});
+					@Override
+					public void onError(Call call, Exception e) {
+						if (callback != null) {
+							callback.onError(call, e);
+						}
+					}
+				});
 
 	}
 
-	public static void postWitchCache(boolean needCache, final String url, final HashMap<String, String> hashMap,
+	public static void getPatientList(boolean needCache,
+			final QjHttpCallbackNoParse<MPatientList> callback) {
+		postWitchCache(needCache, URL_PATIENT_LIST, null,
+				new QjHttpCallbackNoParse<MPatientList>() {
+
+					@Override
+					public MPatientList parseNetworkResponse(String str)
+							throws Exception {
+						Type objectType = type(MPatientList.class,
+								new TypeToken<Map<String, List<CaseInfo>>>() {
+								}.getType());
+
+						return new Gson().fromJson(str, objectType);
+					}
+
+					@Override
+					public void onResponseSucces(boolean isCache,
+							MPatientList response) {
+						if (callback != null) {
+							callback.onResponseSucces(isCache, response);
+						}
+					}
+
+					@Override
+					public void onError(Call call, Exception e) {
+						if (callback != null) {
+							callback.onError(call, e);
+						}
+					}
+				});
+
+	}
+
+	public static void postWitchCache(boolean needCache, final String url,
+			final HashMap<String, String> hashMap,
 			final QjHttpCallbackNoParse callback) {
 		if (needCache) {
 			final String cacheKey = url + UserContext.getInstance().getCookie();
-			final QjHttpCallback tempCallback = new QjHttpCallbackWitchSaveCache(cacheKey, callback);
+			final QjHttpCallback tempCallback = new QjHttpCallbackWitchSaveCache(
+					cacheKey, callback);
 
 			new AsyncTask<Void, Void, Object>() {
 

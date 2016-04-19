@@ -20,8 +20,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMGroup;
 import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.widget.EaseSidebar;
@@ -32,10 +30,9 @@ import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.MBase;
 import com.rmtech.qjys.model.MDoctorList;
-import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 
-public class DoctorPickActivity extends BaseActivity {
+public class DoctorPickActivity extends CaseWithIdActivity {
 	private ListView listView;
 	/** 是否为一个新建的群组 */
 	protected boolean isCreatingNewGroup;
@@ -45,7 +42,6 @@ public class DoctorPickActivity extends BaseActivity {
 	/** group中一开始就有的成员 */
 	private List<String> exitingMembers;
 	final List<EaseUser> alluserList = new ArrayList<EaseUser>();
-	private String patient_id;
 
 	private void loadData() {
 
@@ -70,7 +66,7 @@ public class DoctorPickActivity extends BaseActivity {
 
 	public static void show(Activity activity, String patient_id) {
 		Intent intent = new Intent(activity, DoctorPickActivity.class);//
-		intent.putExtra("patient_id", patient_id);
+		setCaseId(intent, patient_id);
 		activity.startActivityForResult(intent, QjConstant.REQUEST_CODE_ADD_DOCTORS);
 	}
 
@@ -89,7 +85,7 @@ public class DoctorPickActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				QjHttp.addMembers(patient_id, getMembersString(), new BaseModelCallback() {
+				QjHttp.addMembers(caseId, getMembersString(), new BaseModelCallback() {
 
 					@Override
 					public void onResponseSucces(MBase response) {
@@ -106,7 +102,6 @@ public class DoctorPickActivity extends BaseActivity {
 			}
 		});
 		// String groupName = getIntent().getStringExtra("groupName");
-		patient_id = getIntent().getStringExtra("patient_id");
 		// if (groupId == null) {// 创建群组
 		// isCreatingNewGroup = true;
 		// } else {

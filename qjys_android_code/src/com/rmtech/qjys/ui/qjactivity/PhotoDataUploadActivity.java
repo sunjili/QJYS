@@ -21,9 +21,13 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.PhotoDataInfo;
+import com.rmtech.qjys.utils.PhotoUploadManager;
+import com.rmtech.qjys.utils.PhotoUploadManager.OnPhotoUploadListener;
+import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.sjl.lib.utils.L;
 
-public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
+public class PhotoDataUploadActivity extends PhotoDataBaseActivity implements
+		OnPhotoUploadListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,9 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 		initViews();
 	}
 
-	public static void show(Activity context) {
+	public static void show(Activity context, String patient_id) {
 		Intent intent = new Intent();
+		setCaseId(intent, patient_id);
 		intent.setClass(context, PhotoDataUploadActivity.class);
 		context.startActivity(intent);
 	}
@@ -64,11 +69,14 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 
 		mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+			public void onItemClick(AdapterView<?> adapterView, View view,
+					int i, long l) {
 				// selectImageFromGrid(i);
 			}
 
 		});
+
+		PhotoUploadManager.getInstance().registerPhotoUploadListener(this);
 
 	}
 
@@ -81,7 +89,20 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 	}
 
 	protected void onImagePicked(List<String> paths) {
-		mAdapter.addImages(paths);
+		super.onImagePicked(paths);
+		for (String path : paths) {
+			PhotoDataInfo info = new PhotoDataInfo(PhotoDataInfo.TYPE_IMAGE);
+			info.localPath = path;
+			L.e("localPath = " + path);
+			int index = path.lastIndexOf('/');
+			info.name = path.substring(index + 1, path.length());
+			L.e("info.name = " + info.name);
+			info.state = PhotoDataInfo.STATE_UPLOADING;
+			mDataList.add(info);
+			PhotoUploadManager.getInstance().addUploadTask(caseId, "", info);
+		}
+
+		mAdapter.notifyDataSetChanged();
 	}
 
 	public class SelectGridAdapter extends BaseAdapter {
@@ -89,22 +110,6 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 		@Override
 		public int getCount() {
 			return mDataList.size();
-		}
-
-		public void addImages(List<String> paths) {
-			for (String path : paths) {
-				PhotoDataInfo info = new PhotoDataInfo(PhotoDataInfo.TYPE_IMAGE);
-				info.localPath = path;
-				L.e("localPath = " + path);
-
-				int index = path.lastIndexOf('/');
-				info.name = path.substring(index+1, path.length());
-				L.e("info.name = " + info.name);
-				info.state = PhotoDataInfo.STATE_UPLOADING;
-				mDataList.add(info);
-			}
-			notifyDataSetChanged();
-
 		}
 
 		@Override
@@ -146,10 +151,12 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 			PhotoDataInfo info = getItem(position);
 			if (convertView == null) {
 				if (info.type == PhotoDataInfo.TYPE_IMAGE) {
-					convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_grid_photodata_image, null);
+					convertView = LayoutInflater.from(getActivity()).inflate(
+							R.layout.item_grid_photodata_image, null);
 
 				} else {
-					convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_grid_photodata_folder, null);
+					convertView = LayoutInflater.from(getActivity()).inflate(
+							R.layout.item_grid_photodata_folder, null);
 
 				}
 				holder = new ViewHolder(convertView);
@@ -166,8 +173,10 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 	private class ViewHolder {
 		public ImageView itemImg;
 		public TextView itemName;
-		DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.drawable.default_error)
-				.showImageOnFail(R.drawable.default_error).resetViewBeforeLoading(true).cacheOnDisk(true)
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.default_error)
+				.showImageOnFail(R.drawable.default_error)
+				.resetViewBeforeLoading(true).cacheOnDisk(true)
 				.cacheInMemory(true).build();
 
 		public ViewHolder(View container) {
@@ -177,10 +186,30 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 
 		public void build(PhotoDataInfo data) {
 			if (data.type == PhotoDataInfo.TYPE_IMAGE) {
-				ImageLoader.getInstance().displayImage("file://" + data.localPath, itemImg, options);
+				ImageLoader.getInstance().displayImage(
+						"file://" + data.localPath, itemImg, options);
 			}
 			itemName.setText(data.name);
 		}
+	}
+
+	@Override
+	public void onUploadProgress(PhotoUploadStateInfo state) {
+		L.e("Upload progress" + state.progress);
+	}
+
+	@Override
+	public void onUploadError(PhotoUploadStateInfo state, Exception e) {
+		// TODO Auto-generated method stub
+		L.e("Upload onUploadError" + e);
+
+	}
+
+	@Override
+	public void onUploadComplete(PhotoUploadStateInfo state, String url) {
+		L.e("Upload onUploadComplete =" + url);
+		// TODO Auto-generated method stub
+
 	}
 
 }

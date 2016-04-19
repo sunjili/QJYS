@@ -309,6 +309,7 @@ public class OkHttpUtils {
 		}
 		OkHttpUtils.post().url(HttpSetting.BASE_URL + url).headers(headers).params(newparams).build().execute(callback);
 	}
+	
 
 	public static class METHOD {
 		public static final String HEAD = "HEAD";
