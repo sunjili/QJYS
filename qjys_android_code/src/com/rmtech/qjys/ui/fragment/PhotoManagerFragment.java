@@ -274,7 +274,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	}
 
 	public void onImagePicked(List<String> paths) {
-		Log.d("ssssssssssssssss", "onImagePicked");
+//		Log.d("ssssssssssssssss", "onImagePicked");
 		for (String path : paths) {
 			PhotoDataInfo info = new PhotoDataInfo();
 			info.localPath = path;
