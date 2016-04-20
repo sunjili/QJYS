@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -14,14 +13,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListPopupWindow;
 
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
-import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.fragment.PhotoManagerFragment;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
-import com.rmtech.qjys.utils.PhotoUploadManager;
-import com.sjl.lib.utils.L;
 
 public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 
@@ -49,7 +46,9 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 			}
 		});
 		initPhotoSelector();
-		mPhotoManagerFragment.setIds(caseId,"");
+		
+		mCaseTopBarView.setCaseInfo(caseInfo);
+		mPhotoManagerFragment.setIds(caseInfo,"");
 	}
 
 	protected BaseActivity getActivity() {
@@ -60,10 +59,12 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
 	}
 
-	public static void show(Activity context, String caseId) {
+	public static void show(Activity context, CaseInfo caseInfo) {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataManagerActivity.class);
-		setCaseId(intent, caseId);
+		setCaseInfo(intent, caseInfo);
+		setCaseId(intent, caseInfo.id);
+		
 		context.startActivity(intent);
 	}
 

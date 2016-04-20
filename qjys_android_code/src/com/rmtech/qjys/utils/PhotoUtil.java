@@ -58,7 +58,7 @@ public class PhotoUtil {
 		// 是否显示拍摄图片
 		intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, false);
 		// 最大可选择图片数量
-		intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 9);
+		intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, multiSelect?9:1);
 		// 选择模式
 		int mode = multiSelect? MultiImageSelectorActivity.MODE_MULTI :  MultiImageSelectorActivity.MODE_SINGLE;
 		intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, mode);
@@ -82,5 +82,16 @@ public class PhotoUtil {
 	public static final File IMAGE_ORIGI_FILE_DIR = new File(SAILFISH_DIR + "/picture_original");
 	public static final File IMAGE_FINAL_FILE_DIR = new File(SAILFISH_DIR + "/picture_final");
 	public static final int PHOTO_REQUEST_CUT_HEADER = 6;
+	public static final String PIC_ZOOM_OUTPUT_FILE_KEY2 = "PIC_ZOOM_OUTPUT_FILE_KEY2";
+	static {
+		if (!IMAGE_ORIGI_FILE_DIR.exists()) {
+			IMAGE_ORIGI_FILE_DIR.mkdirs();
+		}
+		
+		if (!IMAGE_FINAL_FILE_DIR.exists()) {
+			IMAGE_FINAL_FILE_DIR.mkdirs();
+		}
+	}
+
 
 }

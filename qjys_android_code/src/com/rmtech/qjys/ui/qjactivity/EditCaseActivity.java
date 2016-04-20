@@ -4,16 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Parcelable;
 import android.view.View;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
-import com.rmtech.qjys.model.UserInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.ui.view.MeItemLayout;
-import com.sjl.lib.utils.L;
 
 public class EditCaseActivity extends BaseActivity implements
 		View.OnClickListener {
@@ -97,6 +95,7 @@ public class EditCaseActivity extends BaseActivity implements
 		intent.putExtra("string", str);
 		startActivityForResult(intent, requestCode);
 	}
+	
 	private void initView() {
 		case_name = (MeItemLayout) findViewById(R.id.case_name);
 		case_name.setOnClickListener(this);
@@ -123,7 +122,8 @@ public class EditCaseActivity extends BaseActivity implements
 		setTitle("编辑病例");
 		context = EditCaseActivity.this;
 		initView();
-		meValue=new CaseInfo();
+//		meValue=new CaseInfo();
+		meValue = (CaseInfo) getIntent().getParcelableExtra("case_info");
 		setViewValue();
 	}
 	@Override
@@ -172,9 +172,10 @@ public class EditCaseActivity extends BaseActivity implements
 		return true;
 	}
 
-	public static void show(Activity context) {
+	public static void show(Activity context,  CaseInfo caseInfo) {
 		Intent intent = new Intent();
 		intent.setClass(context, EditCaseActivity.class);
+		intent.putExtra("case_info", (Parcelable)caseInfo);
 		context.startActivity(intent);
 	}
 

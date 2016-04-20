@@ -54,14 +54,16 @@ public class CaseFragment extends QjBaseFragment {
 	private CaseSectionedAdapter mAdapter;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.qj_fragment_case_list, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.qj_fragment_case_list, container,
+				false);
 	}
 
 	@Subscribe
 	public void onEvent(CaseEvent event) {
 		// mAdapter.add();
-		L.d("onEvent "+event.type);
+		L.d("onEvent " + event.type);
 		QjHttp.getPatientList(false, httpCallback);
 
 	}
@@ -75,8 +77,10 @@ public class CaseFragment extends QjBaseFragment {
 	@Override
 	protected void initView() {
 		EventBus.getDefault().register(this);
-		mTextView = (TextView) getView().findViewById(R.id.list_view_with_empty_view_fragment_empty_view);
-		mPtrFrame = (PtrClassicFrameLayout) getView().findViewById(R.id.list_view_with_empty_view_fragment_ptr_frame);
+		mTextView = (TextView) getView().findViewById(
+				R.id.list_view_with_empty_view_fragment_empty_view);
+		mPtrFrame = (PtrClassicFrameLayout) getView().findViewById(
+				R.id.list_view_with_empty_view_fragment_ptr_frame);
 
 		mTextView.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -85,23 +89,25 @@ public class CaseFragment extends QjBaseFragment {
 				mPtrFrame.autoRefresh();
 			}
 		});
-		mListView = (PinnedHeaderListView) getView().findViewById(R.id.pinnedListView);
+		mListView = (PinnedHeaderListView) getView().findViewById(
+				R.id.pinnedListView);
 		mAdapter = new CaseSectionedAdapter();
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
+			public void onSectionClick(AdapterView<?> adapterView, View view,
+					int section, long id) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
-				// TODO Auto-generated method stub
+			public void onItemClick(AdapterView<?> adapterView, View view,
+					int section, int position, long id) {
 				CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
-				PhotoDataManagerActivity.show(getActivity(), info.id);
-				
+				PhotoDataManagerActivity.show(getActivity(), info);
+
 			}
 		});
 		// step 1. create a MenuCreator
@@ -112,7 +118,8 @@ public class CaseFragment extends QjBaseFragment {
 				// create "open" item
 				SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
 				// set item background
-				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
+				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+						0xCE)));
 				// set item width
 				openItem.setWidth(dp2px(90));
 				// set item title
@@ -127,7 +134,8 @@ public class CaseFragment extends QjBaseFragment {
 				// create "delete" item
 				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
 				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+						0x3F, 0x25)));
 				// set item width
 				deleteItem.setWidth(dp2px(90));
 				// set a icon
@@ -140,24 +148,26 @@ public class CaseFragment extends QjBaseFragment {
 		mListView.setMenuCreator(creator);
 
 		// step 2. listener item click event
-		mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				switch (index) {
-				case 0:
-					// open
-					// open(null);
-					break;
-				case 1:
-					// delete
-					// delete(item);
-					// mAppList.remove(position);
-					mAdapter.notifyDataSetChanged();
-					break;
-				}
-				return false;
-			}
-		});
+		mListView
+				.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(int position,
+							SwipeMenu menu, int index) {
+						switch (index) {
+						case 0:
+							// open
+							// open(null);
+							break;
+						case 1:
+							// delete
+							// delete(item);
+							// mAppList.remove(position);
+							mAdapter.notifyDataSetChanged();
+							break;
+						}
+						return false;
+					}
+				});
 
 		// set SwipeListener
 		mListView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
@@ -174,15 +184,16 @@ public class CaseFragment extends QjBaseFragment {
 		});
 
 		// set MenuStateChangeListener
-		mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
-			@Override
-			public void onMenuOpen(int position) {
-			}
+		mListView
+				.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+					@Override
+					public void onMenuOpen(int position) {
+					}
 
-			@Override
-			public void onMenuClose(int position) {
-			}
-        });
+					@Override
+					public void onMenuClose(int position) {
+					}
+				});
 		mPtrFrame.setLastUpdateTimeRelateObject(this);
 		mPtrFrame.disableWhenHorizontalMove(true);
 		mPtrFrame.setPtrHandler(new PtrHandler() {
@@ -201,7 +212,7 @@ public class CaseFragment extends QjBaseFragment {
 
 		});
 		mPtrFrame.addPtrUIHandler(new PtrUIHandler() {
-			
+
 			@Override
 			public void onUIReset(PtrFrameLayout frame) {
 				// TODO Auto-generated method stub
@@ -230,8 +241,8 @@ public class CaseFragment extends QjBaseFragment {
 			}
 
 			@Override
-			public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status,
-					PtrIndicator ptrIndicator) {
+			public void onUIPositionChange(PtrFrameLayout frame,
+					boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
 				// TODO Auto-generated method stub
 
 			}
@@ -244,7 +255,7 @@ public class CaseFragment extends QjBaseFragment {
 			@Override
 			public void onClick(View v) {
 				AddCaseActivity.show(getActivity());
-//				 PhotoDataManagerActivity.show(getActivity());
+				// PhotoDataManagerActivity.show(getActivity());
 
 			}
 		});
@@ -277,20 +288,21 @@ public class CaseFragment extends QjBaseFragment {
 	};
 
 	private int dp2px(int dp) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+				getResources().getDisplayMetrics());
 	}
 
 	private void updateData() {
 		QjHttp.getPatientList(false, httpCallback);
 
 		// TODO Auto-generated method stub
-//		mListView.postDelayed(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				displayData();
-//			}
-//		}, 1000);
+		// mListView.postDelayed(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// displayData();
+		// }
+		// }, 1000);
 
 	}
 
@@ -311,7 +323,8 @@ public class CaseFragment extends QjBaseFragment {
 	public class CaseSectionedAdapter extends SectionedBaseAdapter {
 
 		private List<HospitalCaseInfo> mPatientList;
-//		private ArrayList<String> keyPositionList;
+
+		// private ArrayList<String> keyPositionList;
 
 		@Override
 		public Object getItem(int section, int position) {
@@ -320,12 +333,12 @@ public class CaseFragment extends QjBaseFragment {
 
 		public void setData(MPatientList patientList) {
 			this.mPatientList = patientList.data.lists;
-//			if (keyPositionList == null) {
-//				keyPositionList = new ArrayList<String>();
-//			} else {
-//				keyPositionList.clear();
-//			}
-//			keyPositionList.addAll(mPatientList.keySet());
+			// if (keyPositionList == null) {
+			// keyPositionList = new ArrayList<String>();
+			// } else {
+			// keyPositionList.clear();
+			// }
+			// keyPositionList.addAll(mPatientList.keySet());
 			notifyDataSetChanged();
 		}
 
@@ -352,19 +365,19 @@ public class CaseFragment extends QjBaseFragment {
 			if (list == null) {
 				return 0;
 			}
-			
+
 			return list.size();
 		}
 
 		public List<CaseInfo> getCaseListBySection(int section) {
-//			if (keyPositionList == null) {
-//				return null;
-//			}
+			// if (keyPositionList == null) {
+			// return null;
+			// }
 			HospitalCaseInfo key = mPatientList.get(section);
 			List<CaseInfo> list = key.patients;
 			return list;
 		}
-		
+
 		public CaseInfo getCaseInfoByPos(int section, int position) {
 			List<CaseInfo> list = getCaseListBySection(section);
 			if (list != null) {
@@ -374,12 +387,14 @@ public class CaseFragment extends QjBaseFragment {
 		}
 
 		@Override
-		public View getItemView(int section, int position, View convertView, ViewGroup parent) {
+		public View getItemView(int section, int position, View convertView,
+				ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
-						Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(R.layout.case_list_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(
+						R.layout.case_list_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
@@ -399,16 +414,19 @@ public class CaseFragment extends QjBaseFragment {
 		}
 
 		@Override
-		public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+		public View getSectionHeaderView(int section, View convertView,
+				ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
-						Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(R.layout.case_list_header_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(
+						R.layout.case_list_header_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
-			((TextView) layout.findViewById(R.id.textItem)).setText(mPatientList.get(section).hos_fullname);
+			((TextView) layout.findViewById(R.id.textItem))
+					.setText(mPatientList.get(section).hos_fullname);
 			return layout;
 		}
 

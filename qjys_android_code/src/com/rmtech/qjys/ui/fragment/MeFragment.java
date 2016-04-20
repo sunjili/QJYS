@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.UserInfo;
 import com.rmtech.qjys.ui.qjactivity.ImageCropActivity;
 import com.rmtech.qjys.ui.qjactivity.MeAboutActivity;
@@ -38,6 +42,7 @@ import com.rmtech.qjys.ui.qjactivity.MeSexActivity;
 import com.rmtech.qjys.ui.qjactivity.MeTreatmentStateActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
 import com.rmtech.qjys.utils.PhotoUtil;
+import com.rmtech.qjys.utils.PreferenceManager;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
@@ -97,7 +102,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 
 	private void setViewValue() {
 		me_name.setRightText(meValue.name);
-		if (meValue.sex==0) {
+		if (meValue.sex == 0) {
 			me_sex.setRightText("男");
 		} else {
 			me_sex.setRightText("女");
@@ -107,10 +112,11 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 
 		try {
 			String phone = meValue.phone;
-			me_phone.setRightText(phone.subSequence(0, 3)+"****"+phone.subSequence(8, phone.length()));
+			me_phone.setRightText(phone.subSequence(0, 3) + "****"
+					+ phone.subSequence(8, phone.length()));
 		} catch (Exception e) {
 			me_phone.setRightText("");
-			L.e("------设置我的界面手机号-------");	
+			L.e("------设置我的界面手机号-------");
 		}
 		if (meValue.passwordFlag) {
 			me_password.setRightText("已设置");
@@ -135,11 +141,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 					final Uri uri = data.getData();
 					Log.i("ssssssssss", "Uri = " + uri.toString());
 					try {
-						// Get the file path from the URI
-						final String path = FileUtils.getPath(getActivity(),
-								uri);
-						Toast.makeText(getActivity(), "File Selected: " + path,
-								Toast.LENGTH_LONG).show();
+						startPhotoZoom(uri);
 					} catch (Exception e) {
 						Log.e("FileSelectorTestActivity", "File select error",
 								e);
@@ -153,12 +155,9 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 			if (resultCode == getActivity().RESULT_OK) {
 				ArrayList<String> mSelectPath = data
 						.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-				// StringBuilder sb = new StringBuilder();
-				// for(String p: mSelectPath){
-				// sb.append(p);
-				// sb.append("\n");
-				// }
-				// mResultText.setText(sb.toString());
+				if (mSelectPath != null && mSelectPath.size() > 0) {
+					startPhotoZoom(Uri.fromFile(new File(mSelectPath.get(0))));
+				}
 			}
 			break;
 
@@ -167,18 +166,12 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 			if (resultCode == Activity.RESULT_OK) {
 				if (mTmpFile != null) {
 					if (mTmpFile != null) {
+						Uri uri = Uri.fromFile(mTmpFile);
 						getActivity().sendBroadcast(
 								new Intent(
 										Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-										Uri.fromFile(mTmpFile)));
-
-						// Intent data = new Intent();
-						// resultList.add(imageFile.getAbsolutePath());
-						// data.putStringArrayListExtra(EXTRA_RESULT,
-						// resultList);
-						// setResult(RESULT_OK, data);
-						// finish();
-						// mCallback.onCameraShot(mTmpFile);
+										uri));
+						startPhotoZoom(uri);
 					}
 				} else {
 					while (mTmpFile != null && mTmpFile.exists()) {
@@ -190,59 +183,79 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 				}
 			}
 			break;
+		case PhotoUtil.PHOTO_REQUEST_CUT_HEADER:
+			if (resultCode == Activity.RESULT_OK) {
+				if (data != null && !data.getBooleanExtra("qualified", true)) {
+					// 提示用户:所选图片太小
+					new AlertDialog.Builder(getActivity())
+							.setMessage(
+									String.format("图片尺寸不能小于%d*%d", 480, 480))
+							.setPositiveButton("我知道了", null).show();
+					break;
+				}
+				Bitmap bitmap = BitmapFactory.decodeFile(new File(
+						PhotoUtil.IMAGE_FINAL_FILE_DIR, mPhotoZoomFileName)
+						.getAbsolutePath());
+				if(bitmap == null) {
+					Toast.makeText(context, "头像裁剪失败", Toast.LENGTH_LONG).show();
+				} else {
+					iv_head.setImageBitmap(bitmap);
+				}
+			}
+			break;
 
-//		case REQUEST_ME_HEAD:
-//			 string = data.getStringExtra("string");
-//			meValue.imgUrl=string;
-//			setViewValue();
-//			break;
+		// case REQUEST_ME_HEAD:
+		// string = data.getStringExtra("string");
+		// meValue.imgUrl=string;
+		// setViewValue();
+		// break;
 		case REQUEST_ME_NAME:
-			if(resultCode == Activity.RESULT_OK){
+			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.name=string;
+				meValue.name = string;
 				setViewValue();
-			} 
+			}
 			break;
 		case REQUEST_ME_SEX:
-			if(resultCode == Activity.RESULT_OK){
-				 int sex = data.getIntExtra("int", meValue.sex);
-				meValue.sex=sex;
+			if (resultCode == Activity.RESULT_OK) {
+				int sex = data.getIntExtra("int", meValue.sex);
+				meValue.sex = sex;
 				setViewValue();
 				break;
 			}
 		case REQUEST_ME_HOSPITAL:
-			if(resultCode == Activity.RESULT_OK){
+			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.hos_name=string;
+				meValue.hos_name = string;
 				setViewValue();
 			}
-		
+
 			break;
 		case REQUEST_ME_ROOM:
-			if(resultCode == Activity.RESULT_OK){
+			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.department=string;
+				meValue.department = string;
 				setViewValue();
 			}
 
 			break;
 		case REQUEST_ME_PHONE:
-			if(resultCode == Activity.RESULT_OK){
-			string = data.getStringExtra("string");
-			meValue.phone=string;
-			setViewValue();
+			if (resultCode == Activity.RESULT_OK) {
+				string = data.getStringExtra("string");
+				meValue.phone = string;
+				setViewValue();
 			}
 			break;
 		case REQUEST_ME_PASSWORD:
-			if(resultCode == Activity.RESULT_OK){
-			boolean bool = data.getBooleanExtra("boolean", false);
-			meValue.passwordFlag=bool;
-			setViewValue();
+			if (resultCode == Activity.RESULT_OK) {
+				boolean bool = data.getBooleanExtra("boolean", false);
+				meValue.passwordFlag = bool;
+				setViewValue();
 			}
 			break;
 		default:
 			break;
-		
+
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
@@ -285,28 +298,29 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 					}).show();
 			break;
 		case R.id.me_name:
-			 jumpActivity(MeNameActivity.class,REQUEST_ME_NAME);
+			jumpActivity(MeNameActivity.class, REQUEST_ME_NAME);
 			break;
 		case R.id.me_sex:
-			jumpActivity(MeSexActivity.class,REQUEST_ME_SEX);
+			jumpActivity(MeSexActivity.class, REQUEST_ME_SEX);
 			break;
 		case R.id.me_hospital:
-			jumpActivity(MeHospitalActivity.class,REQUEST_ME_HOSPITAL);
+			jumpActivity(MeHospitalActivity.class, REQUEST_ME_HOSPITAL);
 			break;
 		case R.id.me_room:
-			jumpActivity(MeRoomActivity.class,REQUEST_ME_ROOM);
+			jumpActivity(MeRoomActivity.class, REQUEST_ME_ROOM);
 			break;
 
 		case R.id.me_phone:
-			jumpActivity(MePhoneActivity.class,REQUEST_ME_PHONE,meValue.phone);
+			jumpActivity(MePhoneActivity.class, REQUEST_ME_PHONE, meValue.phone);
 			break;
 		case R.id.me_password:
-			if(meValue.passwordFlag){
+			if (meValue.passwordFlag) {
 				// 更改密码
-				jumpActivity(MePasswordChangeActivity.class,REQUEST_ME_PASSWORD);
-			}else{
+				jumpActivity(MePasswordChangeActivity.class,
+						REQUEST_ME_PASSWORD);
+			} else {
 				// 设置新密码
-				jumpActivity(MePasswordNewActivity.class,REQUEST_ME_PASSWORD);
+				jumpActivity(MePasswordNewActivity.class, REQUEST_ME_PASSWORD);
 			}
 			break;
 
@@ -328,29 +342,33 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 
 			break;
 		case R.id.btn_logout:
-			
+
 			Toast.makeText(context, "退出登录", Toast.LENGTH_SHORT).show();
 			btn_logout.setVisibility(View.GONE);
-			meValue=new UserInfo();
+			meValue = new UserInfo();
 			setViewValue();
 			break;
 		default:
 			break;
 		}
 	}
+
 	private void jumpActivity(Class<?> cls) {
 		Intent intent = new Intent(context, cls);
 		startActivity(intent);
 	}
-	private void jumpActivity(Class<?> cls,int  requestCode) {
-		Intent intent = new Intent(context,cls);
+
+	private void jumpActivity(Class<?> cls, int requestCode) {
+		Intent intent = new Intent(context, cls);
 		startActivityForResult(intent, requestCode);
 	}
-	private void jumpActivity(Class<?> cls,int  requestCode,String str) {
-		Intent intent = new Intent(context,cls);
+
+	private void jumpActivity(Class<?> cls, int requestCode, String str) {
+		Intent intent = new Intent(context, cls);
 		intent.putExtra("string", str);
 		startActivityForResult(intent, requestCode);
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -358,8 +376,8 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 				false);
 		context = MeFragment.this.getActivity();
 		initView(inflate);
-		meValue = new UserInfo();
-		//TODO 保存value
+		meValue = UserContext.getInstance().getUser();
+		// TODO 保存value
 		setViewValue();
 		return inflate;
 	}
@@ -422,17 +440,14 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 		// TODO Auto-generated method stub
 	}
 
+	private String mPhotoZoomFileName;
+
 	private void startPhotoZoom(Uri uri) {
 
-		String fileName = PhotoUtil.getPhotoFileName();
-		// SharedPreferences share = UserInfoActivity.this.getSharedPreferences(
-		// CameraUtil.PIC_ZOOM_OUTPUT_DB, 0);
-		// share.edit().putString(CameraUtil.PIC_ZOOM_OUTPUT_FILE_KEY2,
-		// fileName)
-		// .commit();
+		mPhotoZoomFileName = PhotoUtil.getPhotoFileName();
 
 		Uri imageUri = Uri.fromFile(new File(PhotoUtil.IMAGE_FINAL_FILE_DIR,
-				fileName));
+				mPhotoZoomFileName));
 		Intent intent = new Intent(getActivity(), ImageCropActivity.class);
 		intent.setDataAndType(uri, "image/*");
 		intent.putExtra("outputX", 120);// 输出图片大小

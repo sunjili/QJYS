@@ -1,23 +1,28 @@
 package com.rmtech.qjys.ui.qjactivity;
 
+import uk.co.senab.photoview.PhotoView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 
-import uk.co.senab.photoview.PhotoView;
-
 @SuppressLint("NewApi")
-public class PhotoDataEditActivity extends BaseActivity implements OnClickListener {
+public class PhotoDataEditActivity extends BaseActivity implements
+		OnClickListener {
 
-	protected static final String TAG = PhotoDataEditActivity.class.getSimpleName();
+	protected static final String TAG = PhotoDataEditActivity.class
+			.getSimpleName();
 	private PhotoView photoView;
 	private RelativeLayout titleLayout;
 	private TextView returnTv;
@@ -26,6 +31,11 @@ public class PhotoDataEditActivity extends BaseActivity implements OnClickListen
 	private RelativeLayout bottomLayout;
 	private TextView mirrorTv;
 	private TextView rotateTv;
+	DisplayImageOptions optionsThumb = new DisplayImageOptions.Builder()
+			.showImageForEmptyUri(R.drawable.default_error)
+			.showImageOnFail(R.drawable.default_error)
+			.resetViewBeforeLoading(true).cacheOnDisk(true).cacheInMemory(true)
+			.build();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +52,18 @@ public class PhotoDataEditActivity extends BaseActivity implements OnClickListen
 		mirrorTv.setOnClickListener(this);
 		rotateTv = (TextView) findViewById(R.id.rotate_tv);
 		rotateTv.setOnClickListener(this);
-		photoView.setImageResource(R.drawable.ic_launcher);
-
+		PhotoDataInfo photoData = getIntent().getParcelableExtra("photo_data");
+		if (photoData == null) {
+			return;
+		}
+		ImageLoader.getInstance().displayImage(photoData.origin_url, photoView,
+				optionsThumb);
 	}
 
-	public static void show(Activity context) {
+	public static void show(Activity context, PhotoDataInfo photoData) {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataEditActivity.class);
+		intent.putExtra("photo_data", (Parcelable) photoData);
 		context.startActivity(intent);
 	}
 

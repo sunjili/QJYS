@@ -1,5 +1,6 @@
 package com.rmtech.qjys.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -21,21 +22,21 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 
 	private boolean debug = false;
 
-		 public PhotoDataGridAdapter(Context context, List<?> items, int columnCount) {
-		        super(context, items, columnCount);
-		    }
+	public PhotoDataGridAdapter(Context context, List<?> items, int columnCount) {
+		super(context, items, columnCount);
+	}
 
-//	public void add(int position, FolderDataInfo info) {
-//		mList.add(position, info);
-//	}
-//
-//	public void add(PhotoDataInfo info) {
-//		mList.add(info);
-//	}
+	// public void add(int position, FolderDataInfo info) {
+	// mList.add(position, info);
+	// }
+	//
+	// public void add(PhotoDataInfo info) {
+	// mList.add(info);
+	// }
 
 	@Override
 	public int getCount() {
-		if(debug ) {
+		if (debug) {
 			return 20;
 		}
 		return super.getCount();
@@ -43,14 +44,13 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 
 	@Override
 	public void notifyDataSetChanged() {
-		
+
 		super.notifyDataSetChanged();
 	}
 
-
 	@Override
 	public int getItemViewType(int position) {
-		if(debug ) {
+		if (debug) {
 			return 0;
 		}
 		if (getItem(position) instanceof PhotoDataInfo) {
@@ -70,10 +70,12 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 		FolderDataInfo info = (FolderDataInfo) getItem(position);
 		if (convertView == null) {
 			if (getItemViewType(position) == 1) {
-				convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid_photodata_image, null);
+				convertView = LayoutInflater.from(parent.getContext()).inflate(
+						R.layout.item_grid_photodata_image, null);
 
 			} else {
-				convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid_photodata_folder, null);
+				convertView = LayoutInflater.from(parent.getContext()).inflate(
+						R.layout.item_grid_photodata_folder, null);
 
 			}
 			holder = new ViewHolder(convertView);
@@ -88,8 +90,10 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 	private class ViewHolder {
 		public ImageView itemImg;
 		public TextView itemName;
-		DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.drawable.default_error)
-				.showImageOnFail(R.drawable.default_error).resetViewBeforeLoading(true).cacheOnDisk(true)
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.default_error)
+				.showImageOnFail(R.drawable.default_error)
+				.resetViewBeforeLoading(true).cacheOnDisk(true)
 				.cacheInMemory(true).build();
 
 		public ViewHolder(View container) {
@@ -98,30 +102,33 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 		}
 
 		public void build(FolderDataInfo data) {
-			if(debug ) {
+			if (debug) {
 				itemImg.setImageResource(R.drawable.ic_launcher);
 				itemName.setText("ssssssss");
 				return;
 			}
 			if (data instanceof PhotoDataInfo) {
 				String localPath = ((PhotoDataInfo) data).localPath;
-				if(TextUtils.isEmpty(localPath)) {
-					ImageLoader.getInstance().displayImage(((PhotoDataInfo) data).thumb_url, itemImg, options);
+				if (TextUtils.isEmpty(localPath)) {
+					ImageLoader.getInstance().displayImage(
+							((PhotoDataInfo) data).thumb_url, itemImg, options);
 				} else {
-					ImageLoader.getInstance().displayImage("file://" + ((PhotoDataInfo) data).localPath, itemImg, options);
+					ImageLoader.getInstance().displayImage(
+							"file://" + ((PhotoDataInfo) data).localPath,
+							itemImg, options);
 				}
 			}
 			itemName.setText(data.name);
 		}
 	}
 
-//	public void addAll(int position, List<FolderDataInfo> folders) {
-//		mList.addAll(position, folders);
-//
-//	}
-//
-//	public void addAll(List<PhotoDataInfo> images) {
-//		mList.addAll(images);
-//	}
+	// public void addAll(int position, List<FolderDataInfo> folders) {
+	// mList.addAll(position, folders);
+	//
+	// }
+	//
+	// public void addAll(List<PhotoDataInfo> images) {
+	// mList.addAll(images);
+	// }
 
 }

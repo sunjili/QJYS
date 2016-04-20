@@ -42,13 +42,13 @@
 
     </RelativeLayout>
 
-    <com.topmh.yizhe.widget.CropImageView
+    <com.rmtech.qjys.ui.view.CropImageView
         android:id="@+id/src_pic"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/topbar_layout" />
 
-    <com.topmh.yizhe.widget.CropView
+    <com.rmtech.qjys.ui.view.CropView
         android:id="@+id/crop_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
