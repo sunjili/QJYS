@@ -160,6 +160,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
+        <!-- 图片裁剪-->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.ImageCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <!-- 编辑 年龄 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.CaseAgeActivity"

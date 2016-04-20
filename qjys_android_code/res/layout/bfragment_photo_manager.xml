@@ -25,6 +25,8 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:numColumns="@integer/column_count"
-        android:paddingTop="95dip" />
+        android:paddingTop="95dip"
+        android:paddingBottom="95dip"
+         />
 
 </RelativeLayout>

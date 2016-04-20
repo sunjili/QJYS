@@ -46,10 +46,12 @@ import com.sjl.lib.swipemenulistview.SwipeMenu;
 import com.sjl.lib.swipemenulistview.SwipeMenuCreator;
 import com.sjl.lib.swipemenulistview.SwipeMenuItem;
 import com.sjl.lib.swipemenulistview.SwipeMenuListView;
+
 /***
- * 病例回收站    页面
+ * 病例回收站 页面
+ * 
  * @author Administrator
- *
+ * 
  */
 public class MeRecycleActivity extends BaseActivity {
 	@Override
@@ -57,10 +59,9 @@ public class MeRecycleActivity extends BaseActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_recycle);
 		setTitle("我的回收站");
-		setRightTitle("",null);
-		 initView();
+		setRightTitle("", null);
+		initView();
 	}
-
 
 	protected boolean showTitleBar() {
 		return true;
@@ -71,7 +72,6 @@ public class MeRecycleActivity extends BaseActivity {
 		intent.setClass(context, MeRecycleActivity.class);
 		context.startActivity(intent);
 	}
-	
 
 	private EaseTitleBar title_bar;
 	private PtrClassicFrameLayout mPtrFrame;
@@ -79,11 +79,10 @@ public class MeRecycleActivity extends BaseActivity {
 	private PinnedHeaderListView mListView;
 	private CaseSectionedAdapter mAdapter;
 
-
 	@Subscribe
 	public void onEvent(CaseEvent event) {
 		// mAdapter.add();
-		L.d("onEvent "+event.type);
+		L.d("onEvent " + event.type);
 		QjHttp.getPatientList(false, httpCallback);
 
 	}
@@ -96,9 +95,9 @@ public class MeRecycleActivity extends BaseActivity {
 
 	protected void initView() {
 		EventBus.getDefault().register(this);
-		title_bar=(EaseTitleBar) findViewById(R.id.title_bar);
+		title_bar = (EaseTitleBar) findViewById(R.id.title_bar);
 		title_bar.setVisibility(View.GONE);
-		mTextView = (TextView)  findViewById(R.id.list_view_with_empty_view_fragment_empty_view);
+		mTextView = (TextView) findViewById(R.id.list_view_with_empty_view_fragment_empty_view);
 		mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.list_view_with_empty_view_fragment_ptr_frame);
 
 		mTextView.setOnClickListener(new View.OnClickListener() {
@@ -114,16 +113,18 @@ public class MeRecycleActivity extends BaseActivity {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
+			public void onSectionClick(AdapterView<?> adapterView, View view,
+					int section, long id) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
+			public void onItemClick(AdapterView<?> adapterView, View view,
+					int section, int position, long id) {
 				// TODO Auto-generated method stub
-				PhotoDataManagerActivity.show(getActivity(),"");
-				
+				PhotoDataManagerActivity.show(getActivity(), null);
+
 			}
 		});
 		// step 1. create a MenuCreator
@@ -134,7 +135,8 @@ public class MeRecycleActivity extends BaseActivity {
 				// create "open" item
 				SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
 				// set item background
-				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
+				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+						0xCE)));
 				// set item width
 				openItem.setWidth(dp2px(90));
 				// set item title
@@ -149,7 +151,8 @@ public class MeRecycleActivity extends BaseActivity {
 				// create "delete" item
 				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
 				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+						0x3F, 0x25)));
 				// set item width
 				deleteItem.setWidth(dp2px(90));
 				// set a icon
@@ -162,24 +165,26 @@ public class MeRecycleActivity extends BaseActivity {
 		mListView.setMenuCreator(creator);
 
 		// step 2. listener item click event
-		mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				switch (index) {
-				case 0:
-					// open
-					// open(null);
-					break;
-				case 1:
-					// delete
-					// delete(item);
-					// mAppList.remove(position);
-					mAdapter.notifyDataSetChanged();
-					break;
-				}
-				return false;
-			}
-		});
+		mListView
+				.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(int position,
+							SwipeMenu menu, int index) {
+						switch (index) {
+						case 0:
+							// open
+							// open(null);
+							break;
+						case 1:
+							// delete
+							// delete(item);
+							// mAppList.remove(position);
+							mAdapter.notifyDataSetChanged();
+							break;
+						}
+						return false;
+					}
+				});
 
 		// set SwipeListener
 		mListView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
@@ -196,15 +201,16 @@ public class MeRecycleActivity extends BaseActivity {
 		});
 
 		// set MenuStateChangeListener
-		mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
-			@Override
-			public void onMenuOpen(int position) {
-			}
+		mListView
+				.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+					@Override
+					public void onMenuOpen(int position) {
+					}
 
-			@Override
-			public void onMenuClose(int position) {
-			}
-        });
+					@Override
+					public void onMenuClose(int position) {
+					}
+				});
 		mPtrFrame.setLastUpdateTimeRelateObject(this);
 		mPtrFrame.disableWhenHorizontalMove(true);
 		mPtrFrame.setPtrHandler(new PtrHandler() {
@@ -223,7 +229,7 @@ public class MeRecycleActivity extends BaseActivity {
 
 		});
 		mPtrFrame.addPtrUIHandler(new PtrUIHandler() {
-			
+
 			@Override
 			public void onUIReset(PtrFrameLayout frame) {
 				// TODO Auto-generated method stub
@@ -252,8 +258,8 @@ public class MeRecycleActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status,
-					PtrIndicator ptrIndicator) {
+			public void onUIPositionChange(PtrFrameLayout frame,
+					boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
 				// TODO Auto-generated method stub
 
 			}
@@ -261,15 +267,15 @@ public class MeRecycleActivity extends BaseActivity {
 		// default is false
 		mPtrFrame.setPullToRefresh(true);
 		mPtrFrame.setPagingTouchSlop(0);
-//		titleBar.setRightLayoutClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				AddCaseActivity.show(getActivity());
-////				 PhotoDataManagerActivity.show(getActivity());
-//
-//			}
-//		});
+		// titleBar.setRightLayoutClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// AddCaseActivity.show(getActivity());
+		// // PhotoDataManagerActivity.show(getActivity());
+		//
+		// }
+		// });
 
 		QjHttp.getPatientList(true, httpCallback);
 
@@ -299,20 +305,21 @@ public class MeRecycleActivity extends BaseActivity {
 	};
 
 	private int dp2px(int dp) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+				getResources().getDisplayMetrics());
 	}
 
 	private void updateData() {
 		QjHttp.getPatientList(false, httpCallback);
 
 		// TODO Auto-generated method stub
-//		mListView.postDelayed(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				displayData();
-//			}
-//		}, 1000);
+		// mListView.postDelayed(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// displayData();
+		// }
+		// }, 1000);
 
 	}
 
@@ -324,16 +331,17 @@ public class MeRecycleActivity extends BaseActivity {
 		mAdapter.notifyDataSetChanged();
 	}
 
-//	@Override
-//	protected void setUpView() {
-//		titleBar.setTitle("我的病例");
-//
-//	}
+	// @Override
+	// protected void setUpView() {
+	// titleBar.setTitle("我的病例");
+	//
+	// }
 
 	public class CaseSectionedAdapter extends SectionedBaseAdapter {
 
 		private List<HospitalCaseInfo> mPatientList;
-//		private ArrayList<String> keyPositionList;
+
+		// private ArrayList<String> keyPositionList;
 
 		@Override
 		public Object getItem(int section, int position) {
@@ -342,12 +350,12 @@ public class MeRecycleActivity extends BaseActivity {
 
 		public void setData(MPatientList patientList) {
 			this.mPatientList = patientList.data.lists;
-//			if (keyPositionList == null) {
-//				keyPositionList = new ArrayList<String>();
-//			} else {
-//				keyPositionList.clear();
-//			}
-//			keyPositionList.addAll(mPatientList.keySet());
+			// if (keyPositionList == null) {
+			// keyPositionList = new ArrayList<String>();
+			// } else {
+			// keyPositionList.clear();
+			// }
+			// keyPositionList.addAll(mPatientList.keySet());
 			notifyDataSetChanged();
 		}
 
@@ -374,19 +382,19 @@ public class MeRecycleActivity extends BaseActivity {
 			if (list == null) {
 				return 0;
 			}
-			
+
 			return list.size();
 		}
 
 		public List<CaseInfo> getCaseListBySection(int section) {
-//			if (keyPositionList == null) {
-//				return null;
-//			}
+			// if (keyPositionList == null) {
+			// return null;
+			// }
 			HospitalCaseInfo key = mPatientList.get(section);
 			List<CaseInfo> list = key.patients;
 			return list;
 		}
-		
+
 		public CaseInfo getCaseInfoByPos(int section, int position) {
 			List<CaseInfo> list = getCaseListBySection(section);
 			if (list != null) {
@@ -396,12 +404,14 @@ public class MeRecycleActivity extends BaseActivity {
 		}
 
 		@Override
-		public View getItemView(int section, int position, View convertView, ViewGroup parent) {
+		public View getItemView(int section, int position, View convertView,
+				ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
-						Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(R.layout.case_list_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(
+						R.layout.case_list_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
@@ -421,16 +431,19 @@ public class MeRecycleActivity extends BaseActivity {
 		}
 
 		@Override
-		public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+		public View getSectionHeaderView(int section, View convertView,
+				ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
-						Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(R.layout.case_list_header_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(
+						R.layout.case_list_header_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
-			((TextView) layout.findViewById(R.id.textItem)).setText(mPatientList.get(section).hos_fullname);
+			((TextView) layout.findViewById(R.id.textItem))
+					.setText(mPatientList.get(section).hos_fullname);
 			return layout;
 		}
 
@@ -454,8 +467,4 @@ public class MeRecycleActivity extends BaseActivity {
 		}
 	}
 
-
-	
-	
-	
 }

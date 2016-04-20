@@ -1,9 +1,12 @@
 package com.rmtech.qjys.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class CaseInfo implements Serializable {
+public class CaseInfo implements Serializable, Parcelable {
 
 	/**
 	 * name: 姓名 hos_id：医院id sex ：性别 0未知 1男 2女 age : 年龄 hos_id : 医院id department：
@@ -34,13 +37,108 @@ public class CaseInfo implements Serializable {
 	public List<DoctorInfo> participate_doctor;// : 管理员
 	
 
-	public static class DoctorInfo implements Serializable {
+	public static class DoctorInfo implements Serializable, Parcelable {
 		/**
 	 * 
 	 */
 		private static final long serialVersionUID = 5674389516689554457L;
 		public String id;// : id
 		public String name;// : 姓名
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel dest, int flags) {
+			dest.writeString(this.id);
+			dest.writeString(this.name);
+		}
+
+		public DoctorInfo() {
+		}
+
+		protected DoctorInfo(Parcel in) {
+			this.id = in.readString();
+			this.name = in.readString();
+		}
+
+		public static final Parcelable.Creator<DoctorInfo> CREATOR = new Parcelable.Creator<DoctorInfo>() {
+			@Override
+			public DoctorInfo createFromParcel(Parcel source) {
+				return new DoctorInfo(source);
+			}
+
+			@Override
+			public DoctorInfo[] newArray(int size) {
+				return new DoctorInfo[size];
+			}
+		};
 	}
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.id);
+		dest.writeString(this.group_id);
+		dest.writeString(this.name);
+		dest.writeString(this.hos_id);
+		dest.writeString(this.hos_name);
+		dest.writeInt(this.sex);
+		dest.writeString(this.age);
+		dest.writeString(this.department);
+		dest.writeString(this.ward_no);
+		dest.writeString(this.bed_no);
+		dest.writeString(this.diagnose);
+		dest.writeString(this.treat_state);
+		dest.writeString(this.procedure_title);
+		dest.writeString(this.procedure_text);
+		dest.writeString(this.abs);
+		dest.writeInt(this.state);
+		dest.writeInt(this.create_time);
+		dest.writeParcelable(this.admin_doctor, flags);
+		dest.writeTypedList(participate_doctor);
+	}
+
+	public CaseInfo() {
+	}
+
+	protected CaseInfo(Parcel in) {
+		this.id = in.readString();
+		this.group_id = in.readString();
+		this.name = in.readString();
+		this.hos_id = in.readString();
+		this.hos_name = in.readString();
+		this.sex = in.readInt();
+		this.age = in.readString();
+		this.department = in.readString();
+		this.ward_no = in.readString();
+		this.bed_no = in.readString();
+		this.diagnose = in.readString();
+		this.treat_state = in.readString();
+		this.procedure_title = in.readString();
+		this.procedure_text = in.readString();
+		this.abs = in.readString();
+		this.state = in.readInt();
+		this.create_time = in.readInt();
+		this.admin_doctor = in.readParcelable(DoctorInfo.class.getClassLoader());
+		this.participate_doctor = in.createTypedArrayList(DoctorInfo.CREATOR);
+	}
+
+	public static final Parcelable.Creator<CaseInfo> CREATOR = new Parcelable.Creator<CaseInfo>() {
+		@Override
+		public CaseInfo createFromParcel(Parcel source) {
+			return new CaseInfo(source);
+		}
+
+		@Override
+		public CaseInfo[] newArray(int size) {
+			return new CaseInfo[size];
+		}
+	};
 }

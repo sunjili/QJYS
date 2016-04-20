@@ -1,5 +1,7 @@
 package com.rmtech.qjys.model;
 
+import android.os.Parcel;
+
 public class PhotoDataInfo extends FolderDataInfo {
 
 	private static final long serialVersionUID = 1419903223943202259L;
@@ -28,4 +30,42 @@ public class PhotoDataInfo extends FolderDataInfo {
 		this.update_time = data.update_time;
 	}
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		super.writeToParcel(dest, flags);
+		dest.writeString(this.localPath);
+		dest.writeString(this.thumb_url);
+		dest.writeString(this.origin_url);
+		dest.writeString(this.doc_id);
+		dest.writeInt(this.state);
+	}
+
+	public PhotoDataInfo() {
+	}
+
+	protected PhotoDataInfo(Parcel in) {
+		super(in);
+		this.localPath = in.readString();
+		this.thumb_url = in.readString();
+		this.origin_url = in.readString();
+		this.doc_id = in.readString();
+		this.state = in.readInt();
+	}
+
+	public static final Creator<PhotoDataInfo> CREATOR = new Creator<PhotoDataInfo>() {
+		@Override
+		public PhotoDataInfo createFromParcel(Parcel source) {
+			return new PhotoDataInfo(source);
+		}
+
+		@Override
+		public PhotoDataInfo[] newArray(int size) {
+			return new PhotoDataInfo[size];
+		}
+	};
 }

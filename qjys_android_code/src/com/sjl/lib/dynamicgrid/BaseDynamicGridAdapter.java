@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class BaseDynamicGridAdapter extends AbstractDynamicGridAdapter {
     private Context mContext;
 
-    private ArrayList<Object> mItems = new ArrayList<Object>();
+    protected ArrayList<Object> mItems = new ArrayList<Object>();
     private int mColumnCount;
 
     protected BaseDynamicGridAdapter(Context context, int columnCount) {

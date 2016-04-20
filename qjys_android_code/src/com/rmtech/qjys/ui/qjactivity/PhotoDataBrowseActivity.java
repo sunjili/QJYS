@@ -1,15 +1,16 @@
 package com.rmtech.qjys.ui.qjactivity;
 
-import android.content.Context;
-import com.rmtech.qjys.ui.view.HackyViewPager;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher.OnViewTapListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -19,13 +20,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.ui.view.HackyViewPager;
 
 @SuppressLint("NewApi")
-public class PhotoDataBrowseActivity extends BaseActivity implements
+public class PhotoDataBrowseActivity extends CaseWithIdActivity implements
 		OnViewTapListener {
 
 	protected static final String TAG = PhotoDataBrowseActivity.class
@@ -49,6 +55,9 @@ public class PhotoDataBrowseActivity extends BaseActivity implements
 
 	private SamplePagerAdapter mAdapter;
 
+	private ArrayList<PhotoDataInfo> datalist;
+	private PhotoDataInfo currentPhotoData;
+
 	private void initViews() {
 		mContext = this;
 		mTitleLayout = (RelativeLayout) findViewById(R.id.title_layout);
@@ -56,11 +65,11 @@ public class PhotoDataBrowseActivity extends BaseActivity implements
 		mTitleTv = (TextView) findViewById(R.id.title_tv);
 		mEditTv = (TextView) findViewById(R.id.edit_tv);
 		mEditTv.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				PhotoDataEditActivity.show(getActivity());
-				
+				PhotoDataEditActivity.show(getActivity(), currentPhotoData);
+
 			}
 		});
 		mBottomLayout = (RelativeLayout) findViewById(R.id.bottom_layout);
@@ -71,13 +80,27 @@ public class PhotoDataBrowseActivity extends BaseActivity implements
 	}
 
 	@Override
+	protected boolean showTitleBar() {
+		return false;
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_photo_browse);
 		mViewPager = (HackyViewPager) findViewById(R.id.view_pager);
 		initViews();
-		mAdapter = new SamplePagerAdapter(this);
+		datalist = getIntent().getParcelableArrayListExtra("iamge_list");
+		int current_position = getIntent().getIntExtra("current_position", 0);
+		if (datalist == null || datalist.size() == 0) {
+			finish();
+			return;
+		}
+		mAdapter = new SamplePagerAdapter(datalist, this);
 		mViewPager.setAdapter(mAdapter);
+		mViewPager.setCurrentItem(current_position, false);
+		currentPhotoData = datalist.get(current_position);
+		mTitleTv.setText((current_position + 1) + "/" + datalist.size());
 
 		if (savedInstanceState != null) {
 			boolean isLocked = savedInstanceState.getBoolean(ISLOCKED_ARG,
@@ -88,8 +111,9 @@ public class PhotoDataBrowseActivity extends BaseActivity implements
 
 			@Override
 			public void onPageSelected(int arg0) {
-				// TODO Auto-generated method stub
+				currentPhotoData = datalist.get(arg0);
 				mTitleTv.setText((arg0 + 1) + "/" + mAdapter.getCount());
+				mBottomTitleTv.setText(currentPhotoData.name);
 			}
 
 			@Override
@@ -106,32 +130,57 @@ public class PhotoDataBrowseActivity extends BaseActivity implements
 		});
 	}
 
-	public static void show(Activity context) {
+	public static void show(Activity context, int current_position,
+			ArrayList<PhotoDataInfo> arrayList) {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataBrowseActivity.class);
+		intent.putParcelableArrayListExtra("iamge_list", arrayList);
+		intent.putExtra("current_position", current_position);
+		// setCaseInfo(intent, arrayList);
+
 		context.startActivity(intent);
 	}
 
 	static class SamplePagerAdapter extends PagerAdapter {
-		public SamplePagerAdapter(OnViewTapListener listener) {
+
+		DisplayImageOptions optionsThumb = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.default_error)
+				.showImageOnFail(R.drawable.default_error)
+				.resetViewBeforeLoading(true).cacheOnDisk(true)
+				.cacheInMemory(true).build();
+
+		DisplayImageOptions optionsOrigin = new DisplayImageOptions.Builder()
+				.resetViewBeforeLoading(true).cacheOnDisk(true)
+				.cacheInMemory(true).build();
+
+		private List<PhotoDataInfo> dataList;
+
+		public SamplePagerAdapter(List<PhotoDataInfo> dataList,
+				OnViewTapListener listener) {
 			this.listener = listener;
+			this.dataList = dataList;
 		}
 
-		private static final int[] sDrawables = { R.drawable.ic_launcher,
-				R.drawable.ic_launcher, R.drawable.ic_launcher,
-				R.drawable.ic_launcher, R.drawable.ic_launcher,
-				R.drawable.ic_launcher };
+		// private static final int[] sDrawables = { R.drawable.ic_launcher,
+		// R.drawable.ic_launcher, R.drawable.ic_launcher,
+		// R.drawable.ic_launcher, R.drawable.ic_launcher,
+		// R.drawable.ic_launcher };
 		private OnViewTapListener listener;
 
 		@Override
 		public int getCount() {
-			return sDrawables.length;
+			return dataList.size();
 		}
 
 		@Override
 		public View instantiateItem(ViewGroup container, int position) {
 			PhotoView photoView = new PhotoView(container.getContext());
-			photoView.setImageResource(sDrawables[position]);
+			PhotoDataInfo info = dataList.get(position);
+			// ImageLoader.getInstance().displayImage(info.thumb_url, photoView,
+			// optionsThumb);
+			ImageLoader.getInstance().displayImage(info.origin_url, photoView,
+					optionsThumb);
+			// photoView.setImageResource(sDrawables[position]);
 			photoView.setOnViewTapListener(listener);
 
 			// Now just add PhotoView to ViewPager and return it

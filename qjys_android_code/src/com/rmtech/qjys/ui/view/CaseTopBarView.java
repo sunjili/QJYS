@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.ui.qjactivity.EditCaseActivity;
 
 @SuppressLint("NewApi")
@@ -36,6 +37,7 @@ public class CaseTopBarView extends RelativeLayout implements View.OnClickListen
 	private LinearLayout zyLayout;
 	private LinearLayout gfLayout;
 	private LinearLayout yhzLayout;
+	private CaseInfo caseInfo;
 
 	private void initView() {
 		View.inflate(getContext(), R.layout.bview_casetopbar, this);
@@ -55,7 +57,7 @@ public class CaseTopBarView extends RelativeLayout implements View.OnClickListen
 	public void onClick(View v) {
 		switch(v.getId()) {
 		case R.id.jb_layout:
-			EditCaseActivity.show((Activity) getContext());
+			EditCaseActivity.show((Activity) getContext(),caseInfo);
 
 			break;
 		case R.id.zy_layout:
@@ -66,6 +68,10 @@ public class CaseTopBarView extends RelativeLayout implements View.OnClickListen
 			break;
 		}
 
+	}
+
+	public void setCaseInfo(CaseInfo info) {
+		this.caseInfo = info;
 	}
 
 }
