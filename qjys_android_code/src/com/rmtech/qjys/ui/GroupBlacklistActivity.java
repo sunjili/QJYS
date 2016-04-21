@@ -3,10 +3,6 @@ package com.rmtech.qjys.ui;
 import java.util.Collections;
 import java.util.List;
 
-import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
-import com.hyphenate.exceptions.HyphenateException;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -20,6 +16,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
+import com.rmtech.qjys.R;
 
 public class GroupBlacklistActivity extends BaseActivity {
 	private ListView listView;

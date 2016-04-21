@@ -1,15 +1,13 @@
 package com.sjl.lib.http.okhttp.request;
 
-import android.text.TextUtils;
-
-import com.sjl.lib.http.okhttp.callback.Callback;
-import com.sjl.lib.http.okhttp.utils.Exceptions;
-
 import java.util.Map;
 
 import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+
+import com.sjl.lib.http.okhttp.callback.Callback;
+import com.sjl.lib.http.okhttp.utils.Exceptions;
 
 /**
  * Created by jilisun on 15/11/6.

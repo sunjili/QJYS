@@ -43,5 +43,13 @@
             <enum name="mirror" value="2" />
         </attr>
     </declare-styleable>
+    <declare-styleable name="ColorfulRingProgressView">
+        <attr name="bgColor" format="color" />
+        <attr name="fgColorStart" format="color" />
+        <attr name="fgColorEnd" format="color" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="percent" format="float" />
+        <attr name="startAngle" format="float" />
+    </declare-styleable>
 
 </resources>

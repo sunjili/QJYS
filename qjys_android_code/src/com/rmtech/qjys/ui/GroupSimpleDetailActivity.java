@@ -14,12 +14,6 @@
 
 package com.rmtech.qjys.ui;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMGroup;
-import com.hyphenate.chat.EMGroupInfo;
-import com.rmtech.qjys.R;
-import com.hyphenate.exceptions.HyphenateException;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +21,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMGroupInfo;
+import com.hyphenate.exceptions.HyphenateException;
+import com.rmtech.qjys.R;
 
 public class GroupSimpleDetailActivity extends BaseActivity {
 	private Button btn_add_group;

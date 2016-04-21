@@ -1,13 +1,13 @@
 package com.sjl.lib.http.okhttp.callback;
 
-import com.sjl.lib.http.okhttp.OkHttpUtils;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import okhttp3.Response;
+
+import com.sjl.lib.http.okhttp.OkHttpUtils;
 
 /**
  * Created by jilisun on 15/12/15.

@@ -1,10 +1,10 @@
 package com.rmtech.qjys.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 import java.util.List;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 public class CaseInfo implements Serializable, Parcelable {
 
@@ -36,47 +36,6 @@ public class CaseInfo implements Serializable, Parcelable {
 	public DoctorInfo admin_doctor;// : 管理员
 	public List<DoctorInfo> participate_doctor;// : 管理员
 	
-
-	public static class DoctorInfo implements Serializable, Parcelable {
-		/**
-	 * 
-	 */
-		private static final long serialVersionUID = 5674389516689554457L;
-		public String id;// : id
-		public String name;// : 姓名
-
-		@Override
-		public int describeContents() {
-			return 0;
-		}
-
-		@Override
-		public void writeToParcel(Parcel dest, int flags) {
-			dest.writeString(this.id);
-			dest.writeString(this.name);
-		}
-
-		public DoctorInfo() {
-		}
-
-		protected DoctorInfo(Parcel in) {
-			this.id = in.readString();
-			this.name = in.readString();
-		}
-
-		public static final Parcelable.Creator<DoctorInfo> CREATOR = new Parcelable.Creator<DoctorInfo>() {
-			@Override
-			public DoctorInfo createFromParcel(Parcel source) {
-				return new DoctorInfo(source);
-			}
-
-			@Override
-			public DoctorInfo[] newArray(int size) {
-				return new DoctorInfo[size];
-			}
-		};
-	}
-
 	@Override
 	public int describeContents() {
 		return 0;

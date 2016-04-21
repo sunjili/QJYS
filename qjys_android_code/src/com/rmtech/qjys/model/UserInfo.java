@@ -1,9 +1,9 @@
 package com.rmtech.qjys.model;
 
+import java.io.Serializable;
+
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 
 public class UserInfo implements Serializable, Parcelable {
 

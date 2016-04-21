@@ -67,7 +67,7 @@ public class QjHttp {
 		OkHttpUtils.post(URL_PATIENT_CREATE_FOLDER, params, callback);
 	}
 
-	public static void uploadImage(String patient_id, String folder_id, String name, String path,
+	public static void uploadImage(int tag, String patient_id, String folder_id, String name, String path,
 			QjHttpCallback<MUploadImageInfo> callback) {
 		HashMap<String, String> newparams = new HashMap<String, String>();
 		HttpSetting.addHttpParams(newparams, URL_UPLOAD_IMAGE);
@@ -85,8 +85,10 @@ public class QjHttp {
 				// .mediaType(MediaType.parse("application/json; charset=utf-8"))
 				.params(newparams)//
 				.headers(headers)//
+				.tag(tag)
 				.build()//
 				.execute(callback);
+//		OkHttpUtils.getInstance().cancelTag(tag);
 
 	}
 

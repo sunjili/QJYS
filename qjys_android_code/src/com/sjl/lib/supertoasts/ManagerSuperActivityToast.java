@@ -17,15 +17,21 @@
 
 package com.sjl.lib.supertoasts;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.*;
-
-import java.util.Iterator;
-import java.util.LinkedList;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 
 /**
  * Manages the life of a SuperActivityToast. Initial code derived from the Crouton library.

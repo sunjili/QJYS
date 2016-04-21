@@ -13,18 +13,18 @@
  */
 package com.rmtech.qjys.ui;
 
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
-import com.hyphenate.exceptions.HyphenateException;
-import com.rmtech.qjys.hx.QjHelper;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.hx.QjHelper;
 
 /**
  * 注册页

@@ -1,7 +1,7 @@
 package com.rmtech.qjys.ui.qjactivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,13 +17,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
+import com.rmtech.qjys.model.PhotoDataInfo;
+import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.sjl.lib.dynamicgrid.DynamicGridView;
 import com.sjl.lib.dynamicgrid.example.CheeseDynamicAdapter;
-import com.sjl.lib.dynamicgrid.example.Cheeses;
 
 @SuppressLint("NewApi")
-public class PhotoDataSortActivity extends BaseActivity implements
+public class PhotoDataSortActivity extends CaseWithIdActivity implements
 		OnClickListener {
 
 	protected static final String TAG = PhotoDataSortActivity.class
@@ -41,9 +42,10 @@ public class PhotoDataSortActivity extends BaseActivity implements
 		return true;
 	}
 
-	public static void show(Activity context) {
+	public static void show(Activity context,ImageDataList imageDataList) {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataSortActivity.class);
+		setImageDataList(intent, imageDataList);
 		context.startActivity(intent);
 	}
 
@@ -53,8 +55,8 @@ public class PhotoDataSortActivity extends BaseActivity implements
 	protected RelativeLayout mZdySortView;
 	protected ImageView mZdySortImageview;
 	protected com.sjl.lib.dynamicgrid.DynamicGridView mGridView;
-	private ArrayList<String> mDataList;
-	private CheeseDynamicAdapter mAdapter;
+	private List<PhotoDataInfo> mDataList;
+	private PhotoDataGridAdapter mAdapter;
 
 	private void initViews() {
 		mContext = this;
@@ -67,9 +69,8 @@ public class PhotoDataSortActivity extends BaseActivity implements
 		mZdySortImageview = (ImageView) findViewById(R.id.zdy_sort_imageview);
 		mGridView = (com.sjl.lib.dynamicgrid.DynamicGridView) findViewById(R.id.dynamic_grid);
 
-		mDataList = new ArrayList<String>(Arrays.asList(Cheeses.sCheeseStrings));
-		mAdapter = new CheeseDynamicAdapter(getActivity(), mDataList,
-				getResources().getInteger(R.integer.column_count));
+		mDataList = imageDataList.images;
+		mAdapter = new PhotoDataGridAdapter(getActivity(), mDataList);
 		mGridView.setAdapter(mAdapter);
 
 		// add callback to stop edit mode if needed
@@ -116,8 +117,6 @@ public class PhotoDataSortActivity extends BaseActivity implements
 		super.onBackPressed();
 	}
 	
-	
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {

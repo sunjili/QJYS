@@ -2,8 +2,6 @@ package com.sjl.lib.http.okhttp;
 
 import java.io.Serializable;
 
-import android.content.Context;
-
 public class OkHttpCookieManager implements Serializable {
 
 	/**

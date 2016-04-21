@@ -30,11 +30,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rmtech.qjys.BuildConfig;
-import com.rmtech.qjys.R;
 import com.hyphenate.util.DateUtils;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.TextFormater;
+import com.rmtech.qjys.BuildConfig;
+import com.rmtech.qjys.R;
 import com.rmtech.qjys.domain.VideoEntity;
 import com.rmtech.qjys.ui.RecorderVideoActivity;
 import com.rmtech.qjys.video.util.ImageCache;

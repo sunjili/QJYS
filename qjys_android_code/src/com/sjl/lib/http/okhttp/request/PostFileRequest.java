@@ -1,13 +1,13 @@
 package com.sjl.lib.http.okhttp.request;
 
-import com.sjl.lib.http.okhttp.utils.Exceptions;
-
 import java.io.File;
 import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+
+import com.sjl.lib.http.okhttp.utils.Exceptions;
 
 /**
  * Created by jilisun on 15/12/14.

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -16,7 +15,6 @@ import android.util.Pair;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.adapter.EaseConversationAdapater;
-import com.rmtech.qjys.R;
 import com.sjl.lib.swipemenulistview.SwipeMenuListView;
 
 public class EaseConversationList extends SwipeMenuListView {
@@ -63,18 +61,18 @@ public class EaseConversationList extends SwipeMenuListView {
     }
     
     public void init(List<EMConversation> conversationList){
-    	if(passedListRef == conversationList) {
-    		return;
-    	}
+//    	if(passedListRef == conversationList) {
+//    		return;
+//    	}
     	passedListRef = conversationList;
     	conversations.clear();
         conversations.addAll(conversationList);
-        if(adapter == null) {
+//        if(adapter == null) {
         	adapter = new EaseConversationAdapater(context, 0, conversations);
             setAdapter(adapter);
-        } else {
-        	adapter.notifyDataSetChanged();
-        }
+//        } else {
+//        	adapter.notifyDataSetChanged();
+//        }
 //        adapter.setPrimaryColor(primaryColor);
 //        adapter.setPrimarySize(primarySize);
 //        adapter.setSecondaryColor(secondaryColor);

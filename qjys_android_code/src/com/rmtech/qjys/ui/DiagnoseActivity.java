@@ -1,13 +1,6 @@
 package com.rmtech.qjys.ui;
 
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
-import com.hyphenate.util.EMLog;
-
 import android.app.ProgressDialog;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,6 +8,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.util.EMLog;
+import com.rmtech.qjys.R;
 
 /**
  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.

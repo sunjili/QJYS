@@ -2,10 +2,10 @@ package com.rmtech.qjys.domain;
 
 import java.util.Arrays;
 
-import com.rmtech.qjys.R;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseEmojicon.Type;
 import com.hyphenate.easeui.domain.EaseEmojiconGroupEntity;
+import com.rmtech.qjys.R;
 
 public class EmojiconExampleGroupData {
     

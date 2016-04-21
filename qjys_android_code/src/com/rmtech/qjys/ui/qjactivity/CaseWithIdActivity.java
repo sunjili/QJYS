@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.os.Parcelable;
 
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.FolderDataInfo;
+import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
 
 public class CaseWithIdActivity extends BaseActivity {
 	protected String caseId;
 	protected CaseInfo caseInfo;
+	protected ImageDataList imageDataList;
+	protected FolderDataInfo folderDataInfo;
 
 	public static void setCaseId(Intent intent, String patient_id) {
 		intent.putExtra("patient_id", patient_id);
@@ -17,6 +21,13 @@ public class CaseWithIdActivity extends BaseActivity {
 
 	public static void setCaseInfo(Intent intent, CaseInfo caseInfo) {
 		intent.putExtra("case_info", (Parcelable) caseInfo);
+	}
+	public static void setFolderDataInfo(Intent intent, FolderDataInfo folderDataInfo) {
+		intent.putExtra("folderDataInfo", (Parcelable) folderDataInfo);
+	}
+
+	public static void setImageDataList(Intent intent, ImageDataList imageDataList) {
+		intent.putExtra("imageDataList", (Parcelable) imageDataList);
 	}
 
 	@Override
@@ -31,6 +42,9 @@ public class CaseWithIdActivity extends BaseActivity {
 		if (intent != null) {
 			caseId = intent.getStringExtra("patient_id");
 			caseInfo = (CaseInfo) intent.getParcelableExtra("case_info");
+			folderDataInfo = (FolderDataInfo) intent.getParcelableExtra("folderDataInfo");
+			imageDataList = (ImageDataList) intent.getParcelableExtra("imageDataList");
+
 		}
 	}
 

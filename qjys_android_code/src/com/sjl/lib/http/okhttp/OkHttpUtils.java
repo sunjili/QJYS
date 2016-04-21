@@ -2,12 +2,7 @@ package com.sjl.lib.http.okhttp;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.CookieManager;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -17,8 +12,6 @@ import javax.net.ssl.SSLSocketFactory;
 import okhttp3.Call;
 import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,7 +30,6 @@ import com.sjl.lib.http.okhttp.cookie.store.HasCookieStore;
 import com.sjl.lib.http.okhttp.cookie.store.MemoryCookieStore;
 import com.sjl.lib.http.okhttp.https.HttpsUtils;
 import com.sjl.lib.http.okhttp.log.LoggerInterceptor;
-import com.sjl.lib.http.okhttp.request.OkHttpRequest;
 import com.sjl.lib.http.okhttp.request.RequestCall;
 import com.sjl.lib.http.okhttp.utils.Exceptions;
 
@@ -46,7 +38,7 @@ import com.sjl.lib.http.okhttp.utils.Exceptions;
  */
 public class OkHttpUtils {
 
-	public static final long DEFAULT_MILLISECONDS = 10000;
+	public static final long DEFAULT_MILLISECONDS = 100000;
 	private static OkHttpUtils mInstance;
 	private OkHttpClient mOkHttpClient;
 	private Handler mDelivery;
@@ -158,11 +150,9 @@ public class OkHttpUtils {
 	public void execute(final RequestCall requestCall, Callback callback) {
 
 		
-		
 		if (callback == null)
 			callback = Callback.CALLBACK_DEFAULT;
 		final Callback finalCallback = callback;
-		
 		
 		requestCall.getCall().enqueue(new okhttp3.Callback() {
 			@Override
@@ -236,6 +226,7 @@ public class OkHttpUtils {
 	}
 
 	public void cancelTag(Object tag) {
+		
 		for (Call call : mOkHttpClient.dispatcher().queuedCalls()) {
 			if (tag.equals(call.request().tag())) {
 				call.cancel();

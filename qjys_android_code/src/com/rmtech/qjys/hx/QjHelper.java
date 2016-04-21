@@ -7,6 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMContactListener;
@@ -23,8 +33,6 @@ import com.hyphenate.chat.EMMessage.Status;
 import com.hyphenate.chat.EMMessage.Type;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.chat.EMTextMessageBody;
-import com.rmtech.qjys.QjConstant;
-import com.rmtech.qjys.R;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseEmojiconInfoProvider;
 import com.hyphenate.easeui.controller.EaseUI.EaseSettingsProvider;
@@ -37,14 +45,15 @@ import com.hyphenate.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
-import com.rmtech.qjys.R.string;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.DemoDBManager;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.db.UserDao;
 import com.rmtech.qjys.domain.EmojiconExampleGroupData;
 import com.rmtech.qjys.domain.InviteMessage;
-import com.rmtech.qjys.domain.RobotUser;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
+import com.rmtech.qjys.domain.RobotUser;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.parse.UserProfileManager;
 import com.rmtech.qjys.receiver.CallReceiver;
@@ -53,16 +62,6 @@ import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.VideoCallActivity;
 import com.rmtech.qjys.ui.VoiceCallActivity;
 import com.rmtech.qjys.utils.PreferenceManager;
-
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.v4.content.LocalBroadcastManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 public class QjHelper {
     /**

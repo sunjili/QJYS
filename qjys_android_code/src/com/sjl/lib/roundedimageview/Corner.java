@@ -1,8 +1,9 @@
 package com.sjl.lib.roundedimageview;
 
-import android.support.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import android.support.annotation.IntDef;
 
 @Retention(RetentionPolicy.SOURCE)
 @IntDef({

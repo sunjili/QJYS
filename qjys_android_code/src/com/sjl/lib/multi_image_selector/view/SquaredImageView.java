@@ -2,10 +2,11 @@ package com.sjl.lib.multi_image_selector.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+
+import com.sjl.lib.roundedimageview.RoundedImageView;
 
 /** An image view which always remains square with respect to its width. */
-class SquaredImageView extends ImageView {
+class SquaredImageView extends RoundedImageView {
   public SquaredImageView(Context context) {
     super(context);
   }

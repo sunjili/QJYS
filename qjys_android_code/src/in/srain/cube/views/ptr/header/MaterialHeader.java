@@ -1,5 +1,9 @@
 package in.srain.cube.views.ptr.header;
 
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrUIHandler;
+import in.srain.cube.views.ptr.PtrUIHandlerHook;
+import in.srain.cube.views.ptr.indicator.PtrIndicator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,10 +13,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrUIHandler;
-import in.srain.cube.views.ptr.PtrUIHandlerHook;
-import in.srain.cube.views.ptr.indicator.PtrIndicator;
 
 public class MaterialHeader extends View implements PtrUIHandler {
 

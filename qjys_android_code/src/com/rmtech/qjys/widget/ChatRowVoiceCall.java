@@ -1,15 +1,15 @@
 package com.rmtech.qjys.widget;
 
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMTextMessageBody;
-import com.rmtech.qjys.R;
-import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
-import com.rmtech.qjys.QjConstant;
-
 import android.content.Context;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
 
 public class ChatRowVoiceCall extends EaseChatRow{
 

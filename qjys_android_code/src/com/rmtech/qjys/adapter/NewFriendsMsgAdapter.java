@@ -15,12 +15,6 @@ package com.rmtech.qjys.adapter;
 
 import java.util.List;
 
-import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
-import com.rmtech.qjys.db.InviteMessgeDao;
-import com.rmtech.qjys.domain.InviteMessage;
-import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -35,6 +29,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.db.InviteMessgeDao;
+import com.rmtech.qjys.domain.InviteMessage;
+import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
 
 public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 

@@ -2,14 +2,10 @@ package com.rmtech.qjys.model.gson;
 
 import java.io.Serializable;
 
-import okhttp3.Response;
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import com.google.gson.Gson;
-import com.rmtech.qjys.QjApplication;
-import com.rmtech.qjys.callback.QjHttpCallback;
-
-public class MBase implements Serializable {
+public class MBase implements Serializable, Parcelable {
 
 	/**
 	 * 
@@ -18,5 +14,24 @@ public class MBase implements Serializable {
 	public int ret;//
 	public String msg;
 
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(this.ret);
+		dest.writeString(this.msg);
+	}
+
+	public MBase() {
+	}
+
+	protected MBase(Parcel in) {
+		this.ret = in.readInt();
+		this.msg = in.readString();
+	}
 
 }

@@ -1,10 +1,9 @@
 package com.sjl.lib.http.okhttp.request;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ForwardingSink;

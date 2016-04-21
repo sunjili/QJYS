@@ -28,11 +28,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.rmtech.qjys.R;
 import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.widget.EaseSidebar;
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
 
 public class PickContactNoCheckboxActivity extends BaseActivity {

@@ -1,8 +1,5 @@
 package com.sjl.lib.http.okhttp.log;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import java.io.IOException;
 
 import okhttp3.Headers;
@@ -13,6 +10,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
+import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Created by jilisun on 16/3/1.

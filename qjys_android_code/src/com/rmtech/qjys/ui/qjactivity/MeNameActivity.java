@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
-import com.rmtech.qjys.ui.fragment.MeFragment;
 /***
  * 编辑姓名    页面
  * @author Administrator

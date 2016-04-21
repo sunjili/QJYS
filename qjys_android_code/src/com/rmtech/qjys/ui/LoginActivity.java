@@ -15,17 +15,6 @@ package com.rmtech.qjys.ui;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
-import com.hyphenate.easeui.utils.EaseCommonUtils;
-import com.rmtech.qjys.QjApplication;
-import com.rmtech.qjys.db.DemoDBManager;
-import com.rmtech.qjys.hx.QjHelper;
-import com.sjl.lib.http.okhttp.OkHttpUtils;
-import com.sjl.lib.http.okhttp.callback.Callback;
-
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -38,6 +27,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.rmtech.qjys.QjApplication;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.db.DemoDBManager;
+import com.rmtech.qjys.hx.QjHelper;
+import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.sjl.lib.http.okhttp.callback.Callback;
 
 /**
  * 登陆页面

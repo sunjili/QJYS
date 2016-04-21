@@ -1,6 +1,6 @@
 package com.rmtech.qjys.adapter;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import android.content.Context;
@@ -20,10 +20,22 @@ import com.sjl.lib.dynamicgrid.BaseDynamicGridAdapter;
 
 public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 
+	public static final int SHOW_TYPE_NORMAL = 0;
+	public static final int SHOW_TYPE_SELECT = 1;
+
 	private boolean debug = false;
 
-	public PhotoDataGridAdapter(Context context, List<?> items, int columnCount) {
-		super(context, items, columnCount);
+	private int showType = SHOW_TYPE_NORMAL;
+	private HashSet<PhotoDataInfo> mSelectedImages;
+
+	public PhotoDataGridAdapter(Context context, List<?> items,  HashSet<PhotoDataInfo> mSelectedImages, int type) {
+		super(context, items, context.getResources().getInteger(R.integer.column_count));
+		showType = type;
+		this.mSelectedImages = mSelectedImages;
+	}
+
+	public PhotoDataGridAdapter(Context context, List<?> items) {
+		super(context, items, context.getResources().getInteger(R.integer.column_count));
 	}
 
 	// public void add(int position, FolderDataInfo info) {
@@ -70,12 +82,12 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 		FolderDataInfo info = (FolderDataInfo) getItem(position);
 		if (convertView == null) {
 			if (getItemViewType(position) == 1) {
-				convertView = LayoutInflater.from(parent.getContext()).inflate(
-						R.layout.item_grid_photodata_image, null);
+				convertView = LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.item_grid_photodata_image, null);
 
 			} else {
-				convertView = LayoutInflater.from(parent.getContext()).inflate(
-						R.layout.item_grid_photodata_folder, null);
+				convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid_photodata_folder,
+						null);
 
 			}
 			holder = new ViewHolder(convertView);
@@ -87,17 +99,19 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 		return convertView;
 	}
 
+	DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.drawable.default_error)
+			.showImageOnFail(R.drawable.default_error).resetViewBeforeLoading(true).cacheOnDisk(true)
+			.cacheInMemory(true).build();
+	
 	private class ViewHolder {
 		public ImageView itemImg;
+		public ImageView checkmark;
 		public TextView itemName;
-		DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.showImageForEmptyUri(R.drawable.default_error)
-				.showImageOnFail(R.drawable.default_error)
-				.resetViewBeforeLoading(true).cacheOnDisk(true)
-				.cacheInMemory(true).build();
+		
 
 		public ViewHolder(View container) {
 			itemImg = (ImageView) container.findViewById(R.id.item_img);
+			checkmark = (ImageView) container.findViewById(R.id.checkmark);
 			itemName = (TextView) container.findViewById(R.id.item_name);
 		}
 
@@ -110,15 +124,27 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 			if (data instanceof PhotoDataInfo) {
 				String localPath = ((PhotoDataInfo) data).localPath;
 				if (TextUtils.isEmpty(localPath)) {
-					ImageLoader.getInstance().displayImage(
-							((PhotoDataInfo) data).thumb_url, itemImg, options);
+					ImageLoader.getInstance().displayImage(((PhotoDataInfo) data).thumb_url, itemImg, options);
 				} else {
-					ImageLoader.getInstance().displayImage(
-							"file://" + ((PhotoDataInfo) data).localPath,
-							itemImg, options);
+					ImageLoader.getInstance().displayImage("file://" + ((PhotoDataInfo) data).localPath, itemImg,
+							options);
+				}
+				
+				if(showType == SHOW_TYPE_SELECT) {
+					checkmark.setVisibility(View.VISIBLE);
+					if(mSelectedImages != null) {
+						if(mSelectedImages.contains(data)) {
+							checkmark.setImageResource(R.drawable.btn_choice_press);
+						} else {
+							checkmark.setImageResource(R.drawable.btn_choice_nor);
+						}
+					}
+					
 				}
 			}
 			itemName.setText(data.name);
+			
+			
 		}
 	}
 

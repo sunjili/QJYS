@@ -1,5 +1,8 @@
 package com.sjl.lib.roundedimageview;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -20,8 +23,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView.ScaleType;
-import java.util.HashSet;
-import java.util.Set;
 
 @SuppressWarnings("UnusedDeclaration")
 public class RoundedDrawable extends Drawable {

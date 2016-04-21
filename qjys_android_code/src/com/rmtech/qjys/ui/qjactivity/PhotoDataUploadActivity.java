@@ -56,7 +56,7 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 		mContext = this;
 		mGridView = (GridView) findViewById(R.id.dynamic_grid);
 		nodata_layout = findViewById(R.id.nodata_layout);
-		mAdapter = new PhotoDataGridAdapter(getActivity(), new ArrayList(),getResources().getInteger(R.integer.column_count));
+		mAdapter = new PhotoDataGridAdapter(getActivity(), new ArrayList());
 		mGridView.setAdapter(mAdapter);
 
 		mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

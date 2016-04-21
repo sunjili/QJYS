@@ -3,11 +3,6 @@ package com.rmtech.qjys.ui;
 import java.util.Collections;
 import java.util.List;
 
-import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
-import com.hyphenate.easeui.utils.EaseUserUtils;
-import com.hyphenate.exceptions.HyphenateException;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,6 +18,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.exceptions.HyphenateException;
+import com.rmtech.qjys.R;
 
 /**
  * 黑名单列表页面

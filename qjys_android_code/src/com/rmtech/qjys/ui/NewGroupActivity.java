@@ -13,13 +13,6 @@
  */
 package com.rmtech.qjys.ui;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMGroupManager.EMGroupOptions;
-import com.hyphenate.chat.EMGroupManager.EMGroupStyle;
-import com.rmtech.qjys.R;
-import com.hyphenate.easeui.widget.EaseAlertDialog;
-import com.hyphenate.exceptions.HyphenateException;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,9 +22,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroupManager.EMGroupOptions;
+import com.hyphenate.chat.EMGroupManager.EMGroupStyle;
+import com.hyphenate.easeui.widget.EaseAlertDialog;
+import com.hyphenate.exceptions.HyphenateException;
+import com.rmtech.qjys.R;
 
 public class NewGroupActivity extends BaseActivity {
 	private EditText groupNameEditText;

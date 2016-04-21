@@ -5,11 +5,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
-import com.rmtech.qjys.model.UserContext;
-
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.rmtech.qjys.model.UserContext;
 
 public class HttpSetting {
 

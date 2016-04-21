@@ -15,14 +15,6 @@ package com.rmtech.qjys.ui;
 
 import java.util.List;
 
-import com.hyphenate.EMValueCallBack;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMGroup;
-import com.rmtech.qjys.R;
-import com.hyphenate.exceptions.HyphenateException;
-import com.rmtech.qjys.QjConstant;
-import com.rmtech.qjys.adapter.GroupAdapter;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +30,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.exceptions.HyphenateException;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.adapter.GroupAdapter;
 
 public class GroupsActivity extends BaseActivity {
 	public static final String TAG = "GroupsActivity";

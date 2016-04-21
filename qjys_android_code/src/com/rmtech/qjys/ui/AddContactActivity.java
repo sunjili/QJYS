@@ -14,7 +14,6 @@
 package com.rmtech.qjys.ui;
 
 import okhttp3.Call;
-import okhttp3.Response;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +37,6 @@ import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.UserInfo;
 import com.rmtech.qjys.model.gson.MUser;
-import com.sjl.lib.http.okhttp.callback.Callback;
 
 public class AddContactActivity extends BaseActivity {
 	private EditText editText;

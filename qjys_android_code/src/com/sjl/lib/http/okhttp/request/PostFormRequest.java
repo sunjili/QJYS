@@ -1,11 +1,5 @@
 package com.sjl.lib.http.okhttp.request;
 
-import android.text.TextUtils;
-
-import com.sjl.lib.http.okhttp.OkHttpUtils;
-import com.sjl.lib.http.okhttp.builder.PostFormBuilder;
-import com.sjl.lib.http.okhttp.callback.Callback;
-
 import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.List;
@@ -17,6 +11,11 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import android.text.TextUtils;
+
+import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.sjl.lib.http.okhttp.builder.PostFormBuilder;
+import com.sjl.lib.http.okhttp.callback.Callback;
 
 /**
  * Created by jilisun on 15/12/14.

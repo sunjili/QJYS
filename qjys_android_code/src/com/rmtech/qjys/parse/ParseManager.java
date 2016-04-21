@@ -3,8 +3,9 @@ package com.rmtech.qjys.parse;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+
 import com.hyphenate.EMValueCallBack;
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
@@ -18,8 +19,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.rmtech.qjys.hx.QjHelper;
-
-import android.content.Context;
 
 public class ParseManager {
 

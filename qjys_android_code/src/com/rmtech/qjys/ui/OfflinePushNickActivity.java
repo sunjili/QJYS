@@ -1,8 +1,5 @@
 package com.rmtech.qjys.ui;
 
-import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
-
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.rmtech.qjys.R;
 
 public class OfflinePushNickActivity extends BaseActivity {
 

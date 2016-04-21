@@ -17,7 +17,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.hyphenate.chat.EMChatManager;
 import com.rmtech.qjys.hx.QjHelper;
 
 public class DbOpenHelper extends SQLiteOpenHelper{

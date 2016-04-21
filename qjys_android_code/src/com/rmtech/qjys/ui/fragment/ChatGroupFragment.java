@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 
 import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
 public class ChatGroupFragment extends ChatFragment implements EaseChatFragmentListener {
 	private CaseTopBarView mCaseTopBarView;
@@ -24,6 +26,9 @@ public class ChatGroupFragment extends ChatFragment implements EaseChatFragmentL
 		super.initView();
 		mCaseTopBarView = (CaseTopBarView)getView().findViewById(R.id.topbar_view);
 		mCaseTopBarView.setVisibility(View.VISIBLE);
+		CaseInfo info = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(toChatUsername);
+				
+		mCaseTopBarView.setCaseInfo(info);
 	}
 
 

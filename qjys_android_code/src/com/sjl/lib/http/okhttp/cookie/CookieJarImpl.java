@@ -1,14 +1,14 @@
 package com.sjl.lib.http.okhttp.cookie;
 
-import com.sjl.lib.http.okhttp.cookie.store.CookieStore;
-import com.sjl.lib.http.okhttp.cookie.store.HasCookieStore;
-import com.sjl.lib.http.okhttp.utils.Exceptions;
-
 import java.util.List;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
+
+import com.sjl.lib.http.okhttp.cookie.store.CookieStore;
+import com.sjl.lib.http.okhttp.cookie.store.HasCookieStore;
+import com.sjl.lib.http.okhttp.utils.Exceptions;
 
 /**
  * Created by jilisun on 16/3/10.

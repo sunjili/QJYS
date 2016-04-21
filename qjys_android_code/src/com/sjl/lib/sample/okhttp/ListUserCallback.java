@@ -1,12 +1,12 @@
 package com.sjl.lib.sample.okhttp;
 
-import com.google.gson.Gson;
-import okhttp3.Response;
-
-import com.sjl.lib.http.okhttp.callback.Callback;
-
 import java.io.IOException;
 import java.util.List;
+
+import okhttp3.Response;
+
+import com.google.gson.Gson;
+import com.sjl.lib.http.okhttp.callback.Callback;
 
 /**
  * Created by jilisun on 15/12/14.

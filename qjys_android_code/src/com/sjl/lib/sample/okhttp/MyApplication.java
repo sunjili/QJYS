@@ -1,10 +1,10 @@
 package com.sjl.lib.sample.okhttp;
 
+import java.util.concurrent.TimeUnit;
+
 import android.app.Application;
 
 import com.sjl.lib.http.okhttp.OkHttpUtils;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by jilisun on 15/8/25.

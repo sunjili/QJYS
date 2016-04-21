@@ -23,7 +23,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -113,17 +112,15 @@ public class MeRecycleActivity extends BaseActivity {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onSectionClick(AdapterView<?> adapterView, View view,
-					int section, long id) {
+			public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int section, int position, long id) {
+			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
 				// TODO Auto-generated method stub
-				PhotoDataManagerActivity.show(getActivity(), null);
+				PhotoDataManagerActivity.show(getActivity(), null, null);
 
 			}
 		});
@@ -135,8 +132,7 @@ public class MeRecycleActivity extends BaseActivity {
 				// create "open" item
 				SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
 				// set item background
-				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-						0xCE)));
+				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
 				// set item width
 				openItem.setWidth(dp2px(90));
 				// set item title
@@ -151,8 +147,7 @@ public class MeRecycleActivity extends BaseActivity {
 				// create "delete" item
 				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
 				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-						0x3F, 0x25)));
+				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
 				// set item width
 				deleteItem.setWidth(dp2px(90));
 				// set a icon
@@ -165,26 +160,24 @@ public class MeRecycleActivity extends BaseActivity {
 		mListView.setMenuCreator(creator);
 
 		// step 2. listener item click event
-		mListView
-				.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-					@Override
-					public boolean onMenuItemClick(int position,
-							SwipeMenu menu, int index) {
-						switch (index) {
-						case 0:
-							// open
-							// open(null);
-							break;
-						case 1:
-							// delete
-							// delete(item);
-							// mAppList.remove(position);
-							mAdapter.notifyDataSetChanged();
-							break;
-						}
-						return false;
-					}
-				});
+		mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+				switch (index) {
+				case 0:
+					// open
+					// open(null);
+					break;
+				case 1:
+					// delete
+					// delete(item);
+					// mAppList.remove(position);
+					mAdapter.notifyDataSetChanged();
+					break;
+				}
+				return false;
+			}
+		});
 
 		// set SwipeListener
 		mListView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
@@ -201,26 +194,23 @@ public class MeRecycleActivity extends BaseActivity {
 		});
 
 		// set MenuStateChangeListener
-		mListView
-				.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
-					@Override
-					public void onMenuOpen(int position) {
-					}
+		mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+			@Override
+			public void onMenuOpen(int position) {
+			}
 
-					@Override
-					public void onMenuClose(int position) {
-					}
-				});
+			@Override
+			public void onMenuClose(int position) {
+			}
+		});
 		mPtrFrame.setLastUpdateTimeRelateObject(this);
 		mPtrFrame.disableWhenHorizontalMove(true);
 		mPtrFrame.setPtrHandler(new PtrHandler() {
 			@Override
-			public boolean checkCanDoRefresh(PtrFrameLayout frame,
-					View content, View header) {
+			public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
 
 				// here check $mListView instead of $content
-				return PtrDefaultHandler.checkContentCanBePulledDown(frame,
-						mListView, header);
+				return PtrDefaultHandler.checkContentCanBePulledDown(frame, mListView, header);
 			}
 
 			@Override
@@ -258,8 +248,8 @@ public class MeRecycleActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onUIPositionChange(PtrFrameLayout frame,
-					boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
+			public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status,
+					PtrIndicator ptrIndicator) {
 				// TODO Auto-generated method stub
 
 			}
@@ -305,8 +295,7 @@ public class MeRecycleActivity extends BaseActivity {
 	};
 
 	private int dp2px(int dp) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-				getResources().getDisplayMetrics());
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
 	}
 
 	private void updateData() {
@@ -404,14 +393,12 @@ public class MeRecycleActivity extends BaseActivity {
 		}
 
 		@Override
-		public View getItemView(int section, int position, View convertView,
-				ViewGroup parent) {
+		public View getItemView(int section, int position, View convertView, ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(
-						R.layout.case_list_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
+						Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(R.layout.case_list_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
@@ -431,19 +418,16 @@ public class MeRecycleActivity extends BaseActivity {
 		}
 
 		@Override
-		public View getSectionHeaderView(int section, View convertView,
-				ViewGroup parent) {
+		public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(
-						R.layout.case_list_header_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
+						Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(R.layout.case_list_header_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
-			((TextView) layout.findViewById(R.id.textItem))
-					.setText(mPatientList.get(section).hos_fullname);
+			((TextView) layout.findViewById(R.id.textItem)).setText(mPatientList.get(section).hos_fullname);
 			return layout;
 		}
 

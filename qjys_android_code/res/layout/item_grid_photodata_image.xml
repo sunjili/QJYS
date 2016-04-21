@@ -9,23 +9,36 @@
         android:layout_height="match_parent" >
 
         <com.sjl.lib.multi_image_selector.view.SquaredImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/item_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/default_error" />
+            android:src="@drawable/default_error"
+            app:riv_corner_radius="5dip" />
 
         <TextView
             android:id="@+id/item_name"
             android:layout_width="match_parent"
             android:layout_height="22dp"
             android:layout_alignParentBottom="true"
-            android:background="#88000000"
+            android:background="@drawable/photo_iamge_name_bg"
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/checkmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="5.5dp"
+            android:layout_marginTop="5.5dp"
+            android:src="@drawable/btn_choice_nor"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </com.sjl.lib.multi_image_selector.view.SquareFrameLayout>

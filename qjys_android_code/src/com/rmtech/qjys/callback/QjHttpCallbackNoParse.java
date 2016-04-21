@@ -1,11 +1,6 @@
 package com.rmtech.qjys.callback;
 
-import okhttp3.Call;
-import okhttp3.Response;
-
 import com.rmtech.qjys.model.gson.MBase;
-import com.sjl.lib.http.okhttp.callback.Callback;
-import com.sjl.lib.utils.L;
 
 /**
  * Created by jilisun on 15/12/14.

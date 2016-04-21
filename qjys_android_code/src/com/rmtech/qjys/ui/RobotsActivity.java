@@ -18,15 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.hyphenate.EMValueCallBack;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMContact;
-import com.rmtech.qjys.R;
-import com.hyphenate.exceptions.HyphenateException;
-import com.rmtech.qjys.db.UserDao;
-import com.rmtech.qjys.domain.RobotUser;
-import com.rmtech.qjys.hx.QjHelper;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +35,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.hyphenate.EMValueCallBack;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMContact;
+import com.hyphenate.exceptions.HyphenateException;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.db.UserDao;
+import com.rmtech.qjys.domain.RobotUser;
+import com.rmtech.qjys.hx.QjHelper;
 
 public class RobotsActivity extends BaseActivity {
 

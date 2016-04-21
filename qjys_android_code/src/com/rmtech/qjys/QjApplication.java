@@ -26,7 +26,6 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.rmtech.qjys.hx.QjHelper;
 import com.sjl.lib.http.okhttp.AndroidDeviceManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
-import com.sjl.lib.multi_image_selector.utils.ScreenUtils;
 import com.sjl.lib.utils.ScreenUtil;
 
 public class QjApplication extends Application {

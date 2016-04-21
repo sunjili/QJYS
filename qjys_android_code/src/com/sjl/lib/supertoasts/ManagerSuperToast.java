@@ -17,13 +17,13 @@
 
 package com.sjl.lib.supertoasts;
 
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
-
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /* Manages the life of a SuperToast. Initially copied from the Crouton library */
 public class ManagerSuperToast extends Handler {

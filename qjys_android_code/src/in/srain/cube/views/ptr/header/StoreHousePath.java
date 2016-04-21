@@ -1,8 +1,8 @@
 package in.srain.cube.views.ptr.header;
 
-import android.util.SparseArray;
-
 import java.util.ArrayList;
+
+import android.util.SparseArray;
 
 /**
  * Created by srain on 11/7/14.

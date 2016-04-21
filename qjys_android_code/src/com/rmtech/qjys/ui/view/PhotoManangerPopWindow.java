@@ -20,13 +20,12 @@ import com.sjl.lib.utils.ScreenUtil;
 @SuppressLint("NewApi")
 public class PhotoManangerPopWindow {
 
-	public static ListPopupWindow createPopupList(Context context, View anchorView,
+	public static ListPopupWindow createPopupList(Context context, View anchorView,ListPopupWindowAdapter mFolderAdapter,
 			final AdapterView.OnItemClickListener listener) {
 		final ListPopupWindow mFolderPopupWindow = new ListPopupWindow(context);
 		mFolderPopupWindow
 				.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-		final ListPopupWindowAdapter mFolderAdapter = new ListPopupWindowAdapter(
-				context);
+		
 		mFolderPopupWindow.setAdapter(mFolderAdapter);
 		mFolderPopupWindow.setWidth(ScreenUtil.dp2px(143));
 		mFolderPopupWindow.setHeight(LayoutParams.WRAP_CONTENT);
@@ -44,15 +43,17 @@ public class PhotoManangerPopWindow {
 	public static class ListPopupWindowAdapter extends BaseAdapter {
 		private String[] mStringList = new String[] { "新建文件夹", "文件排序", "文件多选",
 				"设置" };
-		private int[] mImageList = new int[] { R.drawable.ic_case_newfolder,
+		private int[] mImageList = new int[] {R.drawable.ic_case_newfolder,
 				R.drawable.ic_case_filesorting,
 				R.drawable.ic_case_filemultiselect, R.drawable.ic_case_setting };
 
 		private Context mContext;
+		private boolean isRoot;
 
-		public ListPopupWindowAdapter(Context context) {
+		public ListPopupWindowAdapter(Context context, boolean isRoot) {
 			super();
 			this.mContext = context;
+			this.isRoot = isRoot;
 		}
 
 		@Override
@@ -60,6 +61,9 @@ public class PhotoManangerPopWindow {
 			if (mStringList == null) {
 				return 0;
 			} else {
+				if(!isRoot) {
+					return mStringList.length-1;
+				}
 				return this.mStringList.length;
 			}
 		}
@@ -75,8 +79,12 @@ public class PhotoManangerPopWindow {
 		}
 
 		@Override
-		public View getView(final int position, View convertView,
+		public View getView(final int pos, View convertView,
 				ViewGroup parent) {
+			int position = pos;
+			if(!isRoot) {
+				position = pos+1;
+			}
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();

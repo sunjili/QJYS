@@ -21,7 +21,6 @@ import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,9 +37,9 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMCallManager.EMVideoCallHelper;
 import com.hyphenate.chat.EMCallStateChangeListener;
 import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
 import com.hyphenate.media.EMLocalSurfaceView;
 import com.hyphenate.media.EMOppositeSurfaceView;
+import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
 
 public class VideoCallActivity extends CallActivity implements OnClickListener {

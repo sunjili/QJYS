@@ -4,16 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.util.EMLog;
-import com.hyphenate.util.PathUtil;
-
 import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.format.Time;
+
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.util.EMLog;
+import com.hyphenate.util.PathUtil;
 
 public class EaseVoiceRecorder {
     MediaRecorder recorder;

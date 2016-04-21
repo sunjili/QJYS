@@ -13,10 +13,6 @@
  */
 package com.rmtech.qjys.ui.fragment;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import okhttp3.Call;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -34,7 +30,6 @@ import android.widget.Toast;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
-import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.EMLog;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
@@ -42,7 +37,6 @@ import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.db.UserDao;
 import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.hx.QjHelper.DataSyncListener;
-import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.GroupsActivity;

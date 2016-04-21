@@ -1,9 +1,9 @@
 package com.sjl.lib.dynamicgrid;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.Context;
 
 /**
  * Author: alex askerov

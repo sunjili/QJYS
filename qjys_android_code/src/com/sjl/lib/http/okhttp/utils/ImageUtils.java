@@ -1,13 +1,13 @@
 package com.sjl.lib.http.okhttp.utils;
 
+import java.io.InputStream;
+import java.lang.reflect.Field;
+
 import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import java.io.InputStream;
-import java.lang.reflect.Field;
 
 /**
  * Created by jilisun on 15/11/6.

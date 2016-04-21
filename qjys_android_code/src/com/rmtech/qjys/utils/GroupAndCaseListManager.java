@@ -8,21 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
-
 import android.text.TextUtils;
 import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.easeui.domain.EaseUser;
-import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.CaseInfo;
-import com.rmtech.qjys.model.DoctorInfo;
-import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.model.gson.MGroupList;
 
 public class GroupAndCaseListManager {
@@ -53,6 +48,7 @@ public class GroupAndCaseListManager {
 				@Override
 				public void onResponseSucces(MGroupList response) {
 					mMGroupList = response;
+					updateIdDoctorMap();
 					if (callback != null) {
 						callback.onResponseSucces(response);
 					}
@@ -116,7 +112,7 @@ public class GroupAndCaseListManager {
 		}
 		
 		if (!TextUtils.isEmpty(groupIds)) {
-			GroupAndCaseListManager.getInstance().getGroupCaseInfo(groupIds, callback);
+			GroupAndCaseListManager.getInstance().getGroupCaseInfo(groupIds.substring(0, groupIds.length()-1), callback);
 		} else {
 			callback.onError(null, new Exception("no group"));
 		}
@@ -138,6 +134,13 @@ public class GroupAndCaseListManager {
 			}
 
 		});
+	}
+
+	public CaseInfo getCaseInfoByGroupId(String groupId) {
+		if(mGIdCaseInfoMap == null) {
+			return null;
+		}
+		return mGIdCaseInfoMap.get(groupId);
 	}
 
 }

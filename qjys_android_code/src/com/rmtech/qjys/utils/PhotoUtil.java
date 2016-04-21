@@ -1,7 +1,6 @@
 package com.rmtech.qjys.utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,7 +14,6 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
-import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 
 public class PhotoUtil {

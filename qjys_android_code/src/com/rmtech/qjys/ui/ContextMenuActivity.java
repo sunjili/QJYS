@@ -18,8 +18,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.hyphenate.chat.EMMessage;
-import com.rmtech.qjys.R;
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
 
 public class ContextMenuActivity extends BaseActivity {
     public static final int RESULT_CODE_COPY = 1;

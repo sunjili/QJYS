@@ -1,12 +1,12 @@
 package com.sjl.lib.http.okhttp.builder;
 
-import com.sjl.lib.http.okhttp.request.OtherRequest;
-import com.sjl.lib.http.okhttp.request.RequestCall;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import okhttp3.RequestBody;
+
+import com.sjl.lib.http.okhttp.request.OtherRequest;
+import com.sjl.lib.http.okhttp.request.RequestCall;
 
 /**
  * DELETE、PUT、PATCH等其他方法

@@ -1,12 +1,12 @@
 package com.sjl.lib.sample.okhttp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FlowLayout extends ViewGroup
 {

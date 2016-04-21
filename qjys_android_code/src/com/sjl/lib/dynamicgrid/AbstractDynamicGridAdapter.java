@@ -1,9 +1,9 @@
 package com.sjl.lib.dynamicgrid;
 
-import android.widget.BaseAdapter;
-
 import java.util.HashMap;
 import java.util.List;
+
+import android.widget.BaseAdapter;
 
 /**
  * Author: alex askerov

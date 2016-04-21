@@ -1,19 +1,5 @@
 package com.rmtech.qjys.ui;
 
-import com.hyphenate.chat.EMCallStateChangeListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMCallManager.EMVideoCallHelper.CallType;
-import com.hyphenate.chat.EMMessage.Status;
-import com.hyphenate.chat.EMTextMessageBody;
-import com.rmtech.qjys.R;
-import com.hyphenate.exceptions.EMServiceNotReadyException;
-import com.hyphenate.media.EMLocalSurfaceView;
-import com.hyphenate.media.EMOppositeSurfaceView;
-import com.hyphenate.util.EMLog;
-import com.hyphenate.util.NetUtils;
-import com.rmtech.qjys.QjConstant;
-
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.Ringtone;
@@ -23,6 +9,19 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMCallStateChangeListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessage.Status;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.exceptions.EMServiceNotReadyException;
+import com.hyphenate.media.EMLocalSurfaceView;
+import com.hyphenate.media.EMOppositeSurfaceView;
+import com.hyphenate.util.EMLog;
+import com.hyphenate.util.NetUtils;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
 
 public class CallActivity extends BaseActivity {
     protected final int MSG_CALL_MAKE_VIDEO = 0;

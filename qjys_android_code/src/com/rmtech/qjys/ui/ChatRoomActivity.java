@@ -15,13 +15,6 @@ package com.rmtech.qjys.ui;
 
 import java.util.List;
 
-import com.hyphenate.chat.EMChatManager;
-import com.hyphenate.chat.EMChatRoom;
-import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
-import com.rmtech.qjys.QjConstant;
-import com.rmtech.qjys.adapter.ChatRoomAdapter;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +27,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+
+import com.hyphenate.chat.EMChatRoom;
+import com.hyphenate.chat.EMClient;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.adapter.ChatRoomAdapter;
 
 public class ChatRoomActivity extends BaseActivity {
 	private ListView chatListView;

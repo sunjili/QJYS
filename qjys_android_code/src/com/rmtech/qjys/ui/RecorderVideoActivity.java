@@ -51,10 +51,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.rmtech.qjys.R;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
+import com.rmtech.qjys.R;
 import com.rmtech.qjys.video.util.Utils;
 
 public class RecorderVideoActivity extends BaseActivity implements

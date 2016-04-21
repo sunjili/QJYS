@@ -17,12 +17,6 @@ package com.rmtech.qjys.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMCursorResult;
-import com.hyphenate.chat.EMGroupInfo;
-import com.rmtech.qjys.R;
-import com.hyphenate.exceptions.HyphenateException;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +34,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMCursorResult;
+import com.hyphenate.chat.EMGroupInfo;
+import com.hyphenate.exceptions.HyphenateException;
+import com.rmtech.qjys.R;
 
 public class PublicGroupsActivity extends BaseActivity {
 	private ProgressBar pb;

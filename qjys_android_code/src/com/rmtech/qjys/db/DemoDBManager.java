@@ -1,23 +1,22 @@
 package com.rmtech.qjys.db;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-
-import com.hyphenate.easeui.domain.EaseUser;
-import com.hyphenate.util.HanziToPinyin;
-import com.rmtech.qjys.QjConstant;
-import com.rmtech.qjys.QjApplication;
-import com.rmtech.qjys.domain.InviteMessage;
-import com.rmtech.qjys.domain.RobotUser;
-import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.util.HanziToPinyin;
+import com.rmtech.qjys.QjApplication;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.domain.InviteMessage;
+import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
+import com.rmtech.qjys.domain.RobotUser;
 
 public class DemoDBManager {
     static private DemoDBManager dbMgr = new DemoDBManager();

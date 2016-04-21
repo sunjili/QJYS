@@ -194,7 +194,7 @@ public class EaseChatFragment extends QjBaseFragment {
             }
             titleBar.setRightImageResource(R.drawable.ease_mm_title_remove);
         } else {
-        	titleBar.setRightImageResource(R.drawable.ease_to_group_details_normal);
+//        	titleBar.setRightImageResource(R.drawable.ease_to_group_details_normal);
             if (chatType == EaseConstant.CHATTYPE_GROUP) {
                 // 群聊
                 EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
@@ -228,7 +228,7 @@ public class EaseChatFragment extends QjBaseFragment {
                 if (chatType == EaseConstant.CHATTYPE_SINGLE) {
                     emptyHistory();
                 } else {
-                    toGroupDetails();
+                    //toGroupDetails();
                 }
             }
         });

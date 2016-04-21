@@ -13,7 +13,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.ui.qjactivity.AddCaseActivity;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 
 

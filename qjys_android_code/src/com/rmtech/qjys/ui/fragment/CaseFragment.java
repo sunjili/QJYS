@@ -106,7 +106,7 @@ public class CaseFragment extends QjBaseFragment {
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int section, int position, long id) {
 				CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
-				PhotoDataManagerActivity.show(getActivity(), info);
+				PhotoDataManagerActivity.show(getActivity(), info, null);
 
 			}
 		});

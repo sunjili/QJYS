@@ -1,6 +1,7 @@
 package com.rmtech.qjys.utils;
 
 import java.io.IOException;
+
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;

@@ -8,7 +8,6 @@ package com.sjl.lib.dynamicgrid.example;
 
 import java.util.List;
 
-
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;

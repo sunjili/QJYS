@@ -1,12 +1,15 @@
 package com.rmtech.qjys.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import okhttp3.Call;
 
 import org.greenrobot.eventbus.EventBus;
 
-import okhttp3.Call;
-import android.app.usage.UsageEvents.Event;
-import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.rmtech.qjys.callback.QjHttpCallback;
@@ -20,7 +23,12 @@ public class PhotoUploadManager {
 	public ArrayList<OnPhotoUploadListener> mListenerList = new ArrayList<>();
 
 	public SparseArray<PhotoUploadStateInfo> taskMap = new SparseArray<PhotoUploadStateInfo>();
+	
+	private static ConcurrentLinkedQueue<PhotoUploadStateInfo> queue = new ConcurrentLinkedQueue<PhotoUploadStateInfo>();
+	private static List<PhotoUploadStateInfo> uploadingList = Collections.synchronizedList(new ArrayList<PhotoUploadStateInfo>());
 
+	private static final int MAX_UPLOAD_COUNT = 3;
+	
 	public void registerPhotoUploadListener(OnPhotoUploadListener listener) {
 		mListenerList.add(listener);
 	}
@@ -36,13 +44,8 @@ public class PhotoUploadManager {
 		return mInstance;
 	}
 
-	public static int createKey(String caseId, String folder_id,
-			PhotoDataInfo info) {
-		String path = "";
-		if (info != null && !TextUtils.isEmpty(info.localPath)) {
-			path = info.localPath;
-		}
-		return (caseId + folder_id + path).hashCode();
+	public static int createKey(String caseId, String folder_id, String localPath) {
+		return (caseId + folder_id + localPath).hashCode();
 
 	}
 
@@ -50,52 +53,76 @@ public class PhotoUploadManager {
 		return taskMap;
 	}
 
-	public void addUploadTask(String caseId, String folder_id,
-			PhotoDataInfo info) {
-		final int key = createKey(caseId, folder_id, info);
+	public void addUploadTask(String caseId, String folder_id, PhotoDataInfo info) {
+		final int key = createKey(caseId, folder_id, info.localPath);
 		if (taskMap.get(key) != null) {
 			// 图片正在上传
 		} else {
-			final PhotoUploadStateInfo task = new PhotoUploadStateInfo(caseId,
-					folder_id, info);//
+			final PhotoUploadStateInfo task = new PhotoUploadStateInfo(caseId, folder_id, info);//
+			queue.offer(task);
+			taskMap.put(key, task);
 			task.setCallback(new QjHttpCallback<MUploadImageInfo>() {
 
 				@Override
-				public MUploadImageInfo parseNetworkResponse(String str)
-						throws Exception {
+				public MUploadImageInfo parseNetworkResponse(String str) throws Exception {
 					return null;
 				}
 
 				@Override
 				public void onResponseSucces(MUploadImageInfo response) {
+					
+					onUploadSuccess(key, task);
 					for (OnPhotoUploadListener listener : mListenerList) {
 						listener.onUploadComplete(task, response.data);
 					}
-					taskMap.remove(key);
-					postUploadEvent();
 				}
 
 				@Override
 				public void onError(Call call, Exception e) {
+					onUploadError(task);
 					for (OnPhotoUploadListener listener : mListenerList) {
 						listener.onUploadError(task, e);
 					}
-					taskMap.remove(key);
-					postUploadEvent();
-
 				}
 
 				public void inProgress(float progress) {
+//					Log.d("ssssssssss", "PhotoUploadManager progress =" + progress);
 					for (OnPhotoUploadListener listener : mListenerList) {
 						listener.onUploadProgress(task);
 					}
 				}
 			});
-			taskMap.put(key, task);
-			task.upload();//
 			postUploadEvent();
+//			task.upload(key);//
 		}
-
+		checkAndUpload();
+	}
+	
+	private void onUploadSuccess(int key, PhotoUploadStateInfo task) {
+		taskMap.remove(key);
+		uploadingList.remove(task);
+		postUploadEvent();
+		checkAndUpload();
+	}
+	
+	private void onUploadError(PhotoUploadStateInfo task) {
+		uploadingList.remove(task);
+		postUploadEvent();
+		checkAndUpload();
+	}
+	
+	private void checkAndUpload() {
+		int count  = uploadingList.size();
+		if(count < MAX_UPLOAD_COUNT) {
+			for(int i = 0; i< (MAX_UPLOAD_COUNT - count);i++) {
+				PhotoUploadStateInfo task = queue.poll();
+				if(task != null) {
+					uploadingList.add(task);
+					int key = taskMap.indexOfValue(task);
+					task.upload(key);
+				}
+			}
+		}
 	}
 
 	private void postUploadEvent() {
@@ -108,8 +135,7 @@ public class PhotoUploadManager {
 
 		public void onUploadError(PhotoUploadStateInfo state, Exception e);
 
-		public void onUploadComplete(PhotoUploadStateInfo state,
-				PhotoDataInfo info);
+		public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info);
 	}
 
 }

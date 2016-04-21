@@ -11,12 +11,12 @@
   */
 package com.rmtech.qjys.receiver;
 
-import com.hyphenate.chat.EMChatService;
-import com.hyphenate.util.EMLog;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.hyphenate.chat.EMChatService;
+import com.hyphenate.util.EMLog;
 
 /**
  * @deprecated instead of use {@link EMReceiver}

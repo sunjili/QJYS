@@ -1,9 +1,8 @@
 package com.sjl.lib.http.okhttp.callback;
 
+import okhttp3.Response;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
-import okhttp3.Response;
 
 /**
  * Created by jilisun on 15/12/14.

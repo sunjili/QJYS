@@ -16,15 +16,14 @@
 
 package com.sjl.lib.filechooser;
 
-import android.content.Context;
-import android.os.FileObserver;
-import android.support.v4.content.AsyncTaskLoader;
-
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import android.content.Context;
+import android.os.FileObserver;
+import android.support.v4.content.AsyncTaskLoader;
 
 /**
  * Loader that returns a list of Files in a given file path.

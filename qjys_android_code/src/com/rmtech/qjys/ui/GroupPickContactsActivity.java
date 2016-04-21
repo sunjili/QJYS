@@ -18,15 +18,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMGroup;
-import com.rmtech.qjys.R;
-import com.hyphenate.easeui.adapter.EaseContactAdapter;
-import com.hyphenate.easeui.domain.EaseUser;
-import com.hyphenate.easeui.widget.EaseSidebar;
-import com.rmtech.qjys.QjConstant;
-import com.rmtech.qjys.hx.QjHelper;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +31,15 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.easeui.adapter.EaseContactAdapter;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.widget.EaseSidebar;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.hx.QjHelper;
 
 public class GroupPickContactsActivity extends BaseActivity {
 	private ListView listView;

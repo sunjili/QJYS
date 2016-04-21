@@ -116,7 +116,13 @@ public class ConversationListFragment extends EaseConversationListFragment {
 			errorItemContainer.setVisibility(View.VISIBLE);
 			conversationListView.setVisibility(View.GONE);
 			errormsg_layout.setVisibility(View.GONE);
+		} else {
+			no_data_view.setVisibility(View.GONE);
+			errorItemContainer.setVisibility(View.GONE);
+			conversationListView.setVisibility(View.VISIBLE);
+
 		}
+			
 	}
 
 	private boolean noData() {

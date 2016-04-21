@@ -1,13 +1,13 @@
 package com.sjl.lib.http.okhttp.builder;
 
-import com.sjl.lib.http.okhttp.request.PostFormRequest;
-import com.sjl.lib.http.okhttp.request.RequestCall;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.sjl.lib.http.okhttp.request.PostFormRequest;
+import com.sjl.lib.http.okhttp.request.RequestCall;
 
 /**
  * Created by jilisun on 15/12/14.

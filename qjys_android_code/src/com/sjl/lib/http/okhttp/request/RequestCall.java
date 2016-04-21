@@ -1,8 +1,5 @@
 package com.sjl.lib.http.okhttp.request;
 
-import com.sjl.lib.http.okhttp.OkHttpUtils;
-import com.sjl.lib.http.okhttp.callback.Callback;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -10,6 +7,9 @@ import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.sjl.lib.http.okhttp.callback.Callback;
 
 /**
  * Created by jilisun on 15/12/15.

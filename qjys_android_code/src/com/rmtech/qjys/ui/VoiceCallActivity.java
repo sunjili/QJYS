@@ -36,8 +36,8 @@ import android.widget.TextView;
 
 import com.hyphenate.chat.EMCallStateChangeListener;
 import com.hyphenate.chat.EMClient;
-import com.rmtech.qjys.R;
 import com.hyphenate.util.EMLog;
+import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
 
 /**

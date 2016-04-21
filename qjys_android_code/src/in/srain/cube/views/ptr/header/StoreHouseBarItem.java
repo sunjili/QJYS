@@ -1,12 +1,12 @@
 package in.srain.cube.views.ptr.header;
 
+import java.util.Random;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-
-import java.util.Random;
 
 /**
  * Created by srain on 11/6/14.

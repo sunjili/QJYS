@@ -112,7 +112,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
-         <!-- 病例回收站-->
+        <!-- 病例回收站 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeRecycleActivity"
             android:screenOrientation="portrait"
@@ -160,7 +160,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
-        <!-- 图片裁剪-->
+        <!-- 图片裁剪 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.ImageCropActivity"
             android:screenOrientation="portrait"
@@ -215,6 +215,11 @@
         </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.PhotoDataBrowseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.PhotoDataUploadingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>

@@ -4,6 +4,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.event.ImageUploadEvent;
+import com.rmtech.qjys.ui.qjactivity.PhotoDataUploadingActivity;
 import com.sjl.lib.utils.L;
 
 @SuppressLint("NewApi")
@@ -47,7 +49,7 @@ public class UploadingView extends RelativeLayout {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-
+				PhotoDataUploadingActivity.show((Activity) getContext());
 			}
 		});
 

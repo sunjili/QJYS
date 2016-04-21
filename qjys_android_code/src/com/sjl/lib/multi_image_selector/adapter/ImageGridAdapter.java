@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
-import com.sjl.lib.multi_image_selector.MultiImageSelectorFragment;
 import com.sjl.lib.multi_image_selector.bean.Image;
 
 /**

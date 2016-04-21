@@ -1,8 +1,8 @@
 package com.sjl.lib.multi_image_selector.bean;
 
-import android.text.TextUtils;
-
 import java.util.List;
+
+import android.text.TextUtils;
 
 /**
  * 文件夹

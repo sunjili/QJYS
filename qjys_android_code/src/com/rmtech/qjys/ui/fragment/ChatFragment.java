@@ -4,33 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Map;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMGroup;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMTextMessageBody;
-import com.rmtech.qjys.R;
-import com.hyphenate.easeui.ui.EaseChatFragment;
-import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
-import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
-import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
-import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
-import com.hyphenate.util.EasyUtils;
-import com.hyphenate.util.PathUtil;
-import com.rmtech.qjys.QjConstant;
-import com.rmtech.qjys.domain.EmojiconExampleGroupData;
-import com.rmtech.qjys.domain.RobotUser;
-import com.rmtech.qjys.hx.QjHelper;
-import com.rmtech.qjys.ui.ChatRoomDetailsActivity;
-import com.rmtech.qjys.ui.ContextMenuActivity;
-import com.rmtech.qjys.ui.ForwardMessageActivity;
-import com.rmtech.qjys.ui.GroupDetailsActivity;
-import com.rmtech.qjys.ui.ImageGridActivity;
-import com.rmtech.qjys.ui.MainActivity;
-import com.rmtech.qjys.ui.UserProfileActivity;
-import com.rmtech.qjys.ui.VideoCallActivity;
-import com.rmtech.qjys.ui.VoiceCallActivity;
-import com.rmtech.qjys.widget.ChatRowVoiceCall;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -46,6 +19,30 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.easeui.ui.EaseChatFragment;
+import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
+import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
+import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
+import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
+import com.hyphenate.util.EasyUtils;
+import com.hyphenate.util.PathUtil;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
+import com.rmtech.qjys.domain.EmojiconExampleGroupData;
+import com.rmtech.qjys.domain.RobotUser;
+import com.rmtech.qjys.hx.QjHelper;
+import com.rmtech.qjys.ui.ContextMenuActivity;
+import com.rmtech.qjys.ui.ForwardMessageActivity;
+import com.rmtech.qjys.ui.ImageGridActivity;
+import com.rmtech.qjys.ui.MainActivity;
+import com.rmtech.qjys.ui.UserProfileActivity;
+import com.rmtech.qjys.ui.VideoCallActivity;
+import com.rmtech.qjys.ui.VoiceCallActivity;
+import com.rmtech.qjys.widget.ChatRowVoiceCall;
+
 public class ChatFragment extends EaseChatFragment implements EaseChatFragmentListener{
 
     //避免和基类定义的常量可能发生的冲突，常量从11开始定义
@@ -56,7 +53,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
     
     private static final int REQUEST_CODE_SELECT_VIDEO = 11;
     private static final int REQUEST_CODE_SELECT_FILE = 12;
-    private static final int REQUEST_CODE_GROUP_DETAIL = 13;
+    public static final int REQUEST_CODE_GROUP_DETAIL = 13;
     private static final int REQUEST_CODE_CONTEXT_MENU = 14;
     
     private static final int MESSAGE_TYPE_SENT_VOICE_CALL = 1;
@@ -188,18 +185,18 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
 
     @Override
     public void onEnterToChatDetails() {
-        if (chatType == QjConstant.CHATTYPE_GROUP) {
-            EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
-            if (group == null) {
-                Toast.makeText(getActivity(), R.string.gorup_not_found, 0).show();
-                return;
-            }
-            startActivityForResult(
-                    (new Intent(getActivity(), GroupDetailsActivity.class).putExtra("groupId", toChatUsername)),
-                    REQUEST_CODE_GROUP_DETAIL);
-        }else if(chatType == QjConstant.CHATTYPE_CHATROOM){
-        	startActivityForResult(new Intent(getActivity(), ChatRoomDetailsActivity.class).putExtra("roomId", toChatUsername), REQUEST_CODE_GROUP_DETAIL);
-        }
+//        if (chatType == QjConstant.CHATTYPE_GROUP) {
+//            EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
+//            if (group == null) {
+//                Toast.makeText(getActivity(), R.string.gorup_not_found, 0).show();
+//                return;
+//            }
+//            startActivityForResult(
+//                    (new Intent(getActivity(), GroupDetailsActivity.class).putExtra("groupId", toChatUsername)),
+//                    REQUEST_CODE_GROUP_DETAIL);
+//        }else if(chatType == QjConstant.CHATTYPE_CHATROOM){
+//        	startActivityForResult(new Intent(getActivity(), ChatRoomDetailsActivity.class).putExtra("roomId", toChatUsername), REQUEST_CODE_GROUP_DETAIL);
+//        }
     }
 
     @Override

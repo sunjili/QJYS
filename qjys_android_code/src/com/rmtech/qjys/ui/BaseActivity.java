@@ -9,7 +9,6 @@ import android.widget.LinearLayout.LayoutParams;
 
 import com.hyphenate.easeui.ui.EaseBaseActivity;
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.ui.qjactivity.PhotoDataSelectActivity;
 import com.rmtech.qjys.ui.view.TopTitleView;
 
 public class BaseActivity extends EaseBaseActivity {
@@ -79,6 +78,12 @@ public class BaseActivity extends EaseBaseActivity {
 		mTitle = title;
 		if (mTopTitleView != null) {
 			mTopTitleView.setTitle(title);
+		}
+	}
+	
+	protected void setLeftTitle(String leftTitle) {
+		if (mTopTitleView != null) {
+			mTopTitleView.setLeftView(leftTitle);
 		}
 	}
 

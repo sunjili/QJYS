@@ -1,12 +1,11 @@
 package com.sjl.lib.pinnedheaderlistview;
 
-import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView.PinnedSectionedHeaderAdapter;
-import com.sjl.lib.swipemenulistview.BaseSwipListAdapter;
-
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+
+import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView.PinnedSectionedHeaderAdapter;
+import com.sjl.lib.swipemenulistview.BaseSwipListAdapter;
 
 public abstract class SectionedBaseAdapter extends BaseSwipListAdapter implements PinnedSectionedHeaderAdapter {
 

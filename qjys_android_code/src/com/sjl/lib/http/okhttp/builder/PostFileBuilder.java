@@ -1,13 +1,13 @@
 package com.sjl.lib.http.okhttp.builder;
 
-import com.sjl.lib.http.okhttp.request.PostFileRequest;
-import com.sjl.lib.http.okhttp.request.RequestCall;
-
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import okhttp3.MediaType;
+
+import com.sjl.lib.http.okhttp.request.PostFileRequest;
+import com.sjl.lib.http.okhttp.request.RequestCall;
 
 /**
  * Created by jilisun on 15/12/14.

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.fragment.PhotoManagerFragment;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
+import com.rmtech.qjys.ui.view.PhotoManangerPopWindow.ListPopupWindowAdapter;
 
 public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 
@@ -32,7 +34,12 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_photo_manager);
-		setTitle("上传影像资料");
+		if (isRootFolder()) {
+			setTitle("上传影像资料");
+		} else {
+			setTitle(folderDataInfo.name);
+			setLeftTitle("根目录");
+		}
 
 		mPhotoManagerFragment = new PhotoManagerFragment();
 		getSupportFragmentManager().beginTransaction().add(R.id.container, mPhotoManagerFragment).commit();
@@ -46,9 +53,13 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 			}
 		});
 		initPhotoSelector();
-		
+
 		mCaseTopBarView.setCaseInfo(caseInfo);
-		mPhotoManagerFragment.setIds(caseInfo,"");
+		mPhotoManagerFragment.setIds(caseInfo, folderDataInfo);
+	}
+
+	private boolean isRootFolder() {
+		return folderDataInfo == null || TextUtils.isEmpty(folderDataInfo.id);
 	}
 
 	protected BaseActivity getActivity() {
@@ -59,20 +70,22 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
 	}
 
-	public static void show(Activity context, CaseInfo caseInfo) {
+	public static void show(Activity context, CaseInfo caseInfo, FolderDataInfo itemInfo) {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataManagerActivity.class);
 		setCaseInfo(intent, caseInfo);
 		setCaseId(intent, caseInfo.id);
-		
+		setFolderDataInfo(intent, itemInfo);
 		context.startActivity(intent);
 	}
 
 	private void showPopWindow(View anchorView) {
 
 		if (mFolderPopupWindow == null) {
+			final ListPopupWindowAdapter mFolderAdapter = new ListPopupWindowAdapter(PhotoDataManagerActivity.this,
+					isRootFolder());
 			mFolderPopupWindow = PhotoManangerPopWindow.createPopupList(PhotoDataManagerActivity.this, anchorView,
-					new OnItemClickListener() {
+					mFolderAdapter, new OnItemClickListener() {
 
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -81,10 +94,12 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 								showNewFolderDialog();
 								break;
 							case 1:
-								PhotoDataSortActivity.show(PhotoDataManagerActivity.this);
+								PhotoDataSortActivity.show(PhotoDataManagerActivity.this,
+										mPhotoManagerFragment.getImageDataList());
 								break;
 							case 2:
-								PhotoDataSelectActivity.show(PhotoDataManagerActivity.this);
+								PhotoDataSelectActivity.show(PhotoDataManagerActivity.this,
+										mPhotoManagerFragment.getImageDataList());
 								break;
 							case 3:
 								PhotoDataSettingActivity.show(PhotoDataManagerActivity.this);
@@ -108,7 +123,6 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 		super.onAddNewFolder(info);
 		mPhotoManagerFragment.addFolderToGrid(info);
 	}
-
 
 	protected synchronized void onImagePicked(List<String> paths) {
 		mPhotoManagerFragment.onImagePicked(paths);

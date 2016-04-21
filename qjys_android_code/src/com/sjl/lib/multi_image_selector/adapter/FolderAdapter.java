@@ -1,6 +1,5 @@
 package com.sjl.lib.multi_image_selector.adapter;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
