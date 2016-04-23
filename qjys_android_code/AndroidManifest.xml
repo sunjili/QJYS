@@ -178,13 +178,42 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
+             <!-- 编辑 病房号 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.CaseBedNumberActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.AddCaseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
+            <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.CaseAddFriendActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.EditCaseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+			<!--编辑诊断界面  -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.CaseDiagnoseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+			<!--编辑病例的就诊状态  -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.EditCaseStateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        	<!--奇迹医生登录需要密码-->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.LoginPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>

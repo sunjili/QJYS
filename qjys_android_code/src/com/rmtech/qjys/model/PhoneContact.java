@@ -1,6 +1,12 @@
 package com.rmtech.qjys.model;
 
-public class PhoneContact {
+import java.io.Serializable;
+
+public class PhoneContact implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String name;
 	private String phone;
@@ -69,5 +75,5 @@ public class PhoneContact {
 	public String getPinyin() {
 		return pinyin;
 	}
-
+	
 }

@@ -21,11 +21,12 @@
         android:divider="@color/cd9"
         android:dividerHeight="1px" >
     </ListView>
-	<View 
-	    android:layout_height="0dp"
-	    android:layout_width="match_parent"
-	    android:layout_weight="1"
-	    />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
@@ -45,7 +46,6 @@
             android:textSize="13sp" />
 
         <EditText
-            android:singleLine="true"
             android:id="@+id/et_state_add"
             android:layout_width="match_parent"
             android:layout_height="36dp"
@@ -57,7 +57,9 @@
             android:background="@drawable/qj_me_edit_selector"
             android:hint="输入就诊状态"
             android:inputType="text"
-            android:paddingLeft="10dp" />
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+	<View 
+	    android:layout_marginTop="15dp"
+	    android:layout_height="0dp"
+	    android:layout_width="match_parent"
+	    android:layout_weight="1"
+	    />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@color/white" >
+
+
+        <EditText
+            android:singleLine="true"
+            android:id="@+id/et_state_add"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/qj_me_edit_selector"
+            android:hint="请输入自定义就诊状态"
+            android:inputType="text"
+            android:textSize="16sp"
+            android:paddingLeft="10dp" />
+    </RelativeLayout>
+    	<View 
+	    android:layout_height="0dp"
+	    android:layout_width="match_parent"
+	    android:layout_weight="1"
+	    />
+    <TextView
+        android:id="@+id/tv_explain_text"
+        style="@style/qj_text_small_explain_style"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:text="你也可以选择以下常用就诊状态" />
+
+    <ListView
+        android:id="@+id/lv_state"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="999"
+        android:background="@drawable/qj_me_listview_treament_state_background"
+        android:divider="@color/cd9"
+        android:dividerHeight="1px" >
+    </ListView>
+
+
+</LinearLayout>

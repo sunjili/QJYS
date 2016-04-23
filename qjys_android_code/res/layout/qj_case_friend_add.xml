@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white" >
+
+        <ImageView
+            android:background="@drawable/qj_me_item_selector"
+            android:id="@+id/iv_clean"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_vertical|right"
+            android:padding="15dp"
+            android:src="@drawable/btn_address_list_delect" />
+
+        <EditText
+            android:id="@+id/et_name"
+            style="@style/qj_et_style"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toLeftOf="@id/iv_clean"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:hint="请输入你的验证信息" />
+    </RelativeLayout>
+
+    <include layout="@layout/qj_me_split_line" />
+
+</LinearLayout>

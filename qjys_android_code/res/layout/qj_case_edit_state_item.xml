@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_item"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="@drawable/qj_me_item_selector"
+    android:descendantFocusability="blocksDescendants" >
+
+    <TextView
+        android:id="@+id/tv_name"
+        style="@style/qj_me_item_left_tv"
+        android:layout_marginLeft="10dp"
+        android:text="测试111111111" />
+
+    <ImageView
+        android:id="@+id/iv_selcted"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:minWidth="50dp"
+        android:paddingBottom="14dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="14dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_choice_press"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -58,7 +58,6 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 	public void onUploadError(PhotoUploadStateInfo state, Exception e) {
 		resetAdapter();
 		mAdapter.notifyDataSetChanged();
-
 	}
 
 	@Override

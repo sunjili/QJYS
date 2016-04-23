@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:scrollbars="none" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <include layout="@layout/qj_me_split_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/ll_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_diagnose"
+                style="@style/qj_et_style"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="请输入您的新增诊断"
+                android:inputType="text" />
+
+            <include layout="@layout/qj_me_split_line" />
+
+            <LinearLayout
+                android:id="@+id/ll_diagnose_add"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/qj_me_item_selector"
+                android:orientation="horizontal" >
+				<View 
+				    android:layout_height="match_parent"
+				    android:layout_width="0dp"
+				    android:layout_weight="1"
+				    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/btn_case_add" />
+
+                <Button
+                    android:focusable="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:text="添加诊断"
+                    android:textColor="@color/c3264aa"
+                    android:textSize="17sp" />
+                	<View 
+				    android:layout_height="match_parent"
+				    android:layout_width="0dp"
+				    android:layout_weight="1"
+				    />
+            </LinearLayout>
+
+            <include layout="@layout/qj_me_split_line" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

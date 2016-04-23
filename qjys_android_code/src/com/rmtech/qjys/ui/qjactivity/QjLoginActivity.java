@@ -208,6 +208,7 @@ public class QjLoginActivity extends BaseActivity {
 			mLoginVcodeView.setVisibility(View.VISIBLE);
 			mLoginPassWordView.setVisibility(View.GONE);
 		}
+		//LoginPasswordActivity.show(QjLoginActivity.this);
 	}
 
 	/**

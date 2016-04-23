@@ -106,9 +106,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Object itemInfo = mAdapter.getItem(position);
-				if (itemInfo instanceof FolderDataInfo) {
-					PhotoDataManagerActivity.show(getActivity(), caseInfo, (FolderDataInfo)itemInfo);
-				} else if (itemInfo instanceof PhotoDataInfo) {
+				if (itemInfo instanceof PhotoDataInfo) {
 					ArrayList<PhotoDataInfo> list = new ArrayList<PhotoDataInfo>();
 					int floderNum = 0;
 					for (Object obj : mAdapter.getItems()) {
@@ -123,6 +121,8 @@ public class PhotoManagerFragment extends QjBaseFragment {
 						imagePosition = 0;
 					}
 					PhotoDataBrowseActivity.show(getActivity(), imagePosition, list);
+				} else if (itemInfo instanceof FolderDataInfo) {
+					PhotoDataManagerActivity.show(getActivity(), caseInfo, (FolderDataInfo)itemInfo);
 				}
 			}
 		});

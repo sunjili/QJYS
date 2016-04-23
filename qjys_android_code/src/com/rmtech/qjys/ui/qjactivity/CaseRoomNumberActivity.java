@@ -3,6 +3,7 @@ package com.rmtech.qjys.ui.qjactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -28,6 +29,11 @@ public class CaseRoomNumberActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				roomNumber=et_room_number.getText().toString().trim();
+				if(!TextUtils.isEmpty(roomNumber)){
+					Intent data = new Intent();
+					data.putExtra("string", roomNumber);
+					setResult(MeNameActivity.RESULT_OK, data);
+				}
 				finish();
 			}
 		});

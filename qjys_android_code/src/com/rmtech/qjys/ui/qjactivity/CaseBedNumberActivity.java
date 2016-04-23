@@ -11,37 +11,37 @@ import android.widget.EditText;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
 /***
- * 编辑年龄    页面
+ * 编辑病床号    页面
  * @author Administrator
  *
  */
-public class CaseAgeActivity extends BaseActivity {
-	/**  年龄    */
-	private EditText et_age;
-	private String age;
+public class CaseBedNumberActivity extends BaseActivity {
+	/**  床号    */
+	private EditText et_bed;
+	private String bed;
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		setContentView(R.layout.qj_case_age);
-		setTitle("年龄");
+		setContentView(R.layout.qj_case_bed);
+		setTitle("病床号");
 		setRightTitle("保存", new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				age=et_age.getText().toString().trim();
-				if(!TextUtils.isEmpty(age)){
+				bed=et_bed.getText().toString().trim();
+				if(!TextUtils.isEmpty(bed)){
 					Intent data = new Intent();
-					data.putExtra("string", age);
+					data.putExtra("string", bed);
 					setResult(MeNameActivity.RESULT_OK, data);
+					finish();
 				}
-				finish();
 			}
 		});
 		initView();
 	}
 
 	private void initView() {
-		et_age=(EditText) findViewById(R.id.et_age);
+		et_bed=(EditText) findViewById(R.id.et_bed);
 	}
 
 	protected boolean showTitleBar() {
@@ -50,7 +50,7 @@ public class CaseAgeActivity extends BaseActivity {
 
 	public static void show(Context context) {
 		Intent intent = new Intent();
-		intent.setClass(context, CaseAgeActivity.class);
+		intent.setClass(context, CaseBedNumberActivity.class);
 		context.startActivity(intent);
 	}
 }

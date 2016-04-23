@@ -3,8 +3,11 @@ package com.rmtech.qjys.adapter;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +21,8 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.PhoneContact;
+import com.rmtech.qjys.ui.qjactivity.CaseAddFriendActivity;
+import com.rmtech.qjys.ui.qjactivity.PhoneContactsActivity;
 import com.rmtech.qjys.ui.view.MySectionIndexer;
 import com.rmtech.qjys.ui.view.PinnedHeaderListView;
 import com.rmtech.qjys.ui.view.PinnedHeaderListView.PinnedHeaderAdapter;
@@ -26,18 +31,18 @@ public class PhoneContactListAdapter extends BaseAdapter implements
 		PinnedHeaderAdapter, OnScrollListener {
 	private List<PhoneContact> mList;
 	private MySectionIndexer mIndexer;
-	private Context mContext;
+	private Activity mContext;
 	private int mLocationPosition = -1;
 	private LayoutInflater mInflater;
 
 	public PhoneContactListAdapter(List<PhoneContact> mList, MySectionIndexer mIndexer,
-			Context mContext) {
+			Activity mContext) {
 		this.mList = mList;
 		this.mIndexer = mIndexer;
 		this.mContext = mContext;
 		mInflater = LayoutInflater.from(mContext);
 	}
-	public PhoneContactListAdapter(List<PhoneContact> mList,Context mContext) {
+	public PhoneContactListAdapter(List<PhoneContact> mList,Activity mContext) {
 		this.mList = mList;
 		this.mContext = mContext;
 		mInflater = LayoutInflater.from(mContext);
@@ -61,7 +66,7 @@ public class PhoneContactListAdapter extends BaseAdapter implements
 	}
 
 	@SuppressLint("ResourceAsColor") @Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view;
 		final ViewHolder holder;
 		if (convertView == null) {
@@ -95,10 +100,14 @@ public class PhoneContactListAdapter extends BaseAdapter implements
 			
 			@Override
 			public void onClick(View v) {
-				phoneContact.setState(1);
-				clickBtnAdd(holder, phoneContact);
+//				phoneContact.setState(1);
+//				clickBtnAdd(holder, phoneContact);
 				Toast.makeText(mContext, ""+phoneContact.getName(), Toast.LENGTH_SHORT).show();
-				
+				Intent intent=new Intent(mContext,CaseAddFriendActivity.class);
+				Bundle bundle=new Bundle();
+				bundle.putSerializable("class", phoneContact);
+				intent.putExtras(bundle);
+				mContext.startActivityForResult(intent, PhoneContactsActivity.REQUEST_ADD_FRIEND);
 			}
 		});
 		return view;
@@ -151,10 +160,15 @@ public class PhoneContactListAdapter extends BaseAdapter implements
 	@Override
 	public void configurePinnedHeader(View header, int position, int alpha) {
 		// TODO Auto-generated method stub
-		int realPosition = position;
-		int section = mIndexer.getSectionForPosition(realPosition);
-		String title = (String) mIndexer.getSections()[section];
-		((TextView) header.findViewById(R.id.group_title)).setText(title);
+		try {
+			int realPosition = position;
+			int section = mIndexer.getSectionForPosition(realPosition);
+			String title = (String) mIndexer.getSections()[section];
+			((TextView) header.findViewById(R.id.group_title)).setText(title);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -167,8 +181,13 @@ public class PhoneContactListAdapter extends BaseAdapter implements
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		// TODO Auto-generated method stub
-		if (view instanceof PinnedHeaderListView) {
-			((PinnedHeaderListView) view).configureHeaderView(firstVisibleItem);
+		try {
+			if (view instanceof PinnedHeaderListView) {
+				((PinnedHeaderListView) view).configureHeaderView(firstVisibleItem);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+    <EditText
+        android:id="@+id/et_bed"
+        style="@style/qj_et_style"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="number"
+        android:hint="请输入床号" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+</LinearLayout>

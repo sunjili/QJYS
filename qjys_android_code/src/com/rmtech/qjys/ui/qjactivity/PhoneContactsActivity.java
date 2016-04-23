@@ -6,8 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -22,6 +24,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.hyphenate.util.HanziToPinyin;
 import com.hyphenate.util.HanziToPinyin.Token;
@@ -36,8 +39,10 @@ import com.rmtech.qjys.ui.view.MySectionIndexer;
 import com.rmtech.qjys.ui.view.PinnedHeaderListView;
 
 public class PhoneContactsActivity extends BaseActivity {
-	private Context context;
-
+	/**用于保存已设置的手机号*/
+	private ArrayList<String> tempPhones=new ArrayList<String>();
+	public static final int REQUEST_ADD_FRIEND=0x2302;
+	private Activity context;
 	private EditText et_search_view;
 	private ProgressDialog progressDialog = null;
 	// 数据加载完成的消息
@@ -89,7 +94,7 @@ public class PhoneContactsActivity extends BaseActivity {
 	}
 	protected void setViewQuery() {
 			mAdapterQuery = new PhoneContactListAdapter(cityListTemp,
-					getApplicationContext());
+					context);
 			listView.setAdapter(mAdapterQuery);
 			listView.setOnScrollListener(mAdapterQuery);
 
@@ -100,7 +105,7 @@ public class PhoneContactsActivity extends BaseActivity {
 			mIndexer = new MySectionIndexer(sections, counts);
 		}
 			mAdapterAll = new PhoneContactListAdapter(cityList, mIndexer,
-					getApplicationContext());
+					context);
 			listView.setAdapter(mAdapterAll);
 
 			listView.setOnScrollListener(mAdapterAll);
@@ -128,13 +133,11 @@ public class PhoneContactsActivity extends BaseActivity {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -156,7 +159,42 @@ public class PhoneContactsActivity extends BaseActivity {
 			}
 		});
 	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case REQUEST_ADD_FRIEND:
+			if(resultCode == Activity.RESULT_OK){
+				PhoneContact phoneContact = (PhoneContact) data.getSerializableExtra("class");
+				String phone = phoneContact.getPhone();
+				//TODO 保存这个phoneContact的值
+				tempPhones.add(phone);
+				
+				if(null!=cityList&&cityList.size()>0){
+				for (int i = 0; i < cityList.size(); i++) {
+					String id2 = cityList.get(i).getPhone();
+					if(id2.equals(phone)||id2==phone){
+						cityList.get(i).setState(1);
+						mAdapterAll.notifyDataSetChanged();
+					}
+				}
+				}
+				if(null!=cityListTemp&&cityListTemp.size()>0){
+				for (int i = 0; i < cityListTemp.size(); i++) {
+					String id2 = cityListTemp.get(i).getPhone();
+					if(id2.equals(phone)||id2==phone){
+						cityListTemp.get(i).setState(1);
+						mAdapterQuery.notifyDataSetChanged();
+					}
+				}
+				}
+			} 
+			break;
 
+		default:
+			break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 	/**
 	 * 加载并存储联系人数据
 	 */
@@ -236,8 +274,9 @@ public class PhoneContactsActivity extends BaseActivity {
 				// 添加联系人头像
 				phoneMap.setPhoto(photoId);
 				// 添加电话号码
-				phoneMap.setPhone(phoneCursor.getString(phoneCursor
-						.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+				String phone = phoneCursor.getString(phoneCursor
+						.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+				phoneMap.setPhone(phone);
 				// 添加号码类型（住宅电话、手机号码、单位电话等）
 				phoneMap.setType(getString(ContactsContract.CommonDataKinds.Phone.getTypeLabelResource(phoneCursor.getInt(phoneCursor
 						.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE)))));
@@ -260,6 +299,16 @@ public class PhoneContactsActivity extends BaseActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				//TODO   设置状态
+				for (int i = 0; i < tempPhones.size(); i++) {
+				String string = tempPhones.get(i);
+				if(string.equals(phone)||string==phone){
+					phoneMap.setState(1);
+				}else{
+					phoneMap.setState(0);
+				}
+				
+			}
 				list.add(phoneMap);
 			}
 			phoneCursor.close();
@@ -313,7 +362,7 @@ public class PhoneContactsActivity extends BaseActivity {
 	 *            查询关键字
 	 * @return List<HashMap<String, String>>
 	 */
-	public static List<PhoneContact> findContactsByCond(Context context,
+	public  List<PhoneContact> findContactsByCond(Context context,
 			String keyWord) {
 		String filter = "";
 		for (int i = 0; i < keyWord.length(); i++) {
@@ -324,12 +373,14 @@ public class PhoneContactsActivity extends BaseActivity {
 		try {
 			SQLiteDatabase db = DbOpenHelper.getInstance(context)
 					.getReadableDatabase();// .getSQLiteDb(context);
-			String sql = "select * from contacts where name like '" + keyWord
-					+ "%' or name_alias like '" + keyWord + "%' or phone like '"+ filter+"%' order by _id";
+			String sql = "select * from contacts where name like '" + filter
+					+ "%' or name_alias like '" + filter + "%' or phone like '"+ filter+"%' order by _id";
 			// 查询数据
 			Cursor cursor = db.rawQuery(sql, null);
 			while (cursor.moveToNext()) {
+				
 				PhoneContact map = new PhoneContact();
+				map.setId(list.size()+"");
 				String name = cursor.getString(cursor.getColumnIndex("name"));
 				map.setName(name);
 				String phone = cursor.getString(cursor.getColumnIndex("phone"));
@@ -338,6 +389,16 @@ public class PhoneContactsActivity extends BaseActivity {
 				map.setType(type);
 				String photo = cursor.getString(cursor.getColumnIndex("photo"));
 				map.setPhoto(photo);
+				//TODO   设置状态
+				for (int i = 0; i < tempPhones.size(); i++) {
+					String string = tempPhones.get(i);
+					if(string.equals(phone)||string==phone){
+						map.setState(1);
+					}else{
+						map.setState(0);
+					}
+					
+				}
 				map.setPinyin(getPinYinFirstAlphabet(name));
 				list.add(map);
 			}

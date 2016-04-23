@@ -28,7 +28,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@color/red" />
+            android:background="@drawable/ic_defaultavatarbig" />
 
         <TextView
             android:id="@+id/tv_name"
