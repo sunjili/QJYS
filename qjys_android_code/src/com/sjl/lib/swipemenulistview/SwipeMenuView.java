@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 /**
  * 
- * @author baoyz
+ * @author jilisun
  * @date 2014-8-23
  * 
  */

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.rmtech.qjys.R;
 
 /**
- * Created by Sai on 15/8/9.
+ * Created by jilisun on 15/8/9.
  */
 public class AlertViewAdapter extends BaseAdapter{
     private List<String> mDatas;

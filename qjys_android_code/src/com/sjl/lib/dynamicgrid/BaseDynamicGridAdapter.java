@@ -6,7 +6,7 @@ import java.util.List;
 import android.content.Context;
 
 /**
- * Author: alex askerov
+ * Author: jilisun
  * Date: 9/7/13
  * Time: 10:49 PM
  */

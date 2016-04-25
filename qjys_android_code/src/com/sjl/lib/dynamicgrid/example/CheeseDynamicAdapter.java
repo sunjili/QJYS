@@ -1,7 +1,7 @@
 package com.sjl.lib.dynamicgrid.example;
 
 /**
- * Author: alex askerov
+ * Author: jilisun
  * Date: 9/9/13
  * Time: 10:52 PM
  */

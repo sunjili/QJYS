@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
 
 /**
  * 
- * @author baoyz
+ * @author jilisun
  * @date 2014-8-23
  * 
  */

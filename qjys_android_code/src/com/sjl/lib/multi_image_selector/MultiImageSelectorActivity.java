@@ -17,8 +17,7 @@ import com.rmtech.qjys.R;
 
 /**
  * 多图选择
- * Created by Nereo on 2015/4/7.
- * Updated by nereo on 2016/1/19.
+ * Updated by jilisun on 2016/1/19.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB) public class MultiImageSelectorActivity extends FragmentActivity implements MultiImageSelectorFragment.Callback{
 

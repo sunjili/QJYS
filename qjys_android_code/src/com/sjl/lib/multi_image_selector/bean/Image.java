@@ -2,7 +2,7 @@ package com.sjl.lib.multi_image_selector.bean;
 
 /**
  * 图片实体
- * Created by Nereo on 2015/4/7.
+ * Created by jilisun on 2015/4/7.
  */
 public class Image {
     public String path;

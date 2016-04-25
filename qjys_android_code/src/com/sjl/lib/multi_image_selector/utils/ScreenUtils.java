@@ -8,8 +8,7 @@ import android.view.WindowManager;
 
 /**
  *  屏幕工具
- * Created by nereo on 15/11/19.
- * Updated by nereo on 2016/1/19.
+ * Created by jilisun on 15/11/19.
  */
 public class ScreenUtils {
 

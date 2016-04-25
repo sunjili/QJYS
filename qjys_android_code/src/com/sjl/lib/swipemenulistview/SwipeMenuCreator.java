@@ -3,7 +3,7 @@ package com.sjl.lib.swipemenulistview;
 
 /**
  * 
- * @author baoyz
+ * @author jilisun
  * @date 2014-8-24
  *
  */

@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 /**
  * 文件夹
- * Created by Nereo on 2015/4/7.
+ * Created by jilisun on 2015/4/7.
  */
 public class Folder {
     public String name;

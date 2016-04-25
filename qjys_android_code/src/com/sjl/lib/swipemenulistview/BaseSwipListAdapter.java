@@ -26,9 +26,7 @@ package com.sjl.lib.swipemenulistview;
 import android.widget.BaseAdapter;
 
 /**
- * Created by Abner on 15/11/20.
- * Email nimengbo@gmail.com
- * github https://github.com/nimengbo
+ * Created by jilisun on 15/11/20.
  */
 public abstract class BaseSwipListAdapter extends BaseAdapter {
 

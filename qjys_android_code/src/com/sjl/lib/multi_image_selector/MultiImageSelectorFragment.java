@@ -44,7 +44,7 @@ import com.sjl.lib.multi_image_selector.utils.ScreenUtils;
 
 /**
  * 图片选择Fragment
- * Created by Nereo on 2015/4/7.
+ * Created by jilisun on 2015/4/7.
  */
 public class MultiImageSelectorFragment extends Fragment {
 

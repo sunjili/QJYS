@@ -5,7 +5,7 @@ import android.view.Gravity;
 import com.rmtech.qjys.R;
 
 /**
- * Created by Sai on 15/8/9.
+ * Created by jilisun on 15/8/9.
  */
 public class AlertAnimateUtil {
     private static final int INVALID = -1;

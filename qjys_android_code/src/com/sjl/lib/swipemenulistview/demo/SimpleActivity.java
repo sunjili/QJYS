@@ -53,7 +53,7 @@ import com.sjl.lib.swipemenulistview.SwipeMenuListView;
 
 /**
  * SwipeMenuListView
- * Created by baoyz on 15/6/29.
+ * Created by jilisun on 15/6/29.
  */
 public class SimpleActivity extends Activity {
 

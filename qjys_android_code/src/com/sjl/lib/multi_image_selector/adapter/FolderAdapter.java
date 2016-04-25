@@ -18,8 +18,7 @@ import com.sjl.lib.multi_image_selector.bean.Folder;
 
 /**
  * 文件夹Adapter
- * Created by Nereo on 2015/4/7.
- * Updated by nereo on 2016/1/19.
+ * Created by jilisun on 2015/4/7.
  */
 public class FolderAdapter extends BaseAdapter {
 
