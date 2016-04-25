@@ -22,6 +22,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +30,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListAdapter;
 
 import com.rmtech.qjys.R;
@@ -39,7 +39,7 @@ import com.rmtech.qjys.R;
  * Date: 9/6/13
  * Time: 12:31 PM
  */
-public class DynamicGridView extends GridView {
+public class DynamicGridView extends com.rmtech.qjys.ui.view.ImageLoaderGridView {
     private static final int INVALID_ID = -1;
 
     private static final int MOVE_DURATION = 300;
@@ -1159,7 +1159,7 @@ public class DynamicGridView extends GridView {
     public void computeScrollY() {
         mHeight = getPaddingTop();
         mItemCount = getAdapter().getCount();
-//		Log.d("ssssssssss","mItemCount ="+mItemCount);
+		Log.d("ssssssssss","mItemCount ="+mItemCount);
 
         int numColumn = getNumColumns();
         int halfNumColumn = (numColumn + 1) / 2;
@@ -1171,7 +1171,7 @@ public class DynamicGridView extends GridView {
             View view = getAdapter().getView(i, null, this);
             int realIndex = i / numColumn;
             if(realIndex >= mItemOffsetY.length) {
-            	scrollIsComputed = false;
+//            	scrollIsComputed = false;
             	return;
             }
             mItemOffsetY[realIndex] = mHeight;
@@ -1186,6 +1186,10 @@ public class DynamicGridView extends GridView {
     public boolean scrollYIsComputed() {
         return scrollIsComputed;
     }
+    
+//    public void setScrollIsComputed(boolean computed) {
+//    	scrollIsComputed = computed;
+//    }
 
     public int getComputedScrollY() {
         int pos, nScrollY, nItemY;

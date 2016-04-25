@@ -96,10 +96,10 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         EMConversation conversation = getItem(position);
         // 获取用户username或者群组groupid
         String username = conversation.getUserName();
-        String nick = DoctorListManager.getInstance().getNickByHXid(username);
-        if(nick != null) {
-        	username = nick;
-        }
+//        String nick = DoctorListManager.getInstance().getNickByHXid(username);
+//        if(nick != null) {
+//        	username = nick;
+//        }
         if (conversation.getType() == EMConversationType.GroupChat) {
             // 群聊消息，显示群聊头像
             holder.avatar.setImageResource(R.drawable.ease_group_icon);

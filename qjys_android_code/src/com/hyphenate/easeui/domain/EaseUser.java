@@ -13,41 +13,77 @@
  */
 package com.hyphenate.easeui.domain;
 
+import android.text.TextUtils;
+
 import com.hyphenate.chat.EMContact;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 
 public class EaseUser extends EMContact {
-    
-    /**
-     * 昵称首字母
-     */
+
+	/**
+	 * 昵称首字母
+	 */
 	protected String initialLetter;
 	/**
 	 * 用户头像
 	 */
 	protected String avatar;
-	
-	public EaseUser(String username){
-	    this.username = username;
+
+	public DoctorInfo doctorInfo;
+
+	public EaseUser(String username) {
+		this.username = username;
+		DoctorListManager.getInstance().getDoctorInfoByHXid(username, new OnGetDoctorInfoCallback() {
+			
+			@Override
+			public void onGet(DoctorInfo info) {
+				doctorInfo = info;
+				if(TextUtils.isEmpty(initialLetter)) {
+					EaseCommonUtils.setUserInitialLetter(EaseUser.this);
+				}
+			}
+		});
+		
 	}
 
 	public String getInitialLetter() {
 		return initialLetter;
 	}
 
+	@Override
+	public String getNick() {
+		if (doctorInfo != null) {
+			if (!TextUtils.isEmpty(doctorInfo.name)) {
+				return doctorInfo.name;
+
+			} else if (!TextUtils.isEmpty(doctorInfo.phone)) {
+				return doctorInfo.phone;
+			}
+		}
+		return super.getNick();
+	}
+
 	public void setInitialLetter(String initialLetter) {
 		this.initialLetter = initialLetter;
 	}
 
-
 	public String getAvatar() {
-        return avatar;
-    }
+		if (doctorInfo != null) {
+			if (!TextUtils.isEmpty(doctorInfo.head)) {
+				return doctorInfo.head;
+			}
+		}
+		return avatar;
+	}
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
 
-    @Override
+	@Override
 	public int hashCode() {
 		return 17 * getUsername().hashCode();
 	}

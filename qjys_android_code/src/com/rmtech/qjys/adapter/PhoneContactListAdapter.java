@@ -115,7 +115,11 @@ public class PhoneContactListAdapter extends BaseAdapter implements
 
 	@SuppressLint("ResourceAsColor")
 	private void clickBtnAdd(ViewHolder holder, final PhoneContact phoneContact) {
-		if (phoneContact.getState() != 0) {
+		if (phoneContact.getState() == 2) {
+			holder.btn_add.setBackgroundColor(Color.WHITE);
+			holder.btn_add.setTextColor(Color.rgb(178, 178, 178));
+			holder.btn_add.setText("已发送");
+		} else if (phoneContact.getState() == 1) {
 			holder.btn_add.setBackgroundColor(Color.WHITE);
 			holder.btn_add.setTextColor(Color.rgb(178, 178, 178));
 			holder.btn_add.setText("已添加");

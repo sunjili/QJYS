@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.rmtech.qjys.QjHttp;
-import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.gson.MGroupList;
@@ -34,11 +33,13 @@ public class GroupAndCaseListManager {
 
 	private MGroupList mMGroupList;
 
-	public void getGroupCaseInfo(String groupIds, final QjHttpCallbackNoParse<MGroupList> callback) {
+	private boolean isChanged;
+
+	public void getGroupCaseInfo(final boolean needCache, String groupIds, final QjHttpCallbackNoParse<MGroupList> callback) {
 
 //		if (mMGroupList == null || mMGroupList.isEmpty()) {
 
-			QjHttp.getGroupinfo(groupIds, new QjHttpCallback<MGroupList>() {
+			QjHttp.getGroupinfo(needCache, groupIds, new QjHttpCallbackNoParse<MGroupList>() {
 
 				@Override
 				public MGroupList parseNetworkResponse(String str) throws Exception {
@@ -46,7 +47,7 @@ public class GroupAndCaseListManager {
 				}
 
 				@Override
-				public void onResponseSucces(MGroupList response) {
+				public void onResponseSucces(boolean isCache, MGroupList response) {
 					mMGroupList = response;
 					updateIdDoctorMap();
 					if (callback != null) {
@@ -80,7 +81,7 @@ public class GroupAndCaseListManager {
 
 	}
 
-	public static void initGroupList(List<EMConversation> list, QjHttpCallbackNoParse<MGroupList> callback) {
+	public static void initGroupList(boolean needCache, List<EMConversation> list, QjHttpCallbackNoParse<MGroupList> callback) {
 		Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
 		// 过滤掉messages size为0的conversation
 		/**
@@ -112,7 +113,7 @@ public class GroupAndCaseListManager {
 		}
 		
 		if (!TextUtils.isEmpty(groupIds)) {
-			GroupAndCaseListManager.getInstance().getGroupCaseInfo(groupIds.substring(0, groupIds.length()-1), callback);
+			GroupAndCaseListManager.getInstance().getGroupCaseInfo(needCache,groupIds.substring(0, groupIds.length()-1), callback);
 		} else {
 			callback.onError(null, new Exception("no group"));
 		}
@@ -141,6 +142,11 @@ public class GroupAndCaseListManager {
 			return null;
 		}
 		return mGIdCaseInfoMap.get(groupId);
+	}
+
+	public void setIsChanged(boolean b) {
+		this.isChanged = b;
+		
 	}
 
 }

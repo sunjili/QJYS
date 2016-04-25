@@ -49,7 +49,7 @@
             android:textSize="10sp" />
     </RelativeLayout>
 
-    <GridView
+    <com.rmtech.qjys.ui.view.ImageLoaderGridView
         android:id="@+id/dynamic_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

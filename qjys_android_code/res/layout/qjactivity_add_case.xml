@@ -387,9 +387,8 @@
         <RelativeLayout
             android:id="@+id/abstract_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/qj_add_case_item_height" >
+            android:layout_height="@dimen/qj_add_case_item_height"
+            android:gravity="center_vertical" >
 
             <TextView
                 android:id="@+id/abstract_tv"
@@ -402,6 +401,11 @@
                 android:layout_alignParentRight="true"
                 android:hint="输入患者相关的病例摘要" />
         </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dip"
+            android:background="@color/cd9" />
     </LinearLayout>
 
 </ScrollView>

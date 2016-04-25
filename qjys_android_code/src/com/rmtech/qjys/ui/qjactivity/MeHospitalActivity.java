@@ -3,6 +3,7 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +18,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.CommonAdapter;
 import com.rmtech.qjys.adapter.ViewHolder;
+import com.rmtech.qjys.callback.QjHttpCallback;
+import com.rmtech.qjys.model.HospitalInfo;
+import com.rmtech.qjys.model.gson.MHosList;
 import com.rmtech.qjys.ui.BaseActivity;
 
 /***
@@ -36,7 +42,7 @@ public class MeHospitalActivity extends BaseActivity {
 	private ListView lv_hospital;
 	private CommonAdapter mAdapter;
 	private Context context;
-	List<String> listems;
+	List<HospitalInfo> listems;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -49,7 +55,7 @@ public class MeHospitalActivity extends BaseActivity {
 			public void onClick(View v) {
 				String hospital = et_hospital.getEditableText().toString();
 				if (!TextUtils.isEmpty(hospital)) {
-					Intent data=new Intent();
+					Intent data = new Intent();
 					data.putExtra("string", hospital);
 					setResult(MeNameActivity.RESULT_OK, data);
 				}
@@ -62,9 +68,63 @@ public class MeHospitalActivity extends BaseActivity {
 	}
 
 	private void setValue() {
-		listems = new ArrayList<String>();
+		listems = new ArrayList<HospitalInfo>();
 
 	}
+
+	Runnable searchRunnable = new Runnable() {
+
+		@Override
+		public void run() {
+			QjHttp.getHosByName(et_hospital.getText().toString(), new QjHttpCallback<MHosList>() {
+
+				@Override
+				public MHosList parseNetworkResponse(String str) throws Exception {
+					// TODO Auto-generated method stub
+					return new Gson().fromJson(str, MHosList.class);
+				}
+
+				@Override
+				public void onResponseSucces(MHosList response) {
+
+					
+					
+//					for (int i = 0; i < s.length(); i++) {
+//						listems.add("测试" + i);
+//					}
+					if(response.data == null) {
+						return;
+					}
+					listems.clear();
+					listems.addAll(response.data);
+					mAdapter = new CommonAdapter<HospitalInfo>(getApplicationContext(), listems, R.layout.qj_me_hospital_item) {
+						@Override
+						public void convert(ViewHolder viewHolder, final HospitalInfo item) {
+//							viewHolder.setTextAndColor(R.id.tv_name, item, s.toString(), Color.rgb(52, 100, 169));
+							viewHolder.setText(R.id.tv_name, item.fullname);
+							viewHolder.getView(R.id.rl_hospital_item).setOnClickListener(new OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+//									Toast.makeText(context, item, Toast.LENGTH_SHORT).show();
+									et_hospital.setText(item.fullname);
+								}
+							});
+						}
+					};
+					lv_hospital.setAdapter(mAdapter);
+					mAdapter.notifyDataSetChanged();
+				}
+
+				@Override
+				public void onError(Call call, Exception e) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+
+		}
+	};
 
 	private void initView() {
 		lv_hospital = (ListView) findViewById(R.id.lv_hospital);
@@ -73,32 +133,7 @@ public class MeHospitalActivity extends BaseActivity {
 
 			@Override
 			public void onTextChanged(final CharSequence s, int start, int before, int count) {
-				if (s.length() == 0) {
-					lv_hospital.setVisibility(View.INVISIBLE);
-				} else {
-					lv_hospital.setVisibility(View.VISIBLE);
-				}
-				listems.clear();
-				for (int i = 0; i < s.length(); i++) {
-					listems.add("测试" + i);
-				}
-				mAdapter = new CommonAdapter<String>(getApplicationContext(), listems, R.layout.qj_me_hospital_item) {
-					@Override
-					public void convert(ViewHolder viewHolder, final String item) {
-						viewHolder.setTextAndColor(R.id.tv_name, item, s.toString(), Color.rgb(52, 100, 169));
-						viewHolder.getView(R.id.rl_hospital_item).setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								Toast.makeText(context, item, Toast.LENGTH_SHORT).show();
-								et_hospital.setText(item);
-							}
-						});
-					}
-				};
-				lv_hospital.setAdapter(mAdapter);
-				mAdapter.notifyDataSetChanged();
-
+				
 			}
 
 			@Override
@@ -109,8 +144,13 @@ public class MeHospitalActivity extends BaseActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-
+				if (s.length() == 0) {
+					lv_hospital.setVisibility(View.INVISIBLE);
+				} else {
+					lv_hospital.setVisibility(View.VISIBLE);
+				}
+				lv_hospital.removeCallbacks(searchRunnable);
+				lv_hospital.postDelayed(searchRunnable, 500);
 			}
 		});
 	}

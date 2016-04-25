@@ -14,6 +14,7 @@
 package com.rmtech.qjys;
 
 import com.hyphenate.easeui.EaseConstant;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 public class QjConstant extends EaseConstant {
 	public static final String NEW_FRIENDS_USERNAME = "item_new_friends";
@@ -29,9 +30,17 @@ public class QjConstant extends EaseConstant {
 	public static final int REQUEST_IMAGE = 2;
 	public static final int REQUEST_CAMERA = 100;
 	public static final int REQUEST_CODE = 6384;
-	public static final int REQUEST_CODE_ADD_DOCTORS = 3;
+	public static final int REQUEST_CODE_ADD_DOCTORS = 4003;
+	public static final int REQUEST_CODE_DELETE_DOCTORS = 4004;
 	public static final int REQUEST_CODE_ADD_HOSPITAL = 4;
-	
-	
+
+	public static final DisplayImageOptions optionsImage = new DisplayImageOptions.Builder()
+			.showImageForEmptyUri(R.drawable.default_error).showImageOnFail(R.drawable.default_error)
+			.showImageOnLoading(R.drawable.default_error).resetViewBeforeLoading(true).cacheOnDisk(true)
+			.cacheInMemory(true).build();
+	public static final DisplayImageOptions optionsHead = new DisplayImageOptions.Builder()
+			.showImageForEmptyUri(R.drawable.ic_default_avatar).showImageOnFail(R.drawable.ic_default_avatar)
+			.showImageOnLoading(R.drawable.ic_default_avatar).resetViewBeforeLoading(true).cacheOnDisk(true)
+			.cacheInMemory(true).build();
 
 }

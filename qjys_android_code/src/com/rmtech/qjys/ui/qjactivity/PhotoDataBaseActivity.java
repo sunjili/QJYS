@@ -20,6 +20,7 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.utils.NewFolderManager;
 import com.rmtech.qjys.utils.NewFolderManager.OnNewFolderListener;
 import com.rmtech.qjys.utils.PhotoUploadManager;
@@ -31,8 +32,7 @@ import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 import com.sjl.lib.utils.L;
 
-public class PhotoDataBaseActivity extends CaseWithIdActivity implements
-		OnNewFolderListener, OnPhotoUploadListener {
+public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFolderListener, OnPhotoUploadListener {
 
 	private NewFolderManager mNewFolderManager;
 
@@ -40,6 +40,18 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 	public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
 		mNewFolderManager = new NewFolderManager(getActivity());
+		if (caseInfo != null && caseInfo.participate_doctor != null && !caseInfo.participate_doctor.isEmpty()) {
+			addRightIcon(R.drawable.btn_intogroupchat, new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), ChatActivity.class);
+					intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
+					intent.putExtra(QjConstant.EXTRA_USER_ID, caseInfo.group_id);
+					startActivity(intent);
+				}
+			});
+		}
 
 	}
 
@@ -66,9 +78,8 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 
-					new AlertView(null, null, "取消", null, new String[] { "拍照",
-							"从手机相册中选择", "从资源管理器中选择" }, getActivity(),
-							AlertView.Style.ActionSheet,
+					new AlertView(null, null, "取消", null, new String[] { "拍照", "从手机相册中选择", "从资源管理器中选择" },
+							getActivity(), AlertView.Style.ActionSheet,
 							new com.sjl.lib.alertview.OnItemClickListener() {
 
 								@Override
@@ -76,17 +87,14 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 									switch (position) {
 									case 0:
 										try {
-											mTmpFile = FileUtils
-													.createTmpFile(getActivity());
+											mTmpFile = FileUtils.createTmpFile(getActivity());
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
-										PhotoUtil.showCameraAction(
-												getActivity(), mTmpFile);
+										PhotoUtil.showCameraAction(getActivity(), mTmpFile);
 										break;
 									case 1:
-										PhotoUtil.startImageSelector(
-												getActivity(), true);
+										PhotoUtil.startImageSelector(getActivity(), true);
 										// ImageSelectorMainActivity.show(PhotoDataManagerActivity.this);
 										break;
 									case 2:
@@ -106,8 +114,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState,
-			PersistableBundle outPersistentState) {
+	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
 	}
 
 	protected boolean showTitleBar() {
@@ -142,17 +149,14 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 					final Uri uri = data.getData();
 					try {
 						// Get the file path from the URI
-						final String path = FileUtils.getPath(getActivity(),
-								uri);
+						final String path = FileUtils.getPath(getActivity(), uri);
 						L.e("文件选择：path = " + path);
 						ArrayList<String> list = new ArrayList<String>();
 						list.add(path);
 						onImagePicked(list);
-						Toast.makeText(getActivity(), "File Selected: " + path,
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(getActivity(), "File Selected: " + path, Toast.LENGTH_LONG).show();
 					} catch (Exception e) {
-						Log.e("FileSelectorTestActivity", "File select error",
-								e);
+						Log.e("FileSelectorTestActivity", "File select error", e);
 					}
 				}
 			}
@@ -161,8 +165,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 		case QjConstant.REQUEST_IMAGE:
 
 			if (resultCode == RESULT_OK) {
-				ArrayList<String> mSelectPath = data
-						.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+				ArrayList<String> mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
 				// StringBuilder sb = new StringBuilder();
 				// for(String p: mSelectPath){
 				// sb.append(p);
@@ -178,9 +181,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 			if (resultCode == Activity.RESULT_OK) {
 				if (mTmpFile != null) {
 					if (mTmpFile != null) {
-						sendBroadcast(new Intent(
-								Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-								Uri.fromFile(mTmpFile)));
+						sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mTmpFile)));
 						ArrayList<String> list = new ArrayList<String>();
 						list.add(mTmpFile.getAbsolutePath());
 						L.e("相机选择：path = " + mTmpFile.getAbsolutePath());
@@ -212,7 +213,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 	public void showNewFolderDialog() {
 		if (mNewFolderManager != null) {
 			String parentId = "";
-			mNewFolderManager.showNewFolderDialog(caseId,parentId,this);
+			mNewFolderManager.showNewFolderDialog(caseId, parentId, this);
 		}
 
 	}
@@ -242,17 +243,14 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements
 	public void onUploadError(PhotoUploadStateInfo state, Exception e) {
 		// TODO Auto-generated method stub
 		L.e("Upload onUploadError" + e);
-		Toast.makeText(getActivity(), "上传失败！" + e.getMessage(),
-				Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), "上传失败！" + e.getMessage(), Toast.LENGTH_SHORT).show();
 
 	}
 
 	@Override
 	public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info) {
 		// TODO Auto-generated method stub
-		Toast.makeText(getActivity(), "上传成功！",
-				Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), "上传成功！", Toast.LENGTH_SHORT).show();
 	}
-
 
 }

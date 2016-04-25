@@ -54,6 +54,7 @@ import com.rmtech.qjys.domain.EmojiconExampleGroupData;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
 import com.rmtech.qjys.domain.RobotUser;
+import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.parse.UserProfileManager;
 import com.rmtech.qjys.receiver.CallReceiver;
@@ -727,8 +728,11 @@ public class QjHelper {
         //实际开发中，可能还需要从服务器获取用户信息,
         //从服务器获取的数据，最好缓存起来，避免频繁的网络请求
         EaseUser user = null;
-        if(username.equals(EMClient.getInstance().getCurrentUser()))
-            return getUserProfileManager().getCurrentUserInfo();
+        if(username.equals(EMClient.getInstance().getCurrentUser())) {
+        	EaseUser cuser = getUserProfileManager().getCurrentUserInfo();
+        	cuser.doctorInfo = new DoctorInfo(UserContext.getInstance().getUser());
+            return cuser;
+        }
         user = getContactList().get(username);
         //TODO 获取不在好友列表里的群成员具体信息，即陌生人信息，demo未实现
         if(user == null && getRobotList() != null){

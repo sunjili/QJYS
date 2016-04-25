@@ -20,7 +20,7 @@
             android:src="@drawable/ic_case_uploadviewdata" />
     </RelativeLayout>
 
-    <GridView
+    <com.rmtech.qjys.ui.view.ImageLoaderGridView
         android:id="@+id/dynamic_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

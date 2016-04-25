@@ -89,7 +89,7 @@ public class ContactListFragment extends EaseContactListFragment {
 		} else {
 			applicationItem.hideUnreadMsgView();
 		}
-		loadData();
+		loadData(false);
 	}
 
 	@Override
@@ -145,14 +145,14 @@ public class ContactListFragment extends EaseContactListFragment {
 		// }
 		contactListLayout.init(contactList);
 
-		loadData();
+		loadData(true);
 
 	}
 
-	private void loadData() {
+	private void loadData(boolean needCache) {
 
 		loadingView.setVisibility(View.VISIBLE);
-		DoctorListManager.getInstance().getDoctorList(new QjHttpCallbackNoParse<MDoctorList>() {
+		DoctorListManager.getInstance().getDoctorList(needCache,new QjHttpCallbackNoParse<MDoctorList>() {
 
 			@Override
 			public void onError(Call call, Exception e) {

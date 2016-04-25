@@ -163,6 +163,8 @@ public class OkHttpUtils {
 			@Override
 			public void onResponse(final Call call, final Response response) {
 				try {
+					Log.e("ssssssssss", "request().body()  = " + call.request().body().toString());
+
 					if (null == finalCallback) {
 						Log.e("ssssssssss", "Callback == null response = " + response.body().string());
 

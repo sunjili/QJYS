@@ -75,14 +75,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			iconRightArrow.setVisibility(View.INVISIBLE);
 		}
 		if(username != null){
-    		if (username.equals(EMClient.getInstance().getCurrentUser())) {
-    			tvUsername.setText(EMClient.getInstance().getCurrentUser());
-    			EaseUserUtils.setUserNick(username, tvNickName);
-                EaseUserUtils.setUserAvatar(this, username, headAvatar);
-    		} else {
-    			tvUsername.setText(username);
-    			EaseUserUtils.setUserNick(username, tvNickName);
-    			EaseUserUtils.setUserAvatar(this, username, headAvatar);
+			EaseUserUtils.setUserNick(username, tvUsername);
+			EaseUserUtils.setUserNick(username, tvNickName);
+            EaseUserUtils.setUserAvatar(this, username, headAvatar);
+    		if (!username.equals(EMClient.getInstance().getCurrentUser())) {
+//    			tvUsername.setText(UserContext.getInstance().getUserName());
     			asyncFetchUserInfo(username);
     		}
 		}
@@ -128,9 +125,9 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 				    }
 					tvNickName.setText(user.getNick());
 					if(!TextUtils.isEmpty(user.getAvatar())){
-						 Glide.with(UserProfileActivity.this).load(user.getAvatar()).placeholder(R.drawable.em_default_avatar).into(headAvatar);
+						 Glide.with(UserProfileActivity.this).load(user.getAvatar()).placeholder(R.drawable.ic_default_avatar).into(headAvatar);
 					}else{
-					    Glide.with(UserProfileActivity.this).load(R.drawable.em_default_avatar).into(headAvatar);
+					    Glide.with(UserProfileActivity.this).load(R.drawable.ic_default_avatar).into(headAvatar);
 					}
 				}
 			}

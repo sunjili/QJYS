@@ -96,15 +96,15 @@ public class ChatRoomDetailsActivity extends BaseActivity implements OnClickList
 		exitBtn = (Button) findViewById(R.id.btn_exit_grp);
 		deleteBtn = (Button) findViewById(R.id.btn_exitdel_grp);
 		blacklistLayout = (RelativeLayout) findViewById(R.id.rl_blacklist);
-		changeGroupNameLayout = (RelativeLayout) findViewById(R.id.rl_change_group_name);
-
-		blockGroupMsgLayout = (RelativeLayout)findViewById(R.id.rl_switch_block_groupmsg);
-		showChatRoomIdLayout = (RelativeLayout)findViewById(R.id.rl_group_id);
-		showChatRoomNickLayout = (RelativeLayout)findViewById(R.id.rl_group_nick);
-		showChatRoomOwnerLayout = (RelativeLayout)findViewById(R.id.rl_group_owner);
-		chatRoomIdTextView = (TextView)findViewById(R.id.tv_group_id);
-		chatRoomNickTextView = (TextView)findViewById(R.id.tv_group_nick_value);
-		chatRoomOwnerTextView = (TextView)findViewById(R.id.tv_group_owner_value);
+//		changeGroupNameLayout = (RelativeLayout) findViewById(R.id.rl_change_group_name);
+//
+//		blockGroupMsgLayout = (RelativeLayout)findViewById(R.id.rl_switch_block_groupmsg);
+//		showChatRoomIdLayout = (RelativeLayout)findViewById(R.id.rl_group_id);
+//		showChatRoomNickLayout = (RelativeLayout)findViewById(R.id.rl_group_nick);
+//		showChatRoomOwnerLayout = (RelativeLayout)findViewById(R.id.rl_group_owner);
+//		chatRoomIdTextView = (TextView)findViewById(R.id.tv_group_id);
+//		chatRoomNickTextView = (TextView)findViewById(R.id.tv_group_nick_value);
+//		chatRoomOwnerTextView = (TextView)findViewById(R.id.tv_group_owner_value);
 		
 
 		Drawable referenceDrawable = getResources().getDrawable(R.drawable.em_smiley_add_btn);

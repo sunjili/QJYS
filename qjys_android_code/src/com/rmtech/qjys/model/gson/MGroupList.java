@@ -12,7 +12,7 @@ public class MGroupList extends MBase {
 	 * {"ret":0,"msg":"\u6210\u529f","data":[
 	 * {"id":"199","group_id":"187244327792017860"
 	 * ,"name":"hhh","sex":"1","age":"0"
-	 * ,"hos_id":"0","hos_name":"\u5176\u4ed6","department"
+	 * ,"hos_id":"0","hos_fullname":"\u5176\u4ed6","department"
 	 * :"","ward_no":"","bed_no"
 	 * :"","diagnose":"","treat_state":"","doc_id":"101"
 	 * ,"create_time":"1461161015"

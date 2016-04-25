@@ -7,11 +7,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.qjactivity.EditCaseActivity;
+import com.rmtech.qjys.ui.qjactivity.MeAbstractActivity;
+import com.rmtech.qjys.ui.qjactivity.MeFlowDetailActivity;
 
 @SuppressLint("NewApi")
 public class CaseTopBarView extends RelativeLayout implements View.OnClickListener {
@@ -58,15 +61,26 @@ public class CaseTopBarView extends RelativeLayout implements View.OnClickListen
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.jb_layout:
-			EditCaseActivity.show((Activity) getContext(), caseInfo);
+			if (caseInfo == null) {
+				Toast.makeText(getContext(), "病例已删除！", 1).show();
 
+			} else {
+				EditCaseActivity.show((Activity) getContext(), caseInfo);
+			}
 			break;
 		case R.id.zy_layout:
+			MeAbstractActivity.show(getActivity());
 			break;
-		case R.id.gf_layout:
+		case R.id.gf_layout: 
+			MeFlowDetailActivity.show(getActivity());
 			break;
 		case R.id.yhz_layout:
-			GroupDetailsActivity.show(getActivity(), caseInfo);
+			if (caseInfo == null) {
+				Toast.makeText(getContext(), "病例已删除！", 1).show();
+
+			} else {
+				GroupDetailsActivity.show(getActivity(), caseInfo);
+			}
 			break;
 		}
 

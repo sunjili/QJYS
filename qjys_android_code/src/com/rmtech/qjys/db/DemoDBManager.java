@@ -11,12 +11,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.HanziToPinyin;
 import com.rmtech.qjys.QjApplication;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
 import com.rmtech.qjys.domain.RobotUser;
+import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.utils.DoctorListManager;
 
 public class DemoDBManager {
     static private DemoDBManager dbMgr = new DemoDBManager();
@@ -69,28 +72,9 @@ public class DemoDBManager {
                 String nick = cursor.getString(cursor.getColumnIndex(UserDao.COLUMN_NAME_NICK));
                 String avatar = cursor.getString(cursor.getColumnIndex(UserDao.COLUMN_NAME_AVATAR));
                 EaseUser user = new EaseUser(username);
-                user.setNick(nick);
-                user.setAvatar(avatar);
-                String headerName = null;
-                if (!TextUtils.isEmpty(user.getNick())) {
-                    headerName = user.getNick();
-                } else {
-                    headerName = user.getUsername();
-                }
-                
-                if (username.equals(QjConstant.NEW_FRIENDS_USERNAME) || username.equals(QjConstant.GROUP_USERNAME)
-                        || username.equals(QjConstant.CHAT_ROOM)|| username.equals(QjConstant.CHAT_ROBOT)) {
-                    user.setInitialLetter("");
-                } else if (Character.isDigit(headerName.charAt(0))) {
-                    user.setInitialLetter("#");
-                } else {
-                    user.setInitialLetter(HanziToPinyin.getInstance().get(headerName.substring(0, 1))
-                            .get(0).target.substring(0, 1).toUpperCase());
-                    char header = user.getInitialLetter().toLowerCase().charAt(0);
-                    if (header < 'a' || header > 'z') {
-                        user.setInitialLetter("#");
-                    }
-                }
+    			user.setNick(nick);
+    			user.setAvatar(avatar);
+    			EaseCommonUtils.setUserInitialLetter(user);
                 users.put(username, user);
             }
             cursor.close();
@@ -121,6 +105,8 @@ public class DemoDBManager {
             values.put(UserDao.COLUMN_NAME_NICK, user.getNick());
         if(user.getAvatar() != null)
             values.put(UserDao.COLUMN_NAME_AVATAR, user.getAvatar());
+//        if(user.doctorInfo != null)
+//        	values.put(UserDao.COLUMN_NAME_AVATAR, user.getAvatar());
         if(db.isOpen()){
             db.replace(UserDao.TABLE_NAME, null, values);
         }

@@ -34,7 +34,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,11 +49,15 @@ import com.hyphenate.easeui.widget.EaseExpandGridView;
 import com.hyphenate.easeui.widget.EaseSwitchButton;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.fragment.ChatFragment;
+import com.rmtech.qjys.ui.qjactivity.DoctorPickActivity;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
 public class GroupDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "GroupDetailsActivity";
@@ -65,7 +68,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 	private EaseExpandGridView userGridview;
 	private String groupId;
-	private ProgressBar loadingPB;
+	// private ProgressBar loadingPB;
 	private Button exitBtn;
 	private Button deleteBtn;
 	private EMGroup group;
@@ -79,10 +82,10 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	String st = "";
 	// 清空所有聊天记录
 	private RelativeLayout clearAllHistory;
-	private RelativeLayout blacklistLayout;
-	private RelativeLayout changeGroupNameLayout;
-	private RelativeLayout idLayout;
-	private TextView idText;
+	// private RelativeLayout blacklistLayout;
+	// private RelativeLayout changeGroupNameLayout;
+	// private RelativeLayout idLayout;
+	// private TextView idText;
 	private EaseSwitchButton switchButton;
 	private GroupChangeListener groupChangeListener;
 	private CaseInfo caseInfo;
@@ -96,7 +99,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		// 获取传过来的groupid
 		groupId = caseInfo.group_id;// getIntent().getStringExtra("groupId");
 		group = EMClient.getInstance().groupManager().getGroup(groupId);
-
 		// we are not supposed to show the group if we don't find the group
 		if (caseInfo == null) {
 			finish();
@@ -108,26 +110,27 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		st = getResources().getString(R.string.people);
 		clearAllHistory = (RelativeLayout) findViewById(R.id.clear_all_history);
 		userGridview = (EaseExpandGridView) findViewById(R.id.gridview);
-		loadingPB = (ProgressBar) findViewById(R.id.progressBar);
+		// loadingPB = (ProgressBar) findViewById(R.id.progressBar);
 		exitBtn = (Button) findViewById(R.id.btn_exit_grp);
 		deleteBtn = (Button) findViewById(R.id.btn_exitdel_grp);
-		blacklistLayout = (RelativeLayout) findViewById(R.id.rl_blacklist);
-		changeGroupNameLayout = (RelativeLayout) findViewById(R.id.rl_change_group_name);
-		idLayout = (RelativeLayout) findViewById(R.id.rl_group_id);
-		idLayout.setVisibility(View.VISIBLE);
-		idText = (TextView) findViewById(R.id.tv_group_id_value);
+		// blacklistLayout = (RelativeLayout) findViewById(R.id.rl_blacklist);
+		// changeGroupNameLayout = (RelativeLayout)
+		// findViewById(R.id.rl_change_group_name);
+		// idLayout = (RelativeLayout) findViewById(R.id.rl_group_id);
+		// idLayout.setVisibility(View.VISIBLE);
+		// idText = (TextView) findViewById(R.id.tv_group_id_value);
 
 		rl_switch_block_groupmsg = (RelativeLayout) findViewById(R.id.rl_switch_block_groupmsg);
 		switchButton = (EaseSwitchButton) findViewById(R.id.switch_btn);
 
 		rl_switch_block_groupmsg.setOnClickListener(this);
 
-		idText.setText(groupId);
+		// idText.setText(groupId);
 		if (!isOwner()) {
-			exitBtn.setVisibility(View.GONE);
+			exitBtn.setVisibility(View.VISIBLE);
 			deleteBtn.setVisibility(View.GONE);
-			blacklistLayout.setVisibility(View.GONE);
-			changeGroupNameLayout.setVisibility(View.GONE);
+			// blacklistLayout.setVisibility(View.GONE);
+			// changeGroupNameLayout.setVisibility(View.GONE);
 		} else {
 			exitBtn.setVisibility(View.GONE);
 			deleteBtn.setVisibility(View.VISIBLE);
@@ -146,11 +149,11 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		// List<String> members = new ArrayList<String>();
 		// members.addAll(group.getMembers());
 
-		adapter = new GridAdapter(this, R.layout.em_grid, participateDoctors);
+		adapter = new GridAdapter(this, R.layout.em_grid, new ArrayList<>(participateDoctors));
 		userGridview.setAdapter(adapter);
 
 		// 保证每次进详情看到的都是最新的group
-		updateGroup();
+		// updateGroup();
 
 		// 设置OnTouchListener
 		userGridview.setOnTouchListener(new OnTouchListener() {
@@ -173,16 +176,16 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		});
 
 		clearAllHistory.setOnClickListener(this);
-		blacklistLayout.setOnClickListener(this);
-		changeGroupNameLayout.setOnClickListener(this);
+		// blacklistLayout.setOnClickListener(this);
+		// changeGroupNameLayout.setOnClickListener(this);
 
 	}
 
 	private boolean isOwner() {
-		if (caseInfo == null) {
+		if (caseInfo == null || caseInfo.admin_doctor == null) {
 			return false;
 		}
-		return TextUtils.equals(UserContext.getInstance().getUserId(), caseInfo.id);
+		return TextUtils.equals(UserContext.getInstance().getUserId(), caseInfo.admin_doctor.id);
 	}
 
 	@Override
@@ -203,11 +206,52 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				progressDialog.setCanceledOnTouchOutside(false);
 			}
 			switch (requestCode) {
-			case REQUEST_CODE_ADD_USER:// 添加群成员
+			case REQUEST_CODE_ADD_USER: {// 添加群成员
 				final String[] newmembers = data.getStringArrayExtra("newmembers");
 				progressDialog.setMessage(st1);
 				progressDialog.show();
 				addMembersToGroup(newmembers);
+				break;
+			}
+			case QjConstant.REQUEST_CODE_ADD_DOCTORS: {// 添加群成员
+				ArrayList<DoctorInfo> currentDoctorList = data.getParcelableArrayListExtra("selectedDoctorList");
+				groupId = data.getStringExtra("group_id");
+				if (caseInfo != null) {
+					if (caseInfo.participate_doctor == null) {
+						caseInfo.participate_doctor = new ArrayList<DoctorInfo>();
+					}
+					caseInfo.participate_doctor.addAll(currentDoctorList);
+					GroupAndCaseListManager.getInstance().setIsChanged(true);
+				}
+				progressDialog.setMessage(st1);
+				progressDialog.show();
+
+				String[] newmembers = new String[currentDoctorList.size()];
+				for (int i = 0; i < currentDoctorList.size(); i++) {// DoctorInfo
+																	// info :
+																	// currentDoctorList)
+																	// {
+					newmembers[i] = currentDoctorList.get(i).id;
+				}
+				addMembersToGroup(newmembers);
+				break;
+			}
+			case QjConstant.REQUEST_CODE_DELETE_DOCTORS:// 删除群成员
+				ArrayList<DoctorInfo> deleteDoctorList = data.getParcelableArrayListExtra("deleteDoctorList");
+				// progressDialog.setMessage(st1);
+				// progressDialog.show();
+
+				// String[] newmembers = new String[currentDoctorList.size()];
+				// for(int i = 0; i < currentDoctorList.size();i++){//DoctorInfo
+				// info : currentDoctorList) {
+				// newmembers[i] = currentDoctorList.get(i).id;
+				// }
+				// addMembersToGroup(newmembers);
+				adapter.deleteMembers(deleteDoctorList);
+				caseInfo.participate_doctor.removeAll(deleteDoctorList);
+				adapter.notifyDataSetChanged();
+				// refreshMembers();
+
 				break;
 			case REQUEST_CODE_EXIT: // 退出群
 				progressDialog.setMessage(st2);
@@ -233,7 +277,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 								runOnUiThread(new Runnable() {
 									public void run() {
 										((TextView) findViewById(R.id.group_name)).setText(returnData + "("
-												+ group.getAffiliationsCount() + st);
+												+ caseInfo.getGroupCount() + st);
 										progressDialog.dismiss();
 										Toast.makeText(getApplicationContext(), st6, 0).show();
 									}
@@ -289,7 +333,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	private void refreshMembers() {
 		adapter.clear();
 		List<DoctorInfo> members = new ArrayList<DoctorInfo>();
-		members.add(caseInfo.admin_doctor);
+		// members.add(caseInfo.admin_doctor);
 		members.addAll(caseInfo.participate_doctor);
 		adapter.addAll(members);
 
@@ -323,7 +367,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	private void clearGroupHistory() {
 
 		EMConversation conversation = EMClient.getInstance().chatManager()
-				.getConversation(group.getGroupId(), EMConversationType.GroupChat);
+				.getConversation(caseInfo.group_id, EMConversationType.GroupChat);
 		if (conversation != null) {
 			conversation.clearAllMessages();
 		}
@@ -409,17 +453,35 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			public void run() {
 				try {
 					// 创建者调用add方法
-					if (EMClient.getInstance().getCurrentUser().equals(group.getOwner())) {
-						EMClient.getInstance().groupManager().addUsersToGroup(groupId, newmembers);
+					if (isOwner()) {
+						try {
+							EMClient.getInstance().groupManager().addUsersToGroup(groupId, newmembers);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					} else {
 						// 一般成员调用invite方法
-						EMClient.getInstance().groupManager().inviteUser(groupId, newmembers, null);
+						try {
+							EMClient.getInstance().groupManager().inviteUser(groupId, newmembers, null);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 					runOnUiThread(new Runnable() {
 						public void run() {
 							refreshMembers();
-							((TextView) findViewById(R.id.group_name)).setText(group.getGroupName() + "("
-									+ group.getAffiliationsCount() + st);
+							// if (group == null) {
+							// QjHttp.getGroupinfo(true, group_ids,
+							// callback)
+							((TextView) findViewById(R.id.group_name)).setText(caseInfo.name + "("
+									+ caseInfo.getGroupCount() + st);
+							// } else {
+							// ((TextView)
+							// findViewById(R.id.group_name)).setText(group.getGroupName()
+							// + "("
+							// + group.getAffiliationsCount() + st);
+							// }
 							progressDialog.dismiss();
 						}
 					});
@@ -461,10 +523,11 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					groupId));
 			break;
 
-		case R.id.rl_change_group_name:
-			startActivityForResult(new Intent(this, EditActivity.class).putExtra("data", group.getGroupName()),
-					REQUEST_CODE_EDIT_GROUPNAME);
-			break;
+		// case R.id.rl_change_group_name:
+		// startActivityForResult(new Intent(this,
+		// EditActivity.class).putExtra("data", group.getGroupName()),
+		// REQUEST_CODE_EDIT_GROUPNAME);
+		// break;
 
 		default:
 			break;
@@ -549,13 +612,22 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 		private int res;
 		public boolean isInDeleteMode;
-		private List<DoctorInfo> objects;
+
+		// private List<DoctorInfo> objects;
 
 		public GridAdapter(Context context, int textViewResourceId, List<DoctorInfo> objects) {
 			super(context, textViewResourceId, objects);
-			this.objects = objects;
+			// this.objects = objects;
 			res = textViewResourceId;
 			isInDeleteMode = false;
+		}
+
+		public void deleteMembers(ArrayList<DoctorInfo> deleteDoctorList) {
+			if (deleteDoctorList != null) {
+				for (DoctorInfo info : deleteDoctorList) {
+					this.remove(info);
+				}
+			}
 		}
 
 		@Override
@@ -580,7 +652,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				// button.setCompoundDrawablesWithIntrinsicBounds(0,
 				// R.drawable.smiley_minus_btn, 0, 0);
 				// 如果不是创建者或者没有相应权限，不提供加减人按钮
-				if (!group.getOwner().equals(EMClient.getInstance().getCurrentUser())) {
+				if (!isOwner()) {
 					// if current user is not group admin, hide add/remove btn
 					convertView.setVisibility(View.INVISIBLE);
 				} else { // 显示删除按钮
@@ -596,9 +668,12 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					button.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							EMLog.d(TAG, st10);
-							isInDeleteMode = true;
-							notifyDataSetChanged();
+							// EMLog.d(TAG, st10);
+							// isInDeleteMode = true;
+							// notifyDataSetChanged();
+							DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, caseInfo.participate_doctor,
+									DoctorPickActivity.TYPE_DELETE_MEMBERS);
+
 						}
 					});
 				}
@@ -608,7 +683,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				// button.setCompoundDrawablesWithIntrinsicBounds(0,
 				// R.drawable.smiley_add_btn, 0, 0);
 				// 如果不是创建者或者没有相应权限
-				if (!group.isAllowInvites() && !group.getOwner().equals(EMClient.getInstance().getCurrentUser())) {
+				if (!isOwner()) {
 					// if current user is not group admin, hide add/remove btn
 					convertView.setVisibility(View.INVISIBLE);
 				} else {
@@ -625,9 +700,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						public void onClick(View v) {
 							EMLog.d(TAG, st11);
 							// 进入选人页面
-							startActivityForResult((new Intent(GroupDetailsActivity.this,
-									GroupPickContactsActivity.class).putExtra("groupId", groupId)),
-									REQUEST_CODE_ADD_USER);
+							DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, caseInfo.participate_doctor,
+									DoctorPickActivity.TYPE_ADD_MEMBERS);
+							// startActivityForResult((new
+							// Intent(GroupDetailsActivity.this,
+							// GroupPickContactsActivity.class).putExtra("groupId",
+							// groupId)),
+							// REQUEST_CODE_ADD_USER);
 						}
 					});
 				}
@@ -658,6 +737,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					@Override
 					public void onClick(View v) {
 						if (isInDeleteMode) {
+							DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, caseInfo.participate_doctor,
+									DoctorPickActivity.TYPE_ADD_MEMBERS);
 							// 如果是删除自己，return
 							// if
 							// (EMClient.getInstance().getCurrentUser().equals(username))
@@ -686,46 +767,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						}
 					}
 
-					/**
-					 * 删除群成员
-					 * 
-					 * @param username
-					 */
-					protected void deleteMembersFromGroup(final String username) {
-						final ProgressDialog deleteDialog = new ProgressDialog(GroupDetailsActivity.this);
-						deleteDialog.setMessage(st13);
-						deleteDialog.setCanceledOnTouchOutside(false);
-						deleteDialog.show();
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-								try {
-									// 删除被选中的成员
-									EMClient.getInstance().groupManager().removeUserFromGroup(groupId, username);
-									isInDeleteMode = false;
-									runOnUiThread(new Runnable() {
-
-										@Override
-										public void run() {
-											deleteDialog.dismiss();
-											refreshMembers();
-											((TextView) findViewById(R.id.group_name)).setText(group.getGroupName()
-													+ "(" + group.getAffiliationsCount() + st);
-										}
-									});
-								} catch (final Exception e) {
-									deleteDialog.dismiss();
-									runOnUiThread(new Runnable() {
-										public void run() {
-											Toast.makeText(getApplicationContext(), st14 + e.getMessage(), 1).show();
-										}
-									});
-								}
-
-							}
-						}).start();
-					}
 				});
 
 				button.setOnLongClickListener(new OnLongClickListener() {
@@ -763,6 +804,49 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		}
 	}
 
+	/**
+	 * 删除群成员
+	 * 
+	 * @param username
+	 */
+	protected void deleteMembersFromGroup(final String username) {
+		// final ProgressDialog deleteDialog = new
+		// ProgressDialog(GroupDetailsActivity.this);
+		// deleteDialog.setMessage(st13);
+		// deleteDialog.setCanceledOnTouchOutside(false);
+		// deleteDialog.show();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					// 删除被选中的成员
+					EMClient.getInstance().groupManager().removeUserFromGroup(groupId, username);
+					// isInDeleteMode = false;
+					runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							// deleteDialog.dismiss();
+							refreshMembers();
+							((TextView) findViewById(R.id.group_name)).setText(caseInfo.name + "("
+									+ caseInfo.getGroupCount() + st);
+						}
+					});
+				} catch (final Exception e) {
+					// deleteDialog.dismiss();
+					// runOnUiThread(new Runnable() {
+					// public void run() {
+					// Toast.makeText(getApplicationContext(), st14 +
+					// e.getMessage(), 1).show();
+					// }
+					// });
+				}
+
+			}
+		}).start();
+	}
+
 	protected void updateGroup() {
 		new Thread(new Runnable() {
 			public void run() {
@@ -773,7 +857,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						public void run() {
 							((TextView) findViewById(R.id.group_name)).setText(group.getGroupName() + "("
 									+ group.getAffiliationsCount() + ")");
-							loadingPB.setVisibility(View.INVISIBLE);
+							// loadingPB.setVisibility(View.INVISIBLE);
 							refreshMembers();
 							if (EMClient.getInstance().getCurrentUser().equals(group.getOwner())) {
 								// 显示解散按钮
@@ -796,11 +880,11 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					});
 
 				} catch (Exception e) {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							loadingPB.setVisibility(View.INVISIBLE);
-						}
-					});
+					// runOnUiThread(new Runnable() {
+					// public void run() {
+					// loadingPB.setVisibility(View.INVISIBLE);
+					// }
+					// });
 				}
 			}
 		}).start();

@@ -23,6 +23,7 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
 import com.rmtech.qjys.callback.QjHttpCallback;
+import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
@@ -94,6 +95,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 		} else {
 			nodata_layout.setVisibility(View.VISIBLE);
 		}
+//		mGridView.setScrollIsComputed(false);
 		mAdapter.notifyDataSetChanged();
 
 	}
@@ -153,15 +155,21 @@ public class PhotoManagerFragment extends QjBaseFragment {
 		});
 
 		mGridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			int lastCount = 0;
 			@Override
 			public void onGlobalLayout() {
 				// Log.d("ssssssssss","onGlobalLayout");
-
 				if (mAdapter == null || mAdapter.getCount() == 0) {
 					return;
 				}
+				if(lastCount == mAdapter.getCount()) {
+					return;
+				}
+				lastCount =  mAdapter.getCount();
 				mQuickReturnHeight = mQuickReturnView.getHeight();
-				mGridView.computeScrollY();
+//				if (mGridView.scrollYIsComputed()) {
+					mGridView.computeScrollY();
+//				}
 				mCachedVerticalScrollRange = mGridView.getListHeight();
 			}
 		});
@@ -257,12 +265,13 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	public void addFolderToGrid(FolderDataInfo info) {
 		mAdapter.add(0, info);
 		mAdapter.notifyDataSetChanged();
+//		mGridView.setScrollIsComputed(false);
 	}
 
 	public void setIds(CaseInfo caseInfo, FolderDataInfo folderDataInfo ) {
 		this.caseInfo = caseInfo;
 		this.folderId = folderDataInfo == null ? "" : folderDataInfo.id;
-		QjHttp.getImageList(caseInfo.id, folderId , new QjHttpCallback<MImageList>() {
+		QjHttp.getImageList(true, caseInfo.id, folderId , new QjHttpCallbackNoParse<MImageList>() {
 
 			@Override
 			public void onError(Call call, Exception e) {
@@ -271,7 +280,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 			}
 
 			@Override
-			public void onResponseSucces(MImageList response) {
+			public void onResponseSucces(boolean iscache, MImageList response) {
 				if (getActivity() == null || getActivity().isFinishing()) {
 					return;
 				}
@@ -293,10 +302,10 @@ public class PhotoManagerFragment extends QjBaseFragment {
 				onDataChanged();
 			}
 
-			@Override
-			public MImageList parseNetworkResponse(String str) throws Exception {
-				return new Gson().fromJson(str, MImageList.class);
-			}
+
+//			@Override
+//			public MImageList parseNetworkResponse(String str) throws Exception {
+//				return new Gson().fromJson(str, MImageList.class);
 
 		});
 

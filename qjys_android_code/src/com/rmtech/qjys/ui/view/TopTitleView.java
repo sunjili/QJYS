@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ public class TopTitleView extends FrameLayout {
 	private TextView mLeftView;
 	private TextView mTitleTextView;
 	private TextView mRightView;
+	private TextView sub_right_title;
 
 	public static final int ACTION_BAR_LEFT = 0;
 	public static final int ACTION_BAR_RIGHT = 1;
@@ -40,9 +42,10 @@ public class TopTitleView extends FrameLayout {
 		setDrawingCacheEnabled(true);
 		setAlwaysDrawnWithCacheEnabled(true);
 
-		mLeftView = (TextView)findViewById(R.id.left_title);
+		mLeftView = (TextView) findViewById(R.id.left_title);
 		mTitleTextView = (TextView) findViewById(R.id.title);
 		mRightView = (TextView) findViewById(R.id.right_title);
+		sub_right_title = (TextView) findViewById(R.id.sub_right_title);
 	}
 
 	public void setTitle(String title) {
@@ -69,7 +72,7 @@ public class TopTitleView extends FrameLayout {
 		}
 		return mRightView;
 	}
-	
+
 	public View setRightTitle(int drawRid, View.OnClickListener listener) {
 		if (mRightView != null) {
 			mRightView.setText("");
@@ -78,6 +81,7 @@ public class TopTitleView extends FrameLayout {
 		}
 		return mRightView;
 	}
+
 	public void setLeftTitle(String title, View.OnClickListener listener) {
 		if (mLeftView != null) {
 			mLeftView.setText(title);
@@ -99,12 +103,12 @@ public class TopTitleView extends FrameLayout {
 			if (backgroudResId != 0) {
 				mLeftView.setBackgroundResource(backgroudResId);
 			}
-			if(listener != null) {
+			if (listener != null) {
 				mLeftView.setOnClickListener(listener);
 			}
-			if(!TextUtils.isEmpty(name)) {
+//			if (!TextUtils.isEmpty(name)) {
 				mLeftView.setText(name);
-			}
+//			}
 		}
 		return mLeftView;
 	}
@@ -127,6 +131,11 @@ public class TopTitleView extends FrameLayout {
 
 	public void setOnBackClickLitener(OnClickListener onClickListener) {
 		mLeftView.setOnClickListener(onClickListener);
+	}
+
+	public View addRightIcon(int drawRId, OnClickListener listener) {
+		setView(sub_right_title, drawRId, listener);
+		return sub_right_title;
 	}
 
 }

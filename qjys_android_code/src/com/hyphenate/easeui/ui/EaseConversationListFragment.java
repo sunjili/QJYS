@@ -232,7 +232,7 @@ public class EaseConversationListFragment extends QjBaseFragment {
 
 	@Override
 	protected void setUpView() {
-		loadConversationList();
+		loadConversationList(true);
 		if (listItemClickListener != null) {
 			conversationListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -314,7 +314,7 @@ public class EaseConversationListFragment extends QjBaseFragment {
 //				conversationList.clear();
 //				conversationList.addAll(loadConversationList());
 //				conversationListView.refresh();
-				loadConversationList();
+				loadConversationList(false);
 				break;
 			}
 			default:
@@ -352,9 +352,9 @@ public class EaseConversationListFragment extends QjBaseFragment {
 	 * @param context
 	 * @return +
 	 */
-	protected void loadConversationList() {
+	protected void loadConversationList(boolean needCache) {
 		final List<EMConversation> sortList = new ArrayList<EMConversation>();
-		GroupAndCaseListManager.initGroupList(sortList, new QjHttpCallbackNoParse<MGroupList>() {
+		GroupAndCaseListManager.initGroupList(needCache,sortList, new QjHttpCallbackNoParse<MGroupList>() {
 
 			@Override
 			public void onError(Call call, Exception e) {

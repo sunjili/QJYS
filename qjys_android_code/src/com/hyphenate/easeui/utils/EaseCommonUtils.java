@@ -29,6 +29,7 @@ import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.HanziToPinyin;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 
 public class EaseCommonUtils {
@@ -158,22 +159,45 @@ public class EaseCommonUtils {
      * @param user
      */
     public static void setUserInitialLetter(EaseUser user) {
-        String headerName = null;
-        if (!TextUtils.isEmpty(user.getNick())) {
+    	String headerName = null;
+        if(user.doctorInfo != null && !TextUtils.isEmpty(user.doctorInfo.name)) {
+        	headerName = user.doctorInfo.name;
+        } else if(user.doctorInfo != null && !TextUtils.isEmpty(user.doctorInfo.phone)) {
+        	headerName = user.doctorInfo.phone;
+        } else if (!TextUtils.isEmpty(user.getNick())) {
             headerName = user.getNick();
         } else {
             headerName = user.getUsername();
         }
-        if (Character.isDigit(headerName.charAt(0))) {
+        if (user.getUsername().equals(QjConstant.NEW_FRIENDS_USERNAME) || user.getUsername().equals(QjConstant.GROUP_USERNAME)
+                || user.getUsername().equals(QjConstant.CHAT_ROOM)|| user.getUsername().equals(QjConstant.CHAT_ROBOT)) {
+            user.setInitialLetter("");
+        } else if (Character.isDigit(headerName.charAt(0))) {
             user.setInitialLetter("#");
         } else {
-            user.setInitialLetter(HanziToPinyin.getInstance().get(headerName.substring(0, 1)).get(0).target.substring(0, 1)
-                    .toUpperCase());
+            user.setInitialLetter(HanziToPinyin.getInstance().get(headerName.substring(0, 1))
+                    .get(0).target.substring(0, 1).toUpperCase());
             char header = user.getInitialLetter().toLowerCase().charAt(0);
             if (header < 'a' || header > 'z') {
                 user.setInitialLetter("#");
             }
         }
+//        String headerName = null;
+//        if (!TextUtils.isEmpty(user.getNick())) {
+//            headerName = user.getNick();
+//        } else {
+//            headerName = user.getUsername();
+//        }
+//        if (Character.isDigit(headerName.charAt(0))) {
+//            user.setInitialLetter("#");
+//        } else {
+//            user.setInitialLetter(HanziToPinyin.getInstance().get(headerName.substring(0, 1)).get(0).target.substring(0, 1)
+//                    .toUpperCase());
+//            char header = user.getInitialLetter().toLowerCase().charAt(0);
+//            if (header < 'a' || header > 'z') {
+//                user.setInitialLetter("#");
+//            }
+//        }
     }
     
     /**

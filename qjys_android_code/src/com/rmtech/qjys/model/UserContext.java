@@ -118,13 +118,41 @@ public class UserContext {
 		return isLogined;
 	}
 
-	public CharSequence getUserName() {
+	public String getUserName() {
 		return mUser.name;
 	}
 
 	public CharSequence getUserId() {
 		// TODO Auto-generated method stub
 		return mUser.id;
+	}
+
+	public void setUserHead(String url) {
+		if (mUser != null) {
+			mUser.head = url;
+			saveCookie();
+		}
+	}
+
+	public void setUserName(String name) {
+		if (mUser != null) {
+			mUser.name = name;
+			saveCookie();
+		}
+	}
+
+	public void setUserSex(int sex) {
+		if (mUser != null) {
+			mUser.sex = sex;
+			saveCookie();
+		}
+	}
+
+	public void setUserDepartment(String roomName) {
+		if (mUser != null) {
+			mUser.department = roomName;
+			saveCookie();
+		}
 	}
 
 }

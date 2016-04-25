@@ -94,6 +94,13 @@ public class BaseActivity extends EaseBaseActivity {
 		return null;
 	}
 	
+	protected View addRightIcon(int drawRId,View.OnClickListener listener) {
+		if (mTopTitleView != null) {
+			return mTopTitleView.addRightIcon(drawRId, listener);
+		}
+		return null;
+	}
+	
 	protected View setRightTitle(int drawRId,View.OnClickListener listener) {
 		if (mTopTitleView != null) {
 			return mTopTitleView.setRightTitle(drawRId, listener);

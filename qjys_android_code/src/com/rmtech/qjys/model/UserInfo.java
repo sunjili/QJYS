@@ -18,9 +18,9 @@ public class UserInfo implements Serializable, Parcelable {
 	public int sex;// : 性别
 	public String hxpasswd;// : 环信密码
 	public String hos_id;// : 医院id
-	public String hos_name;// : 医院名称
+	public String hos_fullname;// : 医院名称
 	public String department;// : 科室
-	public boolean passwordFlag;//密码
+	public int isset_passwd;// 是否设置密码， 0未设置，1设置
 	public AuthInfo authinfo;
 
 	public static class AuthInfo implements Parcelable {
@@ -87,9 +87,9 @@ public class UserInfo implements Serializable, Parcelable {
 		dest.writeInt(this.sex);
 		dest.writeString(this.hxpasswd);
 		dest.writeString(this.hos_id);
-		dest.writeString(this.hos_name);
+		dest.writeString(this.hos_fullname);
 		dest.writeString(this.department);
-		dest.writeByte(passwordFlag ? (byte) 1 : (byte) 0);
+		dest.writeInt(isset_passwd);
 		dest.writeParcelable(this.authinfo, flags);
 	}
 
@@ -104,9 +104,9 @@ public class UserInfo implements Serializable, Parcelable {
 		this.sex = in.readInt();
 		this.hxpasswd = in.readString();
 		this.hos_id = in.readString();
-		this.hos_name = in.readString();
+		this.hos_fullname = in.readString();
 		this.department = in.readString();
-		this.passwordFlag = in.readByte() != 0;
+		this.isset_passwd = in.readInt();
 		this.authinfo = in.readParcelable(AuthInfo.class.getClassLoader());
 	}
 

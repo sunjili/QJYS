@@ -1,10 +1,12 @@
 package com.rmtech.qjys.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 public class CaseInfo implements Serializable, Parcelable {
 
@@ -40,6 +42,25 @@ public class CaseInfo implements Serializable, Parcelable {
 	public int describeContents() {
 		return 0;
 	}
+	
+	public String getParticipateDoctorIds() {
+		if(participate_doctor == null || participate_doctor.isEmpty()) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < participate_doctor.size(); i++) {
+			DoctorInfo doc = participate_doctor.get(i);
+			if(doc == null || TextUtils.equals(doc.id, UserContext.getInstance().getUserId())){
+				continue;
+			}
+			sb.append(doc.id);
+			if (i < participate_doctor.size() - 1) {
+				sb.append(",");
+			}
+		}
+		return sb.toString();
+	}
+
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
@@ -100,4 +121,11 @@ public class CaseInfo implements Serializable, Parcelable {
 			return new CaseInfo[size];
 		}
 	};
+
+	public int getGroupCount() {
+		if(participate_doctor != null) {
+			return participate_doctor.size() + 1;
+		}
+		return 1;
+	}
 }

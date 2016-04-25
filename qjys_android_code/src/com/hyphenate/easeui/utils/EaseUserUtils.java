@@ -10,6 +10,8 @@ import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.utils.DoctorListManager;
 
 public class EaseUserUtils {
     
@@ -25,8 +27,10 @@ public class EaseUserUtils {
      * @return
      */
     public static EaseUser getUserInfo(String username){
-        if(userProvider != null)
-            return userProvider.getUser(username);
+        if(userProvider != null) {
+        	EaseUser user = userProvider.getUser(username);
+        	return user;
+        }
         
         return null;
     }
@@ -37,16 +41,23 @@ public class EaseUserUtils {
      */
     public static void setUserAvatar(Context context, String username, ImageView imageView){
     	EaseUser user = getUserInfo(username);
-        if(user != null && user.getAvatar() != null){
-            try {
-                int avatarResId = Integer.parseInt(user.getAvatar());
-                Glide.with(context).load(avatarResId).into(imageView);
-            } catch (Exception e) {
-                //正常的string路径
-                Glide.with(context).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ease_default_avatar).into(imageView);
-            }
+    	if(user != null)
+        if(user != null){
+        	if(user.doctorInfo != null && user.doctorInfo.head != null){
+                Glide.with(context).load(user.doctorInfo.head).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_default_avatar).into(imageView);
+
+        	}else if(user.getAvatar() != null) {
+        		try {
+                    int avatarResId = Integer.parseInt(user.getAvatar());
+                    Glide.with(context).load(avatarResId).into(imageView);
+                } catch (Exception e) {
+                    //正常的string路径
+                    Glide.with(context).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_default_avatar).into(imageView);
+                }
+        	}
+            
         }else{
-            Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
+            Glide.with(context).load(R.drawable.ic_default_avatar).into(imageView);
         }
     }
     
@@ -55,9 +66,14 @@ public class EaseUserUtils {
      */
     public static void setUserNick(String username,TextView textView){
         if(textView != null){
+        	
         	EaseUser user = getUserInfo(username);
-        	if(user != null && user.getNick() != null){
-        		textView.setText(user.getNick());
+        	if(user != null){
+        		if(user.doctorInfo != null && user.doctorInfo.name != null){
+        			textView.setText(user.doctorInfo.name);
+        		} else if(user.getNick() != null) {
+        			textView.setText(user.getNick());
+        		}
         	}else{
         		textView.setText(username);
         	}

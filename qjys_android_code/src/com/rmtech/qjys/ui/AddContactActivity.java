@@ -115,7 +115,6 @@ public class AddContactActivity extends BaseActivity {
 				public MUser parseNetworkResponse(String response) throws Exception {
 					MUser user = new Gson().fromJson(response, MUser.class);
 					return user;
-
 				}
 
 				@Override

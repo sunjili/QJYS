@@ -83,20 +83,20 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
             holder.headerView.setVisibility(View.GONE);
         }
         //设置头像
-//        EaseUserUtils.setUserNick(username, holder.nameView);
-        holder.nameView.setText(user.getNick());
+        EaseUserUtils.setUserNick(username, holder.nameView);
+//        holder.nameView.setText(user.getNick());
         //设置头像
         EaseUserUtils.setUserAvatar(getContext(), username, holder.avatar);
         
        
-        if(primaryColor != 0)
-            holder.nameView.setTextColor(primaryColor);
-        if(primarySize != 0)
-            holder.nameView.setTextSize(TypedValue.COMPLEX_UNIT_PX, primarySize);
-        if(initialLetterBg != null)
-            holder.headerView.setBackgroundDrawable(initialLetterBg);
-        if(initialLetterColor != 0)
-            holder.headerView.setTextColor(initialLetterColor);
+//        if(primaryColor != 0)
+//            holder.nameView.setTextColor(primaryColor);
+//        if(primarySize != 0)
+//            holder.nameView.setTextSize(TypedValue.COMPLEX_UNIT_PX, primarySize);
+//        if(initialLetterBg != null)
+//            holder.headerView.setBackgroundDrawable(initialLetterBg);
+//        if(initialLetterColor != 0)
+//            holder.headerView.setTextColor(initialLetterColor);
         
         return convertView;
     }

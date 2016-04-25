@@ -13,12 +13,12 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
 
 /***
- * 临床诊疗规范及流程 详情页面
+ * 摘要
  * 
  * @author Administrator
  * 
  */
-public class MeFlowDetailActivity extends BaseActivity implements
+public class MeAbstractActivity extends BaseActivity implements
 		View.OnClickListener {
 	private Button btn_add_flow_detail;
 
@@ -33,8 +33,8 @@ public class MeFlowDetailActivity extends BaseActivity implements
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_flow_detail);
-		setTitle("诊疗规范及流程");
-		context = MeFlowDetailActivity.this;
+		setTitle("病例摘要");
+		context = MeAbstractActivity.this;
 		initView();
 		title = tv_title.getText().toString().trim();
 		content = tv_content.getText().toString().trim();
@@ -69,7 +69,7 @@ public class MeFlowDetailActivity extends BaseActivity implements
 
 	public static void show(Context context) {
 		Intent intent = new Intent();
-		intent.setClass(context, MeFlowDetailActivity.class);
+		intent.setClass(context, MeAbstractActivity.class);
 		context.startActivity(intent);
 	}
 

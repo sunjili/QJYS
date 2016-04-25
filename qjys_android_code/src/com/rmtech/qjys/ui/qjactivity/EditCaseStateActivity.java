@@ -125,10 +125,10 @@ public class EditCaseStateActivity extends BaseActivity implements
 		return true;
 	}
 
-	public static void show(Context context) {
+	public static void show(Activity context) {
 		Intent intent = new Intent();
 		intent.setClass(context, EditCaseStateActivity.class);
-		context.startActivity(intent);
+		context.startActivityForResult(intent, EditCaseActivity.REQUEST_CASE_STATE);
 	}
 
 	@Override

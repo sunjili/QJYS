@@ -9,6 +9,7 @@ import org.greenrobot.eventbus.EventBus;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.JetPlayer.OnJetEventListener;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MIdData;
 import com.rmtech.qjys.ui.BaseActivity;
@@ -67,6 +69,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private String treat_state;
 	private String currentHospital;
 	private String tempCaseId;
+	private ArrayList<DoctorInfo> currentDoctorList = new ArrayList<DoctorInfo>();
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -87,7 +90,6 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 						@Override
 						public void onError(Call call, Exception e) {
 							Toast.makeText(getActivity(), "新病例创建失败 " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
 						}
 
 						@Override
@@ -127,15 +129,16 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		diagnoseImage = (ImageView) findViewById(R.id.diagnose_image);
 		diagnoseEt2 = (EditText) findViewById(R.id.diagnose_et2);
 		stateLayout = (RelativeLayout) findViewById(R.id.state_layout);
+		stateLayout.setOnClickListener(this);
 		photoDataLayout = (RelativeLayout) findViewById(R.id.photo_data_layout);
 		photoDataLayout.setOnClickListener(this);
 		doctorsLayout = (RelativeLayout) findViewById(R.id.doctors_layout);
 		doctorsLayout.setOnClickListener(this);
 		ruleLayout = (RelativeLayout) findViewById(R.id.rule_layout);
+		ruleLayout.setOnClickListener(this);
 		abstractLayout = (RelativeLayout) findViewById(R.id.abstract_layout);
 		abstractTv = (TextView) findViewById(R.id.abstract_tv);
 		abstractEt = (EditText) findViewById(R.id.abstract_et);
-
 	}
 
 	private CaseInfo createCaseInfo(int state) {
@@ -143,7 +146,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.name = getName();
 		info.sex = selectSex;
 		info.age = ageEt.getEditableText().toString();
-		info.hos_name = currentHospital;
+		info.hos_name = (String) hospitalTv.getText();
 		info.department = keshiEt.getEditableText().toString();
 		info.bed_no = bedEt.getEditableText().toString();
 		//
@@ -153,11 +156,26 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.procedure_title = "";
 		info.procedure_text = "";
 		info.abs = abstractEt.getEditableText().toString();
+		
+		info.participate_doctor = currentDoctorList;
 		info.state = state;
 		return info;
 	}
+	
+
+	
+	private void onJumpAction(final int targetId) {
+		if (targetId == R.id.photo_data_layout) {
+			PhotoDataUploadActivity.show(getActivity(), tempCaseId);
+		} else if (targetId == R.id.doctors_layout) {
+			CaseInfo caseinfo = new CaseInfo();
+			caseinfo.id = tempCaseId;
+			DoctorPickActivity.show(getActivity(), caseinfo, currentDoctorList, DoctorPickActivity.TYPE_NEW_CASE);
+		}
+	}
 
 	protected void save(final int state, final int targetId) {
+
 		CaseInfo info = createCaseInfo(state);
 		QjHttp.createpatient(info, new QjHttpCallback<MIdData>() {
 
@@ -173,11 +191,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 				if (response.data != null) {
 					if (state == 1) {
 						tempCaseId = response.data.id;
-						if (targetId == R.id.photo_data_layout) {
-							PhotoDataUploadActivity.show(getActivity(), tempCaseId);
-						} else if (targetId == R.id.doctors_layout) {
-							DoctorPickActivity.show(getActivity(), tempCaseId);
-						}
+						onJumpAction(targetId);
 						// PhotoDataManagerActivity.show(getActivity());
 					} else {
 						Toast.makeText(getActivity(), "新病例创建成功", Toast.LENGTH_SHORT).show();
@@ -195,6 +209,14 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 				return new Gson().fromJson(str, MIdData.class);
 			}
 		});
+	}
+
+	protected void jumpActivity(final int state, final int targetId) {
+		if (TextUtils.isEmpty(tempCaseId)) {
+			save(state, targetId);
+		} else {
+			onJumpAction(targetId);
+		}
 	}
 
 	private String createDiagnose() {
@@ -252,14 +274,24 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 			selectSex = 2;
 			break;
 		case R.id.photo_data_layout:
-			save(1, R.id.photo_data_layout);
+			jumpActivity(1, R.id.photo_data_layout);
 			break;
 		case R.id.doctors_layout:
-			save(1, R.id.doctors_layout);
+			jumpActivity(1, R.id.doctors_layout);
 			break;
 		case R.id.hospital_layout:
 			MeHospitalActivity.show(getActivity());
 			break;
+			
+		case R.id.state_layout:
+			EditCaseStateActivity.show(getActivity());
+			break;
+			
+		case R.id.rule_layout:
+			MeFlowEditActivity.show(getActivity());
+			break;
+			
+			
 		}
 	}
 
@@ -270,11 +302,14 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
 			case QjConstant.REQUEST_CODE_ADD_DOCTORS:// 添加群成员
-				// currentDoctors = data.getStringArrayListExtra("newmembers");
+				currentDoctorList = data.getParcelableArrayListExtra("selectedDoctorList");
 				break;
-			case QjConstant.REQUEST_CODE_ADD_HOSPITAL:// 添加群成员
-				currentHospital = data.getStringExtra("hospital");
+			case QjConstant.REQUEST_CODE_ADD_HOSPITAL:
+				currentHospital = data.getStringExtra("string");
 				hospitalTv.setText(currentHospital);
+				break;
+			case EditCaseActivity.REQUEST_CASE_STATE:
+				treat_state  = data.getStringExtra("string");
 				break;
 			}
 		}

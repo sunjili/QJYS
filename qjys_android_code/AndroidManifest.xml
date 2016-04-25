@@ -142,6 +142,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
+        <!-- 摘要 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeAbstractActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <!-- 设置临床诊疗规范及流程 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeFlowActivity"
@@ -178,7 +184,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
-             <!-- 编辑 病房号 -->
+        <!-- 编辑 病房号 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.CaseBedNumberActivity"
             android:screenOrientation="portrait"
@@ -189,7 +195,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
-            <activity
+        <activity
             android:name="com.rmtech.qjys.ui.qjactivity.CaseAddFriendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
@@ -199,19 +205,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
-			<!--编辑诊断界面  -->
+        <!-- 编辑诊断界面 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.CaseDiagnoseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
-			<!--编辑病例的就诊状态  -->
+        <!-- 编辑病例的就诊状态 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.EditCaseStateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
-        	<!--奇迹医生登录需要密码-->
+        <!-- 奇迹医生登录需要密码 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.LoginPasswordActivity"
             android:screenOrientation="portrait"
@@ -259,7 +265,6 @@
         </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.QjAddContactActivity"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
@@ -273,7 +278,8 @@
             android:name="com.rmtech.qjys.ui.qjactivity.PhoneContactsActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name="com.sjl.lib.multi_image_selector.MultiImageSelectorActivity"
@@ -378,7 +384,6 @@
         <!-- 添加好友 -->
         <activity
             android:name="com.rmtech.qjys.ui.AddContactActivity"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="stateVisible" >
