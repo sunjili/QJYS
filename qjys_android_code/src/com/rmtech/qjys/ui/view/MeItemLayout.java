@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class MeItemLayout extends RelativeLayout implements
 	private LinearLayout v_bottom_line;
 	private TextView tv_left;
 	private TextView tv_right;
+	private ImageView iv_right;
 	private View inflate;
 
 	public MeItemLayout(Context context) {
@@ -52,6 +54,7 @@ public class MeItemLayout extends RelativeLayout implements
 		inflate = View.inflate(getContext(), R.layout.qj_meitem_view, this);
 		tv_left = (TextView) inflate.findViewById(R.id.tv_left);
 		tv_right = (TextView) inflate.findViewById(R.id.tv_right);
+		iv_right=(ImageView) inflate.findViewById(R.id.imageView1);
 		v_bottom_line = (LinearLayout) inflate
 				.findViewById(R.id.ll_bottom_line);
 		TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
@@ -68,6 +71,9 @@ public class MeItemLayout extends RelativeLayout implements
 				break;
 			case R.styleable.MeItemView_rightTextColor:
 				tv_right.setTextColor(a.getColor(attr, Color.rgb(126, 126, 126)));
+				break;
+			case R.styleable.MeItemView_imageRecource:
+				iv_right.setBackground(a.getDrawable(attr));
 				break;
 			case R.styleable.MeItemView_visibleLinePadding:
 				boolean visibleLinePadding = a.getBoolean(attr, true);

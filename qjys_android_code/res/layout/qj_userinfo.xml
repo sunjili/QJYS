@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/white" >
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@color/red" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/iv_head"
+            android:orientation="vertical" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_beizhu"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="left|center"
+                android:text="测试"
+                android:textColor="@color/c3"
+                android:textSize="19sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="left|center"
+                android:text="测试"
+                android:textColor="@color/c7e"
+                android:textSize="12sp" />
+
+            <View
+                android:id="@+id/v_nikename"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <include layout="@layout/qj_me_split_line" />
+
+    <TextView
+        android:id="@+id/tv_hello"
+        style="@style/qj_text_small_explain_style"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="测试111111111111111" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/user_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="电话号码"
+        app:rightText="测试11111111"
+        app:imageRecource="@drawable/btn_addresslist_makingacall"
+        app:visibleLinePadding="true" />
+
+    <com.rmtech.qjys.ui.view.MeItemLayout
+        android:id="@+id/user_beizhu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftText="设置备注名"
+        app:rightText="测试111"
+        app:visibleLinePadding="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/tv_hospital_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical|left"
+            android:text="医院"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_hospital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@id/tv_hospital_left"
+            android:gravity="center_vertical|left"
+            android:text="测试1111111"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:background="@color/cd9" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/tv_department_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical|left"
+            android:text="科室"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_department"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@id/tv_department_left"
+            android:gravity="center_vertical|left"
+            android:text="测试"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:background="@color/cd9" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/tv_changyong_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical|left"
+            android:text="设置为常用联系人"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <ToggleButton
+            android:id="@+id/tb_pull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:button="@drawable/toggle_btn"
+            android:checked="true"
+            android:gravity="right|center_vertical"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_sendmessage"
+        android:layout_width="match_parent"
+        android:layout_height="42dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="25dip"
+        android:background="@drawable/qj_me_greenbutton_selector"
+        android:text="发消息"
+        android:textColor="@color/white"
+        android:textSize="19sp" />
+
+</LinearLayout>

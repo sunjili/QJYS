@@ -6,6 +6,7 @@
         <attr name="rightText" format="string" />
         <attr name="rightTextColor" format="reference|color" />
         <attr name="visibleLinePadding" format="boolean" />
+        <attr name="imageRecource" format="reference|color" />
     </declare-styleable>
     <declare-styleable name="ContactItemView">
         <attr name="contactItemImage" format="reference" />

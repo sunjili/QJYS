@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/qj_text_small_explain_style"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="备注名" />
+
+    <include layout="@layout/qj_me_split_line" />
+	
+    <EditText
+        android:id="@+id/et_name"
+        style="@style/qj_et_style"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="请输入备注名称" />
+
+    <include layout="@layout/qj_me_split_line" />
+
+</LinearLayout>
