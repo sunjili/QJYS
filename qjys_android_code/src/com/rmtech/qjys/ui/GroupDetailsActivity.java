@@ -90,6 +90,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	private GroupChangeListener groupChangeListener;
 	private CaseInfo caseInfo;
 	private View change_admin_view;
+	private TextView name_tv;
+	private TextView nike_tv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,18 +118,14 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		deleteBtn = (Button) findViewById(R.id.btn_exitdel_grp);
 		change_admin_view = findViewById(R.id.change_admin_view);
 		change_admin_view.setOnClickListener(this);
-		// blacklistLayout = (RelativeLayout) findViewById(R.id.rl_blacklist);
-		// changeGroupNameLayout = (RelativeLayout)
-		// findViewById(R.id.rl_change_group_name);
-		// idLayout = (RelativeLayout) findViewById(R.id.rl_group_id);
-		// idLayout.setVisibility(View.VISIBLE);
-		// idText = (TextView) findViewById(R.id.tv_group_id_value);
-
+		name_tv = (TextView)findViewById(R.id.name_tv);
+		nike_tv = (TextView)findViewById(R.id.nike_tv);
 		rl_switch_block_groupmsg = (RelativeLayout) findViewById(R.id.rl_switch_block_groupmsg);
 		switchButton = (EaseSwitchButton) findViewById(R.id.switch_btn);
 
 		rl_switch_block_groupmsg.setOnClickListener(this);
-
+		name_tv.setText(caseInfo.admin_doctor.name);
+		nike_tv.setText("昵称："+caseInfo.admin_doctor.name);
 		// idText.setText(groupId);
 		if (!isOwner()) {
 			exitBtn.setVisibility(View.VISIBLE);

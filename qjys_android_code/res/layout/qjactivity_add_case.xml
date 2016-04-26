@@ -96,7 +96,8 @@
                 android:id="@+id/age_et"
                 style="@style/qj_add_case_right_hit_et"
                 android:layout_toLeftOf="@id/age_title_tv"
-                android:hint="输入患者年龄" />
+                android:hint="输入患者年龄"
+                android:numeric="integer" />
         </RelativeLayout>
 
         <View
@@ -177,6 +178,7 @@
                 android:id="@+id/room_title_tv"
                 style="@style/qj_add_case_right_name_tv"
                 android:layout_alignParentRight="true"
+                android:numeric="integer"
                 android:text="病房" />
 
             <EditText
@@ -213,7 +215,8 @@
                 android:id="@+id/bed_et"
                 style="@style/qj_add_case_right_hit_et"
                 android:layout_toLeftOf="@id/bed_title_tv"
-                android:hint="输入患者床号" />
+                android:hint="输入患者床号"
+                android:numeric="integer" />
         </RelativeLayout>
 
         <View

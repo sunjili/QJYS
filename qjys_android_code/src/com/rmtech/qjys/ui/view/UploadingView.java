@@ -54,6 +54,8 @@ public class UploadingView extends RelativeLayout {
 			}
 		});
 		if(PhotoUploadManager.getInstance().getUploadTaskArray().size() > 0) {
+			unread_msg_number.setText("" + PhotoUploadManager.getInstance().getUploadTaskArray().size() );
+
 			this.setVisibility(VISIBLE);
 		} else {
 			this.setVisibility(GONE);

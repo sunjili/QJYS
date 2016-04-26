@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.PhoneContact;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnAddFriendCallback;
@@ -75,9 +76,7 @@ public class CaseAddFriendActivity extends BaseActivity {
 
 	private void initView() {
 		et_name = (EditText) findViewById(R.id.et_name);
-		if (phoneContact != null && phoneContact.getName() != null) {
-			et_name.setText("我是 " + phoneContact.getName());
-		}
+		et_name.setText("我是 " +UserContext.getInstance().getUserName());
 		iv_clean = (ImageView) findViewById(R.id.iv_clean);
 		iv_clean.setOnClickListener(new OnClickListener() {
 

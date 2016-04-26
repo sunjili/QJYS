@@ -31,9 +31,9 @@ import com.rmtech.qjys.R;
  * 以及EaseEmojiconMenu(表情栏)
  */
 public class EaseChatInputMenu extends LinearLayout {
-    FrameLayout primaryMenuContainer, emojiconMenuContainer;
+    FrameLayout primaryMenuContainer;//, emojiconMenuContainer;
     protected EaseChatPrimaryMenuBase chatPrimaryMenu;
-    protected EaseEmojiconMenuBase emojiconMenu;
+//    protected EaseEmojiconMenuBase emojiconMenu;
     protected EaseChatExtendMenu chatExtendMenu;
     protected FrameLayout chatExtendMenuContainer;
     protected LayoutInflater layoutInflater;
@@ -62,7 +62,7 @@ public class EaseChatInputMenu extends LinearLayout {
         layoutInflater = LayoutInflater.from(context);
         layoutInflater.inflate(R.layout.ease_widget_chat_input_menu, this);
         primaryMenuContainer = (FrameLayout) findViewById(R.id.primary_menu_container);
-        emojiconMenuContainer = (FrameLayout) findViewById(R.id.emojicon_menu_container);
+//        emojiconMenuContainer = (FrameLayout) findViewById(R.id.emojicon_menu_container);
         chatExtendMenuContainer = (FrameLayout) findViewById(R.id.extend_menu_container);
 
          // 扩展按钮栏
@@ -87,15 +87,15 @@ public class EaseChatInputMenu extends LinearLayout {
         primaryMenuContainer.addView(chatPrimaryMenu);
 
         // 表情栏，没有自定义的用默认的
-        if(emojiconMenu == null){
-            emojiconMenu = (EaseEmojiconMenu) layoutInflater.inflate(R.layout.ease_layout_emojicon_menu, null);
-            if(emojiconGroupList == null){
-                emojiconGroupList = new ArrayList<EaseEmojiconGroupEntity>();
-                emojiconGroupList.add(new EaseEmojiconGroupEntity(R.drawable.ee_1,  Arrays.asList(EaseDefaultEmojiconDatas.getData())));
-            }
-            ((EaseEmojiconMenu)emojiconMenu).init(emojiconGroupList);
-        }
-        emojiconMenuContainer.addView(emojiconMenu);
+//        if(emojiconMenu == null){
+//            emojiconMenu = (EaseEmojiconMenu) layoutInflater.inflate(R.layout.ease_layout_emojicon_menu, null);
+//            if(emojiconGroupList == null){
+//                emojiconGroupList = new ArrayList<EaseEmojiconGroupEntity>();
+//                emojiconGroupList.add(new EaseEmojiconGroupEntity(R.drawable.ee_1,  Arrays.asList(EaseDefaultEmojiconDatas.getData())));
+//            }
+//            ((EaseEmojiconMenu)emojiconMenu).init(emojiconGroupList);
+//        }
+//        emojiconMenuContainer.addView(emojiconMenu);
 
         processChatMenu();
         // 初始化extendmenu
@@ -113,9 +113,9 @@ public class EaseChatInputMenu extends LinearLayout {
      * 以及回调你想要回调出去的事件给设置的EaseEmojiconMenuListener
      * @param customEmojiconMenu
      */
-    public void setCustomEmojiconMenu(EaseEmojiconMenuBase customEmojiconMenu){
-        this.emojiconMenu = customEmojiconMenu;
-    }
+//    public void setCustomEmojiconMenu(EaseEmojiconMenuBase customEmojiconMenu){
+//        this.emojiconMenu = customEmojiconMenu;
+//    }
     
     /**
      * 设置自定义的主菜单栏，该控件需要继承自EaseChatPrimaryMenuBase，
@@ -134,9 +134,9 @@ public class EaseChatInputMenu extends LinearLayout {
         return chatExtendMenu;
     }
     
-    public EaseEmojiconMenuBase getEmojiconMenu(){
-        return emojiconMenu;
-    }
+//    public EaseEmojiconMenuBase getEmojiconMenu(){
+//        return emojiconMenu;
+//    }
     
 
     /**
@@ -196,7 +196,7 @@ public class EaseChatInputMenu extends LinearLayout {
 
             @Override
             public void onToggleEmojiconClicked() {
-                toggleEmojicon();
+//                toggleEmojicon();
             }
 
             @Override
@@ -215,26 +215,26 @@ public class EaseChatInputMenu extends LinearLayout {
         });
 
         // emojicon menu
-        emojiconMenu.setEmojiconMenuListener(new EaseEmojiconMenuListener() {
-
-            @Override
-            public void onExpressionClicked(EaseEmojicon emojicon) {
-                if(emojicon.getType() != EaseEmojicon.Type.BIG_EXPRESSION){
-                    if(emojicon.getEmojiText() != null){
-                        chatPrimaryMenu.onEmojiconInputEvent(EaseSmileUtils.getSmiledText(context,emojicon.getEmojiText()));
-                    }
-                }else{
-                    if(listener != null){
-                        listener.onBigExpressionClicked(emojicon);
-                    }
-                }
-            }
-
-            @Override
-            public void onDeleteImageClicked() {
-                chatPrimaryMenu.onEmojiconDeleteEvent();
-            }
-        });
+//        emojiconMenu.setEmojiconMenuListener(new EaseEmojiconMenuListener() {
+//
+//            @Override
+//            public void onExpressionClicked(EaseEmojicon emojicon) {
+//                if(emojicon.getType() != EaseEmojicon.Type.BIG_EXPRESSION){
+//                    if(emojicon.getEmojiText() != null){
+//                        chatPrimaryMenu.onEmojiconInputEvent(EaseSmileUtils.getSmiledText(context,emojicon.getEmojiText()));
+//                    }
+//                }else{
+//                    if(listener != null){
+//                        listener.onBigExpressionClicked(emojicon);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onDeleteImageClicked() {
+//                chatPrimaryMenu.onEmojiconDeleteEvent();
+//            }
+//        });
 
     }
 
@@ -249,16 +249,16 @@ public class EaseChatInputMenu extends LinearLayout {
                 public void run() {
                     chatExtendMenuContainer.setVisibility(View.VISIBLE);
                     chatExtendMenu.setVisibility(View.VISIBLE);
-                    emojiconMenu.setVisibility(View.GONE);
+//                    emojiconMenu.setVisibility(View.GONE);
                 }
             }, 50);
         } else {
-            if (emojiconMenu.getVisibility() == View.VISIBLE) {
-                emojiconMenu.setVisibility(View.GONE);
-                chatExtendMenu.setVisibility(View.VISIBLE);
-            } else {
+//            if (emojiconMenu.getVisibility() == View.VISIBLE) {
+//                emojiconMenu.setVisibility(View.GONE);
+//                chatExtendMenu.setVisibility(View.VISIBLE);
+//            } else {
                 chatExtendMenuContainer.setVisibility(View.GONE);
-            }
+//            }
 
         }
 
@@ -267,27 +267,27 @@ public class EaseChatInputMenu extends LinearLayout {
     /**
      * 显示或隐藏表情页
      */
-    protected void toggleEmojicon() {
-        if (chatExtendMenuContainer.getVisibility() == View.GONE) {
-            hideKeyboard();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    chatExtendMenuContainer.setVisibility(View.VISIBLE);
-                    chatExtendMenu.setVisibility(View.GONE);
-                    emojiconMenu.setVisibility(View.VISIBLE);
-                }
-            }, 50);
-        } else {
-            if (emojiconMenu.getVisibility() == View.VISIBLE) {
-                chatExtendMenuContainer.setVisibility(View.GONE);
-                emojiconMenu.setVisibility(View.GONE);
-            } else {
-                chatExtendMenu.setVisibility(View.GONE);
-                emojiconMenu.setVisibility(View.VISIBLE);
-            }
-
-        }
-    }
+//    protected void toggleEmojicon() {
+//        if (chatExtendMenuContainer.getVisibility() == View.GONE) {
+//            hideKeyboard();
+//            handler.postDelayed(new Runnable() {
+//                public void run() {
+//                    chatExtendMenuContainer.setVisibility(View.VISIBLE);
+//                    chatExtendMenu.setVisibility(View.GONE);
+//                    emojiconMenu.setVisibility(View.VISIBLE);
+//                }
+//            }, 50);
+//        } else {
+//            if (emojiconMenu.getVisibility() == View.VISIBLE) {
+//                chatExtendMenuContainer.setVisibility(View.GONE);
+//                emojiconMenu.setVisibility(View.GONE);
+//            } else {
+//                chatExtendMenu.setVisibility(View.GONE);
+//                emojiconMenu.setVisibility(View.VISIBLE);
+//            }
+//
+//        }
+//    }
 
     /**
      * 隐藏软键盘
@@ -301,7 +301,7 @@ public class EaseChatInputMenu extends LinearLayout {
      */
     public void hideExtendMenuContainer() {
         chatExtendMenu.setVisibility(View.GONE);
-        emojiconMenu.setVisibility(View.GONE);
+//        emojiconMenu.setVisibility(View.GONE);
         chatExtendMenuContainer.setVisibility(View.GONE);
         chatPrimaryMenu.onExtendMenuContainerHide();
     }

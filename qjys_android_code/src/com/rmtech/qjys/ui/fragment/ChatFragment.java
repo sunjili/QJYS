@@ -97,7 +97,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
                 getActivity().finish();
             }
         });
-        ((EaseEmojiconMenu)inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());
+//        ((EaseEmojiconMenu)inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());
     }
     
     @Override
