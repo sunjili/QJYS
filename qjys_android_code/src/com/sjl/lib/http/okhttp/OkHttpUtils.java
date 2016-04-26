@@ -293,6 +293,10 @@ public class OkHttpUtils {
 	}
 
 	public static <T> void post(String url, HashMap<String, String> params, Callback<T> callback) {
+		if(params != null) {
+			Log.e("ssssssssss","params = "+params);
+		}
+
 		HashMap<String, String> headers = new HashMap<String, String>();
 		HttpSetting.addHttpHeader(headers);
 		HashMap<String, String> newparams = new HashMap<String, String>();

@@ -59,6 +59,17 @@ public class QjHttp {
 	public static final String URL_UPDATE_USERINFO = "/doctor/updateuserinfo";
 	public static final String URL_GET_HOSBYNAME = "/hospital/gethosbyname";
 	public static final String URL_GET_USERSINFOBYIDS = "/doctor/getusersinfobyids";
+	public static final String URL_UPDATE_ADMIN = "/patient/updateadmin";
+	
+
+	public static void updateAdmin(String patient_id, String admin_id, BaseModelCallback callback) {
+//		patient_id : 病例id
+//		admin_id:  新的管理员id
+		HashMap<String, String> params = new HashMap<>();
+		params.put("patient_id", patient_id);
+		params.put("admin_id", admin_id);
+		OkHttpUtils.post(URL_UPDATE_ADMIN, params, callback);
+	}
 
 	public static void getDoctorByIds(boolean needCache, String doctor_ids,
 			final QjHttpCallbackNoParse<MDoctorList> callback) {
@@ -285,8 +296,8 @@ public class QjHttp {
 		if (!TextUtils.isEmpty(info.name)) {
 			params.put("name", info.name);
 		}
-		if (!TextUtils.isEmpty(info.hos_name)) {
-			params.put("hos_fullname", info.hos_name);
+		if (!TextUtils.isEmpty(info.hos_fullname)) {
+			params.put("hos_name", info.hos_fullname);
 		}
 		params.put("sex", info.sex + "");
 		if (!TextUtils.isEmpty(info.age)) {
@@ -338,8 +349,8 @@ public class QjHttp {
 		if (!TextUtils.isEmpty(info.name)) {
 			params.put("name", info.name);
 		}
-		if (!TextUtils.isEmpty(info.hos_name)) {
-			params.put("hos_fullname", info.hos_name);
+		if (!TextUtils.isEmpty(info.hos_fullname)) {
+			params.put("hos_name", info.hos_fullname);
 		}
 		params.put("sex", info.sex + "");
 		if (!TextUtils.isEmpty(info.age)) {

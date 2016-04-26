@@ -38,7 +38,7 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/tv_beizhu"
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:gravity="left|center"
@@ -74,8 +74,7 @@
         android:id="@+id/tv_hello"
         style="@style/qj_text_small_explain_style"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:text="测试111111111111111" />
+        android:layout_height="20dp" />
 
     <include layout="@layout/qj_me_split_line" />
 
@@ -83,9 +82,9 @@
         android:id="@+id/user_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:leftText="电话号码"
-        app:rightText="测试11111111"
         app:imageRecource="@drawable/btn_addresslist_makingacall"
+        app:leftText="电话号码"
+        app:rightText=""
         app:visibleLinePadding="true" />
 
     <com.rmtech.qjys.ui.view.MeItemLayout
@@ -93,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:leftText="设置备注名"
-        app:rightText="测试111"
+        app:rightText=""
         app:visibleLinePadding="true" />
 
     <View

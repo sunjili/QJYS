@@ -146,7 +146,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.name = getName();
 		info.sex = selectSex;
 		info.age = ageEt.getEditableText().toString();
-		info.hos_name = (String) hospitalTv.getText();
+		info.hos_fullname = (String) hospitalTv.getText();
 		info.department = keshiEt.getEditableText().toString();
 		info.bed_no = bedEt.getEditableText().toString();
 		//

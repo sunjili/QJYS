@@ -23,6 +23,7 @@ import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.model.gson.MUser;
 
@@ -136,6 +137,15 @@ public class DoctorListManager {
 	}
 
 	public void getDoctorInfoByHXid(final String username, final OnGetDoctorInfoCallback callback) {
+		if(TextUtils.equals(username, EMClient.getInstance().getCurrentUser())) {
+			DoctorInfo doctorInfo = new DoctorInfo(UserContext.getInstance().getUser());
+			if (doctorInfo != null) {
+				if (callback != null) {
+					callback.onGet(doctorInfo);
+					return;
+				}
+			}
+        }
 		if (mIdDoctorMap != null) {
 			DoctorInfo info = mIdDoctorMap.get(username);
 			if (info != null) {
@@ -149,6 +159,9 @@ public class DoctorListManager {
 
 			@Override
 			public void onError(Call call, Exception e) {
+				if (callback != null) {
+					callback.onGet(null);
+				}
 			}
 
 			@Override
@@ -165,9 +178,13 @@ public class DoctorListManager {
 						if (mIdDoctorMap == null) {
 							mIdDoctorMap = new HashMap<String, DoctorInfo>();
 						}
-						for (DoctorInfo info : mMDoctorList.data) {
+						for (DoctorInfo info : response.data) {
 							mIdDoctorMap.put(info.id, info);
 						}
+					}
+				} else {
+					if (callback != null) {
+						callback.onGet(null);
 					}
 				}
 			}

@@ -34,13 +34,16 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.domain.EmojiconExampleGroupData;
 import com.rmtech.qjys.domain.RobotUser;
 import com.rmtech.qjys.hx.QjHelper;
+import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.ui.ContextMenuActivity;
 import com.rmtech.qjys.ui.ForwardMessageActivity;
 import com.rmtech.qjys.ui.ImageGridActivity;
 import com.rmtech.qjys.ui.MainActivity;
-import com.rmtech.qjys.ui.UserProfileActivity;
 import com.rmtech.qjys.ui.VideoCallActivity;
 import com.rmtech.qjys.ui.VoiceCallActivity;
+import com.rmtech.qjys.ui.qjactivity.UserInfoActivity;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.widget.ChatRowVoiceCall;
 
 public class ChatFragment extends EaseChatFragment implements EaseChatFragmentListener{
@@ -202,9 +205,21 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
     @Override
     public void onAvatarClick(String username) {
         //头像点击事件
-        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-        intent.putExtra("username", username);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+//        intent.putExtra("username", username);
+//        startActivity(intent);
+    	DoctorListManager.getInstance().getDoctorInfoByHXid(username, new OnGetDoctorInfoCallback() {
+			
+			@Override
+			public void onGet(DoctorInfo info) {
+				if(info != null) {
+					UserInfoActivity.show(getActivity(),info);
+				} else {
+		            Toast.makeText(getActivity(), "获取医生资料失败", 1).show();
+
+				}
+			}
+		});
     }
     
     @Override

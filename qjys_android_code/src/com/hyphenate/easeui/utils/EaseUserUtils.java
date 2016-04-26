@@ -41,7 +41,6 @@ public class EaseUserUtils {
      */
     public static void setUserAvatar(Context context, String username, ImageView imageView){
     	EaseUser user = getUserInfo(username);
-    	if(user != null)
         if(user != null){
         	if(user.doctorInfo != null && user.doctorInfo.head != null){
                 Glide.with(context).load(user.doctorInfo.head).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_default_avatar).into(imageView);

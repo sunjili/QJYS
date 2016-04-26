@@ -88,7 +88,7 @@ public class EditCaseActivity extends BaseActivity implements
 			case_sex.setRightText("女");
 		}
 		case_age.setRightText(meValue.age);
-		case_hospital.setRightText(meValue.hos_name);
+		case_hospital.setRightText(meValue.hos_fullname);
 		case_room.setRightText(meValue.department);
 		case_room_number.setRightText(meValue.ward_no);
 		case_bed_number.setRightText(meValue.bed_no);
@@ -205,7 +205,7 @@ public class EditCaseActivity extends BaseActivity implements
 		case MeFragment.REQUEST_ME_HOSPITAL:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.hos_name = string;
+				meValue.hos_fullname = string;
 				setViewValue();
 			}
 

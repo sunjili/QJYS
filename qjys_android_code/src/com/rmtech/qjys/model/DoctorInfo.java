@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 public class DoctorInfo implements Serializable, Parcelable {
 
@@ -99,4 +100,9 @@ public class DoctorInfo implements Serializable, Parcelable {
 			return new DoctorInfo[size];
 		}
 	};
+
+	public boolean isMyself() {
+		// TODO Auto-generated method stub
+		return TextUtils.equals(id, UserContext.getInstance().getUserId());
+	}
 }
