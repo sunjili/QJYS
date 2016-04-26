@@ -14,12 +14,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.BaseActivity;
 
 /**
  * 多图选择
  * Updated by jilisun on 2016/1/19.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB) public class MultiImageSelectorActivity extends FragmentActivity implements MultiImageSelectorFragment.Callback{
+@TargetApi(Build.VERSION_CODES.HONEYCOMB) public class MultiImageSelectorActivity extends BaseActivity implements MultiImageSelectorFragment.Callback{
 
     /** 最大图片选择次数，int类型，默认9 */
     public static final String EXTRA_SELECT_COUNT = "max_select_count";

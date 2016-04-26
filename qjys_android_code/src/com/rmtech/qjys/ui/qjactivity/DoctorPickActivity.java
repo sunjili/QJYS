@@ -58,14 +58,15 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 	final List<EaseUser> alluserList = new ArrayList<EaseUser>();
 	private ArrayList<DoctorInfo> selectedDoctorList;
 
-	public static final int TYPE_ADD_MEMBERS = 0;
-	public static final int TYPE_NEW_CASE = 1;
-	public static final int TYPE_DELETE_MEMBERS = 2;
+	// public static final int TYPE_ADD_MEMBERS = 0;
+	// public static final int TYPE_NEW_CASE = 1;
+	// public static final int TYPE_DELETE_MEMBERS = 2;
+	// public static final int TYPE_CHANGE_DOCTOR = 3;
 
-	public int type = TYPE_ADD_MEMBERS;
+	public int type = QjConstant.REQUEST_CODE_ADD_DOCTORS;
 
 	private void onActionFinish() {
-		if (type == TYPE_DELETE_MEMBERS) {
+		if (type == QjConstant.REQUEST_CODE_DELETE_DOCTORS) {
 			Toast.makeText(getApplicationContext(), "删除失败！", 1).show();
 
 		} else {
@@ -75,65 +76,74 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 
 	private void loadData() {
 
-		DoctorListManager.getInstance().getDoctorList(true, new QjHttpCallbackNoParse<MDoctorList>() {
+		DoctorListManager.getInstance().getDoctorList(true,
+				new QjHttpCallbackNoParse<MDoctorList>() {
 
-			@Override
-			public void onError(Call call, Exception e) {
-				Toast.makeText(getApplicationContext(), "服务器拉取医生列表失败！", 1).show();
-			}
-
-			@Override
-			public void onResponseSucces(boolean iscache, MDoctorList response) {
-				if (response.ret == 0 && response.data != null && !response.data.isEmpty()) {
-					if (type == TYPE_DELETE_MEMBERS) {
-						ArrayList<DoctorInfo> exitingMembers2 = getIntent().getParcelableArrayListExtra(
-								"selectedDoctorList");
-
-						for (DoctorInfo info : exitingMembers2) {
-
-							EaseUser user = new EaseUser(info.id);
-							EaseCommonUtils.setUserInitialLetter(user);
-							user.setAvatar(info.head);
-							user.setNick(info.name);
-							alluserList.add(user);
-						}
-
-						contactAdapter = new PickContactAdapter(DoctorPickActivity.this,
-								R.layout.em_row_contact_with_checkbox, alluserList);
-						listView.setAdapter(contactAdapter);
-					} else if (type == TYPE_ADD_MEMBERS) {
-						DoctorListManager.initDoctorList(alluserList, response.data);
-						initAdapter();
-					} else {
-
-						DoctorListManager.initDoctorList(alluserList, response.data);
-						initAdapter();
-						if (selectedDoctorList != null) {
-							contactAdapter.updateCheckedList(selectedDoctorList);
-							contactAdapter.notifyDataSetChanged();
-						}
+					@Override
+					public void onError(Call call, Exception e) {
+						Toast.makeText(getApplicationContext(), "服务器拉取医生列表失败！",
+								1).show();
 					}
 
-				} else {
-					Toast.makeText(getApplicationContext(), "没有好友！", 1).show();
-				}
-			}
-		});
+					@Override
+					public void onResponseSucces(boolean iscache,
+							MDoctorList response) {
+						if (response.ret == 0 && response.data != null
+								&& !response.data.isEmpty()) {
+							if (type == QjConstant.REQUEST_CODE_DELETE_DOCTORS) {
+								ArrayList<DoctorInfo> exitingMembers2 = getIntent()
+										.getParcelableArrayListExtra(
+												"selectedDoctorList");
+
+								for (DoctorInfo info : exitingMembers2) {
+
+									EaseUser user = new EaseUser(info.id);
+									EaseCommonUtils.setUserInitialLetter(user);
+									user.setAvatar(info.head);
+									user.setNick(info.name);
+									alluserList.add(user);
+								}
+
+								contactAdapter = new PickContactAdapter(
+										DoctorPickActivity.this,
+										R.layout.em_row_contact_with_checkbox,
+										alluserList);
+								listView.setAdapter(contactAdapter);
+							} else if (type == QjConstant.REQUEST_CODE_ADD_DOCTORS) {
+								DoctorListManager.initDoctorList(alluserList,
+										response.data);
+								initAdapter();
+							} else {
+
+								DoctorListManager.initDoctorList(alluserList,
+										response.data);
+								initAdapter();
+								if (selectedDoctorList != null) {
+									contactAdapter
+											.updateCheckedList(selectedDoctorList);
+									contactAdapter.notifyDataSetChanged();
+								}
+							}
+
+						} else {
+							Toast.makeText(getApplicationContext(), "没有好友！", 1)
+									.show();
+						}
+					}
+				});
 	}
 
-	public static void show(Activity activity, CaseInfo caseinfo, List<DoctorInfo> selectedDoctorList, int type) {
+	public static void show(Activity activity, CaseInfo caseinfo,
+			List<DoctorInfo> selectedDoctorList, int type) {
 		Intent intent = new Intent(activity, DoctorPickActivity.class);//
 		setCaseInfo(intent, caseinfo);
 		setCaseId(intent, caseinfo.id);
 		intent.putExtra("type", type);
 		if (selectedDoctorList != null) {
-			intent.putParcelableArrayListExtra("selectedDoctorList", new ArrayList<DoctorInfo>(selectedDoctorList));
+			intent.putParcelableArrayListExtra("selectedDoctorList",
+					new ArrayList<DoctorInfo>(selectedDoctorList));
 		}
-		int requestCode = QjConstant.REQUEST_CODE_ADD_DOCTORS;
-		if (type == TYPE_DELETE_MEMBERS) {
-			requestCode = QjConstant.REQUEST_CODE_DELETE_DOCTORS;
-		}
-		activity.startActivityForResult(intent, requestCode);
+		activity.startActivityForResult(intent, type);
 	}
 
 	// public static void show(Activity activity, String caseid,
@@ -159,7 +169,8 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.em_activity_group_pick_contacts);
-		type = getIntent().getIntExtra("type", TYPE_ADD_MEMBERS);
+		type = getIntent().getIntExtra("type",
+				QjConstant.REQUEST_CODE_ADD_DOCTORS);
 		// if (exitingMembers == null) {
 		// exitingMembers = new ArrayList<DoctorInfo>();
 		// }
@@ -170,103 +181,162 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
 				checkBox.toggle();
 
 			}
 		});
-		if (type == TYPE_DELETE_MEMBERS) {
+		if (type == QjConstant.REQUEST_CODE_CHANGE_DOCTOR) {
+			isSignleChecked = true;
+			selectedDoctorList = getIntent().getParcelableArrayListExtra(
+					"selectedDoctorList");
+			setRightTitle("保存", new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					QjHttp.updateAdmin(caseInfo.id, getMembersString(),
+							new BaseModelCallback() {
+
+								@Override
+								public void onResponseSucces(MBase response) {
+									EventBus.getDefault()
+											.post(new CaseEvent(
+													CaseEvent.TYPE_GROUP_CHANGED));
+									Intent intent = new Intent();
+									intent.putParcelableArrayListExtra(
+											"selectedDoctorList",
+											getToBeAddMembers());
+			
+									setResult(RESULT_OK, intent);
+
+									finish();
+								}
+
+								@Override
+								public void onError(Call call, Exception e) {
+									// TODO Auto-generated method stub
+									onActionFinish();
+								}
+							});
+				}
+			});
+		} else if (type == QjConstant.REQUEST_CODE_DELETE_DOCTORS) {
 
 			setRightTitle("删除", new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 
-					QjHttp.deleteMembers(caseInfo.id, getMembersString(), new BaseModelCallback() {
+					QjHttp.deleteMembers(caseInfo.id, getMembersString(),
+							new BaseModelCallback() {
 
-						@Override
-						public void onResponseSucces(MBase response) {
-							int length = contactAdapter.isCheckedArray.length;
-							for (int i = 0; i < length; i++) {
-								String username = contactAdapter.getItem(i).getUsername();
-								if (contactAdapter.isCheckedArray[i]) {
-									try {
-										EMClient.getInstance().groupManager()
-												.removeUserFromGroup(caseInfo.group_id, username);
-									} catch (Exception e) {
-										e.printStackTrace();
+								@Override
+								public void onResponseSucces(MBase response) {
+									int length = contactAdapter.isCheckedArray.length;
+									for (int i = 0; i < length; i++) {
+										String username = contactAdapter
+												.getItem(i).getUsername();
+										if (contactAdapter.isCheckedArray[i]) {
+											try {
+												EMClient.getInstance()
+														.groupManager()
+														.removeUserFromGroup(
+																caseInfo.group_id,
+																username);
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
+										}
 									}
+									EventBus.getDefault()
+											.post(new CaseEvent(
+													CaseEvent.TYPE_GROUP_CHANGED));
+
+									setResult(RESULT_OK, new Intent()
+											.putParcelableArrayListExtra(
+													"deleteDoctorList",
+													getToBeAddMembers()));// ("newmembers",
+
+									finish();
 								}
-							}
-							EventBus.getDefault().post(new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED));
 
-							setResult(RESULT_OK,
-									new Intent().putParcelableArrayListExtra("deleteDoctorList", getToBeAddMembers()));// ("newmembers",
-
-							finish();
-						}
-
-						@Override
-						public void onError(Call call, Exception e) {
-							// TODO Auto-generated method stub
-							onActionFinish();
-						}
-					});
+								@Override
+								public void onError(Call call, Exception e) {
+									// TODO Auto-generated method stub
+									onActionFinish();
+								}
+							});
 				}
 			});
-		} else if (type == TYPE_ADD_MEMBERS) {
-			exitingMembers = getIntent().getParcelableArrayListExtra("selectedDoctorList");
+		} else if (type == QjConstant.REQUEST_CODE_ADD_DOCTORS) {
+			exitingMembers = getIntent().getParcelableArrayListExtra(
+					"selectedDoctorList");
 
 			setRightTitle("确定", new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					Log.d("sssssssssss", "setRightTitle onClick");
-					QjHttp.addMembers(caseInfo, getMembersString(), new QjHttpCallback<MGroupData>() {
+					QjHttp.addMembers(caseInfo, getMembersString(),
+							new QjHttpCallback<MGroupData>() {
 
-						@Override
-						public void onResponseSucces(MGroupData response) {
-							// if(TextUtils.isEmpty(caseInfo.group_id)) {
-							// caseInfo.group_id = caseInfo
-							// }
-//							if (response != null && response.data != null) {
-								EventBus.getDefault().post(new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED));
+								@Override
+								public void onResponseSucces(MGroupData response) {
+									// if(TextUtils.isEmpty(caseInfo.group_id))
+									// {
+									// caseInfo.group_id = caseInfo
+									// }
+									// if (response != null && response.data !=
+									// null) {
+									EventBus.getDefault()
+											.post(new CaseEvent(
+													CaseEvent.TYPE_GROUP_CHANGED));
 
-								Intent intent = new Intent();
-								intent.putParcelableArrayListExtra("selectedDoctorList", getToBeAddMembers());// ("newmembers",
-								intent.putExtra("group_id", response.data == null ?"":response.data.group_id);
-								setResult(RESULT_OK, intent);
-								finish();
-//							} else {
-//								onActionFinish();
-//							}
-						}
+									Intent intent = new Intent();
+									intent.putParcelableArrayListExtra(
+											"selectedDoctorList",
+											getToBeAddMembers());// ("newmembers",
+									intent.putExtra("group_id",
+											response.data == null ? ""
+													: response.data.group_id);
+									setResult(RESULT_OK, intent);
+									finish();
+									// } else {
+									// onActionFinish();
+									// }
+								}
 
-						@Override
-						public void onError(Call call, Exception e) {
-							// TODO Auto-generated method stub
-							onActionFinish();
-						}
+								@Override
+								public void onError(Call call, Exception e) {
+									// TODO Auto-generated method stub
+									onActionFinish();
+								}
 
-						@Override
-						public MGroupData parseNetworkResponse(String str) throws Exception {
-							// TODO Auto-generated method stub
-							return new Gson().fromJson(str, MGroupData.class);
-						}
+								@Override
+								public MGroupData parseNetworkResponse(
+										String str) throws Exception {
+									// TODO Auto-generated method stub
+									return new Gson().fromJson(str,
+											MGroupData.class);
+								}
 
-					});
+							});
 				}
 			});
 		} else {
-			selectedDoctorList = getIntent().getParcelableArrayListExtra("selectedDoctorList");
+			selectedDoctorList = getIntent().getParcelableArrayListExtra(
+					"selectedDoctorList");
 
 			setRightTitle("确定", new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent();
-					intent.putParcelableArrayListExtra("selectedDoctorList", getToBeAddMembers());// ("newmembers",
+					intent.putParcelableArrayListExtra("selectedDoctorList",
+							getToBeAddMembers());// ("newmembers",
 					setResult(RESULT_OK, intent);
 					finish();
 				}
@@ -318,7 +388,8 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 
 	protected void initAdapter() {
 		// TODO Auto-generated method stub
-		contactAdapter = new PickContactAdapter(this, R.layout.em_row_contact_with_checkbox, alluserList);
+		contactAdapter = new PickContactAdapter(this,
+				R.layout.em_row_contact_with_checkbox, alluserList);
 		listView.setAdapter(contactAdapter);
 	}
 
@@ -348,14 +419,16 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		int length = contactAdapter.isCheckedArray.length;
 		for (int i = 0; i < length; i++) {
 			String username = contactAdapter.getItem(i).getUsername();
-			if (contactAdapter.isCheckedArray[i] && !isContainsInExitingMembers(username)) {
-				DoctorListManager.getInstance().getDoctorInfoByHXid(username, new OnGetDoctorInfoCallback() {
+			if (contactAdapter.isCheckedArray[i]
+					&& !isContainsInExitingMembers(username)) {
+				DoctorListManager.getInstance().getDoctorInfoByHXid(username,
+						new OnGetDoctorInfoCallback() {
 
-					@Override
-					public void onGet(DoctorInfo info) {
-						members.add(info);
-					}
-				});
+							@Override
+							public void onGet(DoctorInfo info) {
+								members.add(info);
+							}
+						});
 			}
 		}
 		return members;
@@ -392,7 +465,8 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 
 		private boolean[] isCheckedArray;
 
-		public PickContactAdapter(Context context, int resource, List<EaseUser> users) {
+		public PickContactAdapter(Context context, int resource,
+				List<EaseUser> users) {
 			super(context, resource, users);
 			isCheckedArray = new boolean[users.size()];
 		}
@@ -410,12 +484,14 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		}
 
 		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView,
+				ViewGroup parent) {
 			View view = super.getView(position, convertView, parent);
 			// if (position > 0) {
 			final String username = getItem(position).getUsername();
 			// 选择框checkbox
-			final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+			final CheckBox checkBox = (CheckBox) view
+					.findViewById(R.id.checkbox);
 			ImageView avatarView = (ImageView) view.findViewById(R.id.avatar);
 			TextView nameView = (TextView) view.findViewById(R.id.name);
 
@@ -429,7 +505,8 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 
 				checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
-					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
 						// 群组中原来的成员一直设为选中状态
 						if (isContainsInExitingMembers(username)) {
 							isChecked = true;

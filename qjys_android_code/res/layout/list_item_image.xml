@@ -24,6 +24,7 @@
         android:layout_gravity="top|right"
         android:layout_marginRight="5.5dp"
         android:layout_marginTop="5.5dp"
-        android:src="@drawable/btn_unselected" />
+        android:src="@drawable/btn_unselected"
+        android:visibility="gone" />
 
 </com.sjl.lib.multi_image_selector.view.SquareFrameLayout>

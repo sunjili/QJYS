@@ -49,7 +49,7 @@ import com.sjl.lib.utils.L;
 public class CaseFragment extends QjBaseFragment {
 
 	private PtrClassicFrameLayout mPtrFrame;
-	private TextView mTextView;
+	private View mNodataView;
 	private PinnedHeaderListView mListView;
 	private CaseSectionedAdapter mAdapter;
 
@@ -77,18 +77,18 @@ public class CaseFragment extends QjBaseFragment {
 	@Override
 	protected void initView() {
 		EventBus.getDefault().register(this);
-		mTextView = (TextView) getView().findViewById(
+		mNodataView =getView().findViewById(
 				R.id.list_view_with_empty_view_fragment_empty_view);
 		mPtrFrame = (PtrClassicFrameLayout) getView().findViewById(
 				R.id.list_view_with_empty_view_fragment_ptr_frame);
 
-		mTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mPtrFrame.setVisibility(View.VISIBLE);
-				mPtrFrame.autoRefresh();
-			}
-		});
+//		mNodataView.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				mPtrFrame.setVisibility(View.VISIBLE);
+//				mPtrFrame.autoRefresh();
+//			}
+//		});
 		mListView = (PinnedHeaderListView) getView().findViewById(
 				R.id.pinnedListView);
 		mAdapter = new CaseSectionedAdapter();
@@ -115,21 +115,21 @@ public class CaseFragment extends QjBaseFragment {
 
 			@Override
 			public void create(SwipeMenu menu) {
-				// create "open" item
-				SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
-				// set item background
-				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-						0xCE)));
-				// set item width
-				openItem.setWidth(dp2px(90));
-				// set item title
-				openItem.setTitle("Open");
-				// set item title fontsize
-				openItem.setTitleSize(18);
-				// set item title font color
-				openItem.setTitleColor(Color.WHITE);
-				// add to menu
-				menu.addMenuItem(openItem);
+//				// create "open" item
+//				SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
+//				// set item background
+//				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+//						0xCE)));
+//				// set item width
+//				openItem.setWidth(dp2px(90));
+//				// set item title
+//				openItem.setTitle("Open");
+//				// set item title fontsize
+//				openItem.setTitleSize(18);
+//				// set item title font color
+//				openItem.setTitleColor(Color.WHITE);
+//				// add to menu
+//				menu.addMenuItem(openItem);
 
 				// create "delete" item
 				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
@@ -154,14 +154,14 @@ public class CaseFragment extends QjBaseFragment {
 					public boolean onMenuItemClick(int position,
 							SwipeMenu menu, int index) {
 						switch (index) {
+//						case 0:
+//							// open
+//							// open(null);
+//							break;
 						case 0:
-							// open
-							// open(null);
-							break;
-						case 1:
 							// delete
 							// delete(item);
-							// mAppList.remove(position);
+							mAdapter.removeData(position);
 							mAdapter.notifyDataSetChanged();
 							break;
 						}
@@ -274,7 +274,7 @@ public class CaseFragment extends QjBaseFragment {
 		public void onError(Call call, Exception e) {
 			// TODO Auto-generated method stub
 			mPtrFrame.refreshComplete();
-
+			onDisplayData();
 		}
 
 		@Override
@@ -283,6 +283,7 @@ public class CaseFragment extends QjBaseFragment {
 				mAdapter.setData(response);
 			}
 			mPtrFrame.refreshComplete();
+			onDisplayData();
 
 		}
 	};
@@ -306,12 +307,13 @@ public class CaseFragment extends QjBaseFragment {
 
 	}
 
-	private void displayData() {
+	private void onDisplayData() {
 
-		mTextView.setVisibility(View.GONE);
-
-		// mAdapter.getDataList().addAll(data.optJson("data").optJson("list").toArrayList());
-		mAdapter.notifyDataSetChanged();
+		if(mAdapter != null && mAdapter.getCount() > 0) {
+			mNodataView.setVisibility(View.GONE);
+		} else {
+			mNodataView.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -329,6 +331,25 @@ public class CaseFragment extends QjBaseFragment {
 		@Override
 		public Object getItem(int section, int position) {
 			return null;
+		}
+
+		public void removeData(int position) {
+			int section = getSectionForPosition(position);
+			int positionInSection = getPositionInSectionForPosition(position);
+			HospitalCaseInfo hosList = mPatientList.get(section);
+			if(hosList != null && hosList.patients != null) {
+				CaseInfo caseinfo = hosList.patients.get(positionInSection);
+				hosList.patients.remove(positionInSection);
+				QjHttp.deletePatient(caseinfo.id, null);
+				if(hosList.patients.size() == 0) {
+					mPatientList.remove(hosList);
+				}
+			}
+			notifyDataSetChanged();
+			Log.d("ssssssssss", "removeData position=" + position);
+			Log.d("ssssssssss", "removeData section=" + section);
+			Log.d("ssssssssss", "removeData positionInSection=" + positionInSection);
+			onDisplayData();
 		}
 
 		public void setData(MPatientList patientList) {

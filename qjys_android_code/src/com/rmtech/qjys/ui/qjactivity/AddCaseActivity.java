@@ -170,7 +170,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		} else if (targetId == R.id.doctors_layout) {
 			CaseInfo caseinfo = new CaseInfo();
 			caseinfo.id = tempCaseId;
-			DoctorPickActivity.show(getActivity(), caseinfo, currentDoctorList, DoctorPickActivity.TYPE_NEW_CASE);
+			DoctorPickActivity.show(getActivity(), caseinfo, currentDoctorList, QjConstant.REQUEST_CODE_NEW_CASE);
 		}
 	}
 

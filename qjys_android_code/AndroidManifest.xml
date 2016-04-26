@@ -217,7 +217,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
-          <activity
+        <activity
             android:name="com.rmtech.qjys.ui.qjactivity.UserInfoBeizhuActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -284,11 +284,13 @@
         </activity>
         <activity
             android:name="com.sjl.lib.multi_image_selector.MultiImageSelectorActivity"
-            android:configChanges="orientation|screenSize" >
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/horizontal_slide" >
         </activity>
         <activity
             android:name="com.sjl.lib.sample.ImageSelectorMainActivity"
-            android:configChanges="orientation|screenSize" >
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/horizontal_slide" >
         </activity>
         <!--
         开屏页
@@ -296,7 +298,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>
         -->
         <activity
             android:name="com.sjl.lib.sample.filechooser.FileChooserExampleActivity"
@@ -342,15 +344,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-	<activity
+        <activity
             android:name="com.rmtech.qjys.ui.qjactivity.UserInfoActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >
         </activity>
-	
+
         <!--
         登陆 
         <activity
@@ -358,7 +359,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
+        </activity>
         -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.QjLoginActivity"
@@ -649,7 +650,7 @@
         <!-- <intent-filter> -->
         <!-- <action android:name="com.xiaomi.mipush.ERROR" /> -->
         <!-- </intent-filter> -->
-·
+·
         <!-- </receiver> -->
         <!-- mi push end -->
 

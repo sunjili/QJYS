@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.event.ImageUploadEvent;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataUploadingActivity;
+import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.sjl.lib.utils.L;
 
 @SuppressLint("NewApi")
@@ -52,6 +53,11 @@ public class UploadingView extends RelativeLayout {
 				PhotoDataUploadingActivity.show((Activity) getContext());
 			}
 		});
+		if(PhotoUploadManager.getInstance().getUploadTaskArray().size() > 0) {
+			this.setVisibility(VISIBLE);
+		} else {
+			this.setVisibility(GONE);
+		}
 
 	}
 

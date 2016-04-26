@@ -83,9 +83,12 @@ public class ImageGridAdapter extends BaseAdapter {
         }else{
             mSelectedImages.add(image);
         }
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
 
+    public boolean isContains(Image image) {
+    	return mSelectedImages.contains(image);
+    }
     /**
      * 通过图片路径设置默认选择
      * @param resultList
@@ -173,46 +176,46 @@ public class ImageGridAdapter extends BaseAdapter {
             }
         }
 
-        ViewHolder holder;
+        ImageSelectViewHolder holder;
         if(view == null){
             view = mInflater.inflate(R.layout.list_item_image, viewGroup, false);
-            holder = new ViewHolder(view);
+            holder = new ImageSelectViewHolder(view);
         }else{
-            holder = (ViewHolder) view.getTag();
+            holder = (ImageSelectViewHolder) view.getTag();
         }
 
         if(holder != null) {
-            holder.bindData(getItem(i));
+            holder.bindData(showSelectIndicator,mSelectedImages, getItem(i));
         }
 
         return view;
     }
 
-    class ViewHolder {
+   public static class ImageSelectViewHolder {
         ImageView image;
         ImageView indicator;
-        View mask;
+//        View mask;
 
-        ViewHolder(View view){
+        ImageSelectViewHolder(View view){
             image = (ImageView) view.findViewById(R.id.image);
             indicator = (ImageView) view.findViewById(R.id.checkmark);
-            mask = view.findViewById(R.id.mask);
+//            mask = view.findViewById(R.id.mask);
             view.setTag(this);
         }
 
-        void bindData(final Image data){
+        void bindData(boolean showSelectIndicator,List<Image> mSelectedImages, final Image data){
             if(data == null) return;
             // 处理单选和多选状态
             if(showSelectIndicator){
                 indicator.setVisibility(View.VISIBLE);
                 if(mSelectedImages.contains(data)){
                     // 设置选中状态
-                    indicator.setImageResource(R.drawable.btn_selected);
-                    mask.setVisibility(View.VISIBLE);
+                    indicator.setImageResource(R.drawable.btn_choice_press);
+//                    mask.setVisibility(View.VISIBLE);
                 }else{
                     // 未选择
-                    indicator.setImageResource(R.drawable.btn_unselected);
-                    mask.setVisibility(View.GONE);
+                    indicator.setImageResource(R.drawable.btn_choice_nor);
+//                    mask.setVisibility(View.GONE);
                 }
             }else{
                 indicator.setVisibility(View.GONE);
@@ -240,6 +243,14 @@ public class ImageGridAdapter extends BaseAdapter {
                 image.setImageResource(R.drawable.default_error);
             }
         }
+
+		public void select(boolean isContains) {
+			if(isContains){
+                indicator.setImageResource(R.drawable.btn_choice_press);
+            }else{
+                indicator.setImageResource(R.drawable.btn_choice_nor);
+            }
+		}
     }
 
 }

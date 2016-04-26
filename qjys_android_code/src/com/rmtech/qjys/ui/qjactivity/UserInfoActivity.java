@@ -34,16 +34,6 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 	private String beizhu;
 	public DoctorInfo doctorInfo;
 
-	@Override
-	protected void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
-		setContentView(R.layout.qj_userinfo);
-		setTitle("详细资料");
-		doctorInfo = getIntent().getParcelableExtra("DoctorInfo");
-		setRightTitle("", null);
-		initView();
-	}
-
 	private ImageView ivHead;
 	private TextView tvBeizhu;
 	private TextView tvNickname;
@@ -59,6 +49,16 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 	private ToggleButton tbPull;
 	private Button btnSendmessage;
 	private TextView tv_name;
+
+	@Override
+	protected void onCreate(Bundle arg0) {
+		super.onCreate(arg0);
+		setContentView(R.layout.qj_userinfo);
+		setTitle("详细资料");
+		doctorInfo = getIntent().getParcelableExtra("DoctorInfo");
+		setRightTitle("", null);
+		initView();
+	}
 
 	private void initView() {
 		user_beizhu = (MeItemLayout) findViewById(R.id.user_beizhu);

@@ -32,6 +32,8 @@ public class QjConstant extends EaseConstant {
 	public static final int REQUEST_CODE = 6384;
 	public static final int REQUEST_CODE_ADD_DOCTORS = 4003;
 	public static final int REQUEST_CODE_DELETE_DOCTORS = 4004;
+	public static final int REQUEST_CODE_CHANGE_DOCTOR = 4005;
+	public static final int REQUEST_CODE_NEW_CASE = 4006;
 	public static final int REQUEST_CODE_ADD_HOSPITAL = 4;
 
 	public static final DisplayImageOptions optionsImage = new DisplayImageOptions.Builder()

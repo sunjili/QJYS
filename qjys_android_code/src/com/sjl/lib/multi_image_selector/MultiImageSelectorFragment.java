@@ -38,6 +38,7 @@ import com.rmtech.qjys.R;
 import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.adapter.FolderAdapter;
 import com.sjl.lib.multi_image_selector.adapter.ImageGridAdapter;
+import com.sjl.lib.multi_image_selector.adapter.ImageGridAdapter.ImageSelectViewHolder;
 import com.sjl.lib.multi_image_selector.bean.Folder;
 import com.sjl.lib.multi_image_selector.bean.Image;
 import com.sjl.lib.multi_image_selector.utils.ScreenUtils;
@@ -180,20 +181,25 @@ public class MultiImageSelectorFragment extends Fragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            	 Image image = null;
                 if (mImageAdapter.isShowCamera()) {
                     // 如果显示照相机，则第一个Grid显示为照相机，处理特殊逻辑
                     if (i == 0) {
                         showCameraAction();
                     } else {
                         // 正常操作
-                        Image image = (Image) adapterView.getAdapter().getItem(i);
+                        image = (Image) adapterView.getAdapter().getItem(i);
                         selectImageFromGrid(image, mode);
                     }
                 } else {
                     // 正常操作
-                    Image image = (Image) adapterView.getAdapter().getItem(i);
+                    image = (Image) adapterView.getAdapter().getItem(i);
                     selectImageFromGrid(image, mode);
                 }
+               ImageSelectViewHolder holder = (ImageSelectViewHolder)view.getTag();
+               if(holder != null && image != null && mImageAdapter != null) {
+            	   holder.select(mImageAdapter.isContains(image));
+               }
             }
         });
         mGridView.setOnScrollListener(new AbsListView.OnScrollListener() {

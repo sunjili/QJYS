@@ -32,14 +32,15 @@
             android:layout_centerInParent="true"
             android:textColor="#ffffff"
             android:textSize="20sp" />
-<!-- 
+        <!--
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="7dp" /> -->
+            android:layout_marginRight="7dp" />
+        -->
     </RelativeLayout>
 
     <ScrollView
@@ -60,56 +61,79 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/cd9" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/white"
-                android:duplicateParentState="true" >
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-                <com.sjl.lib.multi_image_selector.view.SquaredImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/avatar"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_default_avatar"
-                    app:riv_corner_radius="5dip" />
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toLeftOf="@+id/speed_tv"
-                    android:layout_toRightOf="@id/avatar"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical" >
+                    android:background="@color/white"
+                    android:duplicateParentState="true" >
 
-                    <TextView
-                        android:id="@+id/name_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="4dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="张主任"
-                        android:textColor="@color/c3"
-                        android:textSize="19sp" />
+                    <com.sjl.lib.multi_image_selector.view.SquaredImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/avatar"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_default_avatar"
+                        app:riv_corner_radius="5dip" />
 
-                    <TextView
-                        android:id="@+id/nike_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="4dp"
-                        android:layout_marginTop="4dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="昵称：张大夫"
-                        android:textColor="@color/c7e"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toLeftOf="@+id/speed_tv"
+                        android:layout_toRightOf="@id/avatar"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="张主任"
+                            android:textColor="@color/c3"
+                            android:textSize="19sp" />
+
+                        <TextView
+                            android:id="@+id/nike_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="昵称：张大夫"
+                            android:textColor="@color/c7e"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/cd9"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
+
+                <com.rmtech.qjys.ui.view.MeItemLayout
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/change_admin_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:leftText="管理权转让"
+                    app:rightText=""
+                    app:visibleLinePadding="true" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"

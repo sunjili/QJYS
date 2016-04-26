@@ -89,6 +89,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	private EaseSwitchButton switchButton;
 	private GroupChangeListener groupChangeListener;
 	private CaseInfo caseInfo;
+	private View change_admin_view;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +114,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		// loadingPB = (ProgressBar) findViewById(R.id.progressBar);
 		exitBtn = (Button) findViewById(R.id.btn_exit_grp);
 		deleteBtn = (Button) findViewById(R.id.btn_exitdel_grp);
+		change_admin_view = findViewById(R.id.change_admin_view);
+		change_admin_view.setOnClickListener(this);
 		// blacklistLayout = (RelativeLayout) findViewById(R.id.rl_blacklist);
 		// changeGroupNameLayout = (RelativeLayout)
 		// findViewById(R.id.rl_change_group_name);
@@ -528,7 +531,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		// EditActivity.class).putExtra("data", group.getGroupName()),
 		// REQUEST_CODE_EDIT_GROUPNAME);
 		// break;
+		case R.id.change_admin_view:
+			ArrayList<DoctorInfo> list = new ArrayList<>();
+			list.add(caseInfo.admin_doctor);
+			DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, list,
+					QjConstant.REQUEST_CODE_CHANGE_DOCTOR);
 
+			break;
 		default:
 			break;
 		}
@@ -672,7 +681,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							// isInDeleteMode = true;
 							// notifyDataSetChanged();
 							DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, caseInfo.participate_doctor,
-									DoctorPickActivity.TYPE_DELETE_MEMBERS);
+									QjConstant.REQUEST_CODE_DELETE_DOCTORS);
 
 						}
 					});
@@ -701,7 +710,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							EMLog.d(TAG, st11);
 							// 进入选人页面
 							DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, caseInfo.participate_doctor,
-									DoctorPickActivity.TYPE_ADD_MEMBERS);
+									QjConstant.REQUEST_CODE_ADD_DOCTORS);
 							// startActivityForResult((new
 							// Intent(GroupDetailsActivity.this,
 							// GroupPickContactsActivity.class).putExtra("groupId",
@@ -738,7 +747,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					public void onClick(View v) {
 						if (isInDeleteMode) {
 							DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, caseInfo.participate_doctor,
-									DoctorPickActivity.TYPE_ADD_MEMBERS);
+									QjConstant.REQUEST_CODE_ADD_DOCTORS);
 							// 如果是删除自己，return
 							// if
 							// (EMClient.getInstance().getCurrentUser().equals(username))

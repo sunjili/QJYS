@@ -16,17 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/list_view_with_empty_view_fragment_empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/now_refresh_list"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:visibility="gone" />
-
         <in.srain.cube.views.ptr.PtrClassicFrameLayout
             xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/list_view_with_empty_view_fragment_ptr_frame"
@@ -50,6 +39,16 @@
                 android:fadingEdge="none"
                 android:listSelector="@android:color/transparent" />
         </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
+        <ImageView
+            android:id="@+id/list_view_with_empty_view_fragment_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_case_nocase"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </LinearLayout>
