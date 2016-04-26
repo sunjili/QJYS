@@ -162,4 +162,11 @@ public class UserContext {
 		}
 	}
 
+	public boolean isMyself(String id) {
+		if (mUser != null) {
+			return TextUtils.equals(id, mUser.id);
+		}
+		return false;
+	}
+
 }

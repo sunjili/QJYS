@@ -64,7 +64,8 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 		mSelectedImages = new HashSet<>();
 
 		mDataList = imageDataList.images;
-		mAdapter = new PhotoDataGridAdapter(getActivity(), mDataList,mSelectedImages, PhotoDataGridAdapter.SHOW_TYPE_SELECT);
+		mAdapter = new PhotoDataGridAdapter(getActivity(), mDataList, mSelectedImages,
+				PhotoDataGridAdapter.SHOW_TYPE_SELECT);
 
 		mGridView.setAdapter(mAdapter);
 
@@ -80,7 +81,7 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 			@Override
 			public void onClick(View v) {
 				new AlertView("确定删除？", null, "取消", new String[] { "确定" }, null, getActivity(), AlertView.Style.Alert,
-						new OnItemClickListener() {
+						new com.sjl.lib.alertview.OnItemClickListener() {
 
 							@Override
 							public void onItemClick(Object o, int position) {

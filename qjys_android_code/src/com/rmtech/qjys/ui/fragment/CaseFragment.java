@@ -14,6 +14,7 @@ import okhttp3.Call;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -27,16 +28,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MPatientList;
 import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
+import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.qjactivity.AddCaseActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
+import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView.OnItemClickListener;
 import com.sjl.lib.pinnedheaderlistview.SectionedBaseAdapter;
@@ -54,10 +60,8 @@ public class CaseFragment extends QjBaseFragment {
 	private CaseSectionedAdapter mAdapter;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.qj_fragment_case_list, container,
-				false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.qj_fragment_case_list, container, false);
 	}
 
 	@Subscribe
@@ -77,34 +81,29 @@ public class CaseFragment extends QjBaseFragment {
 	@Override
 	protected void initView() {
 		EventBus.getDefault().register(this);
-		mNodataView =getView().findViewById(
-				R.id.list_view_with_empty_view_fragment_empty_view);
-		mPtrFrame = (PtrClassicFrameLayout) getView().findViewById(
-				R.id.list_view_with_empty_view_fragment_ptr_frame);
+		mNodataView = getView().findViewById(R.id.list_view_with_empty_view_fragment_empty_view);
+		mPtrFrame = (PtrClassicFrameLayout) getView().findViewById(R.id.list_view_with_empty_view_fragment_ptr_frame);
 
-//		mNodataView.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				mPtrFrame.setVisibility(View.VISIBLE);
-//				mPtrFrame.autoRefresh();
-//			}
-//		});
-		mListView = (PinnedHeaderListView) getView().findViewById(
-				R.id.pinnedListView);
+		// mNodataView.setOnClickListener(new View.OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// mPtrFrame.setVisibility(View.VISIBLE);
+		// mPtrFrame.autoRefresh();
+		// }
+		// });
+		mListView = (PinnedHeaderListView) getView().findViewById(R.id.pinnedListView);
 		mAdapter = new CaseSectionedAdapter();
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onSectionClick(AdapterView<?> adapterView, View view,
-					int section, long id) {
+			public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int section, int position, long id) {
+			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
 				CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
 				PhotoDataManagerActivity.show(getActivity(), info, null);
 
@@ -115,27 +114,27 @@ public class CaseFragment extends QjBaseFragment {
 
 			@Override
 			public void create(SwipeMenu menu) {
-//				// create "open" item
-//				SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
-//				// set item background
-//				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-//						0xCE)));
-//				// set item width
-//				openItem.setWidth(dp2px(90));
-//				// set item title
-//				openItem.setTitle("Open");
-//				// set item title fontsize
-//				openItem.setTitleSize(18);
-//				// set item title font color
-//				openItem.setTitleColor(Color.WHITE);
-//				// add to menu
-//				menu.addMenuItem(openItem);
+				// // create "open" item
+				// SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
+				// // set item background
+				// openItem.setBackground(new ColorDrawable(Color.rgb(0xC9,
+				// 0xC9,
+				// 0xCE)));
+				// // set item width
+				// openItem.setWidth(dp2px(90));
+				// // set item title
+				// openItem.setTitle("Open");
+				// // set item title fontsize
+				// openItem.setTitleSize(18);
+				// // set item title font color
+				// openItem.setTitleColor(Color.WHITE);
+				// // add to menu
+				// menu.addMenuItem(openItem);
 
 				// create "delete" item
 				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
 				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-						0x3F, 0x25)));
+				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
 				// set item width
 				deleteItem.setWidth(dp2px(90));
 				// set a icon
@@ -148,26 +147,22 @@ public class CaseFragment extends QjBaseFragment {
 		mListView.setMenuCreator(creator);
 
 		// step 2. listener item click event
-		mListView
-				.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-					@Override
-					public boolean onMenuItemClick(int position,
-							SwipeMenu menu, int index) {
-						switch (index) {
-//						case 0:
-//							// open
-//							// open(null);
-//							break;
-						case 0:
-							// delete
-							// delete(item);
-							mAdapter.removeData(position);
-							mAdapter.notifyDataSetChanged();
-							break;
-						}
-						return false;
-					}
-				});
+		mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+				switch (index) {
+				// case 0:
+				// // open
+				// // open(null);
+				// break;
+				case 0:
+					mAdapter.removeData(position);
+
+					break;
+				}
+				return false;
+			}
+		});
 
 		// set SwipeListener
 		mListView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
@@ -184,26 +179,23 @@ public class CaseFragment extends QjBaseFragment {
 		});
 
 		// set MenuStateChangeListener
-		mListView
-				.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
-					@Override
-					public void onMenuOpen(int position) {
-					}
+		mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+			@Override
+			public void onMenuOpen(int position) {
+			}
 
-					@Override
-					public void onMenuClose(int position) {
-					}
-				});
+			@Override
+			public void onMenuClose(int position) {
+			}
+		});
 		mPtrFrame.setLastUpdateTimeRelateObject(this);
 		mPtrFrame.disableWhenHorizontalMove(true);
 		mPtrFrame.setPtrHandler(new PtrHandler() {
 			@Override
-			public boolean checkCanDoRefresh(PtrFrameLayout frame,
-					View content, View header) {
+			public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
 
 				// here check $mListView instead of $content
-				return PtrDefaultHandler.checkContentCanBePulledDown(frame,
-						mListView, header);
+				return PtrDefaultHandler.checkContentCanBePulledDown(frame, mListView, header);
 			}
 
 			@Override
@@ -241,8 +233,8 @@ public class CaseFragment extends QjBaseFragment {
 			}
 
 			@Override
-			public void onUIPositionChange(PtrFrameLayout frame,
-					boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
+			public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status,
+					PtrIndicator ptrIndicator) {
 				// TODO Auto-generated method stub
 
 			}
@@ -289,8 +281,7 @@ public class CaseFragment extends QjBaseFragment {
 	};
 
 	private int dp2px(int dp) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-				getResources().getDisplayMetrics());
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
 	}
 
 	private void updateData() {
@@ -309,7 +300,7 @@ public class CaseFragment extends QjBaseFragment {
 
 	private void onDisplayData() {
 
-		if(mAdapter != null && mAdapter.getCount() > 0) {
+		if (mAdapter != null && mAdapter.getCount() > 0) {
 			mNodataView.setVisibility(View.GONE);
 		} else {
 			mNodataView.setVisibility(View.VISIBLE);
@@ -335,21 +326,41 @@ public class CaseFragment extends QjBaseFragment {
 
 		public void removeData(int position) {
 			int section = getSectionForPosition(position);
-			int positionInSection = getPositionInSectionForPosition(position);
-			HospitalCaseInfo hosList = mPatientList.get(section);
-			if(hosList != null && hosList.patients != null) {
-				CaseInfo caseinfo = hosList.patients.get(positionInSection);
-				hosList.patients.remove(positionInSection);
-				QjHttp.deletePatient(caseinfo.id, null);
-				if(hosList.patients.size() == 0) {
-					mPatientList.remove(hosList);
+			final int positionInSection = getPositionInSectionForPosition(position);
+			final HospitalCaseInfo hosList = mPatientList.get(section);
+			if (hosList != null && hosList.patients != null) {
+				final CaseInfo caseinfo = hosList.patients.get(positionInSection);
+				if (caseinfo != null && caseinfo.admin_doctor != null
+						&& UserContext.getInstance().isMyself(caseinfo.admin_doctor.id)) {
+					new AlertView("确定删除？", null, "取消", new String[] { "确定" }, null, getActivity(),
+							AlertView.Style.Alert, new com.sjl.lib.alertview.OnItemClickListener() {
+
+								@Override
+								public void onItemClick(Object o, int position) {
+									if (position == 0) {
+										hosList.patients.remove(positionInSection);
+										QjHttp.deletePatient(caseinfo.id, null);
+										CaseFragment.deleteGrop(getActivity(), caseinfo.group_id);
+										if (hosList.patients.size() == 0) {
+											mPatientList.remove(hosList);
+											notifyDataSetChanged();
+											onDisplayData();
+										}
+									}
+
+								}
+							}).setCancelable(true).show();
+				} else {
+					Toast.makeText(getActivity(), "没有权限，只有管理员才能删除", 1).show();
 				}
+
+			} else {
+				Toast.makeText(getActivity(), "删除失败", 1).show();
+
 			}
-			notifyDataSetChanged();
 			Log.d("ssssssssss", "removeData position=" + position);
 			Log.d("ssssssssss", "removeData section=" + section);
 			Log.d("ssssssssss", "removeData positionInSection=" + positionInSection);
-			onDisplayData();
 		}
 
 		public void setData(MPatientList patientList) {
@@ -408,14 +419,12 @@ public class CaseFragment extends QjBaseFragment {
 		}
 
 		@Override
-		public View getItemView(int section, int position, View convertView,
-				ViewGroup parent) {
+		public View getItemView(int section, int position, View convertView, ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(
-						R.layout.case_list_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
+						Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(R.layout.case_list_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
@@ -435,19 +444,16 @@ public class CaseFragment extends QjBaseFragment {
 		}
 
 		@Override
-		public View getSectionHeaderView(int section, View convertView,
-				ViewGroup parent) {
+		public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(
-						R.layout.case_list_header_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
+						Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(R.layout.case_list_header_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
-			((TextView) layout.findViewById(R.id.textItem))
-					.setText(mPatientList.get(section).hos_fullname);
+			((TextView) layout.findViewById(R.id.textItem)).setText(mPatientList.get(section).hos_fullname);
 			return layout;
 		}
 
@@ -471,4 +477,22 @@ public class CaseFragment extends QjBaseFragment {
 		}
 	}
 
+	public static void deleteGrop(final Activity activity,final String groupId) {
+		final String st5 = activity.getResources().getString(R.string.Dissolve_group_chat_tofail);
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					EMClient.getInstance().groupManager().destroyGroup(groupId);
+				} catch (final Exception e) {
+					activity.runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							Toast.makeText(activity, st5 + e.getMessage(), 1).show();
+						}
+					});
+				}
+			}
+		}).start();
+	}
 }
