@@ -9,7 +9,6 @@ import org.greenrobot.eventbus.EventBus;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.media.JetPlayer.OnJetEventListener;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,9 +28,11 @@ import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MIdData;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.view.DiagnoseAddView;
 
 @SuppressLint("NewApi")
 public class AddCaseActivity extends BaseActivity implements OnClickListener {
@@ -53,10 +54,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private TextView bedTv;
 	private TextView bedTitleTv;
 	private EditText bedEt;
-	private TextView diagnoseTv;
-	private EditText diagnoseEt;
-	private ImageView diagnoseImage;
-	private EditText diagnoseEt2;
+	private DiagnoseAddView diagnose_view;
 	private RelativeLayout stateLayout;
 	private RelativeLayout photoDataLayout;
 	private RelativeLayout doctorsLayout;
@@ -65,7 +63,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private TextView abstractTv;
 	private EditText abstractEt;
 	private int selectSex = 1;
-	private ArrayList<String> diagnoseList = new ArrayList<String>();
+//	private ArrayList<String> diagnoseList = new ArrayList<String>();
 	private String treat_state;
 	private String currentHospital;
 	private String tempCaseId;
@@ -124,10 +122,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		bedTv = (TextView) findViewById(R.id.bed_tv);
 		bedTitleTv = (TextView) findViewById(R.id.bed_title_tv);
 		bedEt = (EditText) findViewById(R.id.bed_et);
-		diagnoseTv = (TextView) findViewById(R.id.diagnose_tv);
-		diagnoseEt = (EditText) findViewById(R.id.diagnose_et);
-		diagnoseImage = (ImageView) findViewById(R.id.diagnose_image);
-		diagnoseEt2 = (EditText) findViewById(R.id.diagnose_et2);
+		diagnose_view = (DiagnoseAddView) findViewById(R.id.diagnose_view);
 		stateLayout = (RelativeLayout) findViewById(R.id.state_layout);
 		stateLayout.setOnClickListener(this);
 		photoDataLayout = (RelativeLayout) findViewById(R.id.photo_data_layout);
@@ -146,7 +141,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.name = getName();
 		info.sex = selectSex;
 		info.age = ageEt.getEditableText().toString();
-		info.hos_fullname = (String) hospitalTv.getText();
+		info.hos_fullname = getHospitalName();
 		info.department = keshiEt.getEditableText().toString();
 		info.bed_no = bedEt.getEditableText().toString();
 		//
@@ -164,6 +159,14 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	
 
 	
+	private String getHospitalName() {
+		String hostv = (String) hospitalTv.getText();
+		if(TextUtils.isEmpty(hostv)) {
+			hostv = UserContext.getInstance().getUser().hos_fullname;
+		}
+		return hostv;
+	}
+
 	private void onJumpAction(final int targetId) {
 		if (targetId == R.id.photo_data_layout) {
 			PhotoDataUploadActivity.show(getActivity(), tempCaseId);
@@ -220,22 +223,8 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	}
 
 	private String createDiagnose() {
-		if (!TextUtils.isEmpty(diagnoseEt.getEditableText().toString())) {
-
-			diagnoseList.add(diagnoseEt.getEditableText().toString());
-		}
-		if (!TextUtils.isEmpty(diagnoseEt2.getEditableText().toString())) {
-
-			diagnoseList.add(diagnoseEt2.getEditableText().toString());
-		}
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < diagnoseList.size(); i++) {
-			sb.append(diagnoseList.get(i));
-			if (i < diagnoseList.size() - 1) {
-				sb.append("&&");
-			}
-		}
-		return sb.toString();
+		return diagnose_view.getDiagnoseString();
+		
 	}
 
 	private String getName() {

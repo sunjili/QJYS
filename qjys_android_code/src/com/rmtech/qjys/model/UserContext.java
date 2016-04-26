@@ -155,4 +155,11 @@ public class UserContext {
 		}
 	}
 
+	public void setUserHospital(String hospital) {
+		if (mUser != null) {
+			mUser.hos_fullname = hospital;
+			saveCookie();
+		}
+	}
+
 }

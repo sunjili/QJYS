@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/qj_add_case_item_height"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/diagnose_et1"
+        style="@style/qj_add_case_right_hit_et"
+        android:layout_height="@dimen/qj_add_case_item_height"
+        android:layout_alignParentRight="true"
+        android:hint="输入患者诊断信息" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/diagnose_et1"
+        android:layout_marginLeft="100dip"
+        android:layout_marginRight="10dip"
+        android:background="@color/cd9" />
+
+</RelativeLayout>

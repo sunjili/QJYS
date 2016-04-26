@@ -1,6 +1,7 @@
 package com.rmtech.qjys.ui.qjactivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -24,8 +25,11 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.CommonAdapter;
 import com.rmtech.qjys.adapter.ViewHolder;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.model.HospitalInfo;
+import com.rmtech.qjys.model.UserContext;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MHosList;
 import com.rmtech.qjys.ui.BaseActivity;
 
@@ -53,13 +57,37 @@ public class MeHospitalActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				String hospital = et_hospital.getEditableText().toString();
-				if (!TextUtils.isEmpty(hospital)) {
-					Intent data = new Intent();
-					data.putExtra("string", hospital);
-					setResult(MeNameActivity.RESULT_OK, data);
+				final String hospital = et_hospital.getEditableText().toString();
+
+				if (TextUtils.equals(UserContext.getInstance().getUser().hos_fullname, hospital)) {
+					Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
+					finish();
+					return;
 				}
-				finish();
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("hos_name", hospital);
+				QjHttp.updateUserinfo(params, new BaseModelCallback() {
+
+					@Override
+					public void onError(Call call, Exception e) {
+						Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onResponseSucces(MBase response) {
+						UserContext.getInstance().setUserHospital(hospital);
+						Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
+
+						Intent data = new Intent();
+						data.putExtra("string", hospital);
+						setResult(MeNameActivity.RESULT_OK, data);
+						finish();
+					}
+
+				});
+
+			
+				
 			}
 		});
 		setTitle("医院");
