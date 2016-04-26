@@ -76,7 +76,11 @@ public class DiagnoseAddView extends RelativeLayout implements
 			sb.append(str);
 			sb.append("&&");
 		}
-		return sb.toString().substring(0, sb.length() - 2);
+		if (sb.length() > 2) {
+			return sb.toString().substring(0, sb.length() - 2);
+		} else {
+			return "";
+		}
 	}
 
 }
