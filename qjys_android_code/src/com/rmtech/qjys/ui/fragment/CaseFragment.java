@@ -366,9 +366,10 @@ public class CaseFragment extends QjBaseFragment {
 												caseinfo.group_id);
 										if (hosList.patients.size() == 0) {
 											mPatientList.remove(hosList);
-											notifyDataSetChanged();
-											onDisplayData();
+
 										}
+										notifyDataSetChanged();
+										onDisplayData();
 									}
 
 								}
@@ -507,65 +508,68 @@ public class CaseFragment extends QjBaseFragment {
 
 		public void build(CaseInfo info) {
 			String nameStr = "";
-			if(!TextUtils.isEmpty(info.ward_no)) {
-				nameStr = info.ward_no+"病房 ";
+			if (!TextUtils.isEmpty(info.ward_no)) {
+				nameStr = info.ward_no + "病房 ";
 			}
-			if(!TextUtils.isEmpty(info.bed_no)) {
-				nameStr += info.bed_no+"床 ";
+			if (!TextUtils.isEmpty(info.bed_no)) {
+				nameStr += info.bed_no + "床 ";
 			}
 			nameStr += info.name;
 			nameTv.setText(nameStr);
-			String genderStr="";
-			if(info.sex == 1) {
+			String genderStr = "";
+			if (info.sex == 1) {
 				genderStr = "男";// 99
 			} else {
 				genderStr = "女";
 			}
-			if(!TextUtils.isEmpty(info.age) && !TextUtils.equals("0", info.age)){
-				genderStr = genderStr+info.age;
+			if (!TextUtils.isEmpty(info.age)
+					&& !TextUtils.equals("0", info.age)) {
+				genderStr = genderStr + info.age;
 			}
 			genderTv.setText(genderStr);
-			
-			String doctorsStr = "主管医生:"+info.admin_doctor.name;
-			if(info.participate_doctor != null && !info.participate_doctor.isEmpty()) {
+
+			String doctorsStr = "主管医生:" + info.admin_doctor.name;
+			if (info.participate_doctor != null
+					&& !info.participate_doctor.isEmpty()) {
 				StringBuilder sb = new StringBuilder();
-				for(DoctorInfo doc : info.participate_doctor) {
-					sb.append(doc.name+"、");
+				for (DoctorInfo doc : info.participate_doctor) {
+					sb.append(doc.name + "、");
 				}
 				sb.append("等");
-				if(!TextUtils.isEmpty(sb)) {
-					doctorsStr = doctorsStr+ " 参与医生:"+sb;
+				if (!TextUtils.isEmpty(sb)) {
+					doctorsStr = doctorsStr + " 参与医生:" + sb;
 				}
 			}
 			doctorsTv.setText(doctorsStr);
 
-			if(info.create_time > 0) {
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
-		        String timeStr=format.format(new Date(info.create_time*1000L));  
-		        timeTv.setText(timeStr);
-		        timeTv.setVisibility(View.VISIBLE);
+			if (info.create_time > 0) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				String timeStr = format.format(new Date(
+						info.create_time * 1000L));
+				timeTv.setText(timeStr);
+				timeTv.setVisibility(View.VISIBLE);
 			} else {
 				timeTv.setVisibility(View.GONE);
 			}
-			
-			if(!TextUtils.isEmpty(info.treat_state)) {
+
+			if (!TextUtils.isEmpty(info.treat_state)) {
 				statusTv.setVisibility(View.VISIBLE);
 				statusTv.setText(info.treat_state);
 			} else {
 				statusTv.setVisibility(View.GONE);
 			}
-			
+
 			String contentStr = null;
-			if(!TextUtils.isEmpty(info.department)) {
-				contentStr = "["+info.department+"]";
+			if (!TextUtils.isEmpty(info.department)) {
+				contentStr = "[" + info.department + "]";
 			} else {
 				contentStr = "[未知科室]";
 			}
-			
-			if(!TextUtils.isEmpty(info.diagnose)) {
-				contentStr = contentStr+" 诊断:"+ info.diagnose;
+
+			if (!TextUtils.isEmpty(info.diagnose)) {
+				contentStr = contentStr + " 诊断:" + info.diagnose;
 			} else {
-				contentStr = contentStr+" "+ "暂无诊断";
+				contentStr = contentStr + " " + "暂无诊断";
 			}
 			contentTv.setText(contentStr);
 		}
@@ -579,14 +583,15 @@ public class CaseFragment extends QjBaseFragment {
 				try {
 					EMClient.getInstance().groupManager().destroyGroup(groupId);
 				} catch (final Exception e) {
-					activity.runOnUiThread(new Runnable() {
-
-						@Override
-						public void run() {
-							Toast.makeText(activity, st5 + e.getMessage(), 1)
-									.show();
-						}
-					});
+					// activity.runOnUiThread(new Runnable() {
+					//
+					// @Override
+					// public void run() {
+					// Toast.makeText(activity, st5 + e.getMessage(), 1)
+					// .show();
+					// }
+					// });
+					Log.e("ssssssssss", "deleteGrop e=" + e);
 				}
 			}
 		}).start();

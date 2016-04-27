@@ -114,6 +114,9 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		hosArrowImage = (ImageView) findViewById(R.id.hos_arrow_image);
 		findViewById(R.id.hospital_layout).setOnClickListener(this);
 		hospitalTv = (TextView) findViewById(R.id.hospital_tv);
+		//医院
+		hospitalTv.setText(UserContext.getInstance().getUser().hos_fullname);
+		
 		keshiTv = (TextView) findViewById(R.id.keshi_tv);
 		keshiEt = (EditText) findViewById(R.id.keshi_et);
 		roomTv = (TextView) findViewById(R.id.room_tv);
@@ -290,7 +293,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
-			case QjConstant.REQUEST_CODE_ADD_DOCTORS:// 添加群成员
+			case QjConstant.REQUEST_CODE_NEW_CASE:// 添加群成员
 				currentDoctorList = data.getParcelableArrayListExtra("selectedDoctorList");
 				break;
 			case QjConstant.REQUEST_CODE_ADD_HOSPITAL:
