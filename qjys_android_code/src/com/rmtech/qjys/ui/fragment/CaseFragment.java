@@ -7,6 +7,8 @@ import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.PtrUIHandler;
 import in.srain.cube.views.ptr.indicator.PtrIndicator;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -19,6 +21,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -36,10 +39,10 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MPatientList;
 import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
-import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.qjactivity.AddCaseActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
 import com.sjl.lib.alertview.AlertView;
@@ -60,8 +63,10 @@ public class CaseFragment extends QjBaseFragment {
 	private CaseSectionedAdapter mAdapter;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.qj_fragment_case_list, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.qj_fragment_case_list, container,
+				false);
 	}
 
 	@Subscribe
@@ -81,8 +86,10 @@ public class CaseFragment extends QjBaseFragment {
 	@Override
 	protected void initView() {
 		EventBus.getDefault().register(this);
-		mNodataView = getView().findViewById(R.id.list_view_with_empty_view_fragment_empty_view);
-		mPtrFrame = (PtrClassicFrameLayout) getView().findViewById(R.id.list_view_with_empty_view_fragment_ptr_frame);
+		mNodataView = getView().findViewById(
+				R.id.list_view_with_empty_view_fragment_empty_view);
+		mPtrFrame = (PtrClassicFrameLayout) getView().findViewById(
+				R.id.list_view_with_empty_view_fragment_ptr_frame);
 
 		// mNodataView.setOnClickListener(new View.OnClickListener() {
 		// @Override
@@ -91,19 +98,22 @@ public class CaseFragment extends QjBaseFragment {
 		// mPtrFrame.autoRefresh();
 		// }
 		// });
-		mListView = (PinnedHeaderListView) getView().findViewById(R.id.pinnedListView);
+		mListView = (PinnedHeaderListView) getView().findViewById(
+				R.id.pinnedListView);
 		mAdapter = new CaseSectionedAdapter();
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
+			public void onSectionClick(AdapterView<?> adapterView, View view,
+					int section, long id) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
+			public void onItemClick(AdapterView<?> adapterView, View view,
+					int section, int position, long id) {
 				CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
 				PhotoDataManagerActivity.show(getActivity(), info, null);
 
@@ -134,7 +144,8 @@ public class CaseFragment extends QjBaseFragment {
 				// create "delete" item
 				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
 				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+						0x3F, 0x25)));
 				// set item width
 				deleteItem.setWidth(dp2px(90));
 				// set a icon
@@ -147,22 +158,24 @@ public class CaseFragment extends QjBaseFragment {
 		mListView.setMenuCreator(creator);
 
 		// step 2. listener item click event
-		mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				switch (index) {
-				// case 0:
-				// // open
-				// // open(null);
-				// break;
-				case 0:
-					mAdapter.removeData(position);
+		mListView
+				.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(int position,
+							SwipeMenu menu, int index) {
+						switch (index) {
+						// case 0:
+						// // open
+						// // open(null);
+						// break;
+						case 0:
+							mAdapter.removeData(position);
 
-					break;
-				}
-				return false;
-			}
-		});
+							break;
+						}
+						return false;
+					}
+				});
 
 		// set SwipeListener
 		mListView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
@@ -179,23 +192,26 @@ public class CaseFragment extends QjBaseFragment {
 		});
 
 		// set MenuStateChangeListener
-		mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
-			@Override
-			public void onMenuOpen(int position) {
-			}
+		mListView
+				.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+					@Override
+					public void onMenuOpen(int position) {
+					}
 
-			@Override
-			public void onMenuClose(int position) {
-			}
-		});
+					@Override
+					public void onMenuClose(int position) {
+					}
+				});
 		mPtrFrame.setLastUpdateTimeRelateObject(this);
 		mPtrFrame.disableWhenHorizontalMove(true);
 		mPtrFrame.setPtrHandler(new PtrHandler() {
 			@Override
-			public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+			public boolean checkCanDoRefresh(PtrFrameLayout frame,
+					View content, View header) {
 
 				// here check $mListView instead of $content
-				return PtrDefaultHandler.checkContentCanBePulledDown(frame, mListView, header);
+				return PtrDefaultHandler.checkContentCanBePulledDown(frame,
+						mListView, header);
 			}
 
 			@Override
@@ -233,8 +249,8 @@ public class CaseFragment extends QjBaseFragment {
 			}
 
 			@Override
-			public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status,
-					PtrIndicator ptrIndicator) {
+			public void onUIPositionChange(PtrFrameLayout frame,
+					boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
 				// TODO Auto-generated method stub
 
 			}
@@ -281,7 +297,8 @@ public class CaseFragment extends QjBaseFragment {
 	};
 
 	private int dp2px(int dp) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+				getResources().getDisplayMetrics());
 	}
 
 	private void updateData() {
@@ -329,18 +346,24 @@ public class CaseFragment extends QjBaseFragment {
 			final int positionInSection = getPositionInSectionForPosition(position);
 			final HospitalCaseInfo hosList = mPatientList.get(section);
 			if (hosList != null && hosList.patients != null) {
-				final CaseInfo caseinfo = hosList.patients.get(positionInSection);
-				if (caseinfo != null && caseinfo.admin_doctor != null
-						&& UserContext.getInstance().isMyself(caseinfo.admin_doctor.id)) {
-					new AlertView("确定删除？", null, "取消", new String[] { "确定" }, null, getActivity(),
-							AlertView.Style.Alert, new com.sjl.lib.alertview.OnItemClickListener() {
+				final CaseInfo caseinfo = hosList.patients
+						.get(positionInSection);
+				if (caseinfo != null
+						&& caseinfo.admin_doctor != null
+						&& UserContext.getInstance().isMyself(
+								caseinfo.admin_doctor.id)) {
+					new AlertView("确定删除？", null, "取消", new String[] { "确定" },
+							null, getActivity(), AlertView.Style.Alert,
+							new com.sjl.lib.alertview.OnItemClickListener() {
 
 								@Override
 								public void onItemClick(Object o, int position) {
 									if (position == 0) {
-										hosList.patients.remove(positionInSection);
+										hosList.patients
+												.remove(positionInSection);
 										QjHttp.deletePatient(caseinfo.id, null);
-										CaseFragment.deleteGrop(getActivity(), caseinfo.group_id);
+										CaseFragment.deleteGrop(getActivity(),
+												caseinfo.group_id);
 										if (hosList.patients.size() == 0) {
 											mPatientList.remove(hosList);
 											notifyDataSetChanged();
@@ -360,7 +383,8 @@ public class CaseFragment extends QjBaseFragment {
 			}
 			Log.d("ssssssssss", "removeData position=" + position);
 			Log.d("ssssssssss", "removeData section=" + section);
-			Log.d("ssssssssss", "removeData positionInSection=" + positionInSection);
+			Log.d("ssssssssss", "removeData positionInSection="
+					+ positionInSection);
 		}
 
 		public void setData(MPatientList patientList) {
@@ -419,12 +443,14 @@ public class CaseFragment extends QjBaseFragment {
 		}
 
 		@Override
-		public View getItemView(int section, int position, View convertView, ViewGroup parent) {
+		public View getItemView(int section, int position, View convertView,
+				ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
-						Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(R.layout.case_list_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(
+						R.layout.case_list_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
@@ -434,7 +460,7 @@ public class CaseFragment extends QjBaseFragment {
 			}
 			CaseInfo info = getCaseInfoByPos(section, position);
 			if (info != null) {
-				viewHolder.nameTv.setText(info.name);
+				viewHolder.build(info);
 			}
 			//
 			// ((TextView)
@@ -444,16 +470,19 @@ public class CaseFragment extends QjBaseFragment {
 		}
 
 		@Override
-		public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+		public View getSectionHeaderView(int section, View convertView,
+				ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
-						Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(R.layout.case_list_header_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(
+						R.layout.case_list_header_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
-			((TextView) layout.findViewById(R.id.textItem)).setText(mPatientList.get(section).hos_fullname);
+			((TextView) layout.findViewById(R.id.textItem))
+					.setText(mPatientList.get(section).hos_fullname);
 			return layout;
 		}
 
@@ -475,20 +504,87 @@ public class CaseFragment extends QjBaseFragment {
 			statusTv = (TextView) container.findViewById(R.id.status_tv);
 			contentTv = (TextView) container.findViewById(R.id.content_tv);
 		}
+
+		public void build(CaseInfo info) {
+			String nameStr = "";
+			if(!TextUtils.isEmpty(info.ward_no)) {
+				nameStr = info.ward_no+"病房 ";
+			}
+			if(!TextUtils.isEmpty(info.bed_no)) {
+				nameStr += info.bed_no+"床 ";
+			}
+			nameStr += info.name;
+			nameTv.setText(nameStr);
+			String genderStr="";
+			if(info.sex == 1) {
+				genderStr = "男";// 99
+			} else {
+				genderStr = "女";
+			}
+			if(!TextUtils.isEmpty(info.age) && !TextUtils.equals("0", info.age)){
+				genderStr = genderStr+info.age;
+			}
+			genderTv.setText(genderStr);
+			
+			String doctorsStr = "主管医生:"+info.admin_doctor.name;
+			if(info.participate_doctor != null && !info.participate_doctor.isEmpty()) {
+				StringBuilder sb = new StringBuilder();
+				for(DoctorInfo doc : info.participate_doctor) {
+					sb.append(doc.name+"、");
+				}
+				sb.append("等");
+				if(!TextUtils.isEmpty(sb)) {
+					doctorsStr = doctorsStr+ " 参与医生:"+sb;
+				}
+			}
+			doctorsTv.setText(doctorsStr);
+
+			if(info.create_time > 0) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
+		        String timeStr=format.format(new Date(info.create_time*1000L));  
+		        timeTv.setText(timeStr);
+		        timeTv.setVisibility(View.VISIBLE);
+			} else {
+				timeTv.setVisibility(View.GONE);
+			}
+			
+			if(!TextUtils.isEmpty(info.treat_state)) {
+				statusTv.setVisibility(View.VISIBLE);
+				statusTv.setText(info.treat_state);
+			} else {
+				statusTv.setVisibility(View.GONE);
+			}
+			
+			String contentStr = null;
+			if(!TextUtils.isEmpty(info.department)) {
+				contentStr = "["+info.department+"]";
+			} else {
+				contentStr = "[未知科室]";
+			}
+			
+			if(!TextUtils.isEmpty(info.diagnose)) {
+				contentStr = contentStr+" 诊断:"+ info.diagnose;
+			} else {
+				contentStr = contentStr+" "+ "暂无诊断";
+			}
+			contentTv.setText(contentStr);
+		}
 	}
 
-	public static void deleteGrop(final Activity activity,final String groupId) {
-		final String st5 = activity.getResources().getString(R.string.Dissolve_group_chat_tofail);
+	public static void deleteGrop(final Activity activity, final String groupId) {
+		final String st5 = activity.getResources().getString(
+				R.string.Dissolve_group_chat_tofail);
 		new Thread(new Runnable() {
 			public void run() {
 				try {
 					EMClient.getInstance().groupManager().destroyGroup(groupId);
 				} catch (final Exception e) {
 					activity.runOnUiThread(new Runnable() {
-						
+
 						@Override
 						public void run() {
-							Toast.makeText(activity, st5 + e.getMessage(), 1).show();
+							Toast.makeText(activity, st5 + e.getMessage(), 1)
+									.show();
 						}
 					});
 				}
