@@ -128,4 +128,16 @@ public class CaseInfo implements Serializable, Parcelable {
 		}
 		return 1;
 	}
+
+	public String getShowName() {
+		String nameStr = "";
+		if (!TextUtils.isEmpty(ward_no)) {
+			nameStr = ward_no + "病房 ";
+		}
+		if (!TextUtils.isEmpty(bed_no)) {
+			nameStr += bed_no + "床 ";
+		}
+		nameStr += name;
+		return nameStr;
+	}
 }

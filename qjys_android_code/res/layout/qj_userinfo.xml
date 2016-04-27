@@ -17,13 +17,16 @@
         android:layout_height="80dp"
         android:background="@color/white" >
 
-        <ImageView
+        <com.sjl.lib.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/iv_head"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@color/red" />
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_default_avatar"
+            app:riv_corner_radius="5dip" />
 
         <LinearLayout
             android:layout_width="match_parent"

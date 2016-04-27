@@ -507,15 +507,8 @@ public class CaseFragment extends QjBaseFragment {
 		}
 
 		public void build(CaseInfo info) {
-			String nameStr = "";
-			if (!TextUtils.isEmpty(info.ward_no)) {
-				nameStr = info.ward_no + "病房 ";
-			}
-			if (!TextUtils.isEmpty(info.bed_no)) {
-				nameStr += info.bed_no + "床 ";
-			}
-			nameStr += info.name;
-			nameTv.setText(nameStr);
+			
+			nameTv.setText(info.getShowName());
 			String genderStr = "";
 			if (info.sex == 1) {
 				genderStr = "男";// 99

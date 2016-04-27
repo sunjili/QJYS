@@ -894,7 +894,7 @@ public class EaseChatFragment extends QjBaseFragment {
      * 监测群组解散或者被T事件
      * 
      */
-    class GroupListener extends EaseGroupRemoveListener {
+    public class GroupListener extends EaseGroupRemoveListener {
 
         @Override
         public void onUserRemoved(final String groupId, String groupName) {

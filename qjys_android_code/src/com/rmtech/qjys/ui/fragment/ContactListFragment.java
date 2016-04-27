@@ -42,6 +42,7 @@ import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.GroupsActivity;
 import com.rmtech.qjys.ui.NewFriendsMsgActivity;
 import com.rmtech.qjys.ui.qjactivity.QjAddContactActivity;
+import com.rmtech.qjys.ui.qjactivity.UserInfoActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.widget.ContactItemView;
 
@@ -112,9 +113,10 @@ public class ContactListFragment extends EaseContactListFragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				String username = ((EaseUser) listView.getItemAtPosition(position)).getUsername();
-				// demo中直接进入聊天页面，实际一般是进入用户详情页
-				startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", username));
+				EaseUser user = ((EaseUser) listView.getItemAtPosition(position));
+//				// demo中直接进入聊天页面，实际一般是进入用户详情页
+//				startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", username));
+				UserInfoActivity.show(getActivity(), user.doctorInfo);
 			}
 		});
 
