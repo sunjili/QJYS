@@ -1,20 +1,29 @@
 package com.rmtech.qjys.ui.view;
 
+import java.util.ArrayList;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.qjactivity.EditCaseActivity;
 import com.rmtech.qjys.ui.qjactivity.MeAbstractActivity;
 import com.rmtech.qjys.ui.qjactivity.MeFlowDetailActivity;
+import com.sjl.lib.utils.L;
 
 @SuppressLint("NewApi")
 public class CaseTopBarView extends RelativeLayout implements View.OnClickListener {
@@ -54,7 +63,45 @@ public class CaseTopBarView extends RelativeLayout implements View.OnClickListen
 		zyLayout.setOnClickListener(this);
 		gfLayout.setOnClickListener(this);
 		yhzLayout.setOnClickListener(this);
+		EventBus.getDefault().register(this);
+	}
 
+	@Subscribe
+	public void onEvent(CaseEvent event) {
+		if(event == null) {
+			return;
+		}
+		if(caseInfo == null || !TextUtils.equals(caseInfo.id, event.caseInfoId)) {
+			return;
+		}
+		switch(event.type) {
+		case CaseEvent.TYPE_GROUP_CHANGED_ADD:
+			if(caseInfo != null && event.addDoctorList != null) {
+				if(caseInfo.participate_doctor == null) {
+					caseInfo.participate_doctor = new ArrayList<>();
+				} 
+				caseInfo.participate_doctor.addAll(event.addDoctorList);
+			}
+			break;
+		case CaseEvent.TYPE_GROUP_CHANGED_DELETE:
+			if(caseInfo != null && event.deleteDoctorList != null) {
+				if(caseInfo.participate_doctor != null) {
+					caseInfo.participate_doctor.removeAll(event.deleteDoctorList);
+				} 
+			}
+			break;
+		case CaseEvent.TYPE_GROUP_CHANGED_ADMIN:
+			if(caseInfo != null && event.addDoctorList != null && !event.addDoctorList.isEmpty()) {
+				caseInfo.admin_doctor = event.addDoctorList.get(0);
+			}
+			break;
+		}
+	}
+	
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		EventBus.getDefault().unregister(this);
 	}
 
 	@Override

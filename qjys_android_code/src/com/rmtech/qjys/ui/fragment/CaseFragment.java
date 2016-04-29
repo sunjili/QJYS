@@ -45,6 +45,7 @@ import com.rmtech.qjys.model.gson.MPatientList;
 import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
 import com.rmtech.qjys.ui.qjactivity.AddCaseActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView.OnItemClickListener;
@@ -73,7 +74,7 @@ public class CaseFragment extends QjBaseFragment {
 	public void onEvent(CaseEvent event) {
 		// mAdapter.add();
 		L.d("onEvent " + event.type);
-		QjHttp.getPatientList(false, httpCallback);
+		GroupAndCaseListManager.getPatientList(false, httpCallback);
 
 	}
 
@@ -268,7 +269,7 @@ public class CaseFragment extends QjBaseFragment {
 			}
 		});
 
-		QjHttp.getPatientList(true, httpCallback);
+		GroupAndCaseListManager.getPatientList(true, httpCallback);
 
 	}
 
@@ -302,7 +303,7 @@ public class CaseFragment extends QjBaseFragment {
 	}
 
 	private void updateData() {
-		QjHttp.getPatientList(false, httpCallback);
+		GroupAndCaseListManager.getPatientList(false, httpCallback);
 
 		// TODO Auto-generated method stub
 		// mListView.postDelayed(new Runnable() {

@@ -13,8 +13,11 @@
  */
 package com.rmtech.qjys;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
@@ -34,8 +37,6 @@ public class QjApplication extends Application {
 	private static QjApplication instance;
 	// login user name
 	public final String PREF_USERNAME = "username";
-	
-	
 	
 	
 	/**
@@ -69,7 +70,7 @@ public class QjApplication extends Application {
 				context).threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory()
 				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
-				.diskCacheSize(50 * 1024 * 1024)
+				.diskCacheSize(100 * 1024 * 1024)
 				// 50 Mb
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
 				//.writeDebugLogs() // Remove for release app

@@ -31,10 +31,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
+import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 
 public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 
@@ -92,7 +97,16 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			}
 			
 			holder.reason.setText(msg.getReason());
-			holder.name.setText(msg.getFrom());
+			DoctorListManager.getInstance().getDoctorInfoByHXid(msg.getFrom(), new OnGetDoctorInfoCallback() {
+				
+				@Override
+				public void onGet(DoctorInfo info) {
+					if(info != null) {
+						holder.name.setText(info.name);
+						ImageLoader.getInstance().displayImage(info.head, holder.avator,QjConstant.optionsHead);
+					}
+				}
+			});
 			// holder.time.setText(DateUtils.getTimestampString(new
 			// Date(msg.getTime())));
 			if (msg.getStatus() == InviteMesageStatus.BEAGREED) {

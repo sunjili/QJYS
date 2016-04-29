@@ -3,6 +3,7 @@ package com.rmtech.qjys.ui.qjactivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
@@ -70,6 +70,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		vNikename = (View) findViewById(R.id.v_nikename);
 		tvHello = (TextView) findViewById(R.id.tv_hello);
 		userPhone = (MeItemLayout) findViewById(R.id.user_phone);
+		userPhone.setOnClickListener(this);
 		tvHospitalLeft = (TextView) findViewById(R.id.tv_hospital_left);
 		tvHospital = (TextView) findViewById(R.id.tv_hospital);
 		tvDepartmentLeft = (TextView) findViewById(R.id.tv_department_left);
@@ -80,7 +81,8 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		btnSendmessage.setOnClickListener(this);
 		tvHospital = (TextView) findViewById(R.id.tv_hospital);
 
-		ImageLoader.getInstance().displayImage(doctorInfo.head, ivHead, QjConstant.optionsHead);
+		ImageLoader.getInstance().displayImage(doctorInfo.head, ivHead,
+				QjConstant.optionsHead);
 		tv_name.setText(doctorInfo.name);
 		tvNickname.setText(doctorInfo.name);
 		tvDepartment.setText(doctorInfo.department);
@@ -116,13 +118,19 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 				Toast.makeText(getActivity(), "不能和自己聊天", 1).show();
 			} else {
 				Intent intent = new Intent(getActivity(), ChatActivity.class);
-				intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_SINGLE);
+				intent.putExtra(QjConstant.EXTRA_CHAT_TYPE,
+						QjConstant.CHATTYPE_SINGLE);
 				intent.putExtra(QjConstant.EXTRA_USER_ID, doctorInfo.id);
 				startActivity(intent);
 
 			}
 			break;
 		}
+		case R.id.user_phone:
+			Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+					+ doctorInfo.phone));
+			startActivity(intent);
+			break;
 		default:
 			break;
 		}

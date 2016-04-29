@@ -202,14 +202,17 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 
 								@Override
 								public void onResponseSucces(MBase response) {
-									EventBus.getDefault()
-											.post(new CaseEvent(
-													CaseEvent.TYPE_GROUP_CHANGED));
+									ArrayList<DoctorInfo> resultList = getToBeAddMembers();
+									CaseEvent event = new CaseEvent(
+											CaseEvent.TYPE_GROUP_CHANGED_ADMIN);
+
+									event.setAddDoctorList(caseInfo.id, resultList);
+
+									EventBus.getDefault().post(event);
 									Intent intent = new Intent();
 									intent.putParcelableArrayListExtra(
-											"selectedDoctorList",
-											getToBeAddMembers());
-			
+											"selectedDoctorList", resultList);
+
 									setResult(RESULT_OK, intent);
 
 									finish();
@@ -251,14 +254,15 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 											}
 										}
 									}
-									EventBus.getDefault()
-											.post(new CaseEvent(
-													CaseEvent.TYPE_GROUP_CHANGED));
-
+									ArrayList<DoctorInfo> resultList = getToBeAddMembers();
+									CaseEvent event = new CaseEvent(
+											CaseEvent.TYPE_GROUP_CHANGED_DELETE);
+									event.setDeleteDoctorList(caseInfo.id, resultList);
+									EventBus.getDefault().post(event);
 									setResult(RESULT_OK, new Intent()
 											.putParcelableArrayListExtra(
 													"deleteDoctorList",
-													getToBeAddMembers()));// ("newmembers",
+													resultList));// ("newmembers",
 
 									finish();
 								}
@@ -285,20 +289,17 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 
 								@Override
 								public void onResponseSucces(MGroupData response) {
-									// if(TextUtils.isEmpty(caseInfo.group_id))
-									// {
-									// caseInfo.group_id = caseInfo
-									// }
-									// if (response != null && response.data !=
-									// null) {
-									EventBus.getDefault()
-											.post(new CaseEvent(
-													CaseEvent.TYPE_GROUP_CHANGED));
+									ArrayList<DoctorInfo> resultList = getToBeAddMembers();
+									CaseEvent event = new CaseEvent(
+											CaseEvent.TYPE_GROUP_CHANGED_ADD);
+
+									event.setAddDoctorList(caseInfo.id, resultList);
+
+									EventBus.getDefault().post(event);
 
 									Intent intent = new Intent();
 									intent.putParcelableArrayListExtra(
-											"selectedDoctorList",
-											getToBeAddMembers());// ("newmembers",
+											"selectedDoctorList", resultList);// ("newmembers",
 									intent.putExtra("group_id",
 											response.data == null ? ""
 													: response.data.group_id);
