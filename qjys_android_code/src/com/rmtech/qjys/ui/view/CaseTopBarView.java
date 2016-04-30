@@ -23,6 +23,7 @@ import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.qjactivity.EditCaseActivity;
 import com.rmtech.qjys.ui.qjactivity.MeAbstractActivity;
 import com.rmtech.qjys.ui.qjactivity.MeFlowDetailActivity;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.utils.L;
 
 @SuppressLint("NewApi")
@@ -68,36 +69,16 @@ public class CaseTopBarView extends RelativeLayout implements View.OnClickListen
 
 	@Subscribe
 	public void onEvent(CaseEvent event) {
-		if(event == null) {
+		if (event == null) {
 			return;
 		}
-		if(caseInfo == null || !TextUtils.equals(caseInfo.id, event.caseInfoId)) {
+		if (caseInfo == null || !TextUtils.equals(caseInfo.id, event.caseInfoId)) {
 			return;
 		}
-		switch(event.type) {
-		case CaseEvent.TYPE_GROUP_CHANGED_ADD:
-			if(caseInfo != null && event.addDoctorList != null) {
-				if(caseInfo.participate_doctor == null) {
-					caseInfo.participate_doctor = new ArrayList<>();
-				} 
-				caseInfo.participate_doctor.addAll(event.addDoctorList);
-			}
-			break;
-		case CaseEvent.TYPE_GROUP_CHANGED_DELETE:
-			if(caseInfo != null && event.deleteDoctorList != null) {
-				if(caseInfo.participate_doctor != null) {
-					caseInfo.participate_doctor.removeAll(event.deleteDoctorList);
-				} 
-			}
-			break;
-		case CaseEvent.TYPE_GROUP_CHANGED_ADMIN:
-			if(caseInfo != null && event.addDoctorList != null && !event.addDoctorList.isEmpty()) {
-				caseInfo.admin_doctor = event.addDoctorList.get(0);
-			}
-			break;
-		}
+
+		caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
 	}
-	
+
 	@Override
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
@@ -118,8 +99,15 @@ public class CaseTopBarView extends RelativeLayout implements View.OnClickListen
 		case R.id.zy_layout:
 			MeAbstractActivity.show(getActivity());
 			break;
-		case R.id.gf_layout: 
-			MeFlowDetailActivity.show(getActivity());
+		case R.id.gf_layout:
+			if (caseInfo == null) {
+				Toast.makeText(getContext(), "病例已删除！", 1).show();
+
+			} else {
+				MeFlowDetailActivity.show(getActivity(), caseInfo.id);
+
+				// GroupDetailsActivity.show(getActivity(), caseInfo);
+			}
 			break;
 		case R.id.yhz_layout:
 			if (caseInfo == null) {

@@ -32,8 +32,8 @@ public class PhotoManangerPopWindow {
 		mFolderPopupWindow.setAnchorView(anchorView);
 		mFolderPopupWindow.setModal(true);
 		mFolderPopupWindow.setVerticalOffset(ScreenUtil.dp2px(10));
-		mFolderPopupWindow.setBackgroundDrawable(context.getDrawable(R.drawable.popping_box));
-		mFolderPopupWindow.setListSelector(context.getDrawable(R.drawable.bg_transparent));
+		mFolderPopupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.popping_box));
+		mFolderPopupWindow.setListSelector(context.getResources().getDrawable(R.drawable.bg_transparent));
 //	    android:background="@color/c3164aa"
 //		Window自适应宽度的方案，设置adapter后，检测每
 		mFolderPopupWindow.setOnItemClickListener(listener);

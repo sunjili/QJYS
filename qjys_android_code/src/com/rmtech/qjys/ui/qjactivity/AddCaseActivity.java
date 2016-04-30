@@ -30,6 +30,7 @@ import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
+import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.model.gson.MIdData;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.view.DiagnoseAddView;
@@ -252,16 +253,16 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.gender_man_tv:
-			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_nor), null, null,
+			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor), null, null,
 					null);
-			genderManTv.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_press), null, null,
+			genderManTv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_press), null, null,
 					null);
 			selectSex = 1;
 			break;
 		case R.id.gender_woman_tv:
-			genderManTv.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_nor), null, null,
+			genderManTv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor), null, null,
 					null);
-			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_press), null, null,
+			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_press), null, null,
 					null);
 			selectSex = 2;
 			break;
@@ -280,13 +281,13 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 			break;
 			
 		case R.id.rule_layout:
-			MeFlowEditActivity.show(getActivity());
+			MeFlowEditActivity.show(getActivity(),mFlowInfo,QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
 			break;
 			
 			
 		}
 	}
-
+	private FlowInfo mFlowInfo = new FlowInfo();
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -302,6 +303,9 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 				break;
 			case EditCaseActivity.REQUEST_CASE_STATE:
 				treat_state  = data.getStringExtra("string");
+				break;
+			case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
+				mFlowInfo = data.getParcelableExtra("FlowInfo");
 				break;
 			}
 		}

@@ -52,42 +52,42 @@ public class GroupAndCaseListManager {
 	}
 
 	private GroupAndCaseListManager() {
-		EventBus.getDefault().register(this);
+//		EventBus.getDefault().register(this);
 	}
 
-	@Subscribe
-	public void onEvent(CaseEvent event) {
-		if (event == null) {
-			return;
-		}
-		CaseInfo caseInfo = mCaseIdCaseInfoMap.get(event.caseInfoId);
-		if (caseInfo == null) {
-			return;
-		}
-		switch (event.type) {
-		case CaseEvent.TYPE_GROUP_CHANGED_ADD:
-			if (event.addDoctorList != null) {
-				if (caseInfo.participate_doctor == null) {
-					caseInfo.participate_doctor = new ArrayList<>();
-				}
-				caseInfo.participate_doctor.addAll(event.addDoctorList);
-			}
-			break;
-		case CaseEvent.TYPE_GROUP_CHANGED_DELETE:
-			if (event.deleteDoctorList != null) {
-				if (caseInfo.participate_doctor != null) {
-					caseInfo.participate_doctor
-							.removeAll(event.deleteDoctorList);
-				}
-			}
-			break;
-		case CaseEvent.TYPE_GROUP_CHANGED_ADMIN:
-			if (event.addDoctorList != null && !event.addDoctorList.isEmpty()) {
-				caseInfo.admin_doctor = event.addDoctorList.get(0);
-			}
-			break;
-		}
-	}
+//	@Subscribe
+//	public void onEvent(CaseEvent event) {
+//		if (event == null) {
+//			return;
+//		}
+//		CaseInfo caseInfo = mCaseIdCaseInfoMap.get(event.caseInfoId);
+//		if (caseInfo == null) {
+//			return;
+//		}
+//		switch (event.type) {
+//		case CaseEvent.TYPE_GROUP_CHANGED_ADD:
+//			if (event.addDoctorList != null) {
+//				if (caseInfo.participate_doctor == null) {
+//					caseInfo.participate_doctor = new ArrayList<>();
+//				}
+//				caseInfo.participate_doctor.addAll(event.addDoctorList);
+//			}
+//			break;
+//		case CaseEvent.TYPE_GROUP_CHANGED_DELETE:
+//			if (event.deleteDoctorList != null) {
+//				if (caseInfo.participate_doctor != null) {
+//					caseInfo.participate_doctor
+//							.removeAll(event.deleteDoctorList);
+//				}
+//			}
+//			break;
+//		case CaseEvent.TYPE_GROUP_CHANGED_ADMIN:
+//			if (event.addDoctorList != null && !event.addDoctorList.isEmpty()) {
+//				caseInfo.admin_doctor = event.addDoctorList.get(0);
+//			}
+//			break;
+//		}
+//	}
 
 	public static void getPatientList(boolean needCache,
 			final QjHttpCallbackNoParse<MPatientList> callback) {
@@ -264,6 +264,13 @@ public class GroupAndCaseListManager {
 	public void setIsChanged(boolean b) {
 		this.isChanged = b;
 
+	}
+
+	public CaseInfo getCaseInfoByCaseId(String caseId) {
+		if(!TextUtils.isEmpty(caseId)) {
+			return mCaseIdCaseInfoMap.get(caseId);
+		}
+		return null;
 	}
 
 }

@@ -35,6 +35,10 @@ public class QjConstant extends EaseConstant {
 	public static final int REQUEST_CODE_CHANGE_DOCTOR = 4005;
 	public static final int REQUEST_CODE_NEW_CASE = 4006;
 	public static final int REQUEST_CODE_ADD_HOSPITAL = 4;
+	public static final int REQUEST_CODE_NEW_FLOW = 4007;
+	public static final int REQUEST_CODE_EDIT_FLOW = 4008;
+	public static final int REQUEST_CODE_EDIT_CASE_FLOW = 4009;
+
 
 	public static final DisplayImageOptions optionsImage = new DisplayImageOptions.Builder()
 			.showImageForEmptyUri(R.drawable.default_error).showImageOnFail(R.drawable.default_error)

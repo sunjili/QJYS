@@ -13,6 +13,9 @@
  */
 package com.rmtech.qjys.ui.fragment;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import okhttp3.Call;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -35,6 +38,8 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.db.UserDao;
+import com.rmtech.qjys.event.CaseEvent;
+import com.rmtech.qjys.event.DoctorEvent;
 import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.hx.QjHelper.DataSyncListener;
 import com.rmtech.qjys.model.gson.MDoctorList;
@@ -44,7 +49,9 @@ import com.rmtech.qjys.ui.NewFriendsMsgActivity;
 import com.rmtech.qjys.ui.qjactivity.QjAddContactActivity;
 import com.rmtech.qjys.ui.qjactivity.UserInfoActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.widget.ContactItemView;
+import com.sjl.lib.utils.L;
 
 /**
  * 联系人列表页
@@ -67,7 +74,7 @@ public class ContactListFragment extends EaseContactListFragment {
 		HeaderItemClickListener clickListener = new HeaderItemClickListener();
 		applicationItem = (ContactItemView) headerView.findViewById(R.id.application_item);
 		applicationItem.setOnClickListener(clickListener);
-//		headerView.findViewById(R.id.group_item).setOnClickListener(clickListener);
+		// headerView.findViewById(R.id.group_item).setOnClickListener(clickListener);
 		// headerView.findViewById(R.id.chat_room_item).setOnClickListener(clickListener);
 		// headerView.findViewById(R.id.robot_item).setOnClickListener(clickListener);
 		// 添加headerview
@@ -77,6 +84,23 @@ public class ContactListFragment extends EaseContactListFragment {
 		contentContainer.addView(loadingView);
 		// 注册上下文菜单
 		registerForContextMenu(listView);
+		EventBus.getDefault().register(this);
+
+	}
+
+	@Subscribe
+	public void onEvent(DoctorEvent event) {
+		// mAdapter.add();
+		L.d("onEvent " + event.type);
+		if (getActivity() != null) {
+			getActivity().runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					refresh();
+				}
+			});
+		}
 	}
 
 	@Override
@@ -114,8 +138,9 @@ public class ContactListFragment extends EaseContactListFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				EaseUser user = ((EaseUser) listView.getItemAtPosition(position));
-//				// demo中直接进入聊天页面，实际一般是进入用户详情页
-//				startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", username));
+				// // demo中直接进入聊天页面，实际一般是进入用户详情页
+				// startActivity(new Intent(getActivity(),
+				// ChatActivity.class).putExtra("userId", username));
 				UserInfoActivity.show(getActivity(), user.doctorInfo);
 			}
 		});
@@ -125,8 +150,8 @@ public class ContactListFragment extends EaseContactListFragment {
 
 			@Override
 			public void onClick(View v) {
-				 QjAddContactActivity.show(getActivity());
-//				loadData();
+				QjAddContactActivity.show(getActivity());
+				// loadData();
 
 			}
 		});
@@ -154,7 +179,7 @@ public class ContactListFragment extends EaseContactListFragment {
 	private void loadData(boolean needCache) {
 
 		loadingView.setVisibility(View.VISIBLE);
-		DoctorListManager.getInstance().getDoctorList(needCache,new QjHttpCallbackNoParse<MDoctorList>() {
+		DoctorListManager.getInstance().getDoctorList(needCache, new QjHttpCallbackNoParse<MDoctorList>() {
 
 			@Override
 			public void onError(Call call, Exception e) {
@@ -179,6 +204,8 @@ public class ContactListFragment extends EaseContactListFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		EventBus.getDefault().unregister(this);
+
 		// if (contactSyncListener != null) {
 		// QjHelper.getInstance().removeSyncContactListener(contactSyncListener);
 		// contactSyncListener = null;
@@ -202,10 +229,10 @@ public class ContactListFragment extends EaseContactListFragment {
 				// 进入申请与通知页面
 				startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
 				break;
-//			case R.id.group_item:
-//				// 进入群聊列表页面
-//				startActivity(new Intent(getActivity(), GroupsActivity.class));
-//				break;
+			// case R.id.group_item:
+			// // 进入群聊列表页面
+			// startActivity(new Intent(getActivity(), GroupsActivity.class));
+			// break;
 			// case R.id.chat_room_item:
 			// //进入聊天室列表页面
 			// startActivity(new Intent(getActivity(),

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.greenrobot.eventbus.EventBus;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -54,6 +56,7 @@ import com.rmtech.qjys.domain.EmojiconExampleGroupData;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
 import com.rmtech.qjys.domain.RobotUser;
+import com.rmtech.qjys.event.DoctorEvent;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.parse.UserProfileManager;
@@ -627,6 +630,7 @@ public class QjHelper {
 
            //发送好友变动广播
             broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_CONTACT_CHANAGED));
+            EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_ADD));
         }
 
         @Override
@@ -639,6 +643,8 @@ public class QjHelper {
 
             //发送好友变动广播
             broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_CONTACT_CHANAGED));
+            EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_DELETE));
+
         }
 
         @Override
@@ -679,6 +685,8 @@ public class QjHelper {
             msg.setStatus(InviteMesageStatus.BEAGREED);
             notifyNewIviteMessage(msg);
             broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_CONTACT_CHANAGED));
+            EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_ADD));
+
         }
 
         @Override

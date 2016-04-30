@@ -153,6 +153,7 @@
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeFlowActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/horizontal_slide" >
         </activity>
         <!-- 编辑临床诊疗规范及流程 -->

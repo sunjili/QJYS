@@ -121,18 +121,18 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.wjm_sort_view:
-			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_press), null, null, null);
-			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_nor), null, null, null);
+			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_press), null, null, null);
+			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor), null, null, null);
 			mZdySortImageview.setImageResource(R.drawable.btn_choice_nor);
 			break;
 		case R.id.scsj_sort_view:
-			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_nor), null, null, null);
-			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_press), null, null, null);
+			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor), null, null, null);
+			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_press), null, null, null);
 			mZdySortImageview.setImageResource(R.drawable.btn_choice_nor);
 			break;
 		case R.id.zdy_sort_view:
-			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_nor), null, null, null);
-			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.btn_choice_nor), null, null, null);
+			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor), null, null, null);
+			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor), null, null, null);
 			mZdySortImageview.setImageResource(R.drawable.btn_choice_press);
 			break;
 		}

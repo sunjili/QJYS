@@ -47,7 +47,7 @@ public class MeAbstractActivity extends BaseActivity implements
 
 			@Override
 			public void onClick(View v) {
-				MeFlowEditActivity.show(context);
+//				MeFlowEditActivity.show(context);
 			}
 		});
 		// }
@@ -77,7 +77,7 @@ public class MeAbstractActivity extends BaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_add_flow_detail:
-			MeFlowEditActivity.show(context);
+//			MeFlowEditActivity.show(context);
 			break;
 		default:
 			break;

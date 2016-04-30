@@ -3,9 +3,11 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -13,9 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.CommonAdapter;
 import com.rmtech.qjys.adapter.ViewHolder;
+import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
+import com.rmtech.qjys.model.gson.MFlowList;
+import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 
 /***
@@ -24,14 +31,13 @@ import com.rmtech.qjys.ui.BaseActivity;
  * @author Administrator
  * 
  */
-public class MeFlowActivity extends BaseActivity implements
-		View.OnClickListener {
+public class MeFlowActivity extends CaseWithIdActivity implements View.OnClickListener {
 	private ImageView iv_empty_flow;
 	private ListView lv_flow;
 	private LinearLayout ll_flow_my;
 	private Context context;
-	private CommonAdapter<String> mAdapter;
-	private List<String> listems;
+	private CommonAdapter<FlowInfo> mAdapter;
+	private List<FlowInfo> listems;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -43,11 +49,39 @@ public class MeFlowActivity extends BaseActivity implements
 
 			@Override
 			public void onClick(View v) {
-				MeFlowEditActivity.show(context);
+				if(!TextUtils.isEmpty(caseId)) {
+					MeFlowEditActivity.show(getActivity(), caseId, QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
+				} else {
+					MeFlowEditActivity.show(getActivity(), QjConstant.REQUEST_CODE_NEW_FLOW);
+				}
+
 			}
 		});
 		initView();
+
+		// setValue();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == RESULT_OK) {
+			switch (requestCode) {
+			case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
+				finish();
+				break;
+			}
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 		initData();
+	}
+
+	private void onDisplayView() {
 		if (null == listems || listems.size() == 0) {
 			iv_empty_flow.setVisibility(View.VISIBLE);
 			ll_flow_my.setVisibility(View.GONE);
@@ -55,34 +89,44 @@ public class MeFlowActivity extends BaseActivity implements
 			iv_empty_flow.setVisibility(View.GONE);
 			ll_flow_my.setVisibility(View.VISIBLE);
 		}
-		setValue();
 	}
 
 	private void initData() {
-		listems = new ArrayList<String>();
-		listems.add("1头盖骨诊疗规范");
-		listems.add("2头盖骨诊疗规范");
-		listems.add("3头盖骨诊疗规范");
+		QjHttp.treateProcedurelist(new QjHttpCallbackNoParse<MFlowList>() {
+
+			@Override
+			public void onError(Call call, Exception e) {
+				onDisplayView();
+			}
+
+			@Override
+			public void onResponseSucces(boolean iscache, MFlowList response) {
+				if (response.hasData()) {
+					listems = new ArrayList<FlowInfo>();
+					listems.addAll(response.data);
+					setValue();
+				}
+				onDisplayView();
+			}
+		});
 	}
 
 	private void setValue() {
 
-		mAdapter = new CommonAdapter<String>(getApplicationContext(), listems,
-				R.layout.qj_meitem_view) {
+		mAdapter = new CommonAdapter<FlowInfo>(getApplicationContext(), listems, R.layout.qj_meitem_view) {
 
 			@Override
-			public void convert(ViewHolder viewHolder, final String item) {
-				viewHolder.setText(R.id.tv_left, item);
-				viewHolder.getView(R.id.rl_item).setOnClickListener(
-						new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Toast.makeText(context, item,
-										Toast.LENGTH_SHORT).show();
-								MeFlowDetailActivity.show(context);
-								mAdapter.notifyDataSetChanged();
-							}
-						});
+			public void convert(ViewHolder viewHolder, final FlowInfo item) {
+				viewHolder.setText(R.id.tv_left, item.title);
+				viewHolder.getView(R.id.rl_item).setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						// Toast.makeText(context, item,
+						// Toast.LENGTH_SHORT).show();
+						MeFlowEditActivity.show(getActivity(), item, QjConstant.REQUEST_CODE_EDIT_FLOW);
+						mAdapter.notifyDataSetChanged();
+					}
+				});
 			}
 
 		};
@@ -100,10 +144,15 @@ public class MeFlowActivity extends BaseActivity implements
 		return true;
 	}
 
-	public static void show(Context context) {
+	public static void show(Context context, String caseId) {
 		Intent intent = new Intent();
 		intent.setClass(context, MeFlowActivity.class);
+		setCaseId(intent, caseId);
 		context.startActivity(intent);
+	}
+
+	public static void show(Context context) {
+		show(context, "");
 	}
 
 	@Override

@@ -15,6 +15,8 @@ package com.rmtech.qjys.adapter;
 
 import java.util.List;
 
+import org.greenrobot.eventbus.EventBus;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -37,6 +39,7 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
+import com.rmtech.qjys.event.DoctorEvent;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
@@ -214,6 +217,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 
 						@Override
 						public void run() {
+							EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_ADD));
 							pd.dismiss();
 							buttonAgree.setText(str2);
 							buttonAgree.setBackgroundDrawable(null);

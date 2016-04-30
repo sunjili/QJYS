@@ -74,7 +74,15 @@ public class CaseFragment extends QjBaseFragment {
 	public void onEvent(CaseEvent event) {
 		// mAdapter.add();
 		L.d("onEvent " + event.type);
-		GroupAndCaseListManager.getPatientList(false, httpCallback);
+		if (getActivity() != null) {
+			getActivity().runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					GroupAndCaseListManager.getPatientList(false, httpCallback);
+				}
+			});
+		}
 
 	}
 

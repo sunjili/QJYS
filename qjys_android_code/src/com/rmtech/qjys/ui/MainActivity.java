@@ -48,6 +48,7 @@ import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.db.UserDao;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.hx.QjHelper;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.fragment.ContactListFragment;
 import com.rmtech.qjys.ui.fragment.ConversationListFragment;
@@ -494,6 +495,7 @@ public class MainActivity extends BaseActivity {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						UserContext.getInstance().clearCookie();
 						dialog.dismiss();
 						conflictBuilder = null;
 						finish();
