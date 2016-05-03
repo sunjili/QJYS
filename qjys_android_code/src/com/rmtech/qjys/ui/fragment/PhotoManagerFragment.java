@@ -307,8 +307,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 //			public MImageList parseNetworkResponse(String str) throws Exception {
 //				return new Gson().fromJson(str, MImageList.class);
 
-		});
-
+		});		
 	}
 
 	public void onImagePicked(List<String> paths) {
@@ -322,7 +321,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 			L.e("info.name = " + info.name);
 			info.state = PhotoDataInfo.STATE_UPLOADING;
 			mAdapter.add(info);
-			PhotoUploadManager.getInstance().addUploadTask(caseInfo.id, "", info);
+			PhotoUploadManager.getInstance().addUploadTask(caseInfo.id, folderId, info);
 		}
 		onDataChanged();
 	}

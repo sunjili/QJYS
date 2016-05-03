@@ -1,6 +1,7 @@
 package com.rmtech.qjys.model.gson;
 
 import android.os.Parcel;
+import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -61,6 +62,10 @@ public class MFlowList extends MBase {
 				return new FlowInfo[size];
 			}
 		};
+
+		public boolean isEmpty() {
+			return TextUtils.isEmpty(title);
+		}
 	}
 
 	public boolean hasData() {

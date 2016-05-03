@@ -3,20 +3,26 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
+import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
+import com.rmtech.qjys.model.gson.MImageList;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.sjl.lib.utils.L;
@@ -61,11 +67,58 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 
 		mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+			public void onItemClick(AdapterView<?> adapterView, View view,
+					int i, long l) {
 				// selectImageFromGrid(i);
 			}
 
 		});
+
+		if (!TextUtils.isEmpty(caseId)) {
+			QjHttp.getImageList(true, caseId, "",
+					new QjHttpCallbackNoParse<MImageList>() {
+
+						@Override
+						public void onError(Call call, Exception e) {
+
+						}
+
+						@Override
+						public void onResponseSucces(boolean iscache,
+								MImageList response) {
+							if (getActivity() == null
+									|| getActivity().isFinishing()) {
+								return;
+							}
+							// ArrayList<FolderDataInfo> list = new
+							// ArrayList<FolderDataInfo>();
+							// imageDataList = response.data;
+							if (response.data != null) {
+								mAdapter.clear();
+								if (response.data.folders != null) {
+									mAdapter.add(0, response.data.folders);
+								}
+								if (response.data.images != null) {
+									mAdapter.add(response.data.images);
+								}
+							}
+							// for(int i = 0; i<20;i++) {
+							// list.add(new FolderDataInfo());
+							// }
+							// mAdapter = new
+							// PhotoDataGridAdapter(getActivity(), list);
+							// mGridView.setAdapter(mAdapter);
+							onDataChanged();
+						}
+
+						// @Override
+						// public MImageList parseNetworkResponse(String str)
+						// throws Exception {
+						// return new Gson().fromJson(str, MImageList.class);
+
+					});
+
+		}
 
 	}
 

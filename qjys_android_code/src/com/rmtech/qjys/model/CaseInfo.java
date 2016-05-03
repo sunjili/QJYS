@@ -165,4 +165,8 @@ public class CaseInfo implements Serializable, Parcelable {
 		nameStr += name;
 		return nameStr;
 	}
+	
+	public boolean hasFlow() {
+		return !TextUtils.isEmpty(procedure_title);
+	}
 }

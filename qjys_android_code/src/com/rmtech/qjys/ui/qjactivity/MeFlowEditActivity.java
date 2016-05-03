@@ -38,7 +38,8 @@ import com.sjl.lib.http.okhttp.OkHttpUtils;
  * @author Administrator
  * 
  */
-public class MeFlowEditActivity extends CaseWithIdActivity implements View.OnClickListener {
+public class MeFlowEditActivity extends MeFlowBaseActivity implements
+		View.OnClickListener {
 	private EditText et_title;
 	private EditText et_content;
 	private Button btn_delete;
@@ -48,10 +49,11 @@ public class MeFlowEditActivity extends CaseWithIdActivity implements View.OnCli
 	private ImageView iv_right;
 	private int requestCode;
 	private FlowInfo flowInfo;
-	private boolean isInCaseModel = false;
+	private boolean isInCaseModel;
 
 	private CaseInfo getCaseInfo() {
-		return GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+		return GroupAndCaseListManager.getInstance()
+				.getCaseInfoByCaseId(caseId);
 
 	}
 
@@ -61,47 +63,55 @@ public class MeFlowEditActivity extends CaseWithIdActivity implements View.OnCli
 		setContentView(R.layout.qj_me_flow_edit);
 		setTitle("编辑临床诊疗规范及流程");
 		context = MeFlowEditActivity.this;
-		requestCode = getIntent().getIntExtra("requestCode", QjConstant.REQUEST_CODE_EDIT_FLOW);
+		requestCode = getIntent().getIntExtra("requestCode",
+				QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
 		flowInfo = getIntent().getParcelableExtra("FlowInfo");
 		if (!TextUtils.isEmpty(caseId) && getCaseInfo() != null) {
-			isInCaseModel = true;
+//			isInCaseModel = true;
 		}
 		setLeftTitle("");
 		setRightTitle("保存", new OnClickListener() {
 
+
 			@Override
 			public void onClick(View v) {
 				if (isInCaseModel) {
-					final String procedure_title = et_title.getText().toString();
-					final String procedure_text = et_content.getText().toString();
+					final String procedure_title = et_title.getText()
+							.toString();
+					final String procedure_text = et_content.getText()
+							.toString();
 
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("patient_id", caseId);
 					params.put("procedure_title", procedure_title);
 					params.put("procedure_text", procedure_text);
-					OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
+					OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params,
+							new BaseModelCallback() {
 
-						@Override
-						public void onResponseSucces(MBase response) {
-							// GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
-							CaseInfo newcase = getCaseInfo();
-							if (newcase != null) {
-								newcase.procedure_title = procedure_title;
-								newcase.procedure_text = procedure_text;
-								CaseEvent caseEvent = new CaseEvent(CaseEvent.TYPE_FLOW_CHANGED);
-								caseEvent.setCaseInfoId(caseId);
-								EventBus.getDefault().post(caseEvent);
-								setResult(RESULT_OK, new Intent());
-								MeFlowEditActivity.this.finish();
-							}
-							Toast.makeText(getActivity(), "保存成功", 1).show();
-						}
+								@Override
+								public void onResponseSucces(MBase response) {
+									// GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+									CaseInfo newcase = getCaseInfo();
+									if (newcase != null) {
+										newcase.procedure_title = procedure_title;
+										newcase.procedure_text = procedure_text;
+										CaseEvent caseEvent = new CaseEvent(
+												CaseEvent.TYPE_FLOW_CHANGED);
+										caseEvent.setCaseInfoId(caseId);
+										EventBus.getDefault().post(caseEvent);
+										setResult(RESULT_OK, new Intent());
+										MeFlowEditActivity.this.finish();
+									}
+									Toast.makeText(getActivity(), "保存成功", 1)
+											.show();
+								}
 
-						@Override
-						public void onError(Call call, Exception e) {
-							Toast.makeText(getActivity(), "保存失败", 1).show();
-						}
-					});
+								@Override
+								public void onError(Call call, Exception e) {
+									Toast.makeText(getActivity(), "保存失败", 1)
+											.show();
+								}
+							});
 
 				} else {
 					if (flowInfo == null) {
@@ -109,25 +119,34 @@ public class MeFlowEditActivity extends CaseWithIdActivity implements View.OnCli
 					}
 					flowInfo.title = et_title.getText().toString().trim();
 					flowInfo.procedure = et_content.getText().toString().trim();
-					if (TextUtils.isEmpty(flowInfo.id)) {
+					if (!TextUtils.isEmpty(flowInfo.id)) {
 						FlowListManager.getInstance().updataFlowInfo(flowInfo);
 					}
-					if (requestCode == QjConstant.REQUEST_CODE_NEW_FLOW) {
-						FlowListManager.getInstance().addFlow(flowInfo, new BaseModelCallback() {
+					if (requestCode == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW) {
+						FlowListManager.getInstance().addFlow(flowInfo,
+								new BaseModelCallback() {
 
-							@Override
-							public void onResponseSucces(MBase response) {
-								Toast.makeText(getActivity(), "保存成功", 1).show();
-								setResult(RESULT_OK, new Intent().putExtra("FlowInfo", (Parcelable) flowInfo));
-								MeFlowEditActivity.this.finish();
-							}
+									@Override
+									public void onResponseSucces(MBase response) {
+										Toast.makeText(getActivity(), "保存成功", 1)
+												.show();
+										setResult(RESULT_OK, new Intent()
+												.putExtra("FlowInfo",
+														(Parcelable) flowInfo));
+										MeFlowEditActivity.this.finish();
+									}
 
-							@Override
-							public void onError(Call call, Exception e) {
-								// TODO Auto-generated method stub
-								Toast.makeText(getActivity(), "保存失败", 1).show();
-							}
-						});
+									@Override
+									public void onError(Call call, Exception e) {
+										// TODO Auto-generated method stub
+										Toast.makeText(getActivity(), "保存失败", 1)
+												.show();
+									}
+								});
+					} else if (requestCode == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
+						setResult(RESULT_OK, new Intent().putExtra("FlowInfo",
+								(Parcelable) flowInfo));
+						MeFlowEditActivity.this.finish();
 					}
 				}
 			}
@@ -142,13 +161,17 @@ public class MeFlowEditActivity extends CaseWithIdActivity implements View.OnCli
 		btn_delete.setOnClickListener(this);
 		iv_right = (ImageView) findViewById(R.id.iv_right);
 		iv_right.setOnClickListener(this);
+		switch(requestType) {
+		case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
+			break;
+		}
 		if (flowInfo != null) {
 			et_title.setText(flowInfo.title);
 			et_content.setText(flowInfo.procedure);
+			btn_delete.setVisibility(View.GONE);
 		} else if (isInCaseModel) {
 			et_title.setText(getCaseInfo().procedure_title);
 			et_content.setText(getCaseInfo().procedure_text);
-			// btn_delete.setVisibility(View.GONE);
 		} else {
 			btn_delete.setVisibility(View.GONE);
 		}
@@ -174,7 +197,8 @@ public class MeFlowEditActivity extends CaseWithIdActivity implements View.OnCli
 		activity.startActivityForResult(intent, requestCode);
 	}
 
-	public static void show(BaseActivity activity, FlowInfo item, int requestCode) {
+	public static void show(BaseActivity activity, FlowInfo item,
+			int requestCode) {
 		Intent intent = new Intent();
 		intent.setClass(activity, MeFlowEditActivity.class);
 		intent.putExtra("requestCode", requestCode);

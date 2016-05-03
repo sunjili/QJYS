@@ -138,7 +138,7 @@ public class DoctorListManager {
 	}
 
 	public void getDoctorInfoByHXid(final String username, final OnGetDoctorInfoCallback callback) {
-		if(TextUtils.equals(username, EMClient.getInstance().getCurrentUser())) {
+		if(TextUtils.equals(username, UserContext.getInstance().getUserId())) {
 			DoctorInfo doctorInfo = new DoctorInfo(UserContext.getInstance().getUser());
 			if (doctorInfo != null) {
 				if (callback != null) {

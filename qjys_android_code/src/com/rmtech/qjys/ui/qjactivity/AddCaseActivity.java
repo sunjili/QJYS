@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +34,9 @@ import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.model.gson.MIdData;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.view.DiagnoseAddView;
+import com.rmtech.qjys.ui.view.MeItemLayout;
 
 @SuppressLint("NewApi")
 public class AddCaseActivity extends BaseActivity implements OnClickListener {
@@ -56,7 +59,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private TextView bedTitleTv;
 	private EditText bedEt;
 	private DiagnoseAddView diagnose_view;
-	private RelativeLayout stateLayout;
+	private MeItemLayout stateLayout;
 	private RelativeLayout photoDataLayout;
 	private RelativeLayout doctorsLayout;
 	private RelativeLayout ruleLayout;
@@ -69,6 +72,8 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private String currentHospital;
 	private String tempCaseId;
 	private ArrayList<DoctorInfo> currentDoctorList = new ArrayList<DoctorInfo>();
+//	private String procedure_title;
+//	private String procedure_text;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -127,7 +132,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		bedTitleTv = (TextView) findViewById(R.id.bed_title_tv);
 		bedEt = (EditText) findViewById(R.id.bed_et);
 		diagnose_view = (DiagnoseAddView) findViewById(R.id.diagnose_view);
-		stateLayout = (RelativeLayout) findViewById(R.id.state_layout);
+		stateLayout = (MeItemLayout) findViewById(R.id.state_layout);
 		stateLayout.setOnClickListener(this);
 		photoDataLayout = (RelativeLayout) findViewById(R.id.photo_data_layout);
 		photoDataLayout.setOnClickListener(this);
@@ -152,10 +157,9 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.diagnose = createDiagnose();//
 		info.ward_no = roomEt.getEditableText().toString();
 		info.treat_state = treat_state;
-		info.procedure_title = "";
-		info.procedure_text = "";
+		info.procedure_title = mFlowInfo.title;
+		info.procedure_text = mFlowInfo.procedure;
 		info.abs = abstractEt.getEditableText().toString();
-		
 		info.participate_doctor = currentDoctorList;
 		info.state = state;
 		return info;
@@ -177,7 +181,10 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		} else if (targetId == R.id.doctors_layout) {
 			CaseInfo caseinfo = new CaseInfo();
 			caseinfo.id = tempCaseId;
-			DoctorPickActivity.show(getActivity(), caseinfo, currentDoctorList, QjConstant.REQUEST_CODE_NEW_CASE);
+			caseinfo.admin_doctor = new DoctorInfo(UserContext.getInstance().getUser());
+			caseinfo.participate_doctor = currentDoctorList;
+			GroupDetailsActivity.show(getActivity(), caseinfo, QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR);
+//			DoctorPickActivity.show(getActivity(), caseinfo, currentDoctorList, QjConstant.REQUEST_CODE_NEW_CASE);
 		}
 	}
 
@@ -281,10 +288,13 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 			break;
 			
 		case R.id.rule_layout:
-			MeFlowEditActivity.show(getActivity(),mFlowInfo,QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
+			if(TextUtils.isEmpty(mFlowInfo.title)) {
+				MeFlowActivity.show(getActivity());
+			} else {
+				MeFlowDetailActivity.show(getActivity(), mFlowInfo, QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+//			MeFlowEditActivity.show(getActivity(), mFlowInfo, QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+			}
 			break;
-			
-			
 		}
 	}
 	private FlowInfo mFlowInfo = new FlowInfo();
@@ -303,9 +313,16 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 				break;
 			case EditCaseActivity.REQUEST_CASE_STATE:
 				treat_state  = data.getStringExtra("string");
+				stateLayout.setRightText(treat_state);
 				break;
-			case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
+			case QjConstant.REQUEST_CODE_NEW_CASE_FLOW:
 				mFlowInfo = data.getParcelableExtra("FlowInfo");
+				break;
+			case QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR:
+				CaseInfo tempCase = data.getParcelableExtra("caseInfo");
+				if(tempCase != null) {
+					currentDoctorList= new ArrayList<>(tempCase.participate_doctor);
+				}
 				break;
 			}
 		}

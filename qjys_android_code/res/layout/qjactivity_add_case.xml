@@ -238,24 +238,14 @@
             android:layout_marginRight="10dip"
             android:background="@color/cd9" />
 
-        <RelativeLayout
+        <com.rmtech.qjys.ui.view.MeItemLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/state_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
-
-            <TextView
-                style="@style/qj_add_case_left_name_tv"
-                android:text="就诊状态" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dip"
-                android:src="@drawable/em_ic_right_arrow" />
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            app:leftText="就诊状态"
+            app:rightText=""
+            app:visibleLinePadding="false" />
 
         <View
             android:layout_width="match_parent"

@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
@@ -27,7 +28,7 @@ import com.rmtech.qjys.utils.GroupAndCaseListManager;
  * @author Administrator
  * 
  */
-public class MeFlowDetailActivity extends CaseWithIdActivity implements View.OnClickListener {
+public class MeFlowDetailActivity extends MeFlowBaseActivity implements View.OnClickListener {
 	private Button btn_add_flow_detail;
 
 	private TextView tv_title;
@@ -38,7 +39,6 @@ public class MeFlowDetailActivity extends CaseWithIdActivity implements View.OnC
 	private RelativeLayout rl_empty;
 	private FlowInfo flowInfo;
 
-	private boolean isInCaseModel = false;
 
 	private CaseInfo getCaseInfo() {
 		return GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
@@ -58,9 +58,9 @@ public class MeFlowDetailActivity extends CaseWithIdActivity implements View.OnC
 		setTitle("诊疗规范及流程");
 		context = MeFlowDetailActivity.this;
 		flowInfo = getIntent().getParcelableExtra("FlowInfo");
-		if (!TextUtils.isEmpty(caseId) && getCaseInfo() != null) {
-			isInCaseModel = true;
-		}
+//		if (!TextUtils.isEmpty(caseId) && getCaseInfo() != null) {
+//			isInCaseModel = true;
+//		}
 
 		initView();
 		// title = tv_title.getText().toString().trim();
@@ -76,12 +76,12 @@ public class MeFlowDetailActivity extends CaseWithIdActivity implements View.OnC
 
 		@Override
 		public void onClick(View v) {
-			if (isInCaseModel) {
+//			if (isInCaseModel) {
 				// FlowInfo flowInfo = new FlowInfo();
 				// flowInfo.title = getCaseInfo().procedure_title;
 				// flowInfo.procedure = getCaseInfo().procedure_text;
-				MeFlowEditActivity.show(getActivity(), caseId, QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
-			}
+				MeFlowEditActivity.show(getActivity(), caseId, requestType);
+//			}
 		}
 	};
 
@@ -98,32 +98,28 @@ public class MeFlowDetailActivity extends CaseWithIdActivity implements View.OnC
 	}
 
 	private void bindView() {
-		if (isInCaseModel) {
-			if (TextUtils.isEmpty(getCaseInfo().procedure_title)) {
-				// setRightTitle("编辑", clickListener);
-				rl_empty.setVisibility(View.VISIBLE);
-				btn_add_flow_detail.setVisibility(View.VISIBLE);
+		CaseInfo tempcaseInfo = getCaseInfo();
+		FlowInfo newFlowInfo = new FlowInfo();
+		if(tempcaseInfo != null && tempcaseInfo.hasFlow()) {
+			newFlowInfo.title = tempcaseInfo.procedure_title;
+			newFlowInfo.procedure = tempcaseInfo.procedure_text;
+		} else if(flowInfo != null && !flowInfo.isEmpty()) {
+			newFlowInfo.title = flowInfo.title;
+			newFlowInfo.procedure = flowInfo.procedure;
+		}
+		
+		if (newFlowInfo.isEmpty()) {
+			tv_title.setVisibility(View.GONE);
+			tv_content.setVisibility(View.GONE);
+			rl_empty.setVisibility(View.VISIBLE);
+			btn_add_flow_detail.setVisibility(View.VISIBLE);
 
-			} else {
-				setRightTitle("编辑", clickListener);
-				tv_title.setText(getCaseInfo().procedure_title);
-				tv_content.setText(getCaseInfo().procedure_text);
-				rl_empty.setVisibility(View.GONE);
-				btn_add_flow_detail.setVisibility(View.GONE);
-			}
 		} else {
-			if (flowInfo != null && !TextUtils.isEmpty(flowInfo.title)) {
-				setRightTitle("编辑", clickListener);
-				tv_title.setText(flowInfo.title);
-				tv_content.setText(flowInfo.procedure);
-				rl_empty.setVisibility(View.GONE);
-
-			} else {
-				setRightTitle(R.drawable.btn_case_new, clickListener);
-				rl_empty.setVisibility(View.VISIBLE);
-			}
+			setRightTitle("编辑", clickListener);
+			tv_title.setText(newFlowInfo.title);
+			tv_content.setText(newFlowInfo.procedure);
+			rl_empty.setVisibility(View.GONE);
 			btn_add_flow_detail.setVisibility(View.GONE);
-
 		}
 	}
 
@@ -131,23 +127,20 @@ public class MeFlowDetailActivity extends CaseWithIdActivity implements View.OnC
 		return true;
 	}
 
-	public static void show(Context context) {
-		Intent intent = new Intent();
-		intent.setClass(context, MeFlowDetailActivity.class);
-		context.startActivity(intent);
-	}
-
 	public static void show(Context context, String caseId) {
 		Intent intent = new Intent();
 		intent.setClass(context, MeFlowDetailActivity.class);
 		setCaseId(intent, caseId);
+		intent.putExtra("requestType", QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
+
 		context.startActivity(intent);
 	}
 
-	public static void show(Context context, FlowInfo item) {
+	public static void show(Context context, FlowInfo item, int type) {
 		Intent intent = new Intent();
 		intent.setClass(context, MeFlowDetailActivity.class);
 		intent.putExtra("FlowInfo", (Parcelable) item);
+		intent.putExtra("requestType", type);
 		context.startActivity(intent);
 	}
 
@@ -155,10 +148,11 @@ public class MeFlowDetailActivity extends CaseWithIdActivity implements View.OnC
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_add_flow_detail:
-			if (isInCaseModel) {
+			if (TextUtils.isEmpty(caseId) && getCaseInfo() != null) {
 				MeFlowActivity.show(getActivity(), caseId);
 			} else {
-				MeFlowEditActivity.show(getActivity(), QjConstant.REQUEST_CODE_NEW_FLOW);
+				MeFlowActivity.show(getActivity(), caseId);
+//				MeFlowEditActivity.show(getActivity(), QjConstant.REQUEST_CODE_NEW_FLOW);
 			}
 			break;
 		default:

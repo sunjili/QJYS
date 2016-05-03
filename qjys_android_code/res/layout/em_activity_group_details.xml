@@ -32,15 +32,6 @@
             android:layout_centerInParent="true"
             android:textColor="#ffffff"
             android:textSize="20sp" />
-        <!--
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="7dp" />
-        -->
     </RelativeLayout>
 
     <ScrollView
@@ -174,6 +165,7 @@
                 android:background="@color/cd9" />
 
             <TextView
+                android:id="@+id/group_setting_view"
                 android:layout_width="wrap_content"
                 android:layout_height="22dip"
                 android:layout_marginLeft="10dip"

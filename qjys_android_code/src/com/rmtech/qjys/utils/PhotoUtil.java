@@ -56,7 +56,7 @@ public class PhotoUtil {
 		// 是否显示拍摄图片
 		intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, false);
 		// 最大可选择图片数量
-		intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, multiSelect?9:1);
+		intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, multiSelect?25:1);
 		// 选择模式
 		int mode = multiSelect? MultiImageSelectorActivity.MODE_MULTI :  MultiImageSelectorActivity.MODE_SINGLE;
 		intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, mode);

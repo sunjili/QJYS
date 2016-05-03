@@ -35,18 +35,23 @@ public class QjConstant extends EaseConstant {
 	public static final int REQUEST_CODE_CHANGE_DOCTOR = 4005;
 	public static final int REQUEST_CODE_NEW_CASE = 4006;
 	public static final int REQUEST_CODE_ADD_HOSPITAL = 4;
-	public static final int REQUEST_CODE_NEW_FLOW = 4007;
-	public static final int REQUEST_CODE_EDIT_FLOW = 4008;
+	public static final int REQUEST_CODE_NEW_CASE_DOCTOR = 4010;
+	
 	public static final int REQUEST_CODE_EDIT_CASE_FLOW = 4009;
-
+	public static final int REQUEST_CODE_NEW_CASE_FLOW = 4011;
+	public static final int REQUEST_CODE_ME_FLOW = 4012;
 
 	public static final DisplayImageOptions optionsImage = new DisplayImageOptions.Builder()
-			.showImageForEmptyUri(R.drawable.default_error).showImageOnFail(R.drawable.default_error)
-			.showImageOnLoading(R.drawable.default_error).resetViewBeforeLoading(true).cacheOnDisk(true)
-			.cacheInMemory(true).build();
+			.showImageForEmptyUri(R.drawable.default_error)
+			.showImageOnFail(R.drawable.default_error)
+			.showImageOnLoading(R.drawable.default_error)
+			.resetViewBeforeLoading(true).cacheOnDisk(true).cacheInMemory(true)
+			.build();
 	public static final DisplayImageOptions optionsHead = new DisplayImageOptions.Builder()
-			.showImageForEmptyUri(R.drawable.ic_default_avatar).showImageOnFail(R.drawable.ic_default_avatar)
-			.showImageOnLoading(R.drawable.ic_default_avatar).resetViewBeforeLoading(true).cacheOnDisk(true)
-			.cacheInMemory(true).build();
+			.showImageForEmptyUri(R.drawable.ic_default_avatar)
+			.showImageOnFail(R.drawable.ic_default_avatar)
+			.showImageOnLoading(R.drawable.ic_default_avatar)
+			.resetViewBeforeLoading(true).cacheOnDisk(true).cacheInMemory(true)
+			.build();
 
 }
