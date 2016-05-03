@@ -97,6 +97,7 @@ public class ContactListFragment extends EaseContactListFragment {
 
 				@Override
 				public void run() {
+					DoctorListManager.getInstance().setIsChanged(true);
 					refresh();
 				}
 			});

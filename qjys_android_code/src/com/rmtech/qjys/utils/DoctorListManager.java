@@ -70,6 +70,7 @@ public class DoctorListManager {
 
 						callback.onResponseSucces(iscache, response);
 					}
+					isChanged = false;
 				}
 			});
 		} else {
