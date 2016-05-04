@@ -37,7 +37,6 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 	private Context context;
 	private CommonAdapter<FlowInfo> mAdapter;
 	private List<FlowInfo> listems;
-	private int requestType = QjConstant.REQUEST_CODE_ME_FLOW;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -49,30 +48,10 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 
 			@Override
 			public void onClick(View v) {
-				if (!TextUtils.isEmpty(caseId)) {
-					MeFlowEditActivity.show(getActivity(), caseId, requestType);
-				} else {
-					MeFlowEditActivity.show(getActivity(), requestType);
-				}
-
+				MeFlowNewActivity.show(getActivity(), caseId, requestType);
 			}
 		});
 		initView();
-
-		// setValue();
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (resultCode == RESULT_OK) {
-			switch (requestCode) {
-			case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
-				finish();
-				break;
-			}
-		}
 	}
 
 	@Override
@@ -127,8 +106,7 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 								// Toast.LENGTH_SHORT).show();
 								// MeFlowEditActivity.show(getActivity(), item,
 								// QjConstant.REQUEST_CODE_EDIT_FLOW);
-								MeFlowDetailActivity.show(getActivity(), item, requestType);
-								mAdapter.notifyDataSetChanged();
+								onFlowItemClick(item);
 							}
 						});
 			}
@@ -136,6 +114,22 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 		};
 		lv_flow.setAdapter(mAdapter);
 		mAdapter.notifyDataSetChanged();
+	}
+
+	protected void onFlowItemClick(final FlowInfo item) {
+		MeFlowDetailActivity.show(getActivity(), item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == RESULT_OK) {
+			switch (requestCode) {
+			case QjConstant.REQUEST_CODE_ME_FLOW:
+				break;
+			}
+		}
 	}
 
 	private void initView() {
@@ -146,22 +140,6 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 
 	protected boolean showTitleBar() {
 		return true;
-	}
-
-	public static void show(Context context, String caseId) {
-		Intent intent = new Intent();
-		intent.setClass(context, MeFlowActivity.class);
-		intent.putExtra("requestType", QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);// (context,
-		setCaseId(intent, caseId);
-		context.startActivity(intent);
-	}
-
-	public static void show(Context context) {
-		Intent intent = new Intent();
-		intent.setClass(context, MeFlowActivity.class);
-		intent.putExtra("requestType", QjConstant.REQUEST_CODE_NEW_CASE_FLOW);// (context,
-		context.startActivity(intent);
-
 	}
 
 	@Override

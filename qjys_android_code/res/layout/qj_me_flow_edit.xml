@@ -63,6 +63,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="bottom" >
@@ -74,17 +75,18 @@
             android:layout_alignParentTop="true"
             android:background="@color/cd9" />
 
-        <ImageView
+        <CheckBox
             android:id="@+id/iv_right"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:background="@drawable/qj_me_right_selector"
+            android:button="@null"
             android:paddingBottom="14dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="14dp"
-            android:src="@drawable/qj_me_right_selector" />
+            android:paddingTop="14dp" />
 
         <TextView
             android:layout_width="match_parent"

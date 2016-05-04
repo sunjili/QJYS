@@ -156,15 +156,35 @@
             android:launchMode="singleInstance"
             android:theme="@style/horizontal_slide" >
         </activity>
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.CaseFlowSelectorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <!-- 编辑临床诊疗规范及流程 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeFlowEditActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.CaseFlowEditActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeFlowNewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <!-- 临床诊疗规范及流程   详情界面 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeFlowDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.CaseFlowDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>

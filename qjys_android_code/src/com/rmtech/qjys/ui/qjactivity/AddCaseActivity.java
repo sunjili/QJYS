@@ -67,13 +67,14 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private TextView abstractTv;
 	private EditText abstractEt;
 	private int selectSex = 1;
-//	private ArrayList<String> diagnoseList = new ArrayList<String>();
+	// private ArrayList<String> diagnoseList = new ArrayList<String>();
 	private String treat_state;
 	private String currentHospital;
 	private String tempCaseId;
 	private ArrayList<DoctorInfo> currentDoctorList = new ArrayList<DoctorInfo>();
-//	private String procedure_title;
-//	private String procedure_text;
+
+	// private String procedure_title;
+	// private String procedure_text;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -93,13 +94,17 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 						@Override
 						public void onError(Call call, Exception e) {
-							Toast.makeText(getActivity(), "新病例创建失败 " + e.getMessage(), Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(),
+									"新病例创建失败 " + e.getMessage(),
+									Toast.LENGTH_SHORT).show();
 						}
 
 						@Override
 						public void onResponseSucces(MBase response) {
-							Toast.makeText(getActivity(), "新病例创建成功", Toast.LENGTH_SHORT).show();
-							EventBus.getDefault().post(new CaseEvent(CaseEvent.TYPE_ADD));
+							Toast.makeText(getActivity(), "新病例创建成功",
+									Toast.LENGTH_SHORT).show();
+							EventBus.getDefault().post(
+									new CaseEvent(CaseEvent.TYPE_ADD));
 							finish();
 						}
 					});
@@ -120,9 +125,9 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		hosArrowImage = (ImageView) findViewById(R.id.hos_arrow_image);
 		findViewById(R.id.hospital_layout).setOnClickListener(this);
 		hospitalTv = (TextView) findViewById(R.id.hospital_tv);
-		//医院
+		// 医院
 		hospitalTv.setText(UserContext.getInstance().getUser().hos_fullname);
-		
+
 		keshiTv = (TextView) findViewById(R.id.keshi_tv);
 		keshiEt = (EditText) findViewById(R.id.keshi_et);
 		roomTv = (TextView) findViewById(R.id.room_tv);
@@ -164,12 +169,10 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.state = state;
 		return info;
 	}
-	
 
-	
 	private String getHospitalName() {
 		String hostv = (String) hospitalTv.getText();
-		if(TextUtils.isEmpty(hostv)) {
+		if (TextUtils.isEmpty(hostv)) {
 			hostv = UserContext.getInstance().getUser().hos_fullname;
 		}
 		return hostv;
@@ -181,10 +184,13 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		} else if (targetId == R.id.doctors_layout) {
 			CaseInfo caseinfo = new CaseInfo();
 			caseinfo.id = tempCaseId;
-			caseinfo.admin_doctor = new DoctorInfo(UserContext.getInstance().getUser());
+			caseinfo.admin_doctor = new DoctorInfo(UserContext.getInstance()
+					.getUser());
 			caseinfo.participate_doctor = currentDoctorList;
-			GroupDetailsActivity.show(getActivity(), caseinfo, QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR);
-//			DoctorPickActivity.show(getActivity(), caseinfo, currentDoctorList, QjConstant.REQUEST_CODE_NEW_CASE);
+			GroupDetailsActivity.show(getActivity(), caseinfo,
+					QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR);
+			// DoctorPickActivity.show(getActivity(), caseinfo,
+			// currentDoctorList, QjConstant.REQUEST_CODE_NEW_CASE);
 		}
 	}
 
@@ -195,7 +201,8 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 			@Override
 			public void onError(Call call, Exception e) {
-				Toast.makeText(getActivity(), "新病例创建失败 " + e.getMessage(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "新病例创建失败 " + e.getMessage(),
+						Toast.LENGTH_SHORT).show();
 
 			}
 
@@ -208,12 +215,15 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 						onJumpAction(targetId);
 						// PhotoDataManagerActivity.show(getActivity());
 					} else {
-						Toast.makeText(getActivity(), "新病例创建成功", Toast.LENGTH_SHORT).show();
-						EventBus.getDefault().post(new CaseEvent(CaseEvent.TYPE_ADD));
+						Toast.makeText(getActivity(), "新病例创建成功",
+								Toast.LENGTH_SHORT).show();
+						EventBus.getDefault().post(
+								new CaseEvent(CaseEvent.TYPE_ADD));
 						finish();
 					}
 				} else {
-					Toast.makeText(getActivity(), "新临时病例创建失败 ", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "新临时病例创建失败 ",
+							Toast.LENGTH_SHORT).show();
 
 				}
 			}
@@ -235,7 +245,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 	private String createDiagnose() {
 		return diagnose_view.getDiagnoseString();
-		
+
 	}
 
 	private String getName() {
@@ -260,17 +270,21 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.gender_man_tv:
-			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor), null, null,
-					null);
-			genderManTv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_press), null, null,
-					null);
+			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(
+					getResources().getDrawable(R.drawable.btn_choice_nor),
+					null, null, null);
+			genderManTv
+					.setCompoundDrawablesWithIntrinsicBounds(getResources()
+							.getDrawable(R.drawable.btn_choice_press), null,
+							null, null);
 			selectSex = 1;
 			break;
 		case R.id.gender_woman_tv:
-			genderManTv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor), null, null,
-					null);
-			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_press), null, null,
-					null);
+			genderManTv.setCompoundDrawablesWithIntrinsicBounds(getResources()
+					.getDrawable(R.drawable.btn_choice_nor), null, null, null);
+			genderWomanTv.setCompoundDrawablesWithIntrinsicBounds(
+					getResources().getDrawable(R.drawable.btn_choice_press),
+					null, null, null);
 			selectSex = 2;
 			break;
 		case R.id.photo_data_layout:
@@ -282,22 +296,26 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		case R.id.hospital_layout:
 			MeHospitalActivity.show(getActivity());
 			break;
-			
+
 		case R.id.state_layout:
 			EditCaseStateActivity.show(getActivity());
 			break;
-			
+
 		case R.id.rule_layout:
-			if(TextUtils.isEmpty(mFlowInfo.title)) {
-				MeFlowActivity.show(getActivity());
-			} else {
-				MeFlowDetailActivity.show(getActivity(), mFlowInfo, QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
-//			MeFlowEditActivity.show(getActivity(), mFlowInfo, QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
-			}
+			// if(TextUtils.isEmpty(mFlowInfo.title)) {
+			// MeFlowActivity.show(getActivity());
+			// } else {
+			CaseFlowDetailActivity.show(getActivity(), "", mFlowInfo,
+					QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+			// MeFlowEditActivity.show(getActivity(), mFlowInfo,
+			// QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+			// }
 			break;
 		}
 	}
+
 	private FlowInfo mFlowInfo = new FlowInfo();
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -305,14 +323,15 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
 			case QjConstant.REQUEST_CODE_NEW_CASE:// 添加群成员
-				currentDoctorList = data.getParcelableArrayListExtra("selectedDoctorList");
+				currentDoctorList = data
+						.getParcelableArrayListExtra("selectedDoctorList");
 				break;
 			case QjConstant.REQUEST_CODE_ADD_HOSPITAL:
 				currentHospital = data.getStringExtra("string");
 				hospitalTv.setText(currentHospital);
 				break;
 			case EditCaseActivity.REQUEST_CASE_STATE:
-				treat_state  = data.getStringExtra("string");
+				treat_state = data.getStringExtra("string");
 				stateLayout.setRightText(treat_state);
 				break;
 			case QjConstant.REQUEST_CODE_NEW_CASE_FLOW:
@@ -320,8 +339,9 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 				break;
 			case QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR:
 				CaseInfo tempCase = data.getParcelableExtra("caseInfo");
-				if(tempCase != null) {
-					currentDoctorList= new ArrayList<>(tempCase.participate_doctor);
+				if (tempCase != null) {
+					currentDoctorList = new ArrayList<>(
+							tempCase.participate_doctor);
 				}
 				break;
 			}

@@ -39,7 +39,9 @@ public class QjConstant extends EaseConstant {
 	
 	public static final int REQUEST_CODE_EDIT_CASE_FLOW = 4009;
 	public static final int REQUEST_CODE_NEW_CASE_FLOW = 4011;
-	public static final int REQUEST_CODE_ME_FLOW = 4012;
+	public static final int REQUEST_CODE_ME_FLOW = 4012; 
+	public static final int REQUEST_CODE_CASE_FLOW_LIST = 4013; //从新建和编辑病例进 模版选择页
+//	public static final int REQUEST_CODE_EDIT_ME_FLOW = 4014; //从详情页进编辑页
 
 	public static final DisplayImageOptions optionsImage = new DisplayImageOptions.Builder()
 			.showImageForEmptyUri(R.drawable.default_error)

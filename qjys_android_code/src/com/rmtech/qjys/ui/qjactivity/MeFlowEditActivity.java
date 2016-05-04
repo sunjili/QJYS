@@ -2,11 +2,10 @@ package com.rmtech.qjys.ui.qjactivity;
 
 import java.util.HashMap;
 
+import okhttp3.Call;
+
 import org.greenrobot.eventbus.EventBus;
 
-import okhttp3.Call;
-import android.app.Activity;
-import android.app.usage.UsageEvents.Event;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +14,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.rmtech.qjys.QjConstant;
@@ -40,18 +41,19 @@ import com.sjl.lib.http.okhttp.OkHttpUtils;
  */
 public class MeFlowEditActivity extends MeFlowBaseActivity implements
 		View.OnClickListener {
-	private EditText et_title;
-	private EditText et_content;
-	private Button btn_delete;
+	protected EditText et_title;
+	protected EditText et_content;
+	protected Button btn_delete;
 	private String title;
 	private String content;
 	private Context context;
-	private ImageView iv_right;
-	private int requestCode;
-	private FlowInfo flowInfo;
-	private boolean isInCaseModel;
+	private CheckBox iv_right;
+	protected int requestCode;
+	protected FlowInfo flowInfo;
+	protected boolean isSave = false;
+	protected boolean isNew = false;
 
-	private CaseInfo getCaseInfo() {
+	protected CaseInfo getCaseInfo() {
 		return GroupAndCaseListManager.getInstance()
 				.getCaseInfoByCaseId(caseId);
 
@@ -63,23 +65,26 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 		setContentView(R.layout.qj_me_flow_edit);
 		setTitle("编辑临床诊疗规范及流程");
 		context = MeFlowEditActivity.this;
-		requestCode = getIntent().getIntExtra("requestCode",
-				QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
 		flowInfo = getIntent().getParcelableExtra("FlowInfo");
-		if (!TextUtils.isEmpty(caseId) && getCaseInfo() != null) {
-//			isInCaseModel = true;
-		}
 		setLeftTitle("");
+		initView();
 		setRightTitle("保存", new OnClickListener() {
-
 
 			@Override
 			public void onClick(View v) {
-				if (isInCaseModel) {
-					final String procedure_title = et_title.getText()
-							.toString();
-					final String procedure_text = et_content.getText()
-							.toString();
+				final String procedure_title = et_title.getText().toString()
+						.trim();
+				final String procedure_text = et_content.getText().toString()
+						.trim();
+				if (TextUtils.isEmpty(procedure_title)) {
+					Toast.makeText(getActivity(), "请输入标题", 1).show();
+					return;
+				}
+				if (TextUtils.isEmpty(procedure_text)) {
+					Toast.makeText(getActivity(), "请输入内容", 1).show();
+					return;
+				}
+				if (requestType == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW) {
 
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("patient_id", caseId);
@@ -122,58 +127,46 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 					if (!TextUtils.isEmpty(flowInfo.id)) {
 						FlowListManager.getInstance().updataFlowInfo(flowInfo);
 					}
-					if (requestCode == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW) {
-						FlowListManager.getInstance().addFlow(flowInfo,
-								new BaseModelCallback() {
-
-									@Override
-									public void onResponseSucces(MBase response) {
-										Toast.makeText(getActivity(), "保存成功", 1)
-												.show();
-										setResult(RESULT_OK, new Intent()
-												.putExtra("FlowInfo",
-														(Parcelable) flowInfo));
-										MeFlowEditActivity.this.finish();
-									}
-
-									@Override
-									public void onError(Call call, Exception e) {
-										// TODO Auto-generated method stub
-										Toast.makeText(getActivity(), "保存失败", 1)
-												.show();
-									}
-								});
-					} else if (requestCode == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
-						setResult(RESULT_OK, new Intent().putExtra("FlowInfo",
-								(Parcelable) flowInfo));
-						MeFlowEditActivity.this.finish();
-					}
+					setResult(RESULT_OK, new Intent().putExtra("FlowInfo",
+							(Parcelable) flowInfo));
+					MeFlowEditActivity.this.finish();
+				}
+				if (requestType == QjConstant.REQUEST_CODE_ME_FLOW || isSave) {
+					saveAsPlate();
 				}
 			}
 		});
-		initView();
 	}
 
-	private void initView() {
+	protected void initView() {
 		et_title = (EditText) findViewById(R.id.et_title);
 		et_content = (EditText) findViewById(R.id.et_content);
 		btn_delete = (Button) findViewById(R.id.btn_delete);
 		btn_delete.setOnClickListener(this);
-		iv_right = (ImageView) findViewById(R.id.iv_right);
-		iv_right.setOnClickListener(this);
-		switch(requestType) {
+		iv_right = (CheckBox) findViewById(R.id.iv_right);
+		// iv_right.setOnClickListener(this);
+		iv_right.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				isSave = isChecked;
+			}
+		});
+		switch (requestType) {
 		case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
+			if (!TextUtils.isEmpty(caseId) && getCaseInfo() != null) {
+				et_title.setText(getCaseInfo().procedure_title);
+				et_content.setText(getCaseInfo().procedure_text);
+			}
+			break;
+		case QjConstant.REQUEST_CODE_ME_FLOW:
+			findViewById(R.id.bottom_layout).setVisibility(View.GONE);
 			break;
 		}
 		if (flowInfo != null) {
 			et_title.setText(flowInfo.title);
 			et_content.setText(flowInfo.procedure);
-			btn_delete.setVisibility(View.GONE);
-		} else if (isInCaseModel) {
-			et_title.setText(getCaseInfo().procedure_title);
-			et_content.setText(getCaseInfo().procedure_text);
-		} else {
-			btn_delete.setVisibility(View.GONE);
 		}
 
 	}
@@ -182,26 +175,47 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 		return true;
 	}
 
-	public static void show(Activity activity, int requestCode) {
-		Intent intent = new Intent();
-		intent.setClass(activity, MeFlowEditActivity.class);
-		intent.putExtra("requestCode", requestCode);
-		activity.startActivityForResult(intent, requestCode);
+	protected void saveAsPlate() {
+		FlowListManager.getInstance().addFlow(flowInfo,
+				new BaseModelCallback() {
+
+					@Override
+					public void onResponseSucces(MBase response) {
+						// Toast.makeText(getActivity(), "保存成功", 1).show();
+						// setResult(RESULT_OK, new
+						// Intent().putExtra("FlowInfo",
+						// (Parcelable) flowInfo));
+					}
+
+					@Override
+					public void onError(Call call, Exception e) {
+						// TODO Auto-generated method stub
+						// Toast.makeText(getActivity(), "保存失败", 1).show();
+					}
+				});
 	}
 
-	public static void show(Activity activity, String caseId, int requestCode) {
-		Intent intent = new Intent();
-		intent.setClass(activity, MeFlowEditActivity.class);
-		intent.putExtra("requestCode", requestCode);
-		setCaseId(intent, caseId);
-		activity.startActivityForResult(intent, requestCode);
-	}
+	// public static void show(Activity activity, int requestCode) {
+	// Intent intent = new Intent();
+	// intent.setClass(activity, MeFlowEditActivity.class);
+	// intent.putExtra("requestCode", requestCode);
+	// activity.startActivityForResult(intent, requestCode);
+	// }
+	//
+	// public static void show(Activity activity, String caseId, int
+	// requestCode) {
+	// Intent intent = new Intent();
+	// intent.setClass(activity, MeFlowEditActivity.class);
+	// intent.putExtra("requestCode", requestCode);
+	// setCaseId(intent, caseId);
+	// activity.startActivityForResult(intent, requestCode);
+	// }
 
 	public static void show(BaseActivity activity, FlowInfo item,
 			int requestCode) {
 		Intent intent = new Intent();
 		intent.setClass(activity, MeFlowEditActivity.class);
-		intent.putExtra("requestCode", requestCode);
+		intent.putExtra("requestType", requestCode);
 		intent.putExtra("FlowInfo", (Parcelable) item);
 		activity.startActivityForResult(intent, requestCode);
 	}
@@ -214,6 +228,7 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 			break;
 		case R.id.iv_right:
 			Toast.makeText(context, "保存为模板", Toast.LENGTH_SHORT).show();
+			iv_right.setChecked(true);
 			break;
 
 		default:
