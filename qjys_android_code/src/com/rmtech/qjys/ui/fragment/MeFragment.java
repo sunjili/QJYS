@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,14 +23,18 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.hyphenate.EMCallBack;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallback;
+import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.UserInfo;
 import com.rmtech.qjys.model.gson.MUrlData;
+import com.rmtech.qjys.ui.LoginActivity;
+import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.qjactivity.ImageCropActivity;
 import com.rmtech.qjys.ui.qjactivity.MeAboutActivity;
 import com.rmtech.qjys.ui.qjactivity.MeCleanMemoryActivity;
@@ -43,6 +48,7 @@ import com.rmtech.qjys.ui.qjactivity.MeRecycleActivity;
 import com.rmtech.qjys.ui.qjactivity.MeRoomActivity;
 import com.rmtech.qjys.ui.qjactivity.MeSexActivity;
 import com.rmtech.qjys.ui.qjactivity.MeTreatmentStateActivity;
+import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
 import com.rmtech.qjys.utils.PhotoUtil;
 import com.sjl.lib.alertview.AlertView;
@@ -104,7 +110,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 
 	private void setViewValue() {
 		me_name.setRightText(meValue.name);
-		if (meValue.sex == 0) {
+		if (meValue.sex == 1) {
 			me_sex.setRightText("男");
 		} else {
 			me_sex.setRightText("女");
@@ -120,7 +126,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 			me_phone.setRightText("");
 			L.e("------设置我的界面手机号-------");
 		}
-		if (meValue.isset_passwd==1) {
+		if (meValue.isset_passwd == 1) {
 			me_password.setRightText("已设置");
 		} else {
 			me_password.setRightText("");
@@ -267,7 +273,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 		case REQUEST_ME_PASSWORD:
 			if (resultCode == Activity.RESULT_OK) {
 				boolean bool = data.getBooleanExtra("boolean", false);
-				meValue.isset_passwd = bool?1:0;
+				meValue.isset_passwd = bool ? 1 : 0;
 				setViewValue();
 			}
 			break;
@@ -312,7 +318,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 					}).show();
 			break;
 		case R.id.me_name:
-//			MeNameActivity.show(context);
+			// MeNameActivity.show(context);
 			jumpActivity(MeNameActivity.class, REQUEST_ME_NAME);
 			break;
 		case R.id.me_sex:
@@ -329,7 +335,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 			jumpActivity(MePhoneActivity.class, REQUEST_ME_PHONE, meValue.phone);
 			break;
 		case R.id.me_password:
-			if (meValue.isset_passwd ==1) {
+			if (meValue.isset_passwd == 1) {
 				// 更改密码
 				jumpActivity(MePasswordChangeActivity.class, REQUEST_ME_PASSWORD);
 			} else {
@@ -356,15 +362,41 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 
 			break;
 		case R.id.btn_logout:
-
-			Toast.makeText(context, "退出登录", Toast.LENGTH_SHORT).show();
-			btn_logout.setVisibility(View.GONE);
-			meValue = new UserInfo();
-			setViewValue();
+			logout();
+//			Toast.makeText(context, "退出登录", Toast.LENGTH_SHORT).show();
+			// btn_logout.setVisibility(View.GONE);
+			// meValue = new UserInfo();
+			// setViewValue();
 			break;
 		default:
 			break;
 		}
+	}
+
+	void logout() {
+		UserContext.getInstance().clear();
+		QjLoginActivity.show(getActivity());
+		QjHelper.getInstance().logout(false, new EMCallBack() {
+
+			@Override
+			public void onSuccess() {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						// 重新显示登陆页面
+						//((MainActivity) getActivity()).finish();
+					}
+				});
+			}
+
+			@Override
+			public void onProgress(int progress, String status) {
+
+			}
+
+			@Override
+			public void onError(int code, String message) {
+			}
+		});
 	}
 
 	private void jumpActivity(Class<?> cls) {

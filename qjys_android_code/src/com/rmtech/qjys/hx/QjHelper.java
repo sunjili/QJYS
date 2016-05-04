@@ -715,6 +715,8 @@ public class QjHelper {
      * 账号在别的设备登录
      */
     protected void onConnectionConflict(){
+		UserContext.getInstance().clear();
+
         Intent intent = new Intent(appContext, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(QjConstant.ACCOUNT_CONFLICT, true);

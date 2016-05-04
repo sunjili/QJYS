@@ -3,7 +3,9 @@ package com.rmtech.qjys.callback;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import com.rmtech.qjys.QjApplication;
 import com.rmtech.qjys.model.gson.MBase;
+import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.sjl.lib.http.okhttp.callback.Callback;
 import com.sjl.lib.utils.L;
 
@@ -26,6 +28,13 @@ public abstract class QjHttpCallback<T extends MBase> extends Callback<T> {
 		if(response.ret == 0) {
 			onResponseSucces(response);
 		} else {
+			if(response.ret == 100) {
+				try {
+					QjLoginActivity.show(QjApplication.getInstance());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			onError(null, new Exception("response.ret = "+response.ret + " response.msg="+response.msg));
 		}
 	}

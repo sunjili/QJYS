@@ -36,12 +36,14 @@ import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.hx.QjModel;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.BlacklistActivity;
 import com.rmtech.qjys.ui.DiagnoseActivity;
 import com.rmtech.qjys.ui.LoginActivity;
 import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.OfflinePushNickActivity;
 import com.rmtech.qjys.ui.UserProfileActivity;
+import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 
 /**
  * 设置界面
@@ -325,6 +327,7 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 		pd.setMessage(st);
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
+		UserContext.getInstance().clear();
 		QjHelper.getInstance().logout(false,new EMCallBack() {
 			
 			@Override
@@ -334,8 +337,8 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 						pd.dismiss();
 						// 重新显示登陆页面
 						((MainActivity) getActivity()).finish();
-						startActivity(new Intent(getActivity(), LoginActivity.class));
-						
+//						startActivity(new Intent(getActivity(), LoginActivity.class));
+						QjLoginActivity.show(getActivity());
 					}
 				});
 			}

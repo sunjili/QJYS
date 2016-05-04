@@ -48,12 +48,12 @@ import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.db.UserDao;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.hx.QjHelper;
-import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.fragment.ContactListFragment;
 import com.rmtech.qjys.ui.fragment.ConversationListFragment;
 import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
+import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -481,12 +481,14 @@ public class MainActivity extends BaseActivity {
 	 * 显示帐号在别处登录dialog
 	 */
 	private void showConflictDialog() {
+
 		isConflictDialogShow = true;
 		QjHelper.getInstance().logout(false, null);
 		String st = getResources().getString(R.string.Logoff_notification);
 		if (!MainActivity.this.isFinishing()) {
 			// clear up global variables
 			try {
+
 				if (conflictBuilder == null)
 					conflictBuilder = new android.app.AlertDialog.Builder(MainActivity.this);
 				conflictBuilder.setTitle(st);
@@ -495,13 +497,13 @@ public class MainActivity extends BaseActivity {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						UserContext.getInstance().clearCookie();
 						dialog.dismiss();
 						conflictBuilder = null;
 						finish();
-						Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
+						QjLoginActivity.show(MainActivity.this);
+//						Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//						startActivity(intent);
 					}
 				});
 				conflictBuilder.setCancelable(false);

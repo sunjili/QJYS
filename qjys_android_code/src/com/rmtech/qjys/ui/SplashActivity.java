@@ -75,7 +75,8 @@ public class SplashActivity extends BaseActivity {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
 					}
-					startActivity(new Intent(SplashActivity.this, QjLoginActivity.class));
+//					startActivity(new Intent(SplashActivity.this, QjLoginActivity.class));
+					QjLoginActivity.show(SplashActivity.this);
 					finish();
 				}
 			}

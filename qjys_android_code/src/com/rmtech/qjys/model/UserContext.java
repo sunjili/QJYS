@@ -62,28 +62,32 @@ public class UserContext {
 	public void setUser(UserInfo user) {
 		this.mUser = user;
 		if (mUser != null && mUser.getCookie() != null) {
+			cookie = mUser.getCookie();
 			isLogined = true;
-			saveCookie();
+			saveCookieSync();
 		}
 	}
 
+	private void saveCookieSync() {
+		try {
+			SharedPreferences.Editor editor = PreferenceManager.getInstance().getEditor();
+			if (editor != null) {
+				Gson gson = new Gson();
+				String json = gson.toJson(mUser);
+				editor.putString("user", json);
+				editor.commit();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private void saveCookie() {
 		new AsyncTask<Void, Void, Void>() {
 
 			@Override
 			protected Void doInBackground(Void... params) {
-				try {
-					SharedPreferences.Editor editor = PreferenceManager.getInstance().getEditor();
-					if (editor != null) {
-						Gson gson = new Gson();
-						String json = gson.toJson(mUser);
-						editor.putString("user", json);
-						editor.commit();
-					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				saveCookieSync();
 				return null;
 			}
 

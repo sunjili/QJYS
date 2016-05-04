@@ -84,10 +84,14 @@ public class MeSexActivity extends BaseActivity implements OnClickListener {
 		ll_woman.setOnClickListener(this);
 		iv_man = (ImageView) findViewById(R.id.iv_man);
 		iv_woman = (ImageView) findViewById(R.id.iv_woman);
-		if(UserContext.getInstance().getUser().sex == 1) {
-			ll_man.performClick();
+		if (UserContext.getInstance().getUser().sex == 1) {
+			man = 1;
+			iv_man.setVisibility(View.VISIBLE);
+			iv_woman.setVisibility(View.INVISIBLE);
 		} else {
-			iv_woman.performClick();
+			man = 2;
+			iv_woman.setVisibility(View.VISIBLE);
+			iv_man.setVisibility(View.INVISIBLE);
 		}
 
 	}

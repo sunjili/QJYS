@@ -62,7 +62,7 @@ public class QjHttp {
 	public static final String URL_GET_HOSBYNAME = "/hospital/gethosbyname";
 	public static final String URL_GET_USERSINFOBYIDS = "/doctor/getusersinfobyids";
 	public static final String URL_UPDATE_ADMIN = "/patient/updateadmin";
-	public static final String URL_DELETE_PATIENT = "/patient/deletepatient";
+	public static final String URL_DELETE_PATIENT = "/patient/deletepatients";
 	public static final String URL_TREATE_PROCEDURELIST = "/doctor/treateprocedurelist";
 	public static final String URL_SAVE_TREATEPROCEDURE = "/doctor/savetreateprocedure";
 
@@ -104,7 +104,10 @@ public class QjHttp {
 	 */
 	public static void deletePatient(String patient_id, BaseModelCallback callback) {
 		HashMap<String, String> params = new HashMap<>();
-		params.put("patient_id", patient_id);
+		params.put("patient_ids", patient_id);
+		params.put("type", 2+"");
+//		patient_ids : 病例id,以逗号分隔
+//		type : 2 回收站  3彻底删除
 		OkHttpUtils.post(URL_DELETE_PATIENT, params, callback);
 	}
 	
@@ -212,6 +215,9 @@ public class QjHttp {
 				.params(newparams)//
 				.headers(headers)//
 				.build()//
+				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+                .readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+                .writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
 				.execute(callback);
 		// OkHttpUtils.getInstance().cancelTag(tag);
 
@@ -236,6 +242,9 @@ public class QjHttp {
 				.params(newparams)//
 				.headers(headers)//
 				.tag(tag).build()//
+				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+                .readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+                .writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
 				.execute(callback);
 		// OkHttpUtils.getInstance().cancelTag(tag);
 

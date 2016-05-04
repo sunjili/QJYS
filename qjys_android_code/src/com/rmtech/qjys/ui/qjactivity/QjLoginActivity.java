@@ -15,6 +15,7 @@ package com.rmtech.qjys.ui.qjactivity;
 
 import okhttp3.Call;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -235,7 +236,11 @@ public class QjLoginActivity extends BaseActivity {
 				}
 			});
 			mProgressDialog.setMessage(getString(R.string.Is_landing));
-			mProgressDialog.show();
+			try {
+				mProgressDialog.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -246,5 +251,13 @@ public class QjLoginActivity extends BaseActivity {
 	 */
 	public void register(View view) {
 		startActivityForResult(new Intent(this, RegisterActivity.class), 0);
+	}
+
+	public static void show(Context mainActivity) {
+		Intent intent = new Intent();
+		intent.setClass(mainActivity, QjLoginActivity.class);
+		intent .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		mainActivity.startActivity(intent);
+
 	}
 }
