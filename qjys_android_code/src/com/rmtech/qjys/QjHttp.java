@@ -31,6 +31,7 @@ import com.rmtech.qjys.model.gson.MHosList;
 import com.rmtech.qjys.model.gson.MIdData;
 import com.rmtech.qjys.model.gson.MImageList;
 import com.rmtech.qjys.model.gson.MPatientList;
+import com.rmtech.qjys.model.gson.MStateList;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
 import com.rmtech.qjys.model.gson.MUrlData;
 import com.rmtech.qjys.model.gson.MUser;
@@ -65,13 +66,71 @@ public class QjHttp {
 	public static final String URL_DELETE_PATIENT = "/patient/deletepatients";
 	public static final String URL_TREATE_PROCEDURELIST = "/doctor/treateprocedurelist";
 	public static final String URL_SAVE_TREATEPROCEDURE = "/doctor/savetreateprocedure";
+	public static final String URL_TREATE_STATE_LIST = "/doctor/treatestatelist";
+	public static final String URL_DELETE_TREATE_STATE = "/doctor/deletetreatestate";
+	public static final String URL_ADD_TREATESTATE = "/doctor/addtreatestate";
+
+	/**
+	 * 7 添加就诊状态 /doctor/addtreatestate 请求方法： post
+	 * 
+	 * 请求参数 name: 姓名
+	 */
+	public static void addTreateState(String name, BaseModelCallback callback) {
+		if (name == null) {
+			return;
+		}
+		HashMap<String, String> params = new HashMap<>();
+		params.put("name", name);
+		OkHttpUtils.post(URL_ADD_TREATESTATE, params, callback);
+	}
+
+	/**
+	 * /doctor/deletetreatestate 请求方法： post
+	 * 
+	 * 请求参数 id: id
+	 */
+	public static void deleteTreateState(String id, BaseModelCallback callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("id", id);
+		OkHttpUtils.post(URL_DELETE_TREATE_STATE, params, callback);
+	}
+
+	/**
+	 * 6 就诊状态列表 /doctor/treatestatelist
+	 * 
+	 */
+	public static void treateStateList(final QjHttpCallbackNoParse<MStateList> callback) {
+		// OkHttpUtils.post(URL_TREATE_PROCEDURELIST, null, callback);
+		String cacheKey = URL_TREATE_STATE_LIST + UserContext.getInstance().getCookie();
+		postWitchCache(cacheKey, URL_TREATE_STATE_LIST, null, new QjHttpCallbackNoParse<MStateList>() {
+
+			@Override
+			public MStateList parseNetworkResponse(String str) throws Exception {
+				return new Gson().fromJson(str, MStateList.class);
+			}
+
+			@Override
+			public void onResponseSucces(boolean isCache, MStateList response) {
+				if (callback != null) {
+					callback.onResponseSucces(isCache, response);
+				}
+			}
+
+			@Override
+			public void onError(Call call, Exception e) {
+				if (callback != null) {
+					callback.onError(call, e);
+				}
+			}
+		});
+	}
 
 	/**
 	 * 9 诊疗规范列表 /doctor/treateprocedurelist
 	 * 
 	 */
 	public static void treateProcedurelist(final QjHttpCallbackNoParse<MFlowList> callback) {
-//		OkHttpUtils.post(URL_TREATE_PROCEDURELIST, null, callback);
+		// OkHttpUtils.post(URL_TREATE_PROCEDURELIST, null, callback);
 		String cacheKey = URL_TREATE_PROCEDURELIST + UserContext.getInstance().getCookie();
 		postWitchCache(cacheKey, URL_TREATE_PROCEDURELIST, null, new QjHttpCallbackNoParse<MFlowList>() {
 
@@ -105,25 +164,26 @@ public class QjHttp {
 	public static void deletePatient(String patient_id, BaseModelCallback callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("patient_ids", patient_id);
-		params.put("type", 2+"");
-//		patient_ids : 病例id,以逗号分隔
-//		type : 2 回收站  3彻底删除
+		params.put("type", 2 + "");
+		// patient_ids : 病例id,以逗号分隔
+		// type : 2 回收站 3彻底删除
 		OkHttpUtils.post(URL_DELETE_PATIENT, params, callback);
 	}
-	
+
 	/**
 	 * 10 添加诊疗规范
+	 * 
 	 * @param flowInfo
 	 * @param callback
 	 */
 	public static void savetreateprocedure(FlowInfo flowInfo, BaseModelCallback callback) {
-		if(flowInfo == null) {
+		if (flowInfo == null) {
 			return;
 		}
 		HashMap<String, String> params = new HashMap<>();
 		params.put("title", flowInfo.title);
 		params.put("procedure", flowInfo.procedure);
-		if(!TextUtils.isEmpty(flowInfo.id)) {
+		if (!TextUtils.isEmpty(flowInfo.id)) {
 			params.put("id", flowInfo.id);
 		}
 		OkHttpUtils.post(URL_SAVE_TREATEPROCEDURE, params, callback);
@@ -207,18 +267,23 @@ public class QjHttp {
 		HttpSetting.addHttpParams(newparams, URL_UPLOAD_IMAGE);
 		HashMap<String, String> headers = new HashMap<String, String>();
 		HttpSetting.addHttpHeader(headers);
-		OkHttpUtils.post()//
+		OkHttpUtils
+				.post()
+				//
 
-				.addFile("image", "head", new File(path))//
-				.url(HttpSetting.BASE_URL + URL_UPLOAD_HEAD)//
+				.addFile("image", "head", new File(path))
+				//
+				.url(HttpSetting.BASE_URL + URL_UPLOAD_HEAD)
+				//
 				// .mediaType(MediaType.parse("application/json; charset=utf-8"))
-				.params(newparams)//
-				.headers(headers)//
-				.build()//
-				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
-                .readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
-                .writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
-				.execute(callback);
+				.params(newparams)
+				//
+				.headers(headers)
+				//
+				.build()
+				//
+				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS).readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+				.writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS).execute(callback);
 		// OkHttpUtils.getInstance().cancelTag(tag);
 
 	}
@@ -234,18 +299,23 @@ public class QjHttp {
 		L.e("path=" + path);
 		HashMap<String, String> headers = new HashMap<String, String>();
 		HttpSetting.addHttpHeader(headers);
-		OkHttpUtils.post()//
+		OkHttpUtils
+				.post()
+				//
 
-				.addFile("image", name, new File(path))//
-				.url(HttpSetting.BASE_URL + URL_UPLOAD_IMAGE)//
+				.addFile("image", name, new File(path))
+				//
+				.url(HttpSetting.BASE_URL + URL_UPLOAD_IMAGE)
+				//
 				// .mediaType(MediaType.parse("application/json; charset=utf-8"))
-				.params(newparams)//
-				.headers(headers)//
-				.tag(tag).build()//
-				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
-                .readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
-                .writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
-				.execute(callback);
+				.params(newparams)
+				//
+				.headers(headers)
+				//
+				.tag(tag).build()
+				//
+				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS).readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+				.writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS).execute(callback);
 		// OkHttpUtils.getInstance().cancelTag(tag);
 
 	}

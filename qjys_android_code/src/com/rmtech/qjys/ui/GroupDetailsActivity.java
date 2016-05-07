@@ -98,7 +98,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		super.onCreate(savedInstanceState);
 
 		caseInfo = getIntent().getParcelableExtra("caseInfo");
-		requestType  = getIntent().getIntExtra("type", 0);//("caseInfo");
+		requestType = getIntent().getIntExtra("type", 0);// ("caseInfo");
 
 		// 获取传过来的groupid
 		groupId = caseInfo.group_id;// getIntent().getStringExtra("groupId");
@@ -119,16 +119,16 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		deleteBtn = (Button) findViewById(R.id.btn_exitdel_grp);
 		change_admin_view = findViewById(R.id.change_admin_view);
 		change_admin_view.setOnClickListener(this);
-		name_tv = (TextView)findViewById(R.id.name_tv);
-		nike_tv = (TextView)findViewById(R.id.nike_tv);
+		name_tv = (TextView) findViewById(R.id.name_tv);
+		nike_tv = (TextView) findViewById(R.id.nike_tv);
 		rl_switch_block_groupmsg = (RelativeLayout) findViewById(R.id.rl_switch_block_groupmsg);
 		switchButton = (EaseSwitchButton) findViewById(R.id.switch_btn);
 
 		rl_switch_block_groupmsg.setOnClickListener(this);
 		name_tv.setText(caseInfo.admin_doctor.name);
-		nike_tv.setText("昵称："+caseInfo.admin_doctor.name);
+		nike_tv.setText("昵称：" + caseInfo.admin_doctor.name);
 		// idText.setText(groupId);
-		if(requestType == QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR) {
+		if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR) {
 			exitBtn.setVisibility(View.GONE);
 			deleteBtn.setVisibility(View.GONE);
 			clearAllHistory.setVisibility(View.GONE);
@@ -152,8 +152,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		// ((TextView)
 		// findViewById(R.id.group_name)).setText(group.getGroupName() + "(" +
 		// group.getAffiliationsCount() + st);
-		if(requestType == QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR ) {
-			((TextView) findViewById(R.id.group_name)).setText("创建"+caseInfo.name+"病例讨论组");
+		if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR) {
+			((TextView) findViewById(R.id.group_name)).setText("创建" + caseInfo.name + "病例讨论组");
 
 		} else {
 			((TextView) findViewById(R.id.group_name)).setText(caseInfo.name);
@@ -193,14 +193,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		clearAllHistory.setOnClickListener(this);
 		// blacklistLayout.setOnClickListener(this);
 		// changeGroupNameLayout.setOnClickListener(this);
-
 	}
-	
+
 	@Override
 	public void finish() {
 		Intent intent = new Intent();
-		intent.putExtra("caseInfo", (Parcelable)caseInfo);
-		setResult(RESULT_OK, intent );
+		intent.putExtra("caseInfo", (Parcelable) caseInfo);
+		setResult(RESULT_OK, intent);
 		super.finish();
 	}
 
@@ -554,8 +553,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		case R.id.change_admin_view:
 			ArrayList<DoctorInfo> list = new ArrayList<>();
 			list.add(caseInfo.admin_doctor);
-			DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, list,
-					QjConstant.REQUEST_CODE_CHANGE_DOCTOR);
+			DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, list, QjConstant.REQUEST_CODE_CHANGE_DOCTOR);
 
 			break;
 		default:
@@ -1011,6 +1009,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		intent.putExtra("caseInfo", (Parcelable) caseInfo2);
 		activity.startActivityForResult(intent, ChatFragment.REQUEST_CODE_GROUP_DETAIL);
 	}
+
 	public static void show(Activity activity, CaseInfo caseInfo2, int type) {
 		Intent intent = new Intent(activity, GroupDetailsActivity.class);
 		intent.putExtra("caseInfo", (Parcelable) caseInfo2);

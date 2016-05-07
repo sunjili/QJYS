@@ -16,9 +16,12 @@ import android.widget.Toast;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.sjl.lib.http.okhttp.OkHttpUtils;
 
 /**
  * 性别 界面
@@ -26,7 +29,7 @@ import com.rmtech.qjys.ui.BaseActivity;
  * @author Administrator
  * 
  */
-public class MeSexActivity extends BaseActivity implements OnClickListener {
+public class MeSexActivity extends CaseEidtBaseActivity implements OnClickListener {
 	private RelativeLayout ll_man;
 	private RelativeLayout ll_woman;
 	private ImageView iv_man;
@@ -45,6 +48,32 @@ public class MeSexActivity extends BaseActivity implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				// TODO 保存性别
+				if(mCaseInfo != null) {
+					HashMap<String, String> params = new HashMap<String, String>();
+					params.put("sex", mCaseInfo.sex + "");
+					params.put("patient_id", mCaseInfo.id);
+					OkHttpUtils.post(QjHttp.URL_CREATE_PATIENT, params, new BaseModelCallback() {
+
+						@Override
+						public void onError(Call call, Exception e) {
+							Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_LONG).show();
+
+						}
+
+						@Override
+						public void onResponseSucces(MBase response) {
+							CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
+							if(caseInfo != null) {
+								caseInfo.sex = man;
+							}
+							Intent data = new Intent();
+							data.putExtra("int", man);
+							setResult(RESULT_OK, data);
+							finish();
+						}
+					});
+					return;
+				}
 				if (UserContext.getInstance().getUser().sex == man) {
 					Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
 					finish();
@@ -84,7 +113,11 @@ public class MeSexActivity extends BaseActivity implements OnClickListener {
 		ll_woman.setOnClickListener(this);
 		iv_man = (ImageView) findViewById(R.id.iv_man);
 		iv_woman = (ImageView) findViewById(R.id.iv_woman);
-		if (UserContext.getInstance().getUser().sex == 1) {
+		int sex = UserContext.getInstance().getUser().sex;
+		if(mCaseInfo != null) {
+			sex = mCaseInfo.sex;
+		}
+		if (sex == 1) {
 			man = 1;
 			iv_man.setVisibility(View.VISIBLE);
 			iv_woman.setVisibility(View.INVISIBLE);

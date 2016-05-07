@@ -19,15 +19,21 @@ import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.ui.view.MeItemLayout;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
-public class EditCaseActivity extends BaseActivity implements
-		View.OnClickListener {
+public class EditCaseActivity extends BaseActivity implements View.OnClickListener {
 	private String tempStr = "";
+
+	public static final int REQUEST_ME_NAME = 0x2000;
+	public static final int REQUEST_ME_SEX = 0x2001;
+	public static final int REQUEST_ME_HOSPITAL = 0x2002;
+	public static final int REQUEST_ME_ROOM = 0x2003;
 	public static final int REQUEST_CASE_AGE = 0x2102;
 	public static final int REQUEST_CASE_ROOM_NUMBER = 0x2105;
 	public static final int REQUEST_CASE_BED_NUMBER = 0x2106;
 	public static final int REQUEST_CASE_DIAGNOSIS = 0x2107;
 	public static final int REQUEST_CASE_STATE = 0x2108;
+
 	/** 姓名 */
 	private MeItemLayout case_name;
 	/** 性别 */
@@ -49,71 +55,91 @@ public class EditCaseActivity extends BaseActivity implements
 	/** 就诊状态 */
 	private MeItemLayout case_state;
 	private Context context;
-	private CaseInfo meValue;
+	private CaseInfo mCaseInfo;
 
 	@SuppressLint("ResourceAsColor")
 	private void setViewState() {
-		tempStr=meValue.diagnose;
+		tempStr = mCaseInfo.diagnose;
 		ll_state.removeAllViews();
 		if (TextUtils.isEmpty(tempStr)) {
 			tv_right.setText("未设置");
 			tv_right.setTextColor(Color.rgb(244, 113, 75));
 		} else {
-//			tv_right.setText(tempStr);
+			// tv_right.setText(tempStr);
 			tv_right.setTextColor(Color.rgb(126, 126, 126));
 			String[] strings = tempStr.split("&&");
 			for (int i = 0; i < strings.length; i++) {
 				if (i == 0) {
 					tv_right.setText(strings[0]);
 				} else {
-					View view = LayoutInflater.from(context).inflate(
-							R.layout.qj_case_edit_add_state_item, null);
-					TextView tv_right = (TextView) view
-							.findViewById(R.id.tv_right);
-					if(!TextUtils.isEmpty(strings[i])){
+					View view = LayoutInflater.from(context).inflate(R.layout.qj_case_edit_add_state_item, null);
+					TextView tv_right = (TextView) view.findViewById(R.id.tv_right);
+					if (!TextUtils.isEmpty(strings[i])) {
 						tv_right.setText(strings[i]);
 						ll_state.addView(view);
 					}
 				}
 			}
-		
+
 		}
 	}
 
+	@Override
+	protected void onCreate(Bundle arg0) {
+		super.onCreate(arg0);
+		setContentView(R.layout.activity_qj_edit_case);
+		setTitle("编辑病例");
+		context = EditCaseActivity.this;
+		initView();
+		// mCaseInfo=new CaseInfo();
+		mCaseInfo = (CaseInfo) getIntent().getParcelableExtra("case_info");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mCaseInfo != null) {
+			CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
+			if (newCase != null) {
+				mCaseInfo = newCase;
+			}
+		}
+		setViewValue();
+	}
+
 	private void setViewValue() {
-		case_name.setRightText(meValue.name);
-		if (meValue.sex == 0) {
+		case_name.setRightText(mCaseInfo.name);
+		if (mCaseInfo.sex == 1) {
 			case_sex.setRightText("男");
 		} else {
 			case_sex.setRightText("女");
 		}
-		case_age.setRightText(meValue.age);
-		case_hospital.setRightText(meValue.hos_fullname);
-		case_room.setRightText(meValue.department);
-		case_room_number.setRightText(meValue.ward_no);
-		case_bed_number.setRightText(meValue.bed_no);
+		case_age.setRightText(mCaseInfo.age);
+		case_hospital.setRightText(mCaseInfo.hos_fullname);
+		case_room.setRightText(mCaseInfo.department);
+		case_room_number.setRightText(mCaseInfo.ward_no);
+		case_bed_number.setRightText(mCaseInfo.bed_no);
 		setViewState();
-		case_state.setRightText(meValue.treat_state);
+		case_state.setRightText(mCaseInfo.treat_state);
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.case_name:
-			jumpActivity(MeNameActivity.class, MeFragment.REQUEST_ME_NAME);
+			jumpActivity(MeNameActivity.class, REQUEST_ME_NAME);
 			break;
 		case R.id.case_sex:
-			jumpActivity(MeSexActivity.class, MeFragment.REQUEST_ME_SEX);
+			jumpActivity(MeSexActivity.class, REQUEST_ME_SEX);
 			break;
 		case R.id.case_age:
 			jumpActivity(CaseAgeActivity.class, REQUEST_CASE_AGE);
 			break;
 		case R.id.case_hospital:
-			jumpActivity(MeHospitalActivity.class,
-					MeFragment.REQUEST_ME_HOSPITAL);
+			jumpActivity(MeHospitalActivity.class, REQUEST_ME_HOSPITAL);
 			break;
 		case R.id.case_room:
-			jumpActivity(MeRoomActivity.class, MeFragment.REQUEST_ME_ROOM);
+			jumpActivity(MeRoomActivity.class, REQUEST_ME_ROOM);
 			break;
 		case R.id.case_room_number:
 			jumpActivity(CaseRoomNumberActivity.class, REQUEST_CASE_ROOM_NUMBER);
@@ -122,7 +148,7 @@ public class EditCaseActivity extends BaseActivity implements
 			jumpActivity(CaseBedNumberActivity.class, REQUEST_CASE_BED_NUMBER);
 			break;
 		case R.id.case_diagnosis:
-			jumpActivity(CaseDiagnoseActivity.class, REQUEST_CASE_DIAGNOSIS,meValue.diagnose);
+			jumpActivity(CaseDiagnoseActivity.class, REQUEST_CASE_DIAGNOSIS);
 			break;
 		case R.id.case_state:
 			jumpActivity(EditCaseStateActivity.class, REQUEST_CASE_STATE);
@@ -133,19 +159,9 @@ public class EditCaseActivity extends BaseActivity implements
 		}
 	}
 
-	private void jumpActivity(Class<?> cls) {
-		Intent intent = new Intent(context, cls);
-		startActivity(intent);
-	}
-
 	private void jumpActivity(Class<?> cls, int requestCode) {
 		Intent intent = new Intent(context, cls);
-		startActivityForResult(intent, requestCode);
-	}
-
-	private void jumpActivity(Class<?> cls, int requestCode, String str) {
-		Intent intent = new Intent(context, cls);
-		intent.putExtra("string", str);
+		intent.putExtra("CaseInfo", (Parcelable) mCaseInfo);
 		startActivityForResult(intent, requestCode);
 	}
 
@@ -173,39 +189,27 @@ public class EditCaseActivity extends BaseActivity implements
 	}
 
 	@Override
-	protected void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
-		setContentView(R.layout.activity_qj_edit_case);
-		setTitle("编辑病例");
-		context = EditCaseActivity.this;
-		initView();
-//		meValue=new CaseInfo();
-		meValue = (CaseInfo) getIntent().getParcelableExtra("case_info");
-		setViewValue();
-	}
-
-	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		String string;
 		switch (requestCode) {
 		case MeFragment.REQUEST_ME_NAME:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.name = string;
+				mCaseInfo.name = string;
 				setViewValue();
 			}
 			break;
 		case MeFragment.REQUEST_ME_SEX:
 			if (resultCode == Activity.RESULT_OK) {
-				int sex = data.getIntExtra("int", meValue.sex);
-				meValue.sex = sex;
+				int sex = data.getIntExtra("int", mCaseInfo.sex);
+				mCaseInfo.sex = sex;
 				setViewValue();
 			}
 			break;
 		case MeFragment.REQUEST_ME_HOSPITAL:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.hos_fullname = string;
+				mCaseInfo.hos_fullname = string;
 				setViewValue();
 			}
 
@@ -213,7 +217,7 @@ public class EditCaseActivity extends BaseActivity implements
 		case MeFragment.REQUEST_ME_ROOM:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.department = string;
+				mCaseInfo.department = string;
 				setViewValue();
 			}
 
@@ -221,7 +225,7 @@ public class EditCaseActivity extends BaseActivity implements
 		case MeFragment.REQUEST_ME_TREATMENT_STATE:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.treat_state = string;
+				mCaseInfo.treat_state = string;
 				setViewValue();
 			}
 
@@ -229,7 +233,7 @@ public class EditCaseActivity extends BaseActivity implements
 		case REQUEST_CASE_AGE:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.age = string;
+				mCaseInfo.age = string;
 				setViewValue();
 			}
 
@@ -237,21 +241,21 @@ public class EditCaseActivity extends BaseActivity implements
 		case REQUEST_CASE_ROOM_NUMBER:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.ward_no = string;
+				mCaseInfo.ward_no = string;
 				setViewValue();
 			}
 			break;
 		case REQUEST_CASE_BED_NUMBER:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.bed_no = string;
+				mCaseInfo.bed_no = string;
 				setViewValue();
 			}
 			break;
 		case REQUEST_CASE_DIAGNOSIS:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.diagnose = string;
+				mCaseInfo.diagnose = string;
 				setViewValue();
 			}
 
@@ -259,7 +263,7 @@ public class EditCaseActivity extends BaseActivity implements
 		case REQUEST_CASE_STATE:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				meValue.treat_state = string;
+				mCaseInfo.treat_state = string;
 				setViewValue();
 			}
 
@@ -274,10 +278,10 @@ public class EditCaseActivity extends BaseActivity implements
 		return true;
 	}
 
-	public static void show(Activity context,  CaseInfo caseInfo) {
+	public static void show(Activity context, CaseInfo caseInfo) {
 		Intent intent = new Intent();
 		intent.setClass(context, EditCaseActivity.class);
-		intent.putExtra("case_info", (Parcelable)caseInfo);
+		intent.putExtra("case_info", (Parcelable) caseInfo);
 		context.startActivity(intent);
 	}
 

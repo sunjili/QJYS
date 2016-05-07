@@ -1,21 +1,27 @@
 package com.rmtech.qjys.ui.qjactivity;
 
+import java.util.HashMap;
+
+import okhttp3.Call;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.gson.MBase;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.sjl.lib.http.okhttp.OkHttpUtils;
 
 /***
  * 编辑就诊 页面
@@ -23,8 +29,7 @@ import com.rmtech.qjys.ui.BaseActivity;
  * @author Administrator
  * 
  */
-public class CaseDiagnoseActivity extends BaseActivity implements
-		View.OnClickListener {
+public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.OnClickListener {
 	private LinearLayout ll_layout;
 	private EditText et_diagnose;
 	private LinearLayout ll_diagnose_add;
@@ -40,6 +45,38 @@ public class CaseDiagnoseActivity extends BaseActivity implements
 		setRightTitle("保存", new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				if(mCaseInfo != null) {
+
+					HashMap<String, String> params = new HashMap<String, String>();
+					params.put("diagnose", stringExtra);
+					params.put("patient_id", mCaseInfo.id);
+					OkHttpUtils.post(QjHttp.URL_CREATE_PATIENT, params, new BaseModelCallback() {
+
+						@Override
+						public void onError(Call call, Exception e) {
+							Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_LONG).show();
+
+						}
+
+						@Override
+						public void onResponseSucces(MBase response) {
+							Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
+
+							CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
+							if (caseInfo != null) {
+								caseInfo.diagnose = stringExtra;
+							}
+							Intent data = new Intent();
+							data.putExtra("string", stringExtra);
+							setResult(MeNameActivity.RESULT_OK, data);
+							finish();
+						}
+					});
+
+					return;
+				
+				}
 				if (!TextUtils.isEmpty(stringExtra)) {
 					Intent data = new Intent();
 					data.putExtra("string", stringExtra);
@@ -49,9 +86,12 @@ public class CaseDiagnoseActivity extends BaseActivity implements
 			}
 		});
 		initView();
-		stringExtra = getIntent().getStringExtra("string");
-		if(!TextUtils.isEmpty(stringExtra)){
-			setViewValue(stringExtra);
+		if (mCaseInfo != null) {
+
+			stringExtra = mCaseInfo.diagnose;
+			if (!TextUtils.isEmpty(stringExtra)) {
+				setViewValue(stringExtra);
+			}
 		}
 	}
 
@@ -61,8 +101,7 @@ public class CaseDiagnoseActivity extends BaseActivity implements
 		} else {
 			String[] strings = tempStr.split("&&");
 			for (int i = 0; i < strings.length; i++) {
-				View view = LayoutInflater.from(context).inflate(
-						R.layout.qj_case_diagnose_item, null);
+				View view = LayoutInflater.from(context).inflate(R.layout.qj_case_diagnose_item, null);
 				TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
 				tv_name.setText(strings[i]);
 				ll_layout.addView(view);
@@ -93,10 +132,10 @@ public class CaseDiagnoseActivity extends BaseActivity implements
 		case R.id.ll_diagnose_add:
 			String trim = et_diagnose.getText().toString().trim();
 			if (!TextUtils.isEmpty(trim)) {
-				if(!TextUtils.isEmpty(stringExtra)){
+				if (!TextUtils.isEmpty(stringExtra)) {
 					stringExtra = stringExtra + "&&" + trim;
-				}else{
-					stringExtra=trim;
+				} else {
+					stringExtra = trim;
 				}
 				setViewValue(stringExtra);
 				et_diagnose.setText("");

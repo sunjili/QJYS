@@ -65,6 +65,8 @@ import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.VideoCallActivity;
 import com.rmtech.qjys.ui.VoiceCallActivity;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.PreferenceManager;
 
 public class QjHelper {
@@ -198,7 +200,8 @@ public class QjHelper {
         //设置google推送，需要的GCM的app可以设置此参数
 //        options.setGCMNumber("324169311137");
         //在小米手机上当app被kill时使用小米推送进行消息提示，同GCM一样不是必须的
-        options.setMipushConfig("2882303761517426801", "5381742660801");
+//        options.setMipushConfig("2882303761517426801", "5381742660801");
+        options.setMipushConfig("2882303761517468440", "5291746870440");
         
 //        options.allowChatroomOwnerLeave(getModel().isChatroomOwnerLeaveAllowed());
         options.setDeleteMessagesAsExitGroup(getModel().isDeleteMessagesAsExitGroup());
@@ -579,14 +582,14 @@ public class QjHelper {
         }
 
         @Override
-        public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String inviteMessage) {
+        public void onAutoAcceptInvitationFromGroup(String groupId,final String inviter, String inviteMessage) {
             // 被邀请
-            String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
+        	final String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
             boolean isMyself = false;
             if(TextUtils.equals(inviter, UserContext.getInstance().getUserId())) {
             	isMyself = true;//st3 = "你创建了讨论组";
             }
-            EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
+            final EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
             msg.setChatType(ChatType.GroupChat);
             msg.setFrom(inviter);
             msg.setTo(groupId);
@@ -594,7 +597,18 @@ public class QjHelper {
             if(isMyself) {
             	msg.addBody(new EMTextMessageBody("你创建了讨论组"));
             } else {
-            	msg.addBody(new EMTextMessageBody(inviter + " " +st3));
+            	DoctorListManager.getInstance().getDoctorInfoByHXid(st3, new OnGetDoctorInfoCallback() {
+					
+					@Override
+					public void onGet(DoctorInfo info) {
+						if(info != null && !TextUtils.isEmpty(info.name)) {
+			            	msg.addBody(new EMTextMessageBody(info.name + " " +st3));
+						} else {
+							msg.addBody(new EMTextMessageBody(inviter + " " +st3));
+						}
+
+					}
+				});
             }
             msg.setStatus(EMMessage.Status.SUCCESS);
             // 保存邀请消息

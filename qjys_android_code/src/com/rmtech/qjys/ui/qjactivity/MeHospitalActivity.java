@@ -27,11 +27,14 @@ import com.rmtech.qjys.adapter.CommonAdapter;
 import com.rmtech.qjys.adapter.ViewHolder;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.callback.QjHttpCallback;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.HospitalInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MHosList;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.sjl.lib.http.okhttp.OkHttpUtils;
 
 /***
  * 医院 页面
@@ -39,7 +42,7 @@ import com.rmtech.qjys.ui.BaseActivity;
  * @author Administrator
  * 
  */
-public class MeHospitalActivity extends BaseActivity {
+public class MeHospitalActivity extends CaseEidtBaseActivity {
 	/** 医院名称 */
 	private EditText et_hospital;
 
@@ -58,6 +61,36 @@ public class MeHospitalActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				final String hospital = et_hospital.getEditableText().toString();
+
+				if (mCaseInfo != null) {
+
+					HashMap<String, String> params = new HashMap<String, String>();
+					params.put("hos_name", hospital);
+					params.put("patient_id", mCaseInfo.id);
+					OkHttpUtils.post(QjHttp.URL_CREATE_PATIENT, params, new BaseModelCallback() {
+
+						@Override
+						public void onError(Call call, Exception e) {
+							Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_LONG).show();
+
+						}
+
+						@Override
+						public void onResponseSucces(MBase response) {
+							Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
+
+							CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
+							if (caseInfo != null) {
+								caseInfo.hos_fullname = hospital;
+							}
+							Intent data = new Intent();
+							data.putExtra("string", hospital);
+							setResult(MeNameActivity.RESULT_OK, data);
+							finish();
+						}
+					});
+					return;
+				}
 
 				if (TextUtils.equals(UserContext.getInstance().getUser().hos_fullname, hospital)) {
 					Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
@@ -86,8 +119,6 @@ public class MeHospitalActivity extends BaseActivity {
 
 				});
 
-			
-				
 			}
 		});
 		setTitle("医院");
@@ -97,7 +128,21 @@ public class MeHospitalActivity extends BaseActivity {
 
 	private void setValue() {
 		listems = new ArrayList<HospitalInfo>();
-
+		String name = "";
+		int type = getIntent().getIntExtra("type",0);
+		
+		if (mCaseInfo != null) {
+			name = mCaseInfo.hos_fullname;
+		} else {
+			if(type == QjConstant.REQUEST_CODE_ADD_HOSPITAL) {
+				name = getIntent().getStringExtra("hosPital");
+			} else {
+				if (UserContext.getInstance().getUser() != null) {
+					name = UserContext.getInstance().getUser().hos_fullname;
+				}
+			}
+		}
+		et_hospital.setText(name);
 	}
 
 	Runnable searchRunnable = new Runnable() {
@@ -115,26 +160,27 @@ public class MeHospitalActivity extends BaseActivity {
 				@Override
 				public void onResponseSucces(MHosList response) {
 
-					
-					
-//					for (int i = 0; i < s.length(); i++) {
-//						listems.add("测试" + i);
-//					}
-					if(response.data == null) {
+					// for (int i = 0; i < s.length(); i++) {
+					// listems.add("测试" + i);
+					// }
+					if (response.data == null) {
 						return;
 					}
 					listems.clear();
 					listems.addAll(response.data);
-					mAdapter = new CommonAdapter<HospitalInfo>(getApplicationContext(), listems, R.layout.qj_me_hospital_item) {
+					mAdapter = new CommonAdapter<HospitalInfo>(getApplicationContext(), listems,
+							R.layout.qj_me_hospital_item) {
 						@Override
 						public void convert(ViewHolder viewHolder, final HospitalInfo item) {
-//							viewHolder.setTextAndColor(R.id.tv_name, item, s.toString(), Color.rgb(52, 100, 169));
+							// viewHolder.setTextAndColor(R.id.tv_name, item,
+							// s.toString(), Color.rgb(52, 100, 169));
 							viewHolder.setText(R.id.tv_name, item.fullname);
 							viewHolder.getView(R.id.rl_hospital_item).setOnClickListener(new OnClickListener() {
 
 								@Override
 								public void onClick(View v) {
-//									Toast.makeText(context, item, Toast.LENGTH_SHORT).show();
+									// Toast.makeText(context, item,
+									// Toast.LENGTH_SHORT).show();
 									et_hospital.setText(item.fullname);
 								}
 							});
@@ -161,7 +207,7 @@ public class MeHospitalActivity extends BaseActivity {
 
 			@Override
 			public void onTextChanged(final CharSequence s, int start, int before, int count) {
-				
+
 			}
 
 			@Override
@@ -187,9 +233,11 @@ public class MeHospitalActivity extends BaseActivity {
 		return true;
 	}
 
-	public static void show(Activity context) {
+	public static void show(Activity context, String hosPital) {
 		Intent intent = new Intent();
 		intent.setClass(context, MeHospitalActivity.class);
+		intent.putExtra("hosPital", hosPital);
+		intent.putExtra("type", QjConstant.REQUEST_CODE_ADD_HOSPITAL);
 		context.startActivityForResult(intent, QjConstant.REQUEST_CODE_ADD_HOSPITAL);
 	}
 }

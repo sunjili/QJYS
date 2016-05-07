@@ -23,14 +23,13 @@ import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.qjactivity.CaseFlowDetailActivity;
 import com.rmtech.qjys.ui.qjactivity.EditCaseActivity;
-import com.rmtech.qjys.ui.qjactivity.MeAbstractActivity;
+import com.rmtech.qjys.ui.qjactivity.CaseAbstractActivity;
 import com.rmtech.qjys.ui.qjactivity.MeFlowDetailActivity;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.utils.L;
 
 @SuppressLint("NewApi")
-public class CaseTopBarView extends RelativeLayout implements
-		View.OnClickListener {
+public class CaseTopBarView extends RelativeLayout implements View.OnClickListener {
 
 	public CaseTopBarView(Context context) {
 		this(context, null);
@@ -45,8 +44,7 @@ public class CaseTopBarView extends RelativeLayout implements
 		initView();
 	}
 
-	public CaseTopBarView(Context context, AttributeSet attrs,
-			int defStyleAttr, int defStyleRes) {
+	public CaseTopBarView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		initView();
 	}
@@ -76,13 +74,11 @@ public class CaseTopBarView extends RelativeLayout implements
 		if (event == null) {
 			return;
 		}
-		if (caseInfo == null
-				|| !TextUtils.equals(caseInfo.id, event.caseInfoId)) {
+		if (caseInfo == null || !TextUtils.equals(caseInfo.id, event.caseInfoId)) {
 			return;
 		}
 
-		caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(
-				caseInfo.id);
+		caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
 	}
 
 	@Override
@@ -103,15 +99,19 @@ public class CaseTopBarView extends RelativeLayout implements
 			}
 			break;
 		case R.id.zy_layout:
-			MeAbstractActivity.show(getActivity());
+			if (caseInfo == null) {
+				Toast.makeText(getContext(), "病例已删除！", 1).show();
+
+			} else {
+				CaseAbstractActivity.show(getActivity(), caseInfo);
+			}
 			break;
 		case R.id.gf_layout:
 			if (caseInfo == null) {
 				Toast.makeText(getContext(), "病例已删除！", 1).show();
 
 			} else {
-				CaseFlowDetailActivity.show(getActivity(), caseInfo.id, null,
-						QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
+				CaseFlowDetailActivity.show(getActivity(), caseInfo.id, null, QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
 
 				// GroupDetailsActivity.show(getActivity(), caseInfo);
 			}

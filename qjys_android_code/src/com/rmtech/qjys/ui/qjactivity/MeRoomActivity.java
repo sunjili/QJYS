@@ -15,9 +15,12 @@ import android.widget.Toast;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.sjl.lib.http.okhttp.OkHttpUtils;
 
 /***
  * 编辑科室 页面
@@ -25,7 +28,7 @@ import com.rmtech.qjys.ui.BaseActivity;
  * @author Administrator
  * 
  */
-public class MeRoomActivity extends BaseActivity {
+public class MeRoomActivity extends CaseEidtBaseActivity {
 	private EditText et_name;
 	private String roomName;
 
@@ -40,7 +43,37 @@ public class MeRoomActivity extends BaseActivity {
 			public void onClick(View v) {
 
 				roomName = et_name.getText().toString().trim();
+				if (mCaseInfo != null) {
 
+					HashMap<String, String> params = new HashMap<String, String>();
+					params.put("department", roomName);
+					params.put("patient_id", mCaseInfo.id);
+					OkHttpUtils.post(QjHttp.URL_CREATE_PATIENT, params, new BaseModelCallback() {
+
+						@Override
+						public void onError(Call call, Exception e) {
+							Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_LONG).show();
+
+						}
+
+						@Override
+						public void onResponseSucces(MBase response) {
+							Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
+
+							CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
+							if (caseInfo != null) {
+								caseInfo.department = roomName;
+							}
+							Intent data = new Intent();
+							data.putExtra("string", roomName);
+							setResult(MeNameActivity.RESULT_OK, data);
+							finish();
+						}
+					});
+
+					return;
+				
+				}
 				if (TextUtils.equals(UserContext.getInstance().getUser().department, roomName)) {
 					Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
 					finish();
@@ -75,7 +108,9 @@ public class MeRoomActivity extends BaseActivity {
 
 	private void initView() {
 		et_name = (EditText) findViewById(R.id.et_room_name);
-		if(UserContext.getInstance().getUser().department != null) {
+		if (mCaseInfo != null) {
+			et_name.setText(mCaseInfo.department);
+		} else if (UserContext.getInstance().getUser().department != null) {
 			et_name.setText(UserContext.getInstance().getUser().department);
 		}
 	}

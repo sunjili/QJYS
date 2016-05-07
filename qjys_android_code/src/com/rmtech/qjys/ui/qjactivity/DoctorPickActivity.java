@@ -197,6 +197,7 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 							event.setCaseInfoId(caseInfo.id);
 
 							EventBus.getDefault().post(event);
+							
 							Intent intent = new Intent();
 							intent.putParcelableArrayListExtra("selectedDoctorList", resultList);
 

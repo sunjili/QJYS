@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -294,11 +293,11 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 			jumpActivity(1, R.id.doctors_layout);
 			break;
 		case R.id.hospital_layout:
-			MeHospitalActivity.show(getActivity());
+			MeHospitalActivity.show(getActivity(), currentHospital);
 			break;
 
 		case R.id.state_layout:
-			EditCaseStateActivity.show(getActivity());
+			EditCaseStateActivity.show(getActivity(), treat_state);
 			break;
 
 		case R.id.rule_layout:
