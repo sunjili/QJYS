@@ -290,11 +290,19 @@ public class QjHttp {
 
 	public static void uploadImage(int tag, String patient_id, String folder_id, String name, String path,
 			QjHttpCallback<MUploadImageInfo> callback) {
+		uploadImage(tag, patient_id, folder_id, null, name, path, callback);
+	}
+
+	public static void uploadImage(int tag, String patient_id, String folder_id, String imageId, String name,
+			String path, QjHttpCallback<MUploadImageInfo> callback) {
 		HashMap<String, String> newparams = new HashMap<String, String>();
 		HttpSetting.addHttpParams(newparams, URL_UPLOAD_IMAGE);
 		newparams.put("patient_id", patient_id);
 		if (!TextUtils.isEmpty(folder_id)) {
 			newparams.put("folder_id", folder_id);
+		}
+		if (!TextUtils.isEmpty(imageId)) {
+			newparams.put("image_id", imageId);
 		}
 		L.e("path=" + path);
 		HashMap<String, String> headers = new HashMap<String, String>();

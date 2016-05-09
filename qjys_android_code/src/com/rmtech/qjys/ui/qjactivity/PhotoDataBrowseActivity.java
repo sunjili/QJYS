@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,11 +30,9 @@ import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.ui.view.HackyViewPager;
 
 @SuppressLint("NewApi")
-public class PhotoDataBrowseActivity extends CaseWithIdActivity implements
-		OnViewTapListener {
+public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnViewTapListener {
 
-	protected static final String TAG = PhotoDataBrowseActivity.class
-			.getSimpleName();
+	protected static final String TAG = PhotoDataBrowseActivity.class.getSimpleName();
 
 	private static final String ISLOCKED_ARG = "isLocked";
 
@@ -66,8 +65,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements
 
 			@Override
 			public void onClick(View v) {
-				PhotoDataEditActivity.show(getActivity(), currentPhotoData);
-
+				PhotoDataEditActivity.show(getActivity(), currentPhotoData,caseId,folderId);
 			}
 		});
 		mBottomLayout = (RelativeLayout) findViewById(R.id.bottom_layout);
@@ -101,8 +99,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements
 		mTitleTv.setText((current_position + 1) + "/" + datalist.size());
 
 		if (savedInstanceState != null) {
-			boolean isLocked = savedInstanceState.getBoolean(ISLOCKED_ARG,
-					false);
+			boolean isLocked = savedInstanceState.getBoolean(ISLOCKED_ARG, false);
 			((HackyViewPager) mViewPager).setLocked(isLocked);
 		}
 		mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
@@ -128,11 +125,13 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements
 		});
 	}
 
-	public static void show(Activity context, int current_position,
-			ArrayList<PhotoDataInfo> arrayList) {
+	public static void show(Activity context, int current_position, ArrayList<PhotoDataInfo> arrayList, String caseId, String folderId) {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataBrowseActivity.class);
 		intent.putParcelableArrayListExtra("iamge_list", arrayList);
+		setCaseId(intent, caseId);
+		setFolderId(intent, folderId);
+		
 		intent.putExtra("current_position", current_position);
 		// setCaseInfo(intent, arrayList);
 
@@ -142,19 +141,15 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements
 	static class SamplePagerAdapter extends PagerAdapter {
 
 		DisplayImageOptions optionsThumb = new DisplayImageOptions.Builder()
-				.showImageForEmptyUri(R.drawable.default_error)
-				.showImageOnFail(R.drawable.default_error)
-				.resetViewBeforeLoading(true).cacheOnDisk(true)
-				.cacheInMemory(true).build();
+				.showImageForEmptyUri(R.drawable.default_error).showImageOnFail(R.drawable.default_error)
+				.resetViewBeforeLoading(true).cacheOnDisk(true).cacheInMemory(true).build();
 
-		DisplayImageOptions optionsOrigin = new DisplayImageOptions.Builder()
-				.resetViewBeforeLoading(true).cacheOnDisk(true)
-				.cacheInMemory(true).build();
+		DisplayImageOptions optionsOrigin = new DisplayImageOptions.Builder().resetViewBeforeLoading(true)
+				.cacheOnDisk(true).showImageOnLoading(R.drawable.ic_loading).cacheInMemory(true).build();
 
 		private List<PhotoDataInfo> dataList;
 
-		public SamplePagerAdapter(List<PhotoDataInfo> dataList,
-				OnViewTapListener listener) {
+		public SamplePagerAdapter(List<PhotoDataInfo> dataList, OnViewTapListener listener) {
 			this.listener = listener;
 			this.dataList = dataList;
 		}
@@ -172,20 +167,19 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements
 
 		@Override
 		public View instantiateItem(ViewGroup container, int position) {
-			PhotoView photoView = new PhotoView(container.getContext());
+			View root = View.inflate(container.getContext(), R.layout.item_photodata_browse_image, null);
+			// PhotoView photoView = new PhotoView(container.getContext());
 			PhotoDataInfo info = dataList.get(position);
 			// ImageLoader.getInstance().displayImage(info.thumb_url, photoView,
 			// optionsThumb);
-			ImageLoader.getInstance().displayImage(info.origin_url, photoView,
-					optionsThumb);
-			// photoView.setImageResource(sDrawables[position]);
+			ImageView smallView = (ImageView) root.findViewById(R.id.small_image);
+			PhotoView photoView = (PhotoView) root.findViewById(R.id.big_image);
+			ImageLoader.getInstance().displayImage(info.thumb_url, smallView, optionsThumb);
+			ImageLoader.getInstance().displayImage(info.origin_url, photoView, optionsOrigin);
 			photoView.setOnViewTapListener(listener);
+			container.addView(root, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
-			// Now just add PhotoView to ViewPager and return it
-			container.addView(photoView, LayoutParams.MATCH_PARENT,
-					LayoutParams.MATCH_PARENT);
-
-			return photoView;
+			return root;
 		}
 
 		@Override
@@ -213,8 +207,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements
 	@Override
 	protected void onSaveInstanceState(@NonNull Bundle outState) {
 		if (isViewPagerActive()) {
-			outState.putBoolean(ISLOCKED_ARG,
-					((HackyViewPager) mViewPager).isLocked());
+			outState.putBoolean(ISLOCKED_ARG, ((HackyViewPager) mViewPager).isLocked());
 		}
 		super.onSaveInstanceState(outState);
 	}

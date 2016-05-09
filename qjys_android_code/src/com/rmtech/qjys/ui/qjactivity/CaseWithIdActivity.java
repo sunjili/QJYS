@@ -11,12 +11,16 @@ import com.rmtech.qjys.ui.BaseActivity;
 
 public class CaseWithIdActivity extends BaseActivity {
 	protected String caseId;
+	protected String folderId = "";
 	protected CaseInfo caseInfo;
 	protected ImageDataList imageDataList;
 	protected FolderDataInfo folderDataInfo;
 
 	public static void setCaseId(Intent intent, String patient_id) {
 		intent.putExtra("patient_id", patient_id);
+	}
+	public static void setFolderId(Intent intent, String FolderId) {
+		intent.putExtra("FolderId", FolderId);
 	}
 
 	public static void setCaseInfo(Intent intent, CaseInfo caseInfo) {
@@ -41,6 +45,7 @@ public class CaseWithIdActivity extends BaseActivity {
 		Intent intent = getIntent();
 		if (intent != null) {
 			caseId = intent.getStringExtra("patient_id");
+			folderId = intent.getStringExtra("FolderId");
 			caseInfo = (CaseInfo) intent.getParcelableExtra("case_info");
 			folderDataInfo = (FolderDataInfo) intent.getParcelableExtra("folderDataInfo");
 			imageDataList = (ImageDataList) intent.getParcelableExtra("imageDataList");
