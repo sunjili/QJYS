@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.greenrobot.eventbus.EventBus;
+
 import okhttp3.Call;
 
 import uk.co.senab.photoview.PhotoView;
@@ -25,6 +27,7 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -32,6 +35,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallback;
+import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
 import com.rmtech.qjys.ui.BaseActivity;
@@ -126,7 +130,7 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 			int tag = PhotoUploadManager.createKey(caseId, folderId, path);
 			int index = path.lastIndexOf('/');
 			String name = path.substring(index + 1, path.length());
-			QjHttp.uploadImage(tag, caseId, folderId,photoData.id, name, path, new QjHttpCallback<MUploadImageInfo>() {
+			QjHttp.uploadImage(tag, caseId, folderId, photoData.id, name, path, new QjHttpCallback<MUploadImageInfo>() {
 
 				@Override
 				public MUploadImageInfo parseNetworkResponse(String str) throws Exception {
@@ -136,12 +140,16 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 				@Override
 				public void onResponseSucces(MUploadImageInfo response) {
 					PhotoDataInfo data = response.data;
+					PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_EDIT, data);
+					EventBus.getDefault().post(event);
 					pd.dismiss();
-
+					finish();
 				}
 
 				@Override
 				public void onError(Call call, Exception e) {
+					Toast.makeText(getActivity(), "保存失败 "+e.toString(), 1)
+					.show();
 					pd.dismiss();
 
 				}
@@ -155,13 +163,16 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 	}
 
 	public static Bitmap convertViewToBitmap(View view) {
-		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
-				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-		view.buildDrawingCache();
-		Bitmap bitmap = view.getDrawingCache();
-
-		return bitmap;
+//		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+//				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+//		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+//		view.buildDrawingCache();
+//		Bitmap bitmap = view.getDrawingCache();
+		
+		view.setDrawingCacheEnabled(true);  
+        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache());  
+        view.setDrawingCacheEnabled(false);  
+		return bmp;
 	}
 
 	public static String getSDPath() {

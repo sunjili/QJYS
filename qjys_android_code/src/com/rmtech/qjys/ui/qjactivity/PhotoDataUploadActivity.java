@@ -3,6 +3,9 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import okhttp3.Call;
 
 import android.app.Activity;
@@ -20,6 +23,7 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
+import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MImageList;
@@ -48,6 +52,8 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 			}
 		});
 		initViews();
+		EventBus.getDefault().register(this);
+
 	}
 
 	public static void show(Activity context, String patient_id) {
@@ -55,6 +61,32 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 		setCaseId(intent, patient_id);
 		intent.setClass(context, PhotoDataUploadActivity.class);
 		context.startActivity(intent);
+	}
+	
+	@Subscribe
+	public void onEvent(PhotoDataEvent event) {
+		if (event != null && event.dataInfo != null
+				&& event.type == PhotoDataEvent.TYPE_EDIT && mAdapter != null && mAdapter.getItems() != null) {
+			for (Object obj : mAdapter.getItems()) {
+				if(obj instanceof PhotoDataInfo) {
+					PhotoDataInfo info = (PhotoDataInfo)obj;
+					if (TextUtils.equals(info .id, event.dataInfo.id)) {
+						info.origin_url = event.dataInfo.origin_url;
+						info.thumb_url = event.dataInfo.thumb_url;
+						if (mAdapter != null) {
+							mAdapter.notifyDataSetChanged();
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		EventBus.getDefault().unregister(this);
+		super.onDestroy();
 	}
 
 	private void initViews() {

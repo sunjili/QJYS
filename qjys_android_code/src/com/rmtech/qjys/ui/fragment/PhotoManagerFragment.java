@@ -3,10 +3,14 @@ package com.rmtech.qjys.ui.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import okhttp3.Call;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +28,7 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
+import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
@@ -70,6 +75,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.bfragment_photo_manager, container, false);
+		EventBus.getDefault().register(this);
 		return rootView;
 	}
 
@@ -98,6 +104,32 @@ public class PhotoManagerFragment extends QjBaseFragment {
 //		mGridView.setScrollIsComputed(false);
 		mAdapter.notifyDataSetChanged();
 
+	}
+	
+	@Subscribe
+	public void onEvent(PhotoDataEvent event) {
+		if (event != null && event.dataInfo != null
+				&& event.type == PhotoDataEvent.TYPE_EDIT && mAdapter != null && mAdapter.getItems() != null) {
+			for (Object obj : mAdapter.getItems()) {
+				if(obj instanceof PhotoDataInfo) {
+					PhotoDataInfo info = (PhotoDataInfo)obj;
+					if (TextUtils.equals(info .id, event.dataInfo.id)) {
+						info.origin_url = event.dataInfo.origin_url;
+						info.thumb_url = event.dataInfo.thumb_url;
+						if (mAdapter != null) {
+							mAdapter.notifyDataSetChanged();
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		EventBus.getDefault().unregister(this);
+		super.onDestroy();
 	}
 
 	@Override
