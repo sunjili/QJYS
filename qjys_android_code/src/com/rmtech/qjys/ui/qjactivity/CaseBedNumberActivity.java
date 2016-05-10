@@ -47,7 +47,7 @@ public class CaseBedNumberActivity extends CaseEidtBaseActivity {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("bed_no", bed);
 					params.put("patient_id", mCaseInfo.id);
-					OkHttpUtils.post(QjHttp.URL_CREATE_PATIENT, params, new BaseModelCallback() {
+					OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
 
 						@Override
 						public void onError(Call call, Exception e) {

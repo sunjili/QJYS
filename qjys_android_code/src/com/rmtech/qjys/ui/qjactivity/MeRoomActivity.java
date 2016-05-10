@@ -48,7 +48,7 @@ public class MeRoomActivity extends CaseEidtBaseActivity {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("department", roomName);
 					params.put("patient_id", mCaseInfo.id);
-					OkHttpUtils.post(QjHttp.URL_CREATE_PATIENT, params, new BaseModelCallback() {
+					OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
 
 						@Override
 						public void onError(Call call, Exception e) {
