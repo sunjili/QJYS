@@ -42,6 +42,7 @@ public class MeSexActivity extends CaseEidtBaseActivity implements OnClickListen
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_sex);
 		context = MeSexActivity.this;
+		setLeftTitle("返回");
 		setTitle("性別");
 		setRightTitle("保存", new View.OnClickListener() {
 

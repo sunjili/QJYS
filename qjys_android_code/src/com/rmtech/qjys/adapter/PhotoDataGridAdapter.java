@@ -55,6 +55,12 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 	}
 
 	@Override
+	public Object getItem(int position) {
+		// TODO Auto-generated method stub
+		return super.getItem(position);
+	}
+
+	@Override
 	public void notifyDataSetChanged() {
 
 		super.notifyDataSetChanged();

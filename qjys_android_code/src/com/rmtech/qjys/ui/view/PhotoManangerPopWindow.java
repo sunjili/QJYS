@@ -70,6 +70,7 @@ public class PhotoManangerPopWindow {
 
 		@Override
 		public Object getItem(int position) {
+			
 			return this.mStringList[position];
 		}
 

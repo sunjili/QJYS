@@ -65,7 +65,8 @@ public abstract class AbstractDynamicGridAdapter extends BaseAdapter implements 
             return INVALID_ID;
         }
         Object item = getItem(position);
-        return mIdMap.get(item);
+        Integer temp = mIdMap.get(item);
+        return temp == null ?INVALID_ID:temp;
     }
 
     /**

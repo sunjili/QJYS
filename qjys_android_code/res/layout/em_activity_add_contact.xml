@@ -12,16 +12,6 @@
         android:background="@color/top_bar_normal_bg"
         android:gravity="center_vertical" >
 
-        <include layout="@layout/ease_commom_back_btn" />
-
-        <TextView
-            android:id="@+id/add_list_friends"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#fff"
-            android:textSize="18sp" />
-
         <Button
             android:id="@+id/search"
             android:layout_width="54dp"
@@ -29,29 +19,84 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/ease_common_tab_bg"
-            android:onClick="searchContact"
-            android:text="@string/button_search"
+            android:text="取消"
+            android:onClick="cancel"
             android:textColor="#fff"
             android:textSize="16sp" />
+        
+        <com.rmtech.qjys.ui.view.CleanableEditText
+            android:id="@+id/et_phone"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:paddingLeft="8dp"
+            android:hint="请输入手机号"
+            android:drawableLeft="@drawable/ic_addresslist_findnewfirend"
+            android:layout_margin="6dp"
+            android:layout_toLeftOf="@id/search"
+            android:paddingRight="5dp"
+            android:background="@drawable/em_btn_white_normal_shape"/>
     </RelativeLayout>
-
-    <EditText
-        android:id="@+id/edit_note"
+    
+    
+    <RelativeLayout 
+        android:id="@+id/rl_search"
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/em_button_normal_shape"
-        android:hint="用户名"
-        android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:textColorHint="#b3b3b3"
-        android:textSize="18sp" />
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/btn_white_normal"
+        android:gravity="center_vertical"
+        android:onClick="searchContact"
+        android:visibility="gone" 
+        android:clipChildren="true">
+        
+        <ImageView 
+            android:id="@+id/iv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/em_right_arrow_icon"/>
+        
+        <ImageView 
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_addresslist_search"/>
+        
+        <TextView 
+            android:id="@+id/tv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/iv_search"
+            android:text="搜索："
+            android:textSize="21px"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"/>
+        
+        <TextView 
+            android:id="@+id/tv_phoneNm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/tv_search"
+            android:layout_toLeftOf="@id/iv_right"
+            android:textSize="21px"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"/>
+        
+    </RelativeLayout>
+    
+    <View
+            android:layout_width="wrap_content"
+            android:layout_height="1px"
+            android:background="@color/cd9" />
 
     <ImageView
         android:id="@+id/no_data_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerInside"
+        android:visibility="gone"
         android:src="@drawable/ic_addresslist_searchnoresult" />
 
     <LinearLayout

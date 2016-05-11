@@ -37,6 +37,7 @@ public class MeRoomActivity extends CaseEidtBaseActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_room);
 		setTitle("科室");
+		setLeftTitle("返回");
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override

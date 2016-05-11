@@ -7,6 +7,7 @@ import android.content.Context;
 
 /**
  * Author: jilisun
+ * 动态排序
  * Date: 9/7/13
  * Time: 10:49 PM
  */
@@ -74,7 +75,7 @@ public abstract class BaseDynamicGridAdapter extends AbstractDynamicGridAdapter 
         removeStableID(item);
         notifyDataSetChanged();
     }
-    public void remove(List<?> items) {
+    public void removeAll(List<?> items) {
     	mItems.removeAll(items);
     	for(Object obj : items) {
     		removeStableID(obj);

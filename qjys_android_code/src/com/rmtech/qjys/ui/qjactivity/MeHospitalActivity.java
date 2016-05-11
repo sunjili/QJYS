@@ -56,6 +56,7 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 		super.onCreate(arg0);
 		context = MeHospitalActivity.this;
 		setContentView(R.layout.qj_me_hospital);
+		setLeftTitle("返回");
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override

@@ -129,6 +129,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 		keshiTv = (TextView) findViewById(R.id.keshi_tv);
 		keshiEt = (EditText) findViewById(R.id.keshi_et);
+		keshiEt.setText(UserContext.getInstance().getUser().department);
 		roomTv = (TextView) findViewById(R.id.room_tv);
 		roomTitleTv = (TextView) findViewById(R.id.room_title_tv);
 		roomEt = (EditText) findViewById(R.id.room_et);

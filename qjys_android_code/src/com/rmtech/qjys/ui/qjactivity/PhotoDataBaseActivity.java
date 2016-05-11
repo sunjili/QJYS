@@ -5,24 +5,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.ChatActivity;
+import com.rmtech.qjys.ui.qjactivity.PhotoDataBaseActivity.OnDeleteCallback;
 import com.rmtech.qjys.utils.NewFolderManager;
 import com.rmtech.qjys.utils.NewFolderManager.OnNewFolderListener;
+import com.rmtech.qjys.utils.NewFolderManager.OnRenameListener;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.rmtech.qjys.utils.PhotoUploadManager.OnPhotoUploadListener;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
@@ -213,7 +223,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 	public void showNewFolderDialog(List<FolderDataInfo> folders) {
 		if (mNewFolderManager != null) {
 			String parentId = "";
-			mNewFolderManager.showNewFolderDialog(caseId, parentId,folders, this);
+			mNewFolderManager.showNewFolderDialog(caseId, parentId, folders, this);
 		}
 
 	}
@@ -253,4 +263,62 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 		Toast.makeText(getActivity(), "上传成功！", Toast.LENGTH_SHORT).show();
 	}
 
+	public static interface OnDeleteCallback {
+		public void onDeleteSuccess(FolderDataInfo item);
+	}
+
+	public static void deleteItem(final Context context, final Object item, final OnDeleteCallback callback) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setMessage("确定删除？").setCancelable(false).setNegativeButton("确定", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+
+				if (item instanceof PhotoDataInfo) {
+					QjHttp.deleteImages(((PhotoDataInfo) item).id, new BaseModelCallback() {
+
+						@Override
+						public void onResponseSucces(MBase response) {
+							Toast.makeText(context, "删除成功！", 1).show();
+							if (callback != null) {
+								callback.onDeleteSuccess((FolderDataInfo) item);
+							}
+						}
+
+						@Override
+						public void onError(Call call, Exception e) {
+							// TODO Auto-generated method stub
+							Toast.makeText(context, "删除失败！", 1).show();
+						}
+					});
+
+				} else if (item instanceof FolderDataInfo) {
+					QjHttp.deleteFolder(((FolderDataInfo) item).id, new BaseModelCallback() {
+
+						@Override
+						public void onResponseSucces(MBase response) {
+							Toast.makeText(context, "删除成功！", 1).show();
+							if (callback != null) {
+								callback.onDeleteSuccess((FolderDataInfo) item);
+							}
+						}
+
+						@Override
+						public void onError(Call call, Exception e) {
+							// TODO Auto-generated method stub
+							Toast.makeText(context, "删除失败！", 1).show();
+						}
+					});
+				}
+
+			}
+		}).setPositiveButton("取消", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		}).create().show();
+
+	}
+
+	public static void renameItem(final Context context, final FolderDataInfo item,List<FolderDataInfo> folders, final OnRenameListener callback) {
+		new NewFolderManager(context).showRenameDialog(item, folders, callback);
+	}
 }

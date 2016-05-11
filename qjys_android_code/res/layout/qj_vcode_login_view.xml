@@ -17,7 +17,7 @@
         android:layout_height="50dp"
         android:layout_margin="30dp"
         android:src="@drawable/ic_launcher" />
-    
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                 android:layout_width="15dp"
                 android:layout_height="22dp"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/lock" />
+                android:background="@drawable/note" />
 
             <View
                 android:layout_width="1px"
@@ -100,11 +100,12 @@
                 android:gravity="center_vertical"
                 android:hint="输入短信验证码"
                 android:inputType="phone"
-                android:paddingLeft="10dp"
                 android:maxLength="6"
+                android:paddingLeft="10dp"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
-         <EditText
+
+            <EditText
                 android:id="@+id/code_password"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -115,9 +116,10 @@
                 android:hint="输入登录密码"
                 android:inputType="textPassword"
                 android:paddingLeft="10dp"
-                android:visibility="gone"
                 android:textColor="@color/black"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/code_button"
                 android:layout_width="92dp"
@@ -162,10 +164,10 @@
         android:layout_weight="1" />
 
     <RelativeLayout
-        android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="15dp"
         android:gravity="center_horizontal" >
 
         <TextView

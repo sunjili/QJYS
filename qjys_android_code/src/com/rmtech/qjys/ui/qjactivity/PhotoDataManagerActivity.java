@@ -96,6 +96,9 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+							if(!isRootFolder()) {
+								position = position+1;
+							}
 							switch (position) {
 							case 0:
 								List<FolderDataInfo> folders = null;

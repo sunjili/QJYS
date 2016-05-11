@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import okhttp3.Call;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -20,14 +22,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.sjl.lib.alertview.AlertView;
-import com.sjl.lib.alertview.OnItemClickListener;
 
 public class PhotoDataSelectActivity extends CaseWithIdActivity {
 
@@ -50,13 +54,13 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 			if (!TextUtils.equals(folderId, event.folderId)) {
 				return;
 			}
-			if(mSelectedImages != null) {
+			if (mSelectedImages != null) {
 				mSelectedImages.clear();
 			}
 			if (mAdapter != null && event.imagelist != null) {
-				mAdapter.remove(event.imagelist);
+				mAdapter.removeAll(event.imagelist);
 			}
-			
+
 		}
 	}
 
@@ -70,8 +74,7 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 		return true;
 	}
 
-	public static void show(Activity context, String caseId, String folderId,
-			ImageDataList imageDataList) {
+	public static void show(Activity context, String caseId, String folderId, ImageDataList imageDataList) {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataSelectActivity.class);
 		setCaseId(intent, caseId);
@@ -104,32 +107,53 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 			return;
 		}
 		mDataList = imageDataList.images;
-		mAdapter = new PhotoDataGridAdapter(getActivity(), mDataList,
-				mSelectedImages, PhotoDataGridAdapter.SHOW_TYPE_SELECT);
+		mAdapter = new PhotoDataGridAdapter(getActivity(), mDataList, mSelectedImages,
+				PhotoDataGridAdapter.SHOW_TYPE_SELECT);
 
 		mGridView.setAdapter(mAdapter);
 
 		mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int i, long l) {
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 				selectImageFromGrid(i);
 			}
 
 		});
+
 		mDeleteTv.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				new AlertView("确定删除？", null, "取消", new String[] { "确定" }, null,
-						getActivity(), AlertView.Style.Alert,
-						new com.sjl.lib.alertview.OnItemClickListener() {
+				if (mSelectedImages == null || mSelectedImages.isEmpty()) {
+					Toast.makeText(getApplicationContext(), "请选择要删除的图片！", 1).show();
+					return;
+				}
+				new AlertView("确定删除这" + mSelectedImages.size() + "张图片？", null, "取消", new String[] { "确定" }, null,
+						getActivity(), AlertView.Style.Alert, new com.sjl.lib.alertview.OnItemClickListener() {
 
 							@Override
 							public void onItemClick(Object o, int position) {
 								if (position == 0) {
-									mDataList.removeAll(mSelectedImages);
-									mAdapter.notifyDataSetChanged();
+
+									QjHttp.deleteImages(getSelectImageStr(), new BaseModelCallback() {
+
+										@Override
+										public void onError(Call call, Exception e) {
+											Toast.makeText(getApplicationContext(), "删除失败！", 1).show();
+										}
+
+										@Override
+										public void onResponseSucces(MBase response) {
+											Toast.makeText(getApplicationContext(), "删除成功！", 1).show();
+											ArrayList<PhotoDataInfo> imagelist = new ArrayList<PhotoDataInfo>(mSelectedImages);
+											mAdapter.removeAll(imagelist);
+											PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_DELETE);
+											event.setMovedImageList(caseId, folderId, imagelist);
+											EventBus.getDefault().post(event);
+										}
+
+									});
+									
 								}
 
 							}
@@ -142,22 +166,31 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 			@Override
 			public void onClick(View v) {
 				if (mSelectedImages == null || mSelectedImages.isEmpty()) {
-					Toast.makeText(getApplicationContext(), "请选择要移动的图片！", 1)
-							.show();
+					Toast.makeText(getApplicationContext(), "请选择要移动的图片！", 1).show();
 					return;
 				}
 				ArrayList<FolderDataInfo> folderList = new ArrayList<FolderDataInfo>();
-				ArrayList<PhotoDataInfo> imageList = new ArrayList<PhotoDataInfo>(
-						mSelectedImages);
+				ArrayList<PhotoDataInfo> imageList = new ArrayList<PhotoDataInfo>(mSelectedImages);
 				if (imageDataList.folders != null) {
 					folderList.addAll(imageDataList.folders);
 				}
 
-				PhotoDataMoveActivity.show(getActivity(), folderList,
-						imageList, caseId, folderId);
+				PhotoDataMoveActivity.show(getActivity(), folderList, imageList, caseId, folderId);
 			}
 		});
 
+	}
+
+	private String getSelectImageStr() {
+		StringBuilder sb = new StringBuilder();
+		if (mSelectedImages != null && mSelectedImages.size() > 0) {
+			for (PhotoDataInfo info : mSelectedImages) {
+				sb.append(info.id);
+				sb.append(",");
+			}
+			return sb.substring(0, sb.length() - 1);
+		}
+		return sb.toString();
 	}
 
 	private void selectImageFromGrid(int i) {

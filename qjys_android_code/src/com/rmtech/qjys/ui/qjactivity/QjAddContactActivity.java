@@ -83,6 +83,7 @@ public class QjAddContactActivity extends BaseActivity {
 			break;
 		}
 	}
+	
 
 	private String getContactPhone(Cursor cursor) {
 		// TODO Auto-generated method stub

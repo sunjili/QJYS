@@ -120,7 +120,7 @@ public class ContactListFragment extends EaseContactListFragment {
 
 	@Override
 	protected void setUpView() {
-		titleBar.setRightImageResource(R.drawable.em_add);
+		titleBar.setRightImageResource(R.drawable.btn_addresslist_addcontacts);
 		titleBar.setRightLayoutClickListener(new OnClickListener() {
 
 			@Override
@@ -142,7 +142,7 @@ public class ContactListFragment extends EaseContactListFragment {
 				// // demo中直接进入聊天页面，实际一般是进入用户详情页
 				// startActivity(new Intent(getActivity(),
 				// ChatActivity.class).putExtra("userId", username));
-				UserInfoActivity.show(getActivity(), user.doctorInfo);
+				UserInfoActivity.show(getActivity(), user.doctorInfo, "contactList");
 			}
 		});
 

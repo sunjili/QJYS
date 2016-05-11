@@ -81,6 +81,12 @@ public class BaseActivity extends EaseBaseActivity {
 		}
 	}
 	
+	protected void setLeftGone() {
+		if (mTopTitleView != null) {
+			mTopTitleView.getChildAt(0).setVisibility(View.GONE);
+		}
+	}
+	
 	protected void setLeftTitle(String leftTitle) {
 		if (mTopTitleView != null) {
 			mTopTitleView.setLeftView(leftTitle);

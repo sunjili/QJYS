@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,10 +36,16 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.hx.QjHelper;
+import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserInfo;
 import com.rmtech.qjys.model.gson.MUser;
+import com.rmtech.qjys.ui.qjactivity.UserInfoActivity;
+import com.rmtech.qjys.ui.view.CleanableEditText;
+import com.rmtech.qjys.ui.view.CleanableEditText.TextWatcherCallBack;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 
-public class AddContactActivity extends BaseActivity {
+public class AddContactActivity extends BaseActivity implements TextWatcherCallBack{
 	private EditText editText;
 	private LinearLayout searchedUserLayout;
 	private TextView nameText, mTextView;
@@ -48,6 +55,9 @@ public class AddContactActivity extends BaseActivity {
 	private String toAddUsername;
 	private ProgressDialog progressDialog;
 	private View search_resurt_tv;
+	private CleanableEditText mCleanableEditText;
+	private RelativeLayout rl_search;
+	private TextView tv_phoneNm;
 
 	public static void show(Context context, String number) {
 		Intent intent = new Intent();
@@ -61,20 +71,26 @@ public class AddContactActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.em_activity_add_contact);
-		mTextView = (TextView) findViewById(R.id.add_list_friends);
+//		mTextView = (TextView) findViewById(R.id.add_list_friends);
 		search_resurt_tv = findViewById(R.id.no_data_view);
-
-		editText = (EditText) findViewById(R.id.edit_note);
+		rl_search = (RelativeLayout) findViewById(R.id.rl_search);
+		mCleanableEditText = (CleanableEditText) findViewById(R.id.et_phone);
+		mCleanableEditText.setCallBack(this);
+		
+		tv_phoneNm = (TextView) findViewById(R.id.tv_phoneNm);
 		String strAdd = getResources().getString(R.string.add_friend);
-		mTextView.setText(strAdd);
+//		mTextView.setText(strAdd);
 		String strUserName = getResources().getString(R.string.user_name);
-		editText.setHint(strUserName);
 		searchedUserLayout = (LinearLayout) findViewById(R.id.ll_user);
 		nameText = (TextView) findViewById(R.id.name);
 		searchBtn = (Button) findViewById(R.id.search);
 		avatar = (ImageView) findViewById(R.id.avatar);
 		inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		parseIntent(getIntent());
+	}
+	
+	public void cancel(View v){
+		AddContactActivity.this.finish();
 	}
 
 	private void parseIntent(Intent intent) {
@@ -83,7 +99,7 @@ public class AddContactActivity extends BaseActivity {
 		}
 		String number = intent.getStringExtra("phone_number");
 		if (!TextUtils.isEmpty(number)) {
-			editText.setText(number);
+			
 		}
 	}
 
@@ -99,10 +115,11 @@ public class AddContactActivity extends BaseActivity {
 	 * @param v
 	 */
 	public void searchContact(View v) {
-		final String name = editText.getText().toString();
+		final String name = mCleanableEditText.getText().toString();
 		String saveText = searchBtn.getText().toString();
+		
+		rl_search.setVisibility(View.GONE);
 
-		if (getString(R.string.button_search).equals(saveText)) {
 			toAddUsername = name;
 			if (TextUtils.isEmpty(name)) {
 				new EaseAlertDialog(this, R.string.Please_enter_a_username).show();
@@ -126,16 +143,24 @@ public class AddContactActivity extends BaseActivity {
 				@Override
 				public void onResponseSucces(MUser response) {
 					// 服务器存在此用户，显示此用户和添加按钮
-					onHasData();
+//					onHasData();
 					if (response.data != null) {
 						nameText.setTag(response.data);
-						if (!TextUtils.isEmpty(response.data.name)) {
-							nameText.setText(response.data.name);
-						} else if (!TextUtils.isEmpty(response.data.phone)) {
-							nameText.setText(response.data.phone);
+						
+						//TODO 需要改，这里直接跳转到详细信息页面，这里的接口要改？
+						
+						if (!TextUtils.isEmpty(response.data.id)) {
+							DoctorListManager.getInstance().getDoctorInfoByHXid(response.data.id, new OnGetDoctorInfoCallback() {
+								
+								@Override
+								public void onGet(DoctorInfo info) {
+									if(info != null) {
+										UserInfoActivity.show(getActivity(),info, "addContact");
+									} 
+								}
+							});
 						} else {
 							onNoData();
-
 						}
 
 					} else {
@@ -143,7 +168,6 @@ public class AddContactActivity extends BaseActivity {
 					}
 				}
 			});
-		}
 	}
 
 	private void onNoData() {
@@ -216,5 +240,18 @@ public class AddContactActivity extends BaseActivity {
 
 	public void back(View v) {
 		finish();
+	}
+
+	@Override
+	public void handleMoreTextChanged() {
+		// TODO Auto-generated method stub
+		String mString = mCleanableEditText.getText().toString();
+		searchedUserLayout.setVisibility(View.GONE);
+		if(mString.length()>0){
+			rl_search.setVisibility(View.VISIBLE);
+			tv_phoneNm.setText(mString);
+		}else {
+			rl_search.setVisibility(View.GONE);
+		}
 	}
 }

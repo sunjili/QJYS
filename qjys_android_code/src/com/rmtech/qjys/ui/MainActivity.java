@@ -87,6 +87,7 @@ public class MainActivity extends BaseActivity {
 	private BroadcastReceiver internalDebugReceiver;
 	private BroadcastReceiver broadcastReceiver;
 	private LocalBroadcastManager broadcastManager;
+	private long mExitTime;
 
 	/**
 	 * 检查当前用户是否被删除
@@ -396,9 +397,13 @@ public class MainActivity extends BaseActivity {
 		int unreadMsgCountTotal = 0;
 		int chatroomUnreadMsgCount = 0;
 		unreadMsgCountTotal = EMClient.getInstance().chatManager().getUnreadMsgsCount();
-		for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
-			if (conversation.getType() == EMConversationType.ChatRoom)
-				chatroomUnreadMsgCount = chatroomUnreadMsgCount + conversation.getUnreadMsgCount();
+		try {
+			for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
+				if (conversation.getType() == EMConversationType.ChatRoom)
+					chatroomUnreadMsgCount = chatroomUnreadMsgCount + conversation.getUnreadMsgCount();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return unreadMsgCountTotal - chatroomUnreadMsgCount;
 	}
@@ -471,9 +476,14 @@ public class MainActivity extends BaseActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			moveTaskToBack(false);
-			return true;
-		}
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                mExitTime = System.currentTimeMillis();
+            } else {
+            	moveTaskToBack(false);
+            }
+            return true;
+        }
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -488,7 +498,6 @@ public class MainActivity extends BaseActivity {
 		if (!MainActivity.this.isFinishing()) {
 			// clear up global variables
 			try {
-
 				if (conflictBuilder == null)
 					conflictBuilder = new android.app.AlertDialog.Builder(MainActivity.this);
 				conflictBuilder.setTitle(st);
@@ -611,5 +620,6 @@ public class MainActivity extends BaseActivity {
 		fragment.onActivityResult(requestCode, resultCode, data);
 
 	}
+	
 
 }

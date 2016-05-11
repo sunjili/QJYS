@@ -7,6 +7,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -265,6 +266,7 @@ public class AlertView {
      * 添加这个View到Activity的根视图
      */
     public void show() {
+    	Log.d("sssssssssss","isShowing = "+isShowing());
         if (isShowing()) {
             return;
         }
@@ -314,6 +316,14 @@ public class AlertView {
         contentContainer.startAnimation(outAnim);
         isDismissing = true;
     }
+    public void forceDismiss() {
+    	decorView.removeView(rootView);
+        isDismissing = false;
+        if (onDismissListener != null) {
+            onDismissListener.onDismiss(AlertView.this);
+        }
+    }
+    
     public Animation getInAnimation() {
         int res = AlertAnimateUtil.getAnimationResource(this.gravity, true);
         return AnimationUtils.loadAnimation(context, res);

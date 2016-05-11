@@ -33,6 +33,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 	private MeItemLayout user_beizhu;
 	private String beizhu;
 	public DoctorInfo doctorInfo;
+	private String from;
 
 	private ImageView ivHead;
 	private TextView tvBeizhu;
@@ -56,6 +57,12 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		setContentView(R.layout.qj_userinfo);
 		setTitle("详细资料");
 		doctorInfo = getIntent().getParcelableExtra("DoctorInfo");
+		from = getIntent().getStringExtra("from");
+		if(from.equals("addContact")||from.equals("contactList")){
+			setLeftTitle("通讯录");
+		}else{
+			setLeftTitle("聊天");
+		}
 		setRightTitle("", null);
 		initView();
 	}
@@ -94,10 +101,11 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		return true;
 	}
 
-	public static void show(Context context, DoctorInfo info) {
+	public static void show(Context context, DoctorInfo info, String from) {
 		Intent intent = new Intent();
 		intent.setClass(context, UserInfoActivity.class);
 		intent.putExtra("DoctorInfo", (Parcelable) info);
+		intent.putExtra("from", from);
 		context.startActivity(intent);
 	}
 

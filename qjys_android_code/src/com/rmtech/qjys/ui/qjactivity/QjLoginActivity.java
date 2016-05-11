@@ -89,8 +89,15 @@ public class QjLoginActivity extends BaseActivity {
 				if (mProgressDialog != null && !QjLoginActivity.this.isFinishing() && mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
 				}
-				Intent intent = new Intent(QjLoginActivity.this, MainActivity.class);
-				startActivity(intent);
+				
+				//这里有疑问，打开这两个activity的条件分别是什么？
+				if (UserContext.getInstance().getUser().isset_passwd!=1){
+					Intent intent = new Intent(QjLoginActivity.this, MePasswordNewActivity.class);
+					startActivity(intent);
+				}else{
+					Intent intent = new Intent(QjLoginActivity.this, MainActivity.class);
+					startActivity(intent);
+				}
 				finish();
 			}
 		});

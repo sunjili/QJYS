@@ -9,7 +9,7 @@
         android:id="@+id/application_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:contactItemImage="@drawable/em_new_friends_icon"
+        app:contactItemImage="@drawable/ic_addresslist_newfriend"
         app:contactItemName="新的朋友" />
 
     <!-- <com.rmtech.qjys.widget.ContactItemView -->

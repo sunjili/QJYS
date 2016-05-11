@@ -29,6 +29,7 @@ public class MePhoneActivity extends BaseActivity implements
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_phone);
 		setTitle("手机号");
+		setLeftTitle("返回");
 		context = MePhoneActivity.this;
 		setRightTitle("", null);
 		phone=getIntent().getStringExtra("string");

@@ -340,7 +340,9 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 				jumpActivity(MePasswordChangeActivity.class, REQUEST_ME_PASSWORD);
 			} else {
 				// 设置新密码
-				jumpActivity(MePasswordNewActivity.class, REQUEST_ME_PASSWORD);
+				Intent intent = new Intent(context, MePasswordNewActivity.class);
+				intent.putExtra("isMe", 1);
+				startActivityForResult(intent, REQUEST_ME_PASSWORD);
 			}
 			break;
 

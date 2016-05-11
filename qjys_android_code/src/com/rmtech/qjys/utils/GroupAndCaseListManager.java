@@ -194,8 +194,13 @@ public class GroupAndCaseListManager {
 	public static void initGroupList(boolean needCache,
 			List<EMConversation> list,
 			QjHttpCallbackNoParse<MGroupList> callback) {
-		Map<String, EMConversation> conversations = EMClient.getInstance()
-				.chatManager().getAllConversations();
+		Map<String, EMConversation> conversations = null;
+		try {
+			conversations = EMClient.getInstance()
+					.chatManager().getAllConversations();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		// 过滤掉messages size为0的conversation
 		/**
 		 * 如果在排序过程中有新消息收到，lastMsgTime会发生变化 影响排序过程，Collection.sort会产生异常
@@ -203,13 +208,15 @@ public class GroupAndCaseListManager {
 		 */
 		List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
 		StringBuilder sb = new StringBuilder();
-		synchronized (conversations) {
-			for (EMConversation conversation : conversations.values()) {
-				if (conversation.getAllMessages().size() != 0) {
-					sortList.add(new Pair<Long, EMConversation>(conversation
-							.getLastMessage().getMsgTime(), conversation));
-					if (conversation.isGroup()) {
-						sb.append(conversation.getUserName()).append(",");
+		if(conversations != null) {
+			synchronized (conversations) {
+				for (EMConversation conversation : conversations.values()) {
+					if (conversation.getAllMessages().size() != 0) {
+						sortList.add(new Pair<Long, EMConversation>(conversation
+								.getLastMessage().getMsgTime(), conversation));
+						if (conversation.isGroup()) {
+							sb.append(conversation.getUserName()).append(",");
+						}
 					}
 				}
 			}

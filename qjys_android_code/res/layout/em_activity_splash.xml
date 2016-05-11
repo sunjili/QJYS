@@ -39,7 +39,7 @@
         </TextView>
 
         <TextView
-            android:id="@+id/tv_version"
+            android:id="@+id/tv_version1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"

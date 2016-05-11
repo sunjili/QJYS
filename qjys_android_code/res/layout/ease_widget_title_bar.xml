@@ -34,7 +34,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dip"
-        android:background="@drawable/ease_common_tab_bg" >
+        android:background="@color/c3264aa" >
 
         <TextView
             android:id="@+id/right_image"
