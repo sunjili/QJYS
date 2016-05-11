@@ -74,6 +74,13 @@ public abstract class BaseDynamicGridAdapter extends AbstractDynamicGridAdapter 
         removeStableID(item);
         notifyDataSetChanged();
     }
+    public void remove(List<?> items) {
+    	mItems.removeAll(items);
+    	for(Object obj : items) {
+    		removeStableID(obj);
+    	}
+    	notifyDataSetChanged();
+    }
 
 
     @Override

@@ -27,6 +27,7 @@ import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MImageList;
+import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.sjl.lib.utils.L;
@@ -48,7 +49,11 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				showNewFolderDialog();
+				List<FolderDataInfo> folders = null;
+				if(imageDataList != null) {
+					 folders = imageDataList.folders;
+				}
+				showNewFolderDialog(folders);
 			}
 		});
 		initViews();
@@ -156,6 +161,15 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 
 	@Override
 	public void onAddNewFolder(FolderDataInfo info) {
+		if(imageDataList == null) {
+			imageDataList = new ImageDataList();
+		}
+		if(imageDataList.folders == null) {
+			imageDataList.folders = new ArrayList<FolderDataInfo>();
+		}
+		
+		imageDataList.folders.add(0,info);
+		
 		mAdapter.add(0, info);
 		onDataChanged();
 	}
@@ -173,7 +187,12 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 	}
 
 	protected synchronized void onImagePicked(List<String> paths) {
-		Log.d("ssssssssssssssss", "onImagePicked");
+		if(imageDataList == null) {
+			imageDataList = new ImageDataList();
+		}
+		if(imageDataList.images == null) {
+			imageDataList.images = new ArrayList<PhotoDataInfo>();
+		}
 		super.onImagePicked(paths);
 		for (String path : paths) {
 			PhotoDataInfo info = new PhotoDataInfo();
@@ -185,6 +204,7 @@ public class PhotoDataUploadActivity extends PhotoDataBaseActivity {
 			info.state = PhotoDataInfo.STATE_UPLOADING;
 			mAdapter.add(info);
 			PhotoUploadManager.getInstance().addUploadTask(caseId, "", info);
+			imageDataList.images.add(info);
 		}
 		onDataChanged();
 	}

@@ -42,7 +42,8 @@ import com.sjl.lib.utils.L;
 
 public class QjHttp {
 
-	private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+	private static final MediaType MEDIA_TYPE_PNG = MediaType
+			.parse("image/png");
 
 	public static final String URL_DOCTOR_APPLYCODE = "/doctor/applycode";
 	public static final String URL_DOCTOR_SMSLOGIN = "/doctor/smslogin";
@@ -69,6 +70,23 @@ public class QjHttp {
 	public static final String URL_TREATE_STATE_LIST = "/doctor/treatestatelist";
 	public static final String URL_DELETE_TREATE_STATE = "/doctor/deletetreatestate";
 	public static final String URL_ADD_TREATESTATE = "/doctor/addtreatestate";
+	public static final String URL_MOVE_IMAGE = "/doctor/moveimage";
+
+	/**
+	 * 35 移动图片到文件夹 /doctor/moveimage 参数 image_ids: 要移动的图片 folder_id: 要移动到的文件夹id
+	 * patient_id : 病例id
+	 */
+	public static void moveImage(String patient_id, String folder_id,
+			String image_ids, BaseModelCallback callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("image_ids", image_ids);
+		if (folder_id == null) {
+			folder_id = "";
+		}
+		params.put("folder_id", folder_id);
+		params.put("patient_id", patient_id);
+		OkHttpUtils.post(URL_MOVE_IMAGE, params, callback);
+	}
 
 	/**
 	 * 7 添加就诊状态 /doctor/addtreatestate 请求方法： post
@@ -99,60 +117,70 @@ public class QjHttp {
 	 * 6 就诊状态列表 /doctor/treatestatelist
 	 * 
 	 */
-	public static void treateStateList(final QjHttpCallbackNoParse<MStateList> callback) {
+	public static void treateStateList(
+			final QjHttpCallbackNoParse<MStateList> callback) {
 		// OkHttpUtils.post(URL_TREATE_PROCEDURELIST, null, callback);
-		String cacheKey = URL_TREATE_STATE_LIST + UserContext.getInstance().getCookie();
-		postWitchCache(cacheKey, URL_TREATE_STATE_LIST, null, new QjHttpCallbackNoParse<MStateList>() {
+		String cacheKey = URL_TREATE_STATE_LIST
+				+ UserContext.getInstance().getCookie();
+		postWitchCache(cacheKey, URL_TREATE_STATE_LIST, null,
+				new QjHttpCallbackNoParse<MStateList>() {
 
-			@Override
-			public MStateList parseNetworkResponse(String str) throws Exception {
-				return new Gson().fromJson(str, MStateList.class);
-			}
+					@Override
+					public MStateList parseNetworkResponse(String str)
+							throws Exception {
+						return new Gson().fromJson(str, MStateList.class);
+					}
 
-			@Override
-			public void onResponseSucces(boolean isCache, MStateList response) {
-				if (callback != null) {
-					callback.onResponseSucces(isCache, response);
-				}
-			}
+					@Override
+					public void onResponseSucces(boolean isCache,
+							MStateList response) {
+						if (callback != null) {
+							callback.onResponseSucces(isCache, response);
+						}
+					}
 
-			@Override
-			public void onError(Call call, Exception e) {
-				if (callback != null) {
-					callback.onError(call, e);
-				}
-			}
-		});
+					@Override
+					public void onError(Call call, Exception e) {
+						if (callback != null) {
+							callback.onError(call, e);
+						}
+					}
+				});
 	}
 
 	/**
 	 * 9 诊疗规范列表 /doctor/treateprocedurelist
 	 * 
 	 */
-	public static void treateProcedurelist(final QjHttpCallbackNoParse<MFlowList> callback) {
+	public static void treateProcedurelist(
+			final QjHttpCallbackNoParse<MFlowList> callback) {
 		// OkHttpUtils.post(URL_TREATE_PROCEDURELIST, null, callback);
-		String cacheKey = URL_TREATE_PROCEDURELIST + UserContext.getInstance().getCookie();
-		postWitchCache(cacheKey, URL_TREATE_PROCEDURELIST, null, new QjHttpCallbackNoParse<MFlowList>() {
+		String cacheKey = URL_TREATE_PROCEDURELIST
+				+ UserContext.getInstance().getCookie();
+		postWitchCache(cacheKey, URL_TREATE_PROCEDURELIST, null,
+				new QjHttpCallbackNoParse<MFlowList>() {
 
-			@Override
-			public MFlowList parseNetworkResponse(String str) throws Exception {
-				return new Gson().fromJson(str, MFlowList.class);
-			}
+					@Override
+					public MFlowList parseNetworkResponse(String str)
+							throws Exception {
+						return new Gson().fromJson(str, MFlowList.class);
+					}
 
-			@Override
-			public void onResponseSucces(boolean isCache, MFlowList response) {
-				if (callback != null) {
-					callback.onResponseSucces(isCache, response);
-				}
-			}
+					@Override
+					public void onResponseSucces(boolean isCache,
+							MFlowList response) {
+						if (callback != null) {
+							callback.onResponseSucces(isCache, response);
+						}
+					}
 
-			@Override
-			public void onError(Call call, Exception e) {
-				if (callback != null) {
-					callback.onError(call, e);
-				}
-			}
-		});
+					@Override
+					public void onError(Call call, Exception e) {
+						if (callback != null) {
+							callback.onError(call, e);
+						}
+					}
+				});
 	}
 
 	/**
@@ -161,7 +189,8 @@ public class QjHttp {
 	 * @param patient_id
 	 * @param callback
 	 */
-	public static void deletePatient(String patient_id, BaseModelCallback callback) {
+	public static void deletePatient(String patient_id,
+			BaseModelCallback callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("patient_ids", patient_id);
 		params.put("type", 2 + "");
@@ -176,7 +205,8 @@ public class QjHttp {
 	 * @param flowInfo
 	 * @param callback
 	 */
-	public static void savetreateprocedure(FlowInfo flowInfo, BaseModelCallback callback) {
+	public static void savetreateprocedure(FlowInfo flowInfo,
+			BaseModelCallback callback) {
 		if (flowInfo == null) {
 			return;
 		}
@@ -189,7 +219,8 @@ public class QjHttp {
 		OkHttpUtils.post(URL_SAVE_TREATEPROCEDURE, params, callback);
 	}
 
-	public static void updateAdmin(String patient_id, String admin_id, BaseModelCallback callback) {
+	public static void updateAdmin(String patient_id, String admin_id,
+			BaseModelCallback callback) {
 		// patient_id : 病例id
 		// admin_id: 新的管理员id
 		HashMap<String, String> params = new HashMap<>();
@@ -204,43 +235,50 @@ public class QjHttp {
 		params.put("doctor_ids", doctor_ids);
 		String cacheKey = null;
 		if (needCache) {
-			cacheKey = URL_GET_USERSINFOBYIDS + UserContext.getInstance().getCookie();
+			cacheKey = URL_GET_USERSINFOBYIDS
+					+ UserContext.getInstance().getCookie();
 		}
-		postWitchCache(cacheKey, URL_GET_USERSINFOBYIDS, params, new QjHttpCallbackNoParse<MDoctorList>() {
+		postWitchCache(cacheKey, URL_GET_USERSINFOBYIDS, params,
+				new QjHttpCallbackNoParse<MDoctorList>() {
 
-			@Override
-			public MDoctorList parseNetworkResponse(String str) throws Exception {
-				Type objectType = type(MDoctorList.class, new TypeToken<Map<String, List<CaseInfo>>>() {
-				}.getType());
+					@Override
+					public MDoctorList parseNetworkResponse(String str)
+							throws Exception {
+						Type objectType = type(MDoctorList.class,
+								new TypeToken<Map<String, List<CaseInfo>>>() {
+								}.getType());
 
-				return new Gson().fromJson(str, objectType);
-			}
+						return new Gson().fromJson(str, objectType);
+					}
 
-			@Override
-			public void onResponseSucces(boolean isCache, MDoctorList response) {
-				if (callback != null) {
-					callback.onResponseSucces(isCache, response);
-				}
-			}
+					@Override
+					public void onResponseSucces(boolean isCache,
+							MDoctorList response) {
+						if (callback != null) {
+							callback.onResponseSucces(isCache, response);
+						}
+					}
 
-			@Override
-			public void onError(Call call, Exception e) {
-				if (callback != null) {
-					callback.onError(call, e);
-				}
-			}
-		});
+					@Override
+					public void onError(Call call, Exception e) {
+						if (callback != null) {
+							callback.onError(call, e);
+						}
+					}
+				});
 
 	}
 
-	public static void getHosByName(String name, QjHttpCallback<MHosList> callback) {
+	public static void getHosByName(String name,
+			QjHttpCallback<MHosList> callback) {
 
 		HashMap<String, String> params = new HashMap<>();
 		params.put("name", name);
 		OkHttpUtils.post(URL_GET_HOSBYNAME, params, callback);
 	}
 
-	public static void deleteMembers(String patient_id, String doctor_ids, BaseModelCallback callback) {
+	public static void deleteMembers(String patient_id, String doctor_ids,
+			BaseModelCallback callback) {
 
 		HashMap<String, String> params = new HashMap<>();
 		params.put("patient_id", patient_id);
@@ -248,8 +286,8 @@ public class QjHttp {
 		OkHttpUtils.post(URL_PATIENT_DELETE_MEMBERS, params, callback);
 	}
 
-	public static void createFolder(String patient_id, String name, String parent_id,
-			QjHttpCallback<MFolderInfo> callback) {
+	public static void createFolder(String patient_id, String name,
+			String parent_id, QjHttpCallback<MFolderInfo> callback) {
 		// patient_id : 病例id
 		// name: 文件夹名
 		// parent_id：父文件夹id，按照目前情况，只有一级文件夹，该参数可以忽略
@@ -282,19 +320,23 @@ public class QjHttp {
 				//
 				.build()
 				//
-				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS).readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
-				.writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS).execute(callback);
+				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+				.readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+				.writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+				.execute(callback);
 		// OkHttpUtils.getInstance().cancelTag(tag);
 
 	}
 
-	public static void uploadImage(int tag, String patient_id, String folder_id, String name, String path,
+	public static void uploadImage(int tag, String patient_id,
+			String folder_id, String name, String path,
 			QjHttpCallback<MUploadImageInfo> callback) {
 		uploadImage(tag, patient_id, folder_id, null, name, path, callback);
 	}
 
-	public static void uploadImage(int tag, String patient_id, String folder_id, String imageId, String name,
-			String path, QjHttpCallback<MUploadImageInfo> callback) {
+	public static void uploadImage(int tag, String patient_id,
+			String folder_id, String imageId, String name, String path,
+			QjHttpCallback<MUploadImageInfo> callback) {
 		HashMap<String, String> newparams = new HashMap<String, String>();
 		HttpSetting.addHttpParams(newparams, URL_UPLOAD_IMAGE);
 		newparams.put("patient_id", patient_id);
@@ -320,10 +362,13 @@ public class QjHttp {
 				//
 				.headers(headers)
 				//
-				.tag(tag).build()
+				.tag(tag)
+				.build()
 				//
-				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS).readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
-				.writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS).execute(callback);
+				.connTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+				.readTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+				.writeTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)
+				.execute(callback);
 		// OkHttpUtils.getInstance().cancelTag(tag);
 
 	}
@@ -335,73 +380,83 @@ public class QjHttp {
 		// OkHttpUtils.post(URL_PATIENT_GROUPINFO, params, callback);
 		String cacheKey = null;
 		if (needCache) {
-			cacheKey = URL_PATIENT_GROUPINFO + UserContext.getInstance().getCookie();
+			cacheKey = URL_PATIENT_GROUPINFO
+					+ UserContext.getInstance().getCookie();
 		}
-		postWitchCache(cacheKey, URL_PATIENT_GROUPINFO, params, new QjHttpCallbackNoParse<MGroupList>() {
+		postWitchCache(cacheKey, URL_PATIENT_GROUPINFO, params,
+				new QjHttpCallbackNoParse<MGroupList>() {
 
-			@Override
-			public MGroupList parseNetworkResponse(String str) throws Exception {
-				// Type objectType = type(MDoctorList.class, new
-				// TypeToken<Map<String, List<CaseInfo>>>() {
-				// }.getType());
+					@Override
+					public MGroupList parseNetworkResponse(String str)
+							throws Exception {
+						// Type objectType = type(MDoctorList.class, new
+						// TypeToken<Map<String, List<CaseInfo>>>() {
+						// }.getType());
 
-				return new Gson().fromJson(str, MGroupList.class);
-			}
+						return new Gson().fromJson(str, MGroupList.class);
+					}
 
-			@Override
-			public void onResponseSucces(boolean isCache, MGroupList response) {
-				if (callback != null) {
-					callback.onResponseSucces(isCache, response);
-				}
-			}
+					@Override
+					public void onResponseSucces(boolean isCache,
+							MGroupList response) {
+						if (callback != null) {
+							callback.onResponseSucces(isCache, response);
+						}
+					}
 
-			@Override
-			public void onError(Call call, Exception e) {
-				if (callback != null) {
-					callback.onError(call, e);
-				}
-			}
-		});
+					@Override
+					public void onError(Call call, Exception e) {
+						if (callback != null) {
+							callback.onError(call, e);
+						}
+					}
+				});
 	}
 
-	public static void getImageList(boolean needCache, String patient_id, String folder_id,
-			final QjHttpCallbackNoParse<MImageList> callback) {
+	public static void getImageList(boolean needCache, String patient_id,
+			String folder_id, final QjHttpCallbackNoParse<MImageList> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("patient_id", patient_id);
 		params.put("folder_id", folder_id);
 		// OkHttpUtils.post(URL_PATIENT_IMAGE_LIST, params, callback);
 		String cacheKey = null;
 		if (needCache) {
-			cacheKey = URL_PATIENT_IMAGE_LIST + UserContext.getInstance().getCookie() + patient_id + folder_id;
+			cacheKey = URL_PATIENT_IMAGE_LIST
+					+ UserContext.getInstance().getCookie() + patient_id
+					+ folder_id;
 		}
-		postWitchCache(cacheKey, URL_PATIENT_IMAGE_LIST, params, new QjHttpCallbackNoParse<MImageList>() {
+		postWitchCache(cacheKey, URL_PATIENT_IMAGE_LIST, params,
+				new QjHttpCallbackNoParse<MImageList>() {
 
-			@Override
-			public MImageList parseNetworkResponse(String str) throws Exception {
-				// Type objectType = type(MDoctorList.class, new
-				// TypeToken<Map<String, List<CaseInfo>>>() {
-				// }.getType());
+					@Override
+					public MImageList parseNetworkResponse(String str)
+							throws Exception {
+						// Type objectType = type(MDoctorList.class, new
+						// TypeToken<Map<String, List<CaseInfo>>>() {
+						// }.getType());
 
-				return new Gson().fromJson(str, MImageList.class);
-			}
+						return new Gson().fromJson(str, MImageList.class);
+					}
 
-			@Override
-			public void onResponseSucces(boolean isCache, MImageList response) {
-				if (callback != null) {
-					callback.onResponseSucces(isCache, response);
-				}
-			}
+					@Override
+					public void onResponseSucces(boolean isCache,
+							MImageList response) {
+						if (callback != null) {
+							callback.onResponseSucces(isCache, response);
+						}
+					}
 
-			@Override
-			public void onError(Call call, Exception e) {
-				if (callback != null) {
-					callback.onError(call, e);
-				}
-			}
-		});
+					@Override
+					public void onError(Call call, Exception e) {
+						if (callback != null) {
+							callback.onError(call, e);
+						}
+					}
+				});
 	}
 
-	public static void addMembers(CaseInfo caseInfo, String doctor_ids, QjHttpCallback<MGroupData> callback) {
+	public static void addMembers(CaseInfo caseInfo, String doctor_ids,
+			QjHttpCallback<MGroupData> callback) {
 
 		HashMap<String, String> params = new HashMap<>();
 		params.put("patient_id", caseInfo.id);
@@ -421,26 +476,30 @@ public class QjHttp {
 		OkHttpUtils.post(URL_ADD_FRIEND, params, callback);
 	}
 
-	public static void login(String inuptPhoneStr, String codeStr, QjHttpCallback<MUser> callback) {
+	public static void login(String inuptPhoneStr, String codeStr,
+			QjHttpCallback<MUser> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", inuptPhoneStr);
 		params.put("code", codeStr);
 		OkHttpUtils.post(URL_DOCTOR_SMSLOGIN, params, callback);
 	}
 
-	public static void serchContact(String toAddUsername, QjHttpCallback<MUser> callback) {
+	public static void serchContact(String toAddUsername,
+			QjHttpCallback<MUser> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", toAddUsername);
 		OkHttpUtils.post(URL_DOCTOR_SEARCH, params, callback);
 	}
 
-	public static void updateUserinfo(HashMap<String, String> params, BaseModelCallback baseModelCallback) {
+	public static void updateUserinfo(HashMap<String, String> params,
+			BaseModelCallback baseModelCallback) {
 
 		OkHttpUtils.post(URL_UPDATE_USERINFO, params, baseModelCallback);
 
 	}
 
-	public static void createpatient(CaseInfo info, QjHttpCallback<MIdData> baseModelCallback) {
+	public static void createpatient(CaseInfo info,
+			QjHttpCallback<MIdData> baseModelCallback) {
 
 		// public String abstractStr;// ： 摘要
 		HashMap<String, String> params = new HashMap<>();
@@ -487,11 +546,13 @@ public class QjHttp {
 
 	}
 
-	public static void updatepatient(CaseInfo info, BaseModelCallback baseModelCallback) {
+	public static void updatepatient(CaseInfo info,
+			BaseModelCallback baseModelCallback) {
 
 		// public String abstractStr;// ： 摘要
 		if (TextUtils.isEmpty(info.id)) {
-			baseModelCallback.onError(null, new IllegalArgumentException("没有ID"));
+			baseModelCallback.onError(null,
+					new IllegalArgumentException("没有ID"));
 			L.e("没有ID");
 			return;
 		}
@@ -556,74 +617,86 @@ public class QjHttp {
 		};
 	}
 
-	public static void getDoctorList(boolean needCache, final QjHttpCallbackNoParse<MDoctorList> callback) {
+	public static void getDoctorList(boolean needCache,
+			final QjHttpCallbackNoParse<MDoctorList> callback) {
 		String cacheKey = null;
 		if (needCache) {
 			cacheKey = URL_FRIEND_LIST + UserContext.getInstance().getCookie();
 		}
-		postWitchCache(cacheKey, URL_FRIEND_LIST, null, new QjHttpCallbackNoParse<MDoctorList>() {
+		postWitchCache(cacheKey, URL_FRIEND_LIST, null,
+				new QjHttpCallbackNoParse<MDoctorList>() {
 
-			@Override
-			public MDoctorList parseNetworkResponse(String str) throws Exception {
-				Type objectType = type(MDoctorList.class, new TypeToken<Map<String, List<CaseInfo>>>() {
-				}.getType());
+					@Override
+					public MDoctorList parseNetworkResponse(String str)
+							throws Exception {
+						Type objectType = type(MDoctorList.class,
+								new TypeToken<Map<String, List<CaseInfo>>>() {
+								}.getType());
 
-				return new Gson().fromJson(str, objectType);
-			}
+						return new Gson().fromJson(str, objectType);
+					}
 
-			@Override
-			public void onResponseSucces(boolean isCache, MDoctorList response) {
-				if (callback != null) {
-					callback.onResponseSucces(isCache, response);
-				}
-			}
+					@Override
+					public void onResponseSucces(boolean isCache,
+							MDoctorList response) {
+						if (callback != null) {
+							callback.onResponseSucces(isCache, response);
+						}
+					}
 
-			@Override
-			public void onError(Call call, Exception e) {
-				if (callback != null) {
-					callback.onError(call, e);
-				}
-			}
-		});
+					@Override
+					public void onError(Call call, Exception e) {
+						if (callback != null) {
+							callback.onError(call, e);
+						}
+					}
+				});
 
 	}
 
-	public static void getPatientList(boolean needCache, final QjHttpCallbackNoParse<MPatientList> callback) {
+	public static void getPatientList(boolean needCache,
+			final QjHttpCallbackNoParse<MPatientList> callback) {
 		String cacheKey = null;
 		if (needCache) {
 			cacheKey = URL_PATIENT_LIST + UserContext.getInstance().getCookie();
 		}
-		postWitchCache(cacheKey, URL_PATIENT_LIST, null, new QjHttpCallbackNoParse<MPatientList>() {
+		postWitchCache(cacheKey, URL_PATIENT_LIST, null,
+				new QjHttpCallbackNoParse<MPatientList>() {
 
-			@Override
-			public MPatientList parseNetworkResponse(String str) throws Exception {
-				Type objectType = type(MPatientList.class, new TypeToken<Map<String, List<CaseInfo>>>() {
-				}.getType());
+					@Override
+					public MPatientList parseNetworkResponse(String str)
+							throws Exception {
+						Type objectType = type(MPatientList.class,
+								new TypeToken<Map<String, List<CaseInfo>>>() {
+								}.getType());
 
-				return new Gson().fromJson(str, objectType);
-			}
+						return new Gson().fromJson(str, objectType);
+					}
 
-			@Override
-			public void onResponseSucces(boolean isCache, MPatientList response) {
-				if (callback != null) {
-					callback.onResponseSucces(isCache, response);
-				}
-			}
+					@Override
+					public void onResponseSucces(boolean isCache,
+							MPatientList response) {
+						if (callback != null) {
+							callback.onResponseSucces(isCache, response);
+						}
+					}
 
-			@Override
-			public void onError(Call call, Exception e) {
-				if (callback != null) {
-					callback.onError(call, e);
-				}
-			}
-		});
+					@Override
+					public void onError(Call call, Exception e) {
+						if (callback != null) {
+							callback.onError(call, e);
+						}
+					}
+				});
 
 	}
 
-	public static void postWitchCache(final String cacheKey, final String url, final HashMap<String, String> params,
+	public static void postWitchCache(final String cacheKey, final String url,
+			final HashMap<String, String> params,
 			final QjHttpCallbackNoParse callback) {
 		if (!TextUtils.isEmpty(cacheKey)) {
-			final QjHttpCallback tempCallback = new QjHttpCallbackWitchSaveCache(cacheKey, callback);
+			final QjHttpCallback tempCallback = new QjHttpCallbackWitchSaveCache(
+					cacheKey, callback);
 
 			new AsyncTask<Void, Void, Object>() {
 

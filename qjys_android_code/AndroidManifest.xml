@@ -157,8 +157,8 @@
         <!-- 设置临床诊疗规范及流程 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeFlowActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
         <activity
@@ -288,6 +288,7 @@
         </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.PhotoDataEditActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
@@ -310,6 +311,13 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.PhotoDataMoveActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
             android:name="com.sjl.lib.multi_image_selector.MultiImageSelectorActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/horizontal_slide" >
@@ -325,7 +333,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>
         -->
         <activity
             android:name="com.sjl.lib.sample.filechooser.FileChooserExampleActivity"
@@ -386,7 +394,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
+        </activity>
         -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.QjLoginActivity"
@@ -676,7 +684,6 @@
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
-
         </receiver>
         <!-- mi push end -->
 

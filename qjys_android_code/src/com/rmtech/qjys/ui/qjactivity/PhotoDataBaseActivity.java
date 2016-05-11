@@ -210,10 +210,10 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	public void showNewFolderDialog() {
+	public void showNewFolderDialog(List<FolderDataInfo> folders) {
 		if (mNewFolderManager != null) {
 			String parentId = "";
-			mNewFolderManager.showNewFolderDialog(caseId, parentId, this);
+			mNewFolderManager.showNewFolderDialog(caseId, parentId,folders, this);
 		}
 
 	}

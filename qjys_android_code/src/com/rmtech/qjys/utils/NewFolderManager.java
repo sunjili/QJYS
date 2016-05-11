@@ -1,7 +1,10 @@
 package com.rmtech.qjys.utils;
 
+import java.util.List;
+
 import okhttp3.Call;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +37,7 @@ public class NewFolderManager {
 		void onAddNewFolder(FolderDataInfo data);
 	}
 
-	public void showNewFolderDialog(final String caseid, final String parentId, final OnNewFolderListener listener) {
+	public void showNewFolderDialog(final String caseid, final String parentId, final List<FolderDataInfo> folders, final OnNewFolderListener listener) {
 		if (imm == null) {
 			imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		}
@@ -50,6 +53,14 @@ public class NewFolderManager {
 								if (name.isEmpty()) {
 									Toast.makeText(context, "请输入文件名", Toast.LENGTH_SHORT).show();
 								} else {
+									if(folders != null) {
+										for(FolderDataInfo oInfo : folders) {
+											if(TextUtils.equals(name, oInfo.name)) {
+												Toast.makeText(context, "文件夹已存在", Toast.LENGTH_SHORT).show();
+												return;
+											}
+										}
+									}
 
 									QjHttp.createFolder(caseid, name, parentId, new QjHttpCallback<MFolderInfo>() {
 

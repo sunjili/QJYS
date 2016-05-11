@@ -1,5 +1,6 @@
 package com.rmtech.qjys.ui.qjactivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -16,6 +17,7 @@ import android.widget.ListPopupWindow;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
+import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.fragment.PhotoManagerFragment;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
@@ -74,8 +76,13 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataManagerActivity.class);
 		setCaseInfo(intent, caseInfo);
-		setCaseId(intent, caseInfo.id);
+		if(caseInfo != null) {
+			setCaseId(intent, caseInfo.id);
+		}
 		setFolderDataInfo(intent, itemInfo);
+		if(itemInfo != null) {
+			setFolderId(intent,itemInfo.id);
+		}
 		context.startActivity(intent);
 	}
 
@@ -91,14 +98,18 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 							switch (position) {
 							case 0:
-								showNewFolderDialog();
+								List<FolderDataInfo> folders = null;
+								if(mPhotoManagerFragment.getImageDataList() != null) {
+									 folders = mPhotoManagerFragment.getImageDataList().folders;
+								}
+								showNewFolderDialog(folders);
 								break;
 							case 1:
 								PhotoDataSortActivity.show(PhotoDataManagerActivity.this,
 										mPhotoManagerFragment.getImageDataList());
 								break;
 							case 2:
-								PhotoDataSelectActivity.show(PhotoDataManagerActivity.this,
+								PhotoDataSelectActivity.show(PhotoDataManagerActivity.this,caseId,folderId,
 										mPhotoManagerFragment.getImageDataList());
 								break;
 							case 3:
@@ -121,6 +132,8 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	@Override
 	public void onAddNewFolder(FolderDataInfo info) {
 		super.onAddNewFolder(info);
+		
+		
 		mPhotoManagerFragment.addFolderToGrid(info);
 	}
 
