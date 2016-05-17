@@ -23,6 +23,7 @@ public class DoctorInfo implements Serializable, Parcelable {
 	public String hos_fullname;// : 医院名称
 	public String department;// : 科室
 	public String remark;// : 备注
+	public int mostUser;// 常用 1  不常用 0
 
 
 	@Override
@@ -66,6 +67,7 @@ public class DoctorInfo implements Serializable, Parcelable {
 		dest.writeString(this.hos_fullname);
 		dest.writeString(this.department);
 		dest.writeString(this.remark);
+		dest.writeInt(this.mostUser);
 	}
 
 	public DoctorInfo() {
@@ -81,6 +83,7 @@ public class DoctorInfo implements Serializable, Parcelable {
 		this.hos_fullname = in.readString();
 		this.department = in.readString();
 		this.remark = in.readString();
+		this.mostUser = in.readInt();
 	}
 	public DoctorInfo(UserInfo user) {
 		this.id = user.id;

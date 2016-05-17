@@ -1,43 +1,36 @@
 package com.rmtech.qjys.ui.qjactivity;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
-import android.text.TextUtils.SimpleStringSplitter;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMContactManager;
-import com.hyphenate.chat.adapter.EMAContactManager;
 import com.hyphenate.easeui.widget.EaseSwitchButton;
 import com.hyphenate.exceptions.HyphenateException;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
 import com.rmtech.qjys.utils.DoctorListManager;
-import com.rmtech.qjys.utils.PhotoUtil;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.PreferenceManager;
 import com.sjl.lib.alertview.AlertView;
-import com.sjl.lib.filechooser.FileUtils;
 
 /***
  * 详细资料 页面
@@ -71,14 +64,14 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 	
 	private ArrayList<String> tempPhones = new ArrayList<String>();
 	private boolean isFriend = false;
-	private SharedPreferences mSharedPreferences;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_userinfo);
 		setTitle("详细资料");
-		mSharedPreferences = this.getSharedPreferences(PreferenceManager.PREFERENCE_NAME, Context.MODE_PRIVATE);
+		Set<String> mostUseList = DoctorListManager.getChangyongList();
+		
 		doctorInfo = getIntent().getParcelableExtra("DoctorInfo");
 		from = getIntent().getStringExtra("from");
 
@@ -91,8 +84,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 			}
 		}
 		initView();
-		String string = mSharedPreferences.getString("changyong", null);
-		if(string!=null && string.indexOf(doctorInfo.id)!=-1){
+		if(mostUseList.contains(doctorInfo.id)){
 			tbPull.openSwitch();
 		}else {
 			tbPull.closeSwitch();
@@ -251,40 +243,44 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		case R.id.tb_pull:
 			if(tbPull.isSwitchOpen()){
 				tbPull.closeSwitch();
-				mSharedPreferences.edit().putString("changyong", splitString(doctorInfo.id)).commit();
+				DoctorListManager.setMostUse(doctorInfo.id,false);
+				
 			}else{
 				tbPull.openSwitch();
-				mSharedPreferences.edit().putString("changyong", splitString(doctorInfo.id)).commit();
+				DoctorListManager.setMostUse(doctorInfo.id,true);
+
 			}
+		
+
 			break;
 		}
 	}
 	// 对ids字符串的操作，包含对docinfo.id的删除的添加
-	public String splitString(String id){
-		String str1 = mSharedPreferences.getString("changyong", null);
-		String str2 = "";
-		int j = 0;
-		int i = 0;
-		if(str1!=null){
-			String[] strArray = str1.split(",");
-			for(i=0;i<strArray.length;i++){
-				if(strArray[i].equals(id)){
-					continue;
-				}else{
-					j++;
-				}
-				str2 = str2 + strArray[i] + ",";
-			}
-			if(j==i){
-				str2 = str1 + "," + id;
-			}else {
-				str2 = str2.substring(0, str2.length()-1);
-			}
-			return str2;
-		}else{
-			return id;
-		}
-	}
+//	public String splitString(String id){
+//		String str1 = mSharedPreferences.getString("changyong", null);
+//		String str2 = "";
+//		int j = 0;
+//		int i = 0;
+//		if(str1!=null){
+//			String[] strArray = str1.split(",");
+//			for(i=0;i<strArray.length;i++){
+//				if(strArray[i].equals(id)){
+//					continue;
+//				}else{
+//					j++;
+//				}
+//				str2 = str2 + strArray[i] + ",";
+//			}
+//			if(j==i){
+//				str2 = str1 + "," + id;
+//			}else {
+//				str2 = str2.substring(0, str2.length()-1);
+//			}
+//			return str2;
+//		}else{
+//			return id;
+//		}
+//	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

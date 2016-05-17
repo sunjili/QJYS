@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import okhttp3.Call;
 import android.app.Activity;
@@ -81,11 +83,18 @@ public class DoctorListManager {
 	}
 
 	protected void updateIdDoctorMap() {
+		final Set<String> cyIds = getChangyongList();
+
 		if (mMDoctorList != null && mMDoctorList.data != null) {
 			if (mIdDoctorMap == null) {
 				mIdDoctorMap = new HashMap<String, DoctorInfo>();
 			}
 			for (DoctorInfo info : mMDoctorList.data) {
+				if (cyIds.contains(info.id)) {
+					info.mostUser = 1;
+				} else {
+					info.mostUser = 0;
+				}
 				mIdDoctorMap.put(info.id, info);
 			}
 		}
@@ -107,6 +116,11 @@ public class DoctorListManager {
 
 			@Override
 			public int compare(EaseUser lhs, EaseUser rhs) {
+				if (lhs.doctorInfo != null && rhs.doctorInfo != null) {
+					if (lhs.doctorInfo.mostUser != rhs.doctorInfo.mostUser) {
+						return -lhs.doctorInfo.mostUser + rhs.doctorInfo.mostUser;
+					}
+				}
 				if (lhs.getInitialLetter().equals(rhs.getInitialLetter())) {
 					return lhs.getNick().compareTo(rhs.getNick());
 				} else {
@@ -138,7 +152,7 @@ public class DoctorListManager {
 	}
 
 	public void getDoctorInfoByHXid(final String username, final OnGetDoctorInfoCallback callback) {
-		if(TextUtils.equals(username, UserContext.getInstance().getUserId())) {
+		if (TextUtils.equals(username, UserContext.getInstance().getUserId())) {
 			DoctorInfo doctorInfo = new DoctorInfo(UserContext.getInstance().getUser());
 			if (doctorInfo != null) {
 				if (callback != null) {
@@ -146,7 +160,7 @@ public class DoctorListManager {
 					return;
 				}
 			}
-        }
+		}
 		if (mIdDoctorMap != null) {
 			DoctorInfo info = mIdDoctorMap.get(username);
 			if (info != null) {
@@ -323,5 +337,35 @@ public class DoctorListManager {
 			}
 		}
 		return list;
+	}
+
+
+	public static Set<String> getChangyongList() {
+		HashSet<String> set = new HashSet<String>();
+		return PreferenceManager.getInstance().getSharedPreferences().getStringSet("changyong", set);
+	}
+	
+	public static void setMostUse(String doc_id, final boolean mostUse) {
+//		DoctorListManager.getInstance().setIsChanged(true);// = true;
+		DoctorListManager.getInstance().getDoctorInfoByHXid(doc_id, new OnGetDoctorInfoCallback() {
+
+			@Override
+			public void onGet(DoctorInfo info) {
+				if (info != null) {
+					info.mostUser = mostUse ? 1 : 0;
+				}
+			}
+		});
+		Set<String> set = getChangyongList();
+		if (mostUse) {
+			set.add(doc_id);
+		} else {
+			set.remove(doc_id);
+		}
+		HashSet<String> newSet = new HashSet<String>();
+		newSet.addAll(set);
+		PreferenceManager.getInstance().getEditor().remove("changyong");
+		PreferenceManager.getInstance().getEditor().putStringSet("changyong", newSet).commit();
+
 	}
 }

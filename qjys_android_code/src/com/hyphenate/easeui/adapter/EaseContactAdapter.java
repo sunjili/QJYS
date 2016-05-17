@@ -71,8 +71,12 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
             Log.d("ContactAdapter", position + "");
         String username = user.getUsername();
         String header = user.getInitialLetter();
-        
-        if (position == 0 || header != null && !header.equals(getItem(position - 1).getInitialLetter())) {
+        if(position == 0 && user.doctorInfo != null  && user.doctorInfo.mostUser == 1) {
+        	 holder.headerView.setVisibility(View.VISIBLE);
+             holder.headerView.setText("常用联系人");
+        } else if(position != 0 && user.doctorInfo != null  && user.doctorInfo.mostUser == 1) {
+        	holder.headerView.setVisibility(View.GONE);
+        } else if (position == 0 || header != null && !header.equals(getItem(position - 1).getInitialLetter())) {
             if (TextUtils.isEmpty(header)) {
                 holder.headerView.setVisibility(View.GONE);
             } else {
