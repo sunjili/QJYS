@@ -50,7 +50,8 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 	public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
 		mNewFolderManager = new NewFolderManager(getActivity());
-		if (caseInfo != null && caseInfo.participate_doctor != null && !caseInfo.participate_doctor.isEmpty()) {
+		//这个条件改了！！！!caseInfo.participate_doctor.isEmpty()暂时去掉
+		if (caseInfo != null && caseInfo.participate_doctor != null) {
 			addRightIcon(R.drawable.btn_intogroupchat, new OnClickListener() {
 
 				@Override

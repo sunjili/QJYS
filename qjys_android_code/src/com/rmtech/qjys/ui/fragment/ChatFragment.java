@@ -212,11 +212,12 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
 			
 			@Override
 			public void onGet(DoctorInfo info) {
-				if(info != null) {
+				if(info != null&&!info.isMyself()) {
 					UserInfoActivity.show(getActivity(),info, "chat");
+				} else if(info.isMyself()){
+					
 				} else {
 		            Toast.makeText(getActivity(), "获取医生资料失败", 1).show();
-
 				}
 			}
 		});

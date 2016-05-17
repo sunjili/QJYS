@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import com.sjl.lib.roundedimageview.RoundedImageView;
 
 /** An image view which always remains square with respect to its width. */
-class SquaredImageView extends RoundedImageView {
+public class SquaredImageView extends RoundedImageView {
   public SquaredImageView(Context context) {
     super(context);
   }

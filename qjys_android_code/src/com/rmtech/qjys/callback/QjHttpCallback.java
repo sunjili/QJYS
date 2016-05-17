@@ -25,17 +25,21 @@ public abstract class QjHttpCallback<T extends MBase> extends Callback<T> {
 	public abstract void onError(Call call, Exception e);
 
 	public void onResponse(T response) {
-		if(response.ret == 0) {
+		if(response != null && response.ret == 0) {
 			onResponseSucces(response);
 		} else {
-			if(response.ret == 100) {
-				try {
-					QjLoginActivity.show(QjApplication.getInstance());
-				} catch (Exception e) {
-					e.printStackTrace();
+			if(response != null) {
+				if(response.ret == 100) {
+					try {
+						QjLoginActivity.show(QjApplication.getInstance());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
+				onError(null, new Exception("response.ret = "+response.ret + " response.msg="+response.msg));
+			} else {
+				onError(null, new Exception("response == null"));
 			}
-			onError(null, new Exception("response.ret = "+response.ret + " response.msg="+response.msg));
 		}
 	}
 

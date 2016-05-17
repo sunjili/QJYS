@@ -41,6 +41,15 @@
     <string name="_qj_me_password_change">你已经设置了登录密码。若更改密码，需先输入目前登录密码然后再输入新密码。</string>
     <string name="_qj_me_clean_memory">本地存储空间包括所有缓存文件、所有病例影像资料的本地文件、所有聊天记录中的本地文件。（你可以进入每个病例中，有针对的清理病例的存储空间）</string>
     <string name="_qj_login">点击上面"登录"即表示你同意</string>
-
+    <string name="app_name">Android-UIAlertView</string>
+    <string name="single_uialertview">IOS UIAlertView(单个按钮)</string>
+    <string name="single_alertdialog">Android AlertDialog(单个按钮)</string>
+    <string name="double_uialertview">IOS UIAlertView(两个按钮)</string>
+    <string name="double_alertdialog">Android AlertDialog(两个按钮)</string>
+    <string name="three_uialertview">IOS UIAlertView(三个按钮)</string>
+    <string name="three_alertdialog">Android AlertDialog(三个按钮)</string>
+    <string name="exit_app">你确定要退出应用吗?</string>
+    <string name="confirm">确定</string>
+    <string name="dismiss">隐藏</string>
 
 </resources>

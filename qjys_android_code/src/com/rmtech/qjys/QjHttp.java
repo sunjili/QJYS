@@ -43,8 +43,7 @@ import com.sjl.lib.utils.L;
 public class QjHttp {
 
 	private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-	
-	
+
 	public static final String URL_DOCTOR_SETPASS = "/doctor/setpass";
 	public static final String URL_DOCTOR_APPLYCODE = "/doctor/applycode";
 	public static final String URL_DOCTOR_SMSLOGIN = "/doctor/smslogin";
@@ -76,6 +75,17 @@ public class QjHttp {
 	public static final String URL_DELETE_IMAGES = "/patient/deleteimages";
 	public static final String URL_UPDATE_FOLDERNAME = "/patient/updatefoldername";
 	public static final String URL_UPDATE_IMAGENAME = "/patient/updateimagename";
+	public static final String URL_DOCTOR_SETREMARK = "/doctor/setremark";
+
+	/**
+	 * 42 设置备注 /doctor/setremark 参数 doc_id: 要设置的医生的id remark ： 备注名
+	 */
+	public static void setRemark(String doc_id, String remark, BaseModelCallback callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("doc_id", doc_id);
+		params.put("remark", remark);
+		OkHttpUtils.post(URL_DOCTOR_SETREMARK, params, callback);
+	}
 
 	/**
 	 * 27 更新图片名字 /patient/updateimagename 请求方法：post
@@ -88,7 +98,7 @@ public class QjHttp {
 		params.put("name", name);
 		OkHttpUtils.post(URL_UPDATE_IMAGENAME, params, callback);
 	}
-	
+
 	/**
 	 * 23 更新文件夹名字 /patient/updatefoldername 请求方法：post
 	 * 
@@ -111,7 +121,7 @@ public class QjHttp {
 		params.put("image_ids", image_ids);
 		OkHttpUtils.post(URL_DELETE_IMAGES, params, callback);
 	}
-	
+
 	/**
 	 * 37 删除文件夹 /patient/deletefolder 参数 folder_id: 要删除的文件夹id
 	 */
@@ -125,8 +135,7 @@ public class QjHttp {
 	 * 35 移动图片到文件夹 /doctor/moveimage 参数 image_ids: 要移动的图片 folder_id: 要移动到的文件夹id
 	 * patient_id : 病例id
 	 */
-	public static void moveImage(String patient_id, String folder_id,
-			String image_ids, BaseModelCallback callback) {
+	public static void moveImage(String patient_id, String folder_id, String image_ids, BaseModelCallback callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("image_ids", image_ids);
 		if (folder_id == null) {
@@ -136,9 +145,9 @@ public class QjHttp {
 		params.put("patient_id", patient_id);
 		OkHttpUtils.post(URL_MOVE_IMAGE, params, callback);
 	}
-		
+
 	/**
-	 *  设置/重置登录密码 /doctor/setpass 请求方法： post
+	 * 设置/重置登录密码 /doctor/setpass 请求方法： post
 	 * 
 	 * 请求参数 password: 密码
 	 */
@@ -182,8 +191,9 @@ public class QjHttp {
 	 */
 	public static void treateStateList(final QjHttpCallbackNoParse<MStateList> callback) {
 		// OkHttpUtils.post(URL_TREATE_PROCEDURELIST, null, callback);
-		String cacheKey = URL_TREATE_STATE_LIST + UserContext.getInstance().getCookie();
-		postWitchCache(cacheKey, URL_TREATE_STATE_LIST, null, new QjHttpCallbackNoParse<MStateList>() {
+//		OkHttpUtils.post(URL_TREATE_STATE_LIST, null, callback);
+//		String cacheKey = URL_TREATE_STATE_LIST + UserContext.getInstance().getCookie();
+		OkHttpUtils.post( URL_TREATE_STATE_LIST, null, new QjHttpCallbackNoParse<MStateList>() {
 
 			@Override
 			public MStateList parseNetworkResponse(String str) throws Exception {

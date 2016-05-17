@@ -289,7 +289,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.rl_head:
-			Toast.makeText(context, "头像", Toast.LENGTH_SHORT).show();
+//			Toast.makeText(context, "头像", Toast.LENGTH_SHORT).show();
 
 			new AlertView(null, null, "取消", null, new String[] { "拍照", "从手机相册中选择", "从资源管理器中选择" }, getActivity(),
 					AlertView.Style.ActionSheet, new com.sjl.lib.alertview.OnItemClickListener() {

@@ -22,6 +22,8 @@ public class DoctorInfo implements Serializable, Parcelable {
 	public String hos_id;// : 医院id
 	public String hos_fullname;// : 医院名称
 	public String department;// : 科室
+	public String remark;// : 备注
+
 
 	@Override
 	public int hashCode() {
@@ -63,6 +65,7 @@ public class DoctorInfo implements Serializable, Parcelable {
 		dest.writeString(this.hos_id);
 		dest.writeString(this.hos_fullname);
 		dest.writeString(this.department);
+		dest.writeString(this.remark);
 	}
 
 	public DoctorInfo() {
@@ -77,6 +80,7 @@ public class DoctorInfo implements Serializable, Parcelable {
 		this.hos_id = in.readString();
 		this.hos_fullname = in.readString();
 		this.department = in.readString();
+		this.remark = in.readString();
 	}
 	public DoctorInfo(UserInfo user) {
 		this.id = user.id;

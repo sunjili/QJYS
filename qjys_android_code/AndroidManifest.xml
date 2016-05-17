@@ -304,6 +304,12 @@
             android:theme="@style/horizontal_slide" >
         </activity>
         <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.ChatDetailActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <activity
             android:name="com.rmtech.qjys.ui.qjactivity.PhoneContactsActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"

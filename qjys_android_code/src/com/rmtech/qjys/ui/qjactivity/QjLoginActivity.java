@@ -18,6 +18,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -39,6 +40,8 @@ import com.rmtech.qjys.model.gson.MUser;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.RegisterActivity;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.ui.view.LoginBaseView;
 import com.rmtech.qjys.ui.view.LoginPassWordView;
 import com.rmtech.qjys.ui.view.LoginVcodeView;
@@ -72,11 +75,27 @@ public class QjLoginActivity extends BaseActivity {
 	}
 
 	private void onLoginError() {
-		Toast.makeText(QjLoginActivity.this, "登录失败!", Toast.LENGTH_LONG).show();
+//		Toast.makeText(QjLoginActivity.this, "登录失败!", Toast.LENGTH_LONG).show();
 		mCurrentLoginView.logining = false;
 		if (mProgressDialog != null && !QjLoginActivity.this.isFinishing() && mProgressDialog.isShowing()) {
 			mProgressDialog.dismiss();
 		}
+		showDialog();
+	}
+	
+	private void showDialog(){
+		CustomSimpleDialog.Builder builder = new Builder(QjLoginActivity.this);  
+        builder.setTitle("提示");  
+        builder.setMessage("验证码不正确，请重新输入");  
+        builder.setNegativeButton("好的", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});  
+        builder.create().show();
 	}
 
 	private void onLoginSuccess() {

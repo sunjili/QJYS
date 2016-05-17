@@ -56,7 +56,9 @@ import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
+import com.rmtech.qjys.ui.qjactivity.ChatDetailActivity;
 
 /**
  * 可以直接new出来使用的聊天对话页面fragment，
@@ -72,6 +74,7 @@ public class EaseChatFragment extends QjBaseFragment {
     protected static final int REQUEST_CODE_MAP = 1;
     protected static final int REQUEST_CODE_CAMERA = 2;
     protected static final int REQUEST_CODE_LOCAL = 3;
+    protected static final int REQUEST_CODE_DETAIL = 4;
 
     /**
      * 传入fragment的参数
@@ -192,7 +195,7 @@ public class EaseChatFragment extends QjBaseFragment {
             if(EaseUserUtils.getUserInfo(toChatUsername) != null){
                 titleBar.setTitle(EaseUserUtils.getUserInfo(toChatUsername).getNick());
             }
-            titleBar.setRightImageResource(R.drawable.ease_mm_title_remove);
+            titleBar.setRightImageResource(R.drawable.btn_message_checkinformation);
         } else {
 //        	titleBar.setRightImageResource(R.drawable.ease_to_group_details_normal);
             if (chatType == EaseConstant.CHATTYPE_GROUP) {
@@ -226,7 +229,10 @@ public class EaseChatFragment extends QjBaseFragment {
             @Override
             public void onClick(View v) {
                 if (chatType == EaseConstant.CHATTYPE_SINGLE) {
-                    emptyHistory();
+                	Intent intent = new Intent(getActivity(),ChatDetailActivity.class);
+                	intent.putExtra("toChatUsername", toChatUsername);
+                	startActivityForResult(intent, REQUEST_CODE_DETAIL);
+//                    emptyHistory();
                 } else {
                     //toGroupDetails();
                 }

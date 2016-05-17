@@ -31,6 +31,7 @@ import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.widget.EaseSidebar;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
@@ -161,7 +162,11 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		// if (exitingMembers == null) {
 		// exitingMembers = new ArrayList<DoctorInfo>();
 		// }
-		setTitle("添加讨论组成员");
+		if(type==QjConstant.REQUEST_CODE_ADD_DOCTORS){
+			setTitle("添加讨论组成员");
+		}else if(type==QjConstant.REQUEST_CODE_DELETE_DOCTORS) {
+			setTitle("删除讨论组成员");
+		}
 		listView = (ListView) findViewById(R.id.list);
 
 		((EaseSidebar) findViewById(R.id.sidebar)).setListView(listView);
@@ -444,9 +449,11 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 	private class PickContactAdapter extends EaseContactAdapter {
 
 		private boolean[] isCheckedArray;
+		private List<EaseUser> users = new ArrayList<EaseUser>();
 
 		public PickContactAdapter(Context context, int resource, List<EaseUser> users) {
 			super(context, resource, users);
+			this.users = users;
 			isCheckedArray = new boolean[users.size()];
 		}
 
@@ -470,6 +477,8 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 			// 选择框checkbox
 			final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
 			ImageView avatarView = (ImageView) view.findViewById(R.id.avatar);
+			ImageLoader.getInstance().displayImage(users.get(position).doctorInfo.head, avatarView,
+					QjConstant.optionsHead);
 			TextView nameView = (TextView) view.findViewById(R.id.name);
 
 			if (checkBox != null) {

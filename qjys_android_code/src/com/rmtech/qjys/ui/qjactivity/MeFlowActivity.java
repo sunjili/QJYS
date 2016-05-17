@@ -43,6 +43,7 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_flow);
 		setTitle("设置临床诊疗规范及流程");
+		setLeftTitle("我");
 		context = MeFlowActivity.this;
 		setRightTitle("添加", new OnClickListener() {
 

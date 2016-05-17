@@ -76,7 +76,7 @@ public class AddContactActivity extends BaseActivity implements TextWatcherCallB
 		rl_search = (RelativeLayout) findViewById(R.id.rl_search);
 		mCleanableEditText = (CleanableEditText) findViewById(R.id.et_phone);
 		mCleanableEditText.setCallBack(this);
-		
+		mCleanableEditText.setPadding(20, 0, 0, 5);
 		tv_phoneNm = (TextView) findViewById(R.id.tv_phoneNm);
 		String strAdd = getResources().getString(R.string.add_friend);
 //		mTextView.setText(strAdd);

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -24,6 +25,8 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.DemoDBManager;
 import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.ui.MainActivity;
+import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 
 @SuppressLint("NewApi")
 public class LoginPassWordView extends LoginBaseView implements View.OnClickListener {
@@ -184,13 +187,30 @@ public class LoginPassWordView extends LoginBaseView implements View.OnClickList
 				((Activity) getContext()).runOnUiThread(new Runnable() {
 					public void run() {
 						pd.dismiss();
-						Toast.makeText(getContext(), getResources().getString(R.string.Login_failed) + message,
-								Toast.LENGTH_SHORT).show();
+//						Toast.makeText(getContext(), getResources().getString(R.string.Login_failed) + message,
+//								Toast.LENGTH_SHORT).show();
+						showDialog();
 					}
 				});
 			}
 		});
 		return true;
+	}
+	
+	private void showDialog(){
+		CustomSimpleDialog.Builder builder = new Builder(getContext());  
+        builder.setTitle("提示");  
+        builder.setMessage("账号密码不正确，请重新输入");  
+        builder.setNegativeButton("好的", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+
+		});  
+        builder.create().show();
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package com.rmtech.qjys.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -20,8 +22,27 @@ public class FolderDataInfo implements Serializable, Parcelable {
 	public String name; // 名称
 
 	public String patient_id;// : 病例
-	public String update_time;// : 更新时间
-	public String create_time;// : 创建时间
+	public int update_time;// : 更新时间
+	public int create_time;// : 创建时间
+	
+	public String getUpdateTimeStr() {
+		if (update_time > 0) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String timeStr = format.format(new Date(
+					update_time * 1000L));
+			return timeStr;
+		}
+		return "";
+	}
+	public String getCreateTimeStr() {
+		if (create_time > 0) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String timeStr = format.format(new Date(
+					create_time * 1000L));
+			return timeStr;
+		}
+		return "";
+	}
 
 	@Override
 	public int describeContents() {
@@ -33,16 +54,16 @@ public class FolderDataInfo implements Serializable, Parcelable {
 		dest.writeString(this.id);
 		dest.writeString(this.name);
 		dest.writeString(this.patient_id);
-		dest.writeString(this.update_time);
-		dest.writeString(this.create_time);
+		dest.writeInt(this.update_time);
+		dest.writeInt(this.create_time);
 	}
 
 	protected FolderDataInfo(Parcel in) {
 		this.id = in.readString();
 		this.name = in.readString();
 		this.patient_id = in.readString();
-		this.update_time = in.readString();
-		this.create_time = in.readString();
+		this.update_time = in.readInt();
+		this.create_time = in.readInt();
 	}
 
 	public static final Creator<FolderDataInfo> CREATOR = new Creator<FolderDataInfo>() {

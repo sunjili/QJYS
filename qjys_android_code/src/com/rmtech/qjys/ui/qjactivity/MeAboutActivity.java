@@ -71,6 +71,7 @@ public class MeAboutActivity extends BaseActivity implements
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_about);
 		setTitle("关于奇迹医生");
+		setLeftTitle("我");
 		context = MeAboutActivity.this;
 		initView();
 	}

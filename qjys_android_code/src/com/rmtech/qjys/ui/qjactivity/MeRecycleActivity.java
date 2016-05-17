@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -58,6 +59,7 @@ public class MeRecycleActivity extends BaseActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_recycle);
 		setTitle("我的回收站");
+		setLeftTitle("我");
 		setRightTitle("", null);
 		initView();
 	}
@@ -74,7 +76,7 @@ public class MeRecycleActivity extends BaseActivity {
 
 	private EaseTitleBar title_bar;
 	private PtrClassicFrameLayout mPtrFrame;
-	private TextView mTextView;
+	private ImageView mImageView;
 	private PinnedHeaderListView mListView;
 	private CaseSectionedAdapter mAdapter;
 
@@ -96,10 +98,10 @@ public class MeRecycleActivity extends BaseActivity {
 		EventBus.getDefault().register(this);
 		title_bar = (EaseTitleBar) findViewById(R.id.title_bar);
 		title_bar.setVisibility(View.GONE);
-		mTextView = (TextView) findViewById(R.id.list_view_with_empty_view_fragment_empty_view);
+		mImageView = (ImageView) findViewById(R.id.list_view_with_empty_view_fragment_empty_view);
 		mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.list_view_with_empty_view_fragment_ptr_frame);
 
-		mTextView.setOnClickListener(new View.OnClickListener() {
+		mImageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mPtrFrame.setVisibility(View.VISIBLE);
@@ -314,7 +316,7 @@ public class MeRecycleActivity extends BaseActivity {
 
 	private void displayData() {
 
-		mTextView.setVisibility(View.GONE);
+		mImageView.setVisibility(View.GONE);
 
 		// mAdapter.getDataList().addAll(data.optJson("data").optJson("list").toArrayList());
 		mAdapter.notifyDataSetChanged();

@@ -49,6 +49,7 @@ import com.hyphenate.easeui.widget.EaseExpandGridView;
 import com.hyphenate.easeui.widget.EaseSwitchButton;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
@@ -56,7 +57,11 @@ import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.fragment.ChatFragment;
 import com.rmtech.qjys.ui.qjactivity.DoctorPickActivity;
+import com.rmtech.qjys.ui.qjactivity.UserInfoActivity;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.sjl.lib.multi_image_selector.view.SquaredImageView;
 
 public class GroupDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "GroupDetailsActivity";
@@ -92,6 +97,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	private TextView name_tv;
 	private TextView nike_tv;
 	private int requestType;
+	private SquaredImageView avatar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +110,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		groupId = caseInfo.group_id;// getIntent().getStringExtra("groupId");
 		group = EMClient.getInstance().groupManager().getGroup(groupId);
 		// we are not supposed to show the group if we don't find the group
+		
 		if (caseInfo == null) {
 			finish();
 			return;
@@ -119,14 +126,14 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		deleteBtn = (Button) findViewById(R.id.btn_exitdel_grp);
 		change_admin_view = findViewById(R.id.change_admin_view);
 		change_admin_view.setOnClickListener(this);
+		avatar = (SquaredImageView) findViewById(R.id.avatar);
 		name_tv = (TextView) findViewById(R.id.name_tv);
 		nike_tv = (TextView) findViewById(R.id.nike_tv);
 		rl_switch_block_groupmsg = (RelativeLayout) findViewById(R.id.rl_switch_block_groupmsg);
 		switchButton = (EaseSwitchButton) findViewById(R.id.switch_btn);
 
 		rl_switch_block_groupmsg.setOnClickListener(this);
-		name_tv.setText(caseInfo.admin_doctor.name);
-		nike_tv.setText("昵称：" + caseInfo.admin_doctor.name);
+		
 		// idText.setText(groupId);
 		if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR) {
 			exitBtn.setVisibility(View.GONE);
@@ -159,13 +166,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			((TextView) findViewById(R.id.group_name)).setText(caseInfo.name);
 		}
 
-		DoctorInfo adminDoctor = caseInfo.admin_doctor;
-		List<DoctorInfo> participateDoctors = caseInfo.participate_doctor;
-		// List<String> members = new ArrayList<String>();
-		// members.addAll(group.getMembers());
-
-		adapter = new GridAdapter(this, R.layout.em_grid, new ArrayList<>(participateDoctors));
-		userGridview.setAdapter(adapter);
+		
 
 		// 保证每次进详情看到的都是最新的group
 		// updateGroup();
@@ -194,6 +195,41 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		// blacklistLayout.setOnClickListener(this);
 		// changeGroupNameLayout.setOnClickListener(this);
 	}
+
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(caseInfo != null) {
+			CaseInfo newCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
+			if(newCaseInfo != null) {
+				caseInfo = newCaseInfo;
+				
+			}
+		}
+		if(caseInfo.admin_doctor != null) {
+			DoctorListManager.getInstance().getDoctorInfoByHXid(caseInfo.admin_doctor.id, new OnGetDoctorInfoCallback() {
+				
+				@Override
+				public void onGet(DoctorInfo info) {
+					if(info != null) {
+						caseInfo.admin_doctor = info;
+					}
+					name_tv.setText(caseInfo.admin_doctor.name);
+					nike_tv.setText("昵称：" + caseInfo.admin_doctor.name);
+					ImageLoader.getInstance().displayImage(caseInfo.admin_doctor.head, avatar,
+							QjConstant.optionsHead);
+					
+				}
+			});
+		}
+		
+		
+		List<DoctorInfo> participateDoctors = caseInfo.participate_doctor;
+		adapter = new GridAdapter(this, R.layout.em_grid, participateDoctors);
+		userGridview.setAdapter(adapter);
+	}
+
 
 	@Override
 	public void finish() {
@@ -229,37 +265,38 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			}
 			switch (requestCode) {
 			case REQUEST_CODE_ADD_USER: {// 添加群成员
-				final String[] newmembers = data.getStringArrayExtra("newmembers");
-				progressDialog.setMessage(st1);
-				progressDialog.show();
-				addMembersToGroup(newmembers);
+//				final String[] newmembers = data.getStringArrayExtra("newmembers");
+//				progressDialog.setMessage(st1);
+//				progressDialog.show();
+//				addMembersToGroup(newmembers);
 				break;
 			}
 			case QjConstant.REQUEST_CODE_ADD_DOCTORS: {// 添加群成员
 				ArrayList<DoctorInfo> currentDoctorList = data.getParcelableArrayListExtra("selectedDoctorList");
 				groupId = data.getStringExtra("group_id");
-				if (caseInfo != null) {
-					if (caseInfo.participate_doctor == null) {
-						caseInfo.participate_doctor = new ArrayList<DoctorInfo>();
-					}
-					caseInfo.participate_doctor.addAll(currentDoctorList);
-					GroupAndCaseListManager.getInstance().setIsChanged(true);
-				}
-				progressDialog.setMessage(st1);
-				progressDialog.show();
-
-				String[] newmembers = new String[currentDoctorList.size()];
-				for (int i = 0; i < currentDoctorList.size(); i++) {// DoctorInfo
-																	// info :
-																	// currentDoctorList)
-																	// {
-					newmembers[i] = currentDoctorList.get(i).id;
-				}
-				addMembersToGroup(newmembers);
+//				if (caseInfo != null) {
+//					if (caseInfo.participate_doctor == null) {
+//						caseInfo.participate_doctor = new ArrayList<DoctorInfo>();
+//					}
+//					caseInfo.participate_doctor.addAll(currentDoctorList);
+//					GroupAndCaseListManager.getInstance().setIsChanged(true);
+//				}
+//				progressDialog.setMessage(st1);
+//				progressDialog.show();
+//
+//				String[] newmembers = new String[currentDoctorList.size()];
+//				for (int i = 0; i < currentDoctorList.size(); i++) {// DoctorInfo
+//																	// info :
+//																	// currentDoctorList)
+//																	// {
+//					newmembers[i] = currentDoctorList.get(i).id;
+//				}
+//				addMembersToGroup(newmembers);
+//				refreshMembers();
 				break;
 			}
 			case QjConstant.REQUEST_CODE_DELETE_DOCTORS:// 删除群成员
-				ArrayList<DoctorInfo> deleteDoctorList = data.getParcelableArrayListExtra("deleteDoctorList");
+//				ArrayList<DoctorInfo> deleteDoctorList = data.getParcelableArrayListExtra("deleteDoctorList");
 				// progressDialog.setMessage(st1);
 				// progressDialog.show();
 
@@ -269,10 +306,10 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				// newmembers[i] = currentDoctorList.get(i).id;
 				// }
 				// addMembersToGroup(newmembers);
-				adapter.deleteMembers(deleteDoctorList);
-				caseInfo.participate_doctor.removeAll(deleteDoctorList);
-				adapter.notifyDataSetChanged();
-				// refreshMembers();
+//				adapter.deleteMembers(deleteDoctorList);
+//				caseInfo.participate_doctor.removeAll(deleteDoctorList);
+//				adapter.notifyDataSetChanged();
+//				 refreshMembers();
 
 				break;
 			case REQUEST_CODE_EXIT: // 退出群
@@ -639,12 +676,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 		private int res;
 		public boolean isInDeleteMode;
-
-		// private List<DoctorInfo> objects;
+		private Context mContext;
+		private List<DoctorInfo> objects;
 
 		public GridAdapter(Context context, int textViewResourceId, List<DoctorInfo> objects) {
 			super(context, textViewResourceId, objects);
-			// this.objects = objects;
+			 this.objects = objects;
+			this.mContext = context;
 			res = textViewResourceId;
 			isInDeleteMode = false;
 		}
@@ -659,7 +697,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 		@Override
 		public View getView(final int position, View convertView, final ViewGroup parent) {
-			ViewHolder holder = null;
+			final ViewHolder holder;
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = LayoutInflater.from(getContext()).inflate(res, null);
@@ -738,18 +776,26 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					});
 				}
 			} else { // 普通item，显示群组成员
-				final DoctorInfo user = getItem(position);
+				final DoctorInfo user = objects.get(position);
+				if(user != null) {
+					DoctorListManager.getInstance().getDoctorInfoByHXid(user.id, new OnGetDoctorInfoCallback() {
+						
+						@Override
+						public void onGet(DoctorInfo info) {
+							if(info != null) {
+								holder.textView.setText(info.name);
+								ImageLoader.getInstance().displayImage(info.head, holder.imageView,
+									QjConstant.optionsHead);
+							} else {
+								holder.textView.setText(user.name);
+								ImageLoader.getInstance().displayImage(user.head, holder.imageView,
+										QjConstant.optionsHead);
+							}
+						}
+					});
+				}
 				convertView.setVisibility(View.VISIBLE);
 				button.setVisibility(View.VISIBLE);
-				// Drawable avatar =
-				// getResources().getDrawable(R.drawable.default_avatar);
-				// avatar.setBounds(0, 0, referenceWidth, referenceHeight);
-				// button.setCompoundDrawables(null, avatar, null, null);
-				// EaseUserUtils.setUserNick(username, holder.textView);
-				holder.textView.setText(user.name);
-				holder.imageView.setImageResource(R.drawable.ic_default_avatar);
-				// EaseUserUtils.setUserAvatar(getContext(), username,
-				// holder.imageView);
 				if (isInDeleteMode) {
 					// 如果是删除模式下，显示减人图标
 					convertView.findViewById(R.id.badge_delete).setVisibility(View.VISIBLE);
@@ -785,12 +831,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							// username);
 							// deleteMembersFromGroup(username);
 						} else {
-							// 正常情况下点击user，可以进入用户详情或者聊天页面等等
-							// startActivity(new
-							// Intent(GroupDetailsActivity.this,
-							// ChatActivity.class).putExtra("userId",
-							// user.getUsername()));
-
+							if(!user.isMyself()){
+								UserInfoActivity.show(mContext, user, "group");
+							}
 						}
 					}
 

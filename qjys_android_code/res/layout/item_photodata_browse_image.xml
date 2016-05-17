@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="9dp" >
+    >
 
     <ImageView
         android:id="@+id/small_image"
@@ -16,6 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:scaleType="centerInside" />
+        android:scaleType="fitXY" />
 
 </RelativeLayout>

@@ -129,7 +129,7 @@
         android:background="@null"
         android:gravity="center"
         android:onClick="onChangeClick"
-        android:text="验证码登录"
+        android:text="短信验证码登录"
         android:textColor="@color/c3264aa"
         android:textSize="15sp" />
 

@@ -13,32 +13,43 @@
  */
 package com.rmtech.qjys.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.bumptech.glide.request.animation.GlideAnimation.ViewAdapter;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.NewFriendsMsgAdapter;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.domain.InviteMessage;
+import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.ui.qjactivity.UserInfoActivity;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 
 /**
  * 申请与通知
  *
  */
-public class NewFriendsMsgActivity extends BaseActivity {
+public class NewFriendsMsgActivity extends BaseActivity implements OnItemClickListener{
 	private ListView listView;
 
+	List<InviteMessage> msgs = new ArrayList<InviteMessage>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.em_activity_new_friends_msg);
 
 		listView = (ListView) findViewById(R.id.list);
+		listView.setClickable(true);
+		listView.setOnItemClickListener(this);
 		InviteMessgeDao dao = new InviteMessgeDao(this);
-		List<InviteMessage> msgs = dao.getMessagesList();
+		msgs = dao.getMessagesList();
 		//设置adapter
 		NewFriendsMsgAdapter adapter = new NewFriendsMsgAdapter(this, 1, msgs); 
 		listView.setAdapter(adapter);
@@ -48,6 +59,21 @@ public class NewFriendsMsgActivity extends BaseActivity {
 
 	public void back(View view) {
 		finish();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		// TODO Auto-generated method stub
+//		DoctorListManager.getInstance().getDoctorInfoByHXid(msgs.get(position).getFrom(), 
+//				new OnGetDoctorInfoCallback() {
+//			
+//			@Override
+//			public void onGet(DoctorInfo info) {
+//				if(info != null) {
+//					UserInfoActivity.show(getActivity(),info, "newFriendsMsg");
+//				} 
+//			}
+//		});
 	}
 	
 	

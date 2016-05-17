@@ -2,6 +2,7 @@ package com.rmtech.qjys.ui.qjactivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,20 +24,27 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 	private Button btn_clean;
 	private Context context;
 	private TextView tv_memory_value;
+	private PackageManager pm;
+	
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_clean_memory);
 		setTitle("清理存储空间");
+		setLeftTitle("我");
 		context = MeCleanMemoryActivity.this;
 		initView();
 	}
+	
+	
 
 	private void initView() {
+		pm = this.getPackageManager();
 		btn_clean = (Button) findViewById(R.id.btn_clean);
 		btn_clean.setOnClickListener(this);
 		tv_memory_value = (TextView) this.findViewById(R.id.tv_memory_value);
+		tv_memory_value.setText("");
 	}
 
 	protected boolean showTitleBar() {

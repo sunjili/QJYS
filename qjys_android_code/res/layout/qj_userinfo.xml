@@ -101,6 +101,11 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="20dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:background="@color/cd9" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -122,10 +127,11 @@
             android:id="@+id/tv_hospital"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
-            android:layout_toRightOf="@id/tv_hospital_left"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|right"
+            android:paddingRight="20dp"
             android:text="测试1111111"
             android:textColor="@color/black"
             android:textSize="14sp" />
@@ -157,10 +163,11 @@
             android:id="@+id/tv_department"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
-            android:layout_toRightOf="@id/tv_department_left"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|right"
+            android:paddingRight="20dp"
             android:text="测试"
             android:textColor="@color/black"
             android:textSize="14sp" />
@@ -174,37 +181,35 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white" >
+        android:layout_height="50dip"
+        android:background="@color/white"
+        android:padding="10dip" >
 
         <TextView
             android:id="@+id/tv_changyong_left"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical|left"
             android:text="设置为常用联系人"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:typeface="serif" />
 
-        <ToggleButton
+        <com.hyphenate.easeui.widget.EaseSwitchButton
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/tb_pull"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/transparent"
-            android:button="@drawable/toggle_btn"
-            android:checked="true"
-            android:gravity="right|center_vertical"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text=""
-            android:textOff=""
-            android:textOn="" />
+            app:switchStatus="close" />
     </RelativeLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:background="@color/cd9" />
 
     <Button
         android:id="@+id/btn_sendmessage"
@@ -217,5 +222,18 @@
         android:text="发消息"
         android:textColor="@color/white"
         android:textSize="19sp" />
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="match_parent"
+        android:layout_height="42dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dip"
+        android:background="@drawable/qj_me_redbutton_selector"
+        android:text="删除好友"
+        android:textColor="@color/white"
+        android:textSize="19sp"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -16,6 +16,14 @@
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
     </style>
+        <style name="myCustomDialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/bg</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 
     <style name="chat_text_date_style">
         <item name="android:padding">2dp</item>
@@ -78,13 +86,7 @@
     <!--
     <style name="horizontal_slide2" parent="android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/AnimFade2</item>
-    </style>
-
-
-
-
-
-
+    </style>
     -->
 
     <style name="MyDialogStyle">
@@ -285,8 +287,8 @@
         <item name="android:textColor">@color/c3</item>
         <item name="android:layout_marginLeft">10dip</item>
     </style>
-    
-     <style name="qj_add_case_right_name_tv">
+
+    <style name="qj_add_case_right_name_tv">
         <item name="android:textSize">12sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -312,18 +314,16 @@
         <item name="android:textColorHint">@color/cb2</item>
         <item name="android:layout_marginRight">10dip</item>
         <item name="android:background">@color/transparent</item>
-        
     </style>
 
- <style name="ListItem">
+    <style name="ListItem">
         <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
     </style>
-    
-      
+
     <style name="qj_me_item_left_tv">
         <item name="android:textSize">17sp</item>
         <item name="android:maxLines">1</item>
@@ -347,6 +347,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_marginRight">10dip</item>
     </style>
+
     <style name="qj_et_style" parent="android:Widget.Holo.Light.EditText">
         <item name="android:background">@color/white</item>
         <item name="android:gravity">center_vertical|left</item>
@@ -368,7 +369,7 @@
         <item name="android:textColor">@color/c9</item>
         <item name="android:textSize">11sp</item>
     </style>
-    
+
     <style name="qj_text_small_explain_style1" parent="android:Widget.TextView">
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/c9</item>
@@ -384,6 +385,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
     <style name="redbutton" parent="android:Widget.Holo.Light.Button">
         <item name="android:background">@drawable/qj_me_redbutton_selector</item>
         <item name="android:layout_marginBottom">20dp</item>
@@ -391,4 +393,5 @@
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
 </resources>

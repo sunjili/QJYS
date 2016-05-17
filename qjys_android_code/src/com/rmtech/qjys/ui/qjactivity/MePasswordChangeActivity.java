@@ -35,6 +35,7 @@ public class MePasswordChangeActivity extends BaseActivity implements
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_password_change);
 		setTitle("设置密码");
+		setLeftTitle("我");
 		context = MePasswordChangeActivity.this;
 		setRightTitle("完成", new OnClickListener() {
 
