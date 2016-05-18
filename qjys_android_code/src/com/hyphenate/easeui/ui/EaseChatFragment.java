@@ -55,10 +55,14 @@ import com.hyphenate.easeui.widget.EaseVoiceRecorderView.EaseVoiceRecorderCallba
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
-import com.rmtech.qjys.ui.ChatActivity;
+import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 import com.rmtech.qjys.ui.qjactivity.ChatDetailActivity;
+import com.rmtech.qjys.ui.qjactivity.DoctorPickActivity;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 
 /**
  * 可以直接new出来使用的聊天对话页面fragment，
@@ -174,6 +178,11 @@ public class EaseChatFragment extends QjBaseFragment {
                 //发送大表情(动态表情)
                 sendBigExpressionMessage(emojicon.getName(), emojicon.getIdentityCode());
             }
+
+			@Override
+			public void onAtShow() {
+				onAtShowing();
+			}
         });
 
         swipeRefreshLayout = messageList.getSwipeRefreshLayout();
@@ -183,6 +192,10 @@ public class EaseChatFragment extends QjBaseFragment {
         inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+    
+    protected void onAtShowing() {
+    	DoctorPickActivity.show(getActivity(), toChatUsername, null, QjConstant.REQUEST_CODE_AT);
     }
 
     /**
@@ -336,6 +349,21 @@ public class EaseChatFragment extends QjBaseFragment {
                 }
                 return false; 
             }
+
+			@Override
+			public void onUserAvatarLongClick(String username) {
+				 DoctorListManager.getInstance().getDoctorInfoByHXid(username, new OnGetDoctorInfoCallback() {
+					
+					@Override
+					public void onGet(DoctorInfo info) {
+						if(info != null) {
+		                	inputMenu.onAddAtFriend(info);
+		                }
+						
+					}
+				});
+	                
+			}
         });
     }
 
@@ -408,6 +436,12 @@ public class EaseChatFragment extends QjBaseFragment {
                     Toast.makeText(getActivity(), R.string.unable_to_get_loaction, 0).show();
                 }
                 
+            } else if (requestCode == QjConstant.REQUEST_CODE_AT) { // @好友
+                DoctorInfo info = data.getParcelableExtra("DoctorInfo");
+                if(info != null) {
+                	inputMenu.onAddAtFriend(info);
+                }
+
             }
         }
     }

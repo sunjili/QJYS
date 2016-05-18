@@ -178,6 +178,9 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     						}
     						if (needToSelect) {
     							//DoctorPickActivity.show(activity, caseinfo, selectedDoctorList, type);
+    							 if(listener != null){
+    				                listener.onAtShow();
+    				            }
     						}
     					}
     				}
@@ -379,17 +382,21 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 			return false;
 		}
 	};
-	
-	public void onAddOneAtFriend(DoctorInfo data) {
+
+	@Override
+	public void onAddAtFriend(DoctorInfo data) {
 		int index = editText.getSelectionStart();
 		Editable editable = editText.getText();
 
 		String appendStr = data.name + " ";
-		if (index > 0) { // 这时编辑框里还有一个@符号
-			editable.replace(index - 1, index, appendStr);
-			index = index - 1;
+		if(index == 0) {
+			appendStr = "@"+appendStr;
+		} else if (index > 0){
+			if(!"@".equalsIgnoreCase(editText.getText().toString().substring(index-1, index))) {
+				appendStr = "@"+appendStr;
+			} 
 		}
-
+		editable.insert(index, appendStr);
 		String editStr = editText.getText().toString();
 		editText.setText(getSpannableStringBuilder(index, appendStr, editStr, data));
 		editText.requestFocus();

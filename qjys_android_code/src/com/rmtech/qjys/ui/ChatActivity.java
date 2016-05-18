@@ -9,6 +9,7 @@ import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.fragment.ChatFragment;
 import com.rmtech.qjys.ui.fragment.ChatGroupFragment;
+import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 
 /**
  * 聊天页面，需要fragment的使用{@link #EaseChatFragment}
@@ -71,4 +72,11 @@ public class ChatActivity extends BaseActivity{
     public String getToChatUsername(){
         return toChatUsername;
     }
+    
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		chatFragment.onActivityResult(requestCode, resultCode, data);
+	}
 }

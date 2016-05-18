@@ -1,5 +1,7 @@
 package com.hyphenate.easeui.widget;
 
+import com.rmtech.qjys.model.DoctorInfo;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -100,7 +102,16 @@ public abstract class EaseChatPrimaryMenuBase extends RelativeLayout{
          * 文字输入框点击事件
          */
         void onEditTextClicked();
+
+        /**
+         * 输入@
+         */
+		void onAtShow();
         
     }
+
+	public void onAddAtFriend(DoctorInfo info) {
+		
+	}
 
 }

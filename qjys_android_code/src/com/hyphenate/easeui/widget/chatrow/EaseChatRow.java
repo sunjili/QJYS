@@ -287,6 +287,18 @@ public abstract class EaseChatRow extends LinearLayout {
                 }
             }
         });
+        userAvatarView.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				if (message.direct() != Direct.SEND) {
+					if (itemClickListener != null) {
+	                    itemClickListener.onUserAvatarLongClick(message.getFrom());
+					}
+				}
+				return true;
+			}
+		});
     }
 
 

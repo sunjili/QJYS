@@ -109,7 +109,9 @@ public class DoctorInfo implements Serializable, Parcelable {
 	};
 
 	public boolean isMyself() {
-		// TODO Auto-generated method stub
+		if(TextUtils.isEmpty(id)) {
+			return false;
+		}
 		return TextUtils.equals(id, UserContext.getInstance().getUserId());
 	}
 }

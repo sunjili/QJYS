@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListPopupWindow;
 
@@ -23,6 +24,7 @@ import com.rmtech.qjys.ui.fragment.PhotoManagerFragment;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow.ListPopupWindowAdapter;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
 public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 
@@ -107,14 +109,26 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 								}
 								showNewFolderDialog(folders);
 								break;
-							case 1:
+							case 1: {
+								CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+								if(tempCase != null && tempCase.admin_doctor != null && !tempCase.admin_doctor.isMyself()) {
+									Toast.makeText(getActivity(), "非管理员，没有权限", Toast.LENGTH_LONG).show();
+									return;
+								}
 								PhotoDataSortActivity.show(PhotoDataManagerActivity.this,caseId,folderId,
 										mPhotoManagerFragment.getImageDataList());
 								break;
-							case 2:
+							}
+							case 2:{
+								CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+								if(tempCase != null && tempCase.admin_doctor != null && !tempCase.admin_doctor.isMyself()) {
+									Toast.makeText(getActivity(), "非管理员，没有权限", Toast.LENGTH_LONG).show();
+									return;
+								}
 								PhotoDataSelectActivity.show(PhotoDataManagerActivity.this,caseId,folderId,
 										mPhotoManagerFragment.getImageDataList());
 								break;
+							}
 							case 3:
 								PhotoDataSettingActivity.show(PhotoDataManagerActivity.this);
 								break;

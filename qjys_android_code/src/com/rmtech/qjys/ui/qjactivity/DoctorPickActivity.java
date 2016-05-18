@@ -3,13 +3,15 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+
 import org.greenrobot.eventbus.EventBus;
 
-import okhttp3.Call;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -45,8 +47,8 @@ import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.model.gson.MGroupData;
 import com.rmtech.qjys.utils.DoctorListManager;
-import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
 public class DoctorPickActivity extends CaseWithIdActivity {
 	private ListView listView;
@@ -128,6 +130,16 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		Intent intent = new Intent(activity, DoctorPickActivity.class);//
 		setCaseInfo(intent, caseinfo);
 		setCaseId(intent, caseinfo.id);
+		intent.putExtra("type", type);
+		if (selectedDoctorList != null) {
+			intent.putParcelableArrayListExtra("selectedDoctorList", new ArrayList<DoctorInfo>(selectedDoctorList));
+		}
+		activity.startActivityForResult(intent, type);
+	}
+	public static void show(Activity activity, String caseinfoid, List<DoctorInfo> selectedDoctorList, int type) {
+		Intent intent = new Intent(activity, DoctorPickActivity.class);//
+		setCaseInfo(intent, GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseinfoid));
+		setCaseId(intent, caseinfoid);
 		intent.putExtra("type", type);
 		if (selectedDoctorList != null) {
 			intent.putParcelableArrayListExtra("selectedDoctorList", new ArrayList<DoctorInfo>(selectedDoctorList));
@@ -316,6 +328,23 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 					});
 				}
 			});
+		} else if(type == QjConstant.REQUEST_CODE_AT) {
+			isSignleChecked = true;
+			setRightTitle("确定", new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					ArrayList<DoctorInfo> resultList = getToBeAddMembers();
+					DoctorInfo selDoc = resultList.get(0);
+					Intent intent = new Intent();
+					if(selDoc != null) {
+						intent.putExtra("DoctorInfo", (Parcelable)selDoc);
+					}
+					setResult(RESULT_OK, intent);
+					finish();
+				}
+			});
+			
 		} else {
 			selectedDoctorList = getIntent().getParcelableArrayListExtra("selectedDoctorList");
 
@@ -403,6 +432,7 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 	 */
 	private ArrayList<DoctorInfo> getToBeAddMembers() {
 		final ArrayList<DoctorInfo> members = new ArrayList<DoctorInfo>();
+		if(contactAdapter.isCheckedArray != null) {
 		int length = contactAdapter.isCheckedArray.length;
 		for (int i = 0; i < length; i++) {
 			String username = contactAdapter.getItem(i).getUsername();
@@ -415,6 +445,7 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 					}
 				});
 			}
+		}
 		}
 		return members;
 	}

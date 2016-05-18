@@ -23,6 +23,7 @@ import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenuBase;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenuBase.EaseEmojiconMenuListener;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.DoctorInfo;
 
 /**
  * 聊天页面底部的聊天输入菜单栏 <br/>
@@ -212,6 +213,13 @@ public class EaseChatInputMenu extends LinearLayout {
                 }
                 return false;
             }
+
+			@Override
+			public void onAtShow() {
+				if (listener != null) {
+					listener.onAtShow();
+				}
+			}
         });
 
         // emojicon menu
@@ -337,6 +345,11 @@ public class EaseChatInputMenu extends LinearLayout {
         void onSendMessage(String content);
         
         /**
+         * 输入@
+         */
+        void onAtShow();
+
+		/**
          * 大表情被点击
          * @param emojicon
          */
@@ -350,5 +363,9 @@ public class EaseChatInputMenu extends LinearLayout {
          */
         boolean onPressToSpeakBtnTouch(View v, MotionEvent event);
     }
+
+	public void onAddAtFriend(DoctorInfo info) {
+		chatPrimaryMenu.onAddAtFriend(info);		
+	}
     
 }
