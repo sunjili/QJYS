@@ -9,7 +9,8 @@ public class PhotoDataEvent {
 	public static final int TYPE_ADD = 1;
 	public static final int TYPE_EDIT = 2;
 	public static final int TYPE_DELETE = 3;
-	public static final int TYPE_MOVE = 3;
+	public static final int TYPE_MOVE = 4;
+	public static final int TYPE_SORT = 5;
 	public int type;
 	public PhotoDataInfo dataInfo;
 	public String caseId;

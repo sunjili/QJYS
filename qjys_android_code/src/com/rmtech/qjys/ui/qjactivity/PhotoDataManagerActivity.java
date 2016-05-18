@@ -108,7 +108,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 								showNewFolderDialog(folders);
 								break;
 							case 1:
-								PhotoDataSortActivity.show(PhotoDataManagerActivity.this,
+								PhotoDataSortActivity.show(PhotoDataManagerActivity.this,caseId,folderId,
 										mPhotoManagerFragment.getImageDataList());
 								break;
 							case 2:

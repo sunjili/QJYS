@@ -76,6 +76,27 @@ public class QjHttp {
 	public static final String URL_UPDATE_FOLDERNAME = "/patient/updatefoldername";
 	public static final String URL_UPDATE_IMAGENAME = "/patient/updateimagename";
 	public static final String URL_DOCTOR_SETREMARK = "/doctor/setremark";
+	public static final String URL_SORT_IMAGE = "/patient/sortimage";
+
+	/**
+	 * 24 更新图片排序 /patient/sortimage 请求方法：post
+	 * 
+	 * 参数 folder_id : 文件夹id patient_id: 病例id sort_type ： 排序方法 0 时间 1文件名 2自定义
+	 * image_ids : 图片id序列
+	 * 
+	 * 如果sort_type为0或者为1，则不要传image_ids，否则会返回排序失败 sort_type为2 必须传image_ids
+	 */
+	public static void sortImage(String folder_id, String patient_id,
+			int sort_type, String image_ids, BaseModelCallback callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("folder_id", folder_id);
+		params.put("patient_id", patient_id);
+		params.put("sort_type", sort_type + "");
+		if(image_ids != null) {
+			params.put("image_ids", image_ids);
+		}
+		OkHttpUtils.post(URL_SORT_IMAGE, params, callback);
+	}
 
 	/**
 	 * 42 设置备注 /doctor/setremark 参数 doc_id: 要设置的医生的id remark ： 备注名

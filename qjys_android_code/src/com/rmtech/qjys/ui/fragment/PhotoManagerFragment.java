@@ -128,7 +128,9 @@ public class PhotoManagerFragment extends QjBaseFragment {
 				}
 			}
 		}
-		if (event != null && (event.type == PhotoDataEvent.TYPE_MOVE || event.type ==  PhotoDataEvent.TYPE_DELETE)) {
+		if (event != null && (event.type == PhotoDataEvent.TYPE_MOVE 
+				|| event.type ==  PhotoDataEvent.TYPE_DELETE
+				|| event.type ==  PhotoDataEvent.TYPE_SORT)) {
 			if (!TextUtils.equals(caseInfo.id, event.caseId)) {
 				return;
 			}

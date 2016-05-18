@@ -26,7 +26,8 @@ public class UserContext {
 
 	public void clearCookie() {
 
-		SharedPreferences.Editor editor = PreferenceManager.getInstance().getEditor();
+		SharedPreferences.Editor editor = PreferenceManager.getInstance()
+				.getEditor();
 		if (editor != null) {
 			editor.remove("user");
 			editor.putString("user", "");
@@ -37,7 +38,8 @@ public class UserContext {
 
 	public boolean loadCookie() {
 		isLogined = false;
-		SharedPreferences preferences = PreferenceManager.getInstance().getSharedPreferences();
+		SharedPreferences preferences = PreferenceManager.getInstance()
+				.getSharedPreferences();
 		String json = preferences.getString("user", "");
 
 		if (TextUtils.isEmpty(json)) {
@@ -70,7 +72,8 @@ public class UserContext {
 
 	private void saveCookieSync() {
 		try {
-			SharedPreferences.Editor editor = PreferenceManager.getInstance().getEditor();
+			SharedPreferences.Editor editor = PreferenceManager.getInstance()
+					.getEditor();
 			if (editor != null) {
 				Gson gson = new Gson();
 				String json = gson.toJson(mUser);
@@ -82,6 +85,7 @@ public class UserContext {
 			e.printStackTrace();
 		}
 	}
+
 	private void saveCookie() {
 		new AsyncTask<Void, Void, Void>() {
 
@@ -123,11 +127,16 @@ public class UserContext {
 	}
 
 	public String getUserName() {
+		if (mUser == null) {
+			return "";
+		}
 		return mUser.name;
 	}
 
 	public CharSequence getUserId() {
-		// TODO Auto-generated method stub
+		if (mUser == null) {
+			return "";
+		}
 		return mUser.id;
 	}
 
