@@ -114,6 +114,7 @@ public class NewFolderManager {
 				});
 		ViewGroup extView = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.alertext_form, null);
 		etName = (EditText) extView.findViewById(R.id.etName);
+		etName.setText(renameInfo.name);
 		etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View view, boolean focus) {
