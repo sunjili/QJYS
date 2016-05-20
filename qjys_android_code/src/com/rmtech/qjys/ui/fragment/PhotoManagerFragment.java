@@ -40,6 +40,7 @@ import com.rmtech.qjys.ui.qjactivity.PhotoDataBaseActivity.OnDeleteCallback;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataBrowseActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.NewFolderManager.OnRenameListener;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.sjl.lib.alertview.AlertView;
@@ -369,6 +370,10 @@ public class PhotoManagerFragment extends QjBaseFragment {
 		loadData();
 	}
 
+	private boolean isRootFolder() {
+		return TextUtils.isEmpty(folderId);
+	}
+
 	private void loadData() {
 		QjHttp.getImageList(true, caseInfo.id, folderId, new QjHttpCallbackNoParse<MImageList>() {
 
@@ -385,6 +390,12 @@ public class PhotoManagerFragment extends QjBaseFragment {
 				}
 				ArrayList<FolderDataInfo> list = new ArrayList<FolderDataInfo>();
 				imageDataList = response.data;
+				if(isRootFolder()) {
+					CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
+					if(tempCase != null) {
+						tempCase.imageDataList  = imageDataList;
+					}
+				}
 				if (response.data != null) {
 					if (response.data.folders != null) {
 						list.addAll(0, response.data.folders);

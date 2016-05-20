@@ -65,7 +65,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private RelativeLayout abstractLayout;
 	private TextView abstractTv;
 	private EditText abstractEt;
-	private int selectSex = 1;
+	private int selectSex = 0;
 	// private ArrayList<String> diagnoseList = new ArrayList<String>();
 	private String treat_state;
 	private String currentHospital;
@@ -251,7 +251,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private String getName() {
 		String str = nameEt.getEditableText().toString();
 		if (TextUtils.isEmpty(str)) {
-			return "新病人";
+			return "新病人"+ ((((int)(Math.random()*10))%9) +1);
 		}
 		return str;
 	}

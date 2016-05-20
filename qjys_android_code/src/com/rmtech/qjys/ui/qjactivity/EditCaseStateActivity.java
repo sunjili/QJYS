@@ -39,7 +39,7 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 	private CommonAdapter<StateInfo> mAdapter;
 	private Context context;
 	List<StateInfo> listems;
-	private String state;
+	private StateInfo state = new StateInfo();
 	private boolean isNew = false;
 
 	@Override
@@ -52,16 +52,16 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 			@Override
 			public void onClick(View v) {
 				if (mCaseInfo != null) {
-					if (TextUtils.equals(state, mCaseInfo.treat_state)) {
+					if (TextUtils.equals(state.name, mCaseInfo.treat_state)) {
 						Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
 						Intent data = new Intent();
-						data.putExtra("string", state);
+						data.putExtra("string", state.name);
 						setResult(MeNameActivity.RESULT_OK, data);
 						finish();
 						return;
 					}
 					HashMap<String, String> params = new HashMap<String, String>();
-					params.put("treat_state", state);
+					params.put("treat_state", state.name);
 					params.put("patient_id", mCaseInfo.id);
 					OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
 
@@ -76,10 +76,10 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 
 							CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
 							if (caseInfo != null) {
-								caseInfo.treat_state = state;
+								caseInfo.treat_state = state.name;
 							}
 							Intent data = new Intent();
-							data.putExtra("string", state);
+							data.putExtra("string", state.name);
 							setResult(MeNameActivity.RESULT_OK, data);
 							finish();
 						}
@@ -88,9 +88,9 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 					return;
 
 				}
-				if (!TextUtils.isEmpty(state)) {
+				if (!TextUtils.isEmpty(state.name)) {
 					Intent data = new Intent();
-					data.putExtra("string", state);
+					data.putExtra("string", state.name);
 					setResult(MeNameActivity.RESULT_OK, data);
 				}
 				finish();
@@ -106,7 +106,7 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				state = s.toString();
+				state.name = s.toString();
 				if (mAdapter != null) {
 					mAdapter.notifyDataSetChanged();
 				}
@@ -156,7 +156,7 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 
 					@Override
 					public void convert(final ViewHolder viewHolder, final StateInfo item) {
-						if (item.equals(state)) {
+						if (TextUtils.equals(item.name,state.name)) {
 							viewHolder.getView(R.id.iv_selcted).setVisibility(View.VISIBLE);
 						} else {
 							viewHolder.getView(R.id.iv_selcted).setVisibility(View.GONE);
@@ -166,8 +166,8 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 
 							@Override
 							public void onClick(View v) {
-								state = item.name;
-								et_state_add.setText("");
+								state = item;
+								et_state_add.setText(state.name);
 								viewHolder.getView(R.id.iv_selcted).setVisibility(View.VISIBLE);
 								mAdapter.notifyDataSetChanged();
 							}

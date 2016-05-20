@@ -148,7 +148,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 
 		ImageLoader.getInstance().displayImage(doctorInfo.head, ivHead,
 				QjConstant.optionsHead);
-		tv_name.setText(doctorInfo.name);
+		tv_name.setText(doctorInfo.remark!=null ? doctorInfo.remark : doctorInfo.name);
 		tvNickname.setText(doctorInfo.name);
 		tvDepartment.setText(doctorInfo.department);
 		tvHospital.setText(doctorInfo.hos_fullname);
@@ -172,8 +172,8 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.user_beizhu: {
 			UserInfoBeizhuActivity.show(this,USER_BEIZHU, doctorInfo);
-			Intent intent = new Intent(this, UserInfoBeizhuActivity.class);
-			startActivityForResult(intent, USER_BEIZHU);
+//			Intent intent = new Intent(this, UserInfoBeizhuActivity.class);
+//			startActivityForResult(intent, USER_BEIZHU);
 			break;
 		}
 		case R.id.btn_sendmessage: {
@@ -282,13 +282,14 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 //		}
 //	}
 
-	@Override
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case USER_BEIZHU:
 			if (resultCode == Activity.RESULT_OK) {
 				beizhu = data.getStringExtra("string");
 				user_beizhu.setRightText(beizhu);
+				tv_name.setText(beizhu);
 				doctorInfo.remark = beizhu;
 			}
 			break;

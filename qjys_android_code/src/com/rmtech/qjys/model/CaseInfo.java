@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -37,6 +39,8 @@ public class CaseInfo implements Serializable, Parcelable {
 	public int create_time;// : 病例时间
 	public DoctorInfo admin_doctor;// : 管理员
 	public List<DoctorInfo> participate_doctor;// : 管理员
+
+	public ImageDataList imageDataList; //病例对应的影像资料
 	
 	@Override
 	public int describeContents() {

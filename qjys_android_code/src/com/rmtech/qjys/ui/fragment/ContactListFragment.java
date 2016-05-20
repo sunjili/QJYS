@@ -112,10 +112,18 @@ public class ContactListFragment extends EaseContactListFragment {
 		}
 		if (inviteMessgeDao.getUnreadMessagesCount() > 0) {
 			applicationItem.showUnreadMsgView();
+			applicationItem.setUnreadCount(inviteMessgeDao.getUnreadMessagesCount());
 		} else {
 			applicationItem.hideUnreadMsgView();
 		}
-		loadData(false);
+		loadData(true);
+	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		loadData(true);
 	}
 
 	@Override
@@ -176,6 +184,7 @@ public class ContactListFragment extends EaseContactListFragment {
 		loadData(true);
 
 	}
+	
 
 	private void loadData(boolean needCache) {
 

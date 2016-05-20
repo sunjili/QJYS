@@ -832,7 +832,14 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							// deleteMembersFromGroup(username);
 						} else {
 							if(!user.isMyself()){
-								UserInfoActivity.show(mContext, user, "group");
+								DoctorListManager.getInstance().getDoctorInfoByHXid(user.id, new OnGetDoctorInfoCallback() {
+									
+									@Override
+									public void onGet(DoctorInfo info) {
+										// TODO Auto-generated method stub
+										UserInfoActivity.show(mContext, info, "group");
+									}
+								});
 							}
 						}
 					}

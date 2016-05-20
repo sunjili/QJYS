@@ -62,7 +62,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dip"
                 android:layout_toLeftOf="@id/gender_woman_tv"
-                android:drawableLeft="@drawable/btn_choice_press"
+                android:drawableLeft="@drawable/btn_choice_nor"
                 android:drawablePadding="7dip"
                 android:text="男"
                 android:textColor="@color/black"

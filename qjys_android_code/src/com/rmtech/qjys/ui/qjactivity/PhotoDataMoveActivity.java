@@ -30,9 +30,11 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.event.PhotoDataEvent;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MBase;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
 import com.sjl.lib.pinnedheaderlistview.SectionedBaseAdapter;
 
@@ -40,7 +42,7 @@ import com.sjl.lib.pinnedheaderlistview.SectionedBaseAdapter;
 public class PhotoDataMoveActivity extends CaseWithIdActivity {
 	private PinnedHeaderListView mListView;
 	private FolderAdapter mAdapter;
-	private ArrayList<FolderDataInfo> datalist;
+	private List<FolderDataInfo> datalist;
 	private FolderDataInfo selectInfo;
 	private ArrayList<PhotoDataInfo> imagelist;
 
@@ -52,11 +54,15 @@ public class PhotoDataMoveActivity extends CaseWithIdActivity {
 		setLeftTitle("返回");
 		datalist = getIntent().getParcelableArrayListExtra("folder_list");
 		imagelist = getIntent().getParcelableArrayListExtra("image_list");
-
-		if (TextUtils.isEmpty(folderId)) {
-			if (datalist == null) {
-				datalist = new ArrayList<FolderDataInfo>();
-			}
+		CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+		if(tempCase != null && tempCase.imageDataList != null) {
+			datalist = tempCase.imageDataList.folders;
+		}
+		if (datalist == null) {
+			datalist = new ArrayList<FolderDataInfo>();
+		}
+		if (!TextUtils.isEmpty(folderId)) {
+			
 			FolderDataInfo rootFolder = new FolderDataInfo();
 			rootFolder.id = "0";
 			rootFolder.name = "根目录";

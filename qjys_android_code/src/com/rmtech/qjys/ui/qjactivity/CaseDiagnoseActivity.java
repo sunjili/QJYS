@@ -45,8 +45,30 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 		setRightTitle("保存", new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				stringExtra = "";
+
 				if(mCaseInfo != null) {
+					for(int i = 0 ; i< ll_layout.getChildCount();i++) {
+						View view = ll_layout.getChildAt(i);
+						EditText tv_name = (EditText) view.findViewById(R.id.tv_name);
+						String itemStr = tv_name.getText().toString();
+						if(TextUtils.isEmpty(itemStr)) {
+							continue;
+						}
+						if(!TextUtils.isEmpty(stringExtra)) {
+							stringExtra = stringExtra + "&&"+ itemStr;//(strings[i]);
+						} else {
+							stringExtra = itemStr;
+						}
+					}
+					String trim = et_diagnose.getText().toString().trim();
+					if(!TextUtils.isEmpty(trim)) {
+						if(!TextUtils.isEmpty(stringExtra)) {
+							stringExtra = stringExtra + "&&"+ trim;//(strings[i]);
+						} else {
+							stringExtra = trim;
+						}
+					}
 
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("diagnose", stringExtra);
@@ -101,8 +123,11 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 		} else {
 			String[] strings = tempStr.split("&&");
 			for (int i = 0; i < strings.length; i++) {
+				if(TextUtils.isEmpty(strings[i])) {
+					continue;
+				}
 				View view = LayoutInflater.from(context).inflate(R.layout.qj_case_diagnose_item, null);
-				TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
+				EditText tv_name = (EditText) view.findViewById(R.id.tv_name);
 				tv_name.setText(strings[i]);
 				ll_layout.addView(view);
 			}

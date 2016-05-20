@@ -69,7 +69,6 @@ public class DoctorListManager {
 						updateIdDoctorMap();
 					}
 					if (callback != null) {
-
 						callback.onResponseSucces(iscache, response);
 					}
 					isChanged = false;

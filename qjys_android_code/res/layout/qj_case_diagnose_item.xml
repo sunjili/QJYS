@@ -4,14 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <TextView
+    <EditText
         android:id="@+id/tv_name"
+        style="@style/qj_et_style"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
-        android:gravity="center_vertical|left"
-        android:textColor="@color/c3"
-        android:textSize="14sp" />
+        android:hint="请输入您的新增诊断"
+        android:inputType="text" />
 
     <View
         android:layout_width="match_parent"

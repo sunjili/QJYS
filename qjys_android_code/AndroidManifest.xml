@@ -246,7 +246,7 @@
         </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.UserInfoBeizhuActivity"
-            android:launchMode="singleTask"
+            android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >
@@ -387,7 +387,7 @@
         </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.UserInfoActivity"
-            android:launchMode="singleTask"
+            android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >

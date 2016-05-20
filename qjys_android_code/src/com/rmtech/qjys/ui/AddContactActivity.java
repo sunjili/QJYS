@@ -29,6 +29,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
@@ -45,7 +48,7 @@ import com.rmtech.qjys.ui.view.CleanableEditText.TextWatcherCallBack;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 
-public class AddContactActivity extends BaseActivity implements TextWatcherCallBack{
+public class AddContactActivity extends BaseActivity implements TextWatcherCallBack {
 	private EditText editText;
 	private LinearLayout searchedUserLayout;
 	private TextView nameText, mTextView;
@@ -71,7 +74,7 @@ public class AddContactActivity extends BaseActivity implements TextWatcherCallB
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.em_activity_add_contact);
-//		mTextView = (TextView) findViewById(R.id.add_list_friends);
+		// mTextView = (TextView) findViewById(R.id.add_list_friends);
 		search_resurt_tv = findViewById(R.id.no_data_view);
 		rl_search = (RelativeLayout) findViewById(R.id.rl_search);
 		mCleanableEditText = (CleanableEditText) findViewById(R.id.et_phone);
@@ -79,7 +82,7 @@ public class AddContactActivity extends BaseActivity implements TextWatcherCallB
 		mCleanableEditText.setPadding(20, 0, 0, 5);
 		tv_phoneNm = (TextView) findViewById(R.id.tv_phoneNm);
 		String strAdd = getResources().getString(R.string.add_friend);
-//		mTextView.setText(strAdd);
+		// mTextView.setText(strAdd);
 		String strUserName = getResources().getString(R.string.user_name);
 		searchedUserLayout = (LinearLayout) findViewById(R.id.ll_user);
 		nameText = (TextView) findViewById(R.id.name);
@@ -88,8 +91,8 @@ public class AddContactActivity extends BaseActivity implements TextWatcherCallB
 		inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		parseIntent(getIntent());
 	}
-	
-	public void cancel(View v){
+
+	public void cancel(View v) {
 		AddContactActivity.this.finish();
 	}
 
@@ -99,7 +102,7 @@ public class AddContactActivity extends BaseActivity implements TextWatcherCallB
 		}
 		String number = intent.getStringExtra("phone_number");
 		if (!TextUtils.isEmpty(number)) {
-			
+
 		}
 	}
 
@@ -109,65 +112,68 @@ public class AddContactActivity extends BaseActivity implements TextWatcherCallB
 		super.onNewIntent(intent);
 	}
 
+
 	/**
 	 * 查找contact
 	 * 
 	 * @param v
 	 */
 	public void searchContact(View v) {
-		final String name = mCleanableEditText.getText().toString();
+		String name = mCleanableEditText.getText().toString();
+		name = name.replace("-", "");
 		String saveText = searchBtn.getText().toString();
-		
+
 		rl_search.setVisibility(View.GONE);
 
-			toAddUsername = name;
-			if (TextUtils.isEmpty(name)) {
-				new EaseAlertDialog(this, R.string.Please_enter_a_username).show();
-				return;
+		toAddUsername = name;
+		if (TextUtils.isEmpty(name)) {
+			new EaseAlertDialog(this, R.string.Please_enter_a_username).show();
+			return;
+		}
+		// TODO 从服务器获取此contact,如果不存在提示不存在此用户
+		QjHttp.serchContact(toAddUsername, new QjHttpCallback<MUser>() {
+
+			@Override
+			public MUser parseNetworkResponse(String response) throws Exception {
+				MUser user = new Gson().fromJson(response, MUser.class);
+				return user;
 			}
-			// TODO 从服务器获取此contact,如果不存在提示不存在此用户
-			QjHttp.serchContact(toAddUsername, new QjHttpCallback<MUser>() {
 
-				@Override
-				public MUser parseNetworkResponse(String response) throws Exception {
-					MUser user = new Gson().fromJson(response, MUser.class);
-					return user;
-				}
+			@Override
+			public void onError(Call call, Exception e) {
+				// TODO Auto-generated method stub
+				onNoData();
+			}
 
-				@Override
-				public void onError(Call call, Exception e) {
-					// TODO Auto-generated method stub
-					onNoData();
-				}
+			@Override
+			public void onResponseSucces(MUser response) {
+				// 服务器存在此用户，显示此用户和添加按钮
+				// onHasData();
+				if (response.data != null) {
+					nameText.setTag(response.data);
 
-				@Override
-				public void onResponseSucces(MUser response) {
-					// 服务器存在此用户，显示此用户和添加按钮
-//					onHasData();
-					if (response.data != null) {
-						nameText.setTag(response.data);
-						
-						//TODO 需要改，这里直接跳转到详细信息页面，这里的接口要改？
-						
-						if (!TextUtils.isEmpty(response.data.id)) {
-							DoctorListManager.getInstance().getDoctorInfoByHXid(response.data.id, new OnGetDoctorInfoCallback() {
-								
-								@Override
-								public void onGet(DoctorInfo info) {
-									if(info != null) {
-										UserInfoActivity.show(getActivity(),info, "addContact");
-									} 
-								}
-							});
-						} else {
-							onNoData();
-						}
+					// TODO 需要改，这里直接跳转到详细信息页面，这里的接口要改？
 
+					if (!TextUtils.isEmpty(response.data.id)) {
+						DoctorListManager.getInstance().getDoctorInfoByHXid(response.data.id,
+								new OnGetDoctorInfoCallback() {
+
+									@Override
+									public void onGet(DoctorInfo info) {
+										if (info != null) {
+											UserInfoActivity.show(getActivity(), info, "addContact");
+										}
+									}
+								});
 					} else {
 						onNoData();
 					}
+
+				} else {
+					onNoData();
 				}
-			});
+			}
+		});
 	}
 
 	private void onNoData() {
@@ -187,7 +193,7 @@ public class AddContactActivity extends BaseActivity implements TextWatcherCallB
 	 */
 	public void addContact(View view) {
 		final UserInfo info = (UserInfo) nameText.getTag();
-		if(info == null || TextUtils.isEmpty(info.id)) {
+		if (info == null || TextUtils.isEmpty(info.id)) {
 			return;
 		}
 		if (EMClient.getInstance().getCurrentUser().equals(info.id)) {
@@ -247,10 +253,10 @@ public class AddContactActivity extends BaseActivity implements TextWatcherCallB
 		// TODO Auto-generated method stub
 		String mString = mCleanableEditText.getText().toString();
 		searchedUserLayout.setVisibility(View.GONE);
-		if(mString.length()>0){
+		if (mString.length() > 0) {
 			rl_search.setVisibility(View.VISIBLE);
 			tv_phoneNm.setText(mString);
-		}else {
+		} else {
 			rl_search.setVisibility(View.GONE);
 		}
 	}

@@ -77,6 +77,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 	private void initViews() {
 		mContext = this;
 		mTitleLayout = (RelativeLayout) findViewById(R.id.title_layout);
+		mTitleLayout.setVisibility(View.GONE);
 		mReturnTv = (TextView) findViewById(R.id.return_tv);
 		mTitleTv = (TextView) findViewById(R.id.title_tv);
 		mEditTv = (TextView) findViewById(R.id.edit_tv);
@@ -88,6 +89,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 			}
 		});
 		mBottomLayout = (RelativeLayout) findViewById(R.id.bottom_layout);
+		mBottomLayout.setVisibility(View.GONE);
 		mBottomTimeTv = (TextView) findViewById(R.id.bottom_time_tv);
 		mBottomAuthTv = (TextView) findViewById(R.id.bottom_auth_tv);
 		mBottomTitleTv = (TextView) findViewById(R.id.bottom_title_tv);
