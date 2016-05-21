@@ -652,6 +652,7 @@ public class QjHelper {
                 userDao.saveContact(user);
             }
             toAddUsers.put(username, user);
+            DoctorListManager.getInstance().getDoctorInfoByHXid(username, null);
             localUsers.putAll(toAddUsers);
 
            //发送好友变动广播
@@ -666,6 +667,13 @@ public class QjHelper {
             localUsers.remove(username);
             userDao.deleteContact(username);
             inviteMessgeDao.deleteMessage(username);
+            DoctorListManager.getInstance().getDoctorInfoByHXid(username, new OnGetDoctorInfoCallback() {
+				
+				@Override
+				public void onGet(DoctorInfo info) {
+					info.isFriend = 0;
+				}
+			});
 
             //发送好友变动广播
             broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_CONTACT_CHANAGED));
