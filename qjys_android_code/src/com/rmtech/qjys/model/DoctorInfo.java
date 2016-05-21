@@ -24,6 +24,7 @@ public class DoctorInfo implements Serializable, Parcelable {
 	public String department;// : 科室
 	public String remark;// : 备注
 	public int mostUser;// 常用 1  不常用 0
+	public int isFriend = 0;// 是好友 1  不是 0
 
 
 	@Override

@@ -28,6 +28,7 @@ import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.model.gson.MUser;
+import com.sjl.lib.db.DBUtil;
 
 public class DoctorListManager {
 	static private DoctorListManager mInstance = null;
@@ -66,7 +67,7 @@ public class DoctorListManager {
 				public void onResponseSucces(boolean iscache, MDoctorList response) {
 					if (response.ret == 0 && response.data != null && !response.data.isEmpty()) {
 						mMDoctorList = response;
-						updateIdDoctorMap();
+						updateIdDoctorMap(1);
 					}
 					if (callback != null) {
 						callback.onResponseSucces(iscache, response);
@@ -81,14 +82,17 @@ public class DoctorListManager {
 		}
 	}
 
-	protected void updateIdDoctorMap() {
-		final Set<String> cyIds = getChangyongList();
-
+	protected void updateIdDoctorMap(int isFriend) {
+		final HashSet<String> cyIds = getChangyongList();
+        if(cyIds==null){
+	        return;
+        }
 		if (mMDoctorList != null && mMDoctorList.data != null) {
 			if (mIdDoctorMap == null) {
 				mIdDoctorMap = new HashMap<String, DoctorInfo>();
 			}
 			for (DoctorInfo info : mMDoctorList.data) {
+				info.isFriend = isFriend;
 				if (cyIds.contains(info.id)) {
 					info.mostUser = 1;
 				} else {
@@ -339,9 +343,9 @@ public class DoctorListManager {
 	}
 
 
-	public static Set<String> getChangyongList() {
+	public static HashSet<String> getChangyongList() {
 		HashSet<String> set = new HashSet<String>();
-		return PreferenceManager.getInstance().getSharedPreferences().getStringSet("changyong", set);
+		return (HashSet<String>) DBUtil.getCache("changyong");
 	}
 	
 	public static void setMostUse(String doc_id, final boolean mostUse) {
@@ -355,7 +359,10 @@ public class DoctorListManager {
 				}
 			}
 		});
-		Set<String> set = getChangyongList();
+		HashSet<String> set = getChangyongList();
+		if(set==null){
+			return;
+		}
 		if (mostUse) {
 			set.add(doc_id);
 		} else {
@@ -363,8 +370,9 @@ public class DoctorListManager {
 		}
 		HashSet<String> newSet = new HashSet<String>();
 		newSet.addAll(set);
-		PreferenceManager.getInstance().getEditor().remove("changyong");
-		PreferenceManager.getInstance().getEditor().putStringSet("changyong", newSet).commit();
+		DBUtil.saveCache("changyong", newSet);
+//		PreferenceManager.getInstance().getEditor().remove("changyong");
+//		PreferenceManager.getInstance().getEditor().putStringSet("changyong", newSet).commit();
 
 	}
 }

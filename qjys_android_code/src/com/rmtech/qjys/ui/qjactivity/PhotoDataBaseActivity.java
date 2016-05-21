@@ -15,26 +15,35 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ListPopupWindow;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MBase;
+import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataBaseActivity.OnDeleteCallback;
+import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
+import com.rmtech.qjys.ui.view.PhotoManangerPopWindow.ListPopupWindowAdapter;
 import com.rmtech.qjys.utils.NewFolderManager;
 import com.rmtech.qjys.utils.NewFolderManager.OnNewFolderListener;
 import com.rmtech.qjys.utils.NewFolderManager.OnRenameListener;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.rmtech.qjys.utils.PhotoUploadManager.OnPhotoUploadListener;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.rmtech.qjys.utils.PhotoUtil;
 import com.sjl.lib.alertview.AlertView;
@@ -45,6 +54,9 @@ import com.sjl.lib.utils.L;
 public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFolderListener, OnPhotoUploadListener {
 
 	private NewFolderManager mNewFolderManager;
+	private ListPopupWindow mFolderPopupWindow;
+	protected boolean isNewCase = false;
+
 
 	@Override
 	public void setContentView(int layoutResID) {
@@ -321,5 +333,70 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 
 	public static void renameItem(final Context context, final FolderDataInfo item,List<FolderDataInfo> folders, final OnRenameListener callback) {
 		new NewFolderManager(context).showRenameDialog(item, folders, callback);
+	}
+	
+	protected boolean isRootFolder() {
+		return folderDataInfo == null || TextUtils.isEmpty(folderDataInfo.id);
+	}
+
+	protected ImageDataList getImageDataList() {
+		return null;
+	}
+	protected void showPopWindow(View anchorView) {
+
+		if (mFolderPopupWindow == null) {
+			final ListPopupWindowAdapter mFolderAdapter = new ListPopupWindowAdapter(getActivity(),
+					isRootFolder());
+			mFolderPopupWindow = PhotoManangerPopWindow.createPopupList(getActivity(), anchorView,
+					mFolderAdapter, new OnItemClickListener() {
+
+						@Override
+						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+							if(!isRootFolder()) {
+								position = position+1;
+							}
+							switch (position) {
+							case 0:
+								List<FolderDataInfo> folders = null;
+								if(getImageDataList() != null) {
+									 folders = getImageDataList().folders;
+								}
+								showNewFolderDialog(folders);
+								break;
+							case 1: {
+								CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+								if(tempCase != null && tempCase.admin_doctor != null && !tempCase.admin_doctor.isMyself()) {
+									Toast.makeText(getActivity(), "非管理员，没有权限", Toast.LENGTH_LONG).show();
+									return;
+								}
+								PhotoDataSortActivity.show(getActivity(),caseId,folderId,
+										getImageDataList());
+								break;
+							}
+							case 2:{
+								CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+								if(tempCase != null && tempCase.admin_doctor != null && !tempCase.admin_doctor.isMyself()) {
+									Toast.makeText(getActivity(), "非管理员，没有权限", Toast.LENGTH_LONG).show();
+									return;
+								}
+								PhotoDataSelectActivity.show(getActivity(),caseId,folderId,
+										getImageDataList());
+								break;
+							}
+							case 3:
+								PhotoDataSettingActivity.show(getActivity());
+								break;
+							}
+							mFolderPopupWindow.dismiss();
+
+						}
+					});
+		}
+
+		if (mFolderPopupWindow.isShowing()) {
+			mFolderPopupWindow.dismiss();
+		} else {
+			mFolderPopupWindow.show();
+		}
 	}
 }

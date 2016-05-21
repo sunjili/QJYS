@@ -122,7 +122,7 @@ public class MeRecycleActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
 				// TODO Auto-generated method stub
-				PhotoDataManagerActivity.show(getActivity(), null, null);
+				PhotoDataManagerActivity.show(getActivity(), "", null);
 
 			}
 		});

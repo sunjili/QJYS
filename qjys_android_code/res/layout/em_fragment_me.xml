@@ -99,6 +99,14 @@
                 app:visibleLinePadding="false" />
 
             <include layout="@layout/qj_me_split_line" />
+            
+            <com.rmtech.qjys.ui.view.MeItemLayout
+                android:id="@+id/me_qrcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftText="我的二维码"
+                app:rightText=""
+                app:visibleLinePadding="true" />
 
             <com.rmtech.qjys.ui.view.MeItemLayout
                 android:id="@+id/me_phone"

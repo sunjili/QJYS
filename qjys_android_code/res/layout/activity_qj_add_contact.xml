@@ -39,10 +39,9 @@
     <LinearLayout
         android:id="@+id/contact_layout"
         android:layout_width="match_parent"
-        android:layout_height="65dip"
+        android:layout_height="130dip"
         android:layout_marginTop="20dp"
         android:background="@color/white"
-        android:onClick="onContactPickClick"
         android:orientation="vertical" >
 
         <View
@@ -52,14 +51,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="65dp"
             android:layout_marginLeft="10dip"
-            android:duplicateParentState="true" >
+            android:onClick="onContactPickClick" >
 
             <ImageView
                 android:id="@+id/imageview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_addresslist_phone" />
@@ -88,6 +87,49 @@
                 android:textSize="13sp" />
         </RelativeLayout>
 
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1px"
+            android:background="@color/cd9" />
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dip"
+            android:layout_marginLeft="10dip" 
+            android:onClick="onQRCodeClick">
+
+            <ImageView
+                android:id="@+id/imageview1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_addresslist_scan" />
+
+            <TextView
+                android:id="@+id/textview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignTop="@id/imageview1"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/imageview1"
+                android:text="扫一扫"
+                android:textColor="@color/c3"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textview1"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/imageview1"
+                android:text="扫描二维码名片"
+                android:textColor="@color/c7e"
+                android:textSize="13sp" />
+        </RelativeLayout>
+        
         <View
             android:layout_width="wrap_content"
             android:layout_height="1px"

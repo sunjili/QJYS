@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 
 import com.hyphenate.easeui.ui.EaseBaseActivity;
 import com.rmtech.qjys.R;
@@ -74,11 +75,12 @@ public class BaseActivity extends EaseBaseActivity {
 		
 	}
 
-	protected void setTitle(String title) {
+	protected TextView setTitle(String title) {
 		mTitle = title;
 		if (mTopTitleView != null) {
-			mTopTitleView.setTitle(title);
+			return mTopTitleView.setTitle(title);
 		}
+		return null;
 	}
 	
 	protected void setLeftGone() {

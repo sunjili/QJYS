@@ -89,6 +89,8 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 	private MeItemLayout me_hospital;
 	/** 科室 */
 	private MeItemLayout me_room;
+	/** 二维码 */
+	private MeItemLayout me_qrcode;
 	/** 手机号 */
 	private MeItemLayout me_phone;
 	/** 登录密码 */
@@ -131,6 +133,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 		} else {
 			me_password.setRightText("");
 		}
+		me_qrcode.setQRcodeRightDrawble();
 
 	}
 
@@ -330,7 +333,10 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 		case R.id.me_room:
 			jumpActivity(MeRoomActivity.class, REQUEST_ME_ROOM);
 			break;
-
+		case R.id.me_qrcode:
+			//TODO 我的二维码页面
+			
+			break;
 		case R.id.me_phone:
 			jumpActivity(MePhoneActivity.class, REQUEST_ME_PHONE, meValue.phone);
 			break;
@@ -442,7 +448,8 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 		me_hospital.setOnClickListener(this);
 		me_room = (MeItemLayout) inflate.findViewById(R.id.me_room);
 		me_room.setOnClickListener(this);
-
+		me_qrcode = (MeItemLayout) inflate.findViewById(R.id.me_qrcode);
+		me_qrcode.setOnClickListener(this);
 		me_phone = (MeItemLayout) inflate.findViewById(R.id.me_phone);
 		me_phone.setOnClickListener(this);
 		me_password = (MeItemLayout) inflate.findViewById(R.id.me_password);

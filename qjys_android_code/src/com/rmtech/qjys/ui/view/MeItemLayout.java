@@ -3,7 +3,10 @@ package com.rmtech.qjys.ui.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -47,6 +50,11 @@ public class MeItemLayout extends RelativeLayout implements
 		super(context, attrs, defStyleAttr);
 		initView(context, attrs, defStyleAttr, 0);
 
+	}
+	
+	public void setQRcodeRightDrawble(){
+		Drawable drawable = getResources().getDrawable(R.drawable.ic_me_qr_code);
+		tv_right.setCompoundDrawables(null, null, drawable, null);
 	}
 
 	private void initView(Context context, AttributeSet attrs,

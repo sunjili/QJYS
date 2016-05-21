@@ -48,10 +48,11 @@ public class TopTitleView extends FrameLayout {
 		sub_right_title = (TextView) findViewById(R.id.sub_right_title);
 	}
 
-	public void setTitle(String title) {
+	public TextView setTitle(String title) {
 		if (mTitleTextView != null) {
 			mTitleTextView.setText(title);
 		}
+		return mTitleTextView;
 	}
 
 	public void setTitle(String title, String extra) {

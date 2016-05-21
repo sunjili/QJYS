@@ -1,6 +1,7 @@
 package com.rmtech.qjys.ui.qjactivity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import android.app.Activity;
@@ -31,6 +32,7 @@ import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.PreferenceManager;
 import com.sjl.lib.alertview.AlertView;
+import com.sjl.lib.db.DBUtil;
 
 /***
  * 详细资料 页面
@@ -70,7 +72,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_userinfo);
 		setTitle("详细资料");
-		Set<String> mostUseList = DoctorListManager.getChangyongList();
+		HashSet<String> mostUseList = DoctorListManager.getChangyongList();
 		
 		doctorInfo = getIntent().getParcelableExtra("DoctorInfo");
 		from = getIntent().getStringExtra("from");
@@ -84,7 +86,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 			}
 		}
 		initView();
-		if(mostUseList.contains(doctorInfo.id)){
+		if(mostUseList!=null&&mostUseList.contains(doctorInfo.id)){
 			tbPull.openSwitch();
 		}else {
 			tbPull.closeSwitch();

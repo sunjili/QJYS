@@ -27,7 +27,9 @@ public class CaseWithIdActivity extends BaseActivity {
 		intent.putExtra("case_info", (Parcelable) caseInfo);
 	}
 	public static void setFolderDataInfo(Intent intent, FolderDataInfo folderDataInfo) {
-		intent.putExtra("folderDataInfo", (Parcelable) folderDataInfo);
+		if(folderDataInfo != null) {
+			intent.putExtra("folderDataInfo", (Parcelable) folderDataInfo);
+		}
 	}
 
 	public static void setImageDataList(Intent intent, ImageDataList imageDataList) {

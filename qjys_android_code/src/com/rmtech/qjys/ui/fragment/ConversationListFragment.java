@@ -3,6 +3,7 @@ package com.rmtech.qjys.ui.fragment;
 import java.util.List;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 		errorItemContainer.addView(errorView);
 		errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg);
 		errormsg_layout =  errorView.findViewById(R.id.errormsg_layout);
+//		conversationListView.addHeaderView(errormsg_layout);
 		no_data_view = (ImageView) errorView.findViewById(R.id.no_data_view);
 		no_data_view.setVisibility(View.GONE);
 
@@ -48,12 +50,16 @@ public class ConversationListFragment extends EaseConversationListFragment {
 	 * 连接到服务器
 	 */
 	protected void onConnectionConnected() {
+		Log.e("onConnectionConnected", "start");
 		if (noData()) {
 			errorItemContainer.setVisibility(View.VISIBLE);
 			no_data_view.setVisibility(View.VISIBLE);
 			errormsg_layout.setVisibility(View.GONE);
 		} else {
 			errorItemContainer.setVisibility(View.GONE);
+//			conversationListView.setPadding(0, 0, 0, 0);
+			
+			Log.e("onConnectionConnected", "in");
 		}
 	}
 
@@ -61,6 +67,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 	protected void onConnectionDisconnected() {
 		super.onConnectionDisconnected();
 		errormsg_layout.setVisibility(View.VISIBLE);
+//		conversationListView.setPadding(0, 100, 0, 0);
 		if (NetUtils.hasNetwork(getActivity())) {
 			errorText.setText(R.string.can_not_connect_chat_server_connection);
 		} else {

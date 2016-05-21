@@ -264,7 +264,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 				.resetViewBeforeLoading(true).cacheOnDisk(true).cacheInMemory(true).build();
 
 		DisplayImageOptions optionsOrigin = new DisplayImageOptions.Builder().resetViewBeforeLoading(true)
-				.cacheOnDisk(true).showImageOnLoading(R.drawable.image_loading).cacheInMemory(true).build();
+				.cacheOnDisk(true).cacheInMemory(true).build();
 
 		private List<PhotoDataInfo> dataList;
 

@@ -69,6 +69,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	private String folderId;
 	private CaseInfo caseInfo;
 	protected ImageDataList imageDataList;
+	private String caseId;
 
 	public ImageDataList getImageDataList() {
 		return imageDataList;
@@ -366,6 +367,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 
 	public void setIds(CaseInfo caseInfo, FolderDataInfo folderDataInfo) {
 		this.caseInfo = caseInfo;
+		this.caseId = caseInfo.id;
 		this.folderId = folderDataInfo == null ? "" : folderDataInfo.id;
 		loadData();
 	}
@@ -375,7 +377,10 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	}
 
 	private void loadData() {
-		QjHttp.getImageList(true, caseInfo.id, folderId, new QjHttpCallbackNoParse<MImageList>() {
+		if(TextUtils.isEmpty(caseId)) {
+			return;
+		}
+		QjHttp.getImageList(true, caseId, folderId, new QjHttpCallbackNoParse<MImageList>() {
 
 			@Override
 			public void onError(Call call, Exception e) {

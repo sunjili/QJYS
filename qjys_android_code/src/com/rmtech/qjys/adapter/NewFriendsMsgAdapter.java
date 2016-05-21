@@ -98,7 +98,6 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			} else{
 				holder.groupContainer.setVisibility(View.GONE);
 			}
-			
 			holder.reason.setText(msg.getReason());
 			DoctorListManager.getInstance().getDoctorInfoByHXid(msg.getFrom(), new OnGetDoctorInfoCallback() {
 				
