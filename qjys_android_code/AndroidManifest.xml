@@ -157,8 +157,8 @@
         <!-- 设置临床诊疗规范及流程 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeFlowActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
         <activity
@@ -298,6 +298,12 @@
             android:theme="@style/horizontal_slide" >
         </activity>
         <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.ScanActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <activity
             android:name="com.rmtech.qjys.ui.qjactivity.DoctorPickActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
@@ -339,7 +345,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>
         -->
         <activity
             android:name="com.sjl.lib.sample.filechooser.FileChooserExampleActivity"
@@ -400,7 +406,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
+        </activity>
         -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.QjLoginActivity"

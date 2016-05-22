@@ -86,7 +86,7 @@ public class QjAddContactActivity extends BaseActivity {
 	
 	public void onQRCodeClick(View view){
 		//TODO 二维码扫描页面
-		
+		ScanActivity.show(QjAddContactActivity.this);
 	}
 
 	private String getContactPhone(Cursor cursor) {
