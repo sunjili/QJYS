@@ -77,6 +77,9 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		doctorInfo = getIntent().getParcelableExtra("DoctorInfo");
 		from = getIntent().getStringExtra("from");
 
+		if(doctorInfo == null) {
+			return;
+		}
 		// 暂时先通过通讯录电话号list判断还有关系，以后有可能会改
 		tempPhones.addAll(DoctorListManager.getInstance().getDoctorPhonNumberList());
 		for(int i = 0;i<tempPhones.size();i++){
