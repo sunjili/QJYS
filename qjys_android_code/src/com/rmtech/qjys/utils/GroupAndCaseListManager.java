@@ -31,12 +31,10 @@ import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
 public class GroupAndCaseListManager {
 	static private GroupAndCaseListManager mInstance = null;
 
-	private Map<String, CaseInfo> mGIdCaseInfoMap = Collections
-			.synchronizedMap(new HashMap<String, CaseInfo>()); // key: groupid
-	private Map<String, CaseInfo> mCaseIdCaseInfoMap = Collections
-			.synchronizedMap(new HashMap<String, CaseInfo>()); // key:caseid
-	private Set<CaseInfo> mCaseInfoSet = Collections
-			.synchronizedSet(new HashSet<CaseInfo>());
+	private Map<String, CaseInfo> mGIdCaseInfoMap = Collections.synchronizedMap(new HashMap<String, CaseInfo>()); // key:
+																													// groupid
+	private Map<String, CaseInfo> mCaseIdCaseInfoMap = Collections.synchronizedMap(new HashMap<String, CaseInfo>()); // key:caseid
+	private Set<CaseInfo> mCaseInfoSet = Collections.synchronizedSet(new HashSet<CaseInfo>());
 
 	private MGroupList mMGroupList;
 
@@ -52,45 +50,44 @@ public class GroupAndCaseListManager {
 	}
 
 	private GroupAndCaseListManager() {
-//		EventBus.getDefault().register(this);
+		// EventBus.getDefault().register(this);
 	}
 
-//	@Subscribe
-//	public void onEvent(CaseEvent event) {
-//		if (event == null) {
-//			return;
-//		}
-//		CaseInfo caseInfo = mCaseIdCaseInfoMap.get(event.caseInfoId);
-//		if (caseInfo == null) {
-//			return;
-//		}
-//		switch (event.type) {
-//		case CaseEvent.TYPE_GROUP_CHANGED_ADD:
-//			if (event.addDoctorList != null) {
-//				if (caseInfo.participate_doctor == null) {
-//					caseInfo.participate_doctor = new ArrayList<>();
-//				}
-//				caseInfo.participate_doctor.addAll(event.addDoctorList);
-//			}
-//			break;
-//		case CaseEvent.TYPE_GROUP_CHANGED_DELETE:
-//			if (event.deleteDoctorList != null) {
-//				if (caseInfo.participate_doctor != null) {
-//					caseInfo.participate_doctor
-//							.removeAll(event.deleteDoctorList);
-//				}
-//			}
-//			break;
-//		case CaseEvent.TYPE_GROUP_CHANGED_ADMIN:
-//			if (event.addDoctorList != null && !event.addDoctorList.isEmpty()) {
-//				caseInfo.admin_doctor = event.addDoctorList.get(0);
-//			}
-//			break;
-//		}
-//	}
+	// @Subscribe
+	// public void onEvent(CaseEvent event) {
+	// if (event == null) {
+	// return;
+	// }
+	// CaseInfo caseInfo = mCaseIdCaseInfoMap.get(event.caseInfoId);
+	// if (caseInfo == null) {
+	// return;
+	// }
+	// switch (event.type) {
+	// case CaseEvent.TYPE_GROUP_CHANGED_ADD:
+	// if (event.addDoctorList != null) {
+	// if (caseInfo.participate_doctor == null) {
+	// caseInfo.participate_doctor = new ArrayList<>();
+	// }
+	// caseInfo.participate_doctor.addAll(event.addDoctorList);
+	// }
+	// break;
+	// case CaseEvent.TYPE_GROUP_CHANGED_DELETE:
+	// if (event.deleteDoctorList != null) {
+	// if (caseInfo.participate_doctor != null) {
+	// caseInfo.participate_doctor
+	// .removeAll(event.deleteDoctorList);
+	// }
+	// }
+	// break;
+	// case CaseEvent.TYPE_GROUP_CHANGED_ADMIN:
+	// if (event.addDoctorList != null && !event.addDoctorList.isEmpty()) {
+	// caseInfo.admin_doctor = event.addDoctorList.get(0);
+	// }
+	// break;
+	// }
+	// }
 
-	public static void getPatientList(boolean needCache,
-			final QjHttpCallbackNoParse<MPatientList> callback) {
+	public static void getPatientList(boolean needCache, final QjHttpCallbackNoParse<MPatientList> callback) {
 		QjHttp.getPatientList(true, new QjHttpCallbackNoParse<MPatientList>() {
 
 			@Override
@@ -109,7 +106,7 @@ public class GroupAndCaseListManager {
 				if (response != null && response.hasData()) {
 					for (HospitalCaseInfo hInfo : response.data.lists) {
 						if (hInfo != null) {
-							GroupAndCaseListManager.getInstance().updataCacheByCaseList(hInfo.patients);
+							GroupAndCaseListManager.getInstance().updataCacheByCaseList(hInfo.patients, true);
 						}
 					}
 				}
@@ -118,23 +115,28 @@ public class GroupAndCaseListManager {
 
 	}
 
-	protected void updataCacheByCaseList(List<CaseInfo> caselist) {
+	protected void updataCacheByCaseList(List<CaseInfo> caselist, boolean hasFlow) {
 		if (caselist == null) {
 			return;
 		}
 		for (CaseInfo info : caselist) {
 			if (mCaseInfoSet.contains(info)) {
-				mCaseInfoSet.remove(info);
-				mCaseInfoSet.add(info);
+				if (hasFlow) {
+					mCaseInfoSet.remove(info);
+					mCaseInfoSet.add(info);
+					mCaseIdCaseInfoMap.put(info.id, info);
+					if (!TextUtils.isEmpty(info.group_id)) {
+						mGIdCaseInfoMap.put(info.group_id, info);
+					}
+				}
 			} else {
 				mCaseInfoSet.add(info);
+				mCaseIdCaseInfoMap.put(info.id, info);
+				if (!TextUtils.isEmpty(info.group_id)) {
+					mGIdCaseInfoMap.put(info.group_id, info);
+				}
 			}
 
-			mCaseIdCaseInfoMap.put(info.id, info);
-
-			if (!TextUtils.isEmpty(info.group_id)) {
-				mGIdCaseInfoMap.put(info.group_id, info);
-			}
 		}
 	}
 
@@ -156,34 +158,31 @@ public class GroupAndCaseListManager {
 
 		// if (mMGroupList == null || mMGroupList.isEmpty()) {
 
-		QjHttp.getGroupinfo(needCache, groupIds,
-				new QjHttpCallbackNoParse<MGroupList>() {
+		QjHttp.getGroupinfo(needCache, groupIds, new QjHttpCallbackNoParse<MGroupList>() {
 
-					@Override
-					public MGroupList parseNetworkResponse(String str)
-							throws Exception {
-						return new Gson().fromJson(str, MGroupList.class);
-					}
+			@Override
+			public MGroupList parseNetworkResponse(String str) throws Exception {
+				return new Gson().fromJson(str, MGroupList.class);
+			}
 
-					@Override
-					public void onResponseSucces(boolean isCache,
-							MGroupList response) {
-						mMGroupList = response;
-						if (response != null && response.data != null) {
-							updataCacheByCaseList(response.data);
-						}
-						if (callback != null) {
-							callback.onResponseSucces(response);
-						}
-					}
+			@Override
+			public void onResponseSucces(boolean isCache, MGroupList response) {
+				mMGroupList = response;
+				if (response != null && response.data != null) {
+					updataCacheByCaseList(response.data, false);
+				}
+				if (callback != null) {
+					callback.onResponseSucces(response);
+				}
+			}
 
-					@Override
-					public void onError(Call call, Exception e) {
-						if (callback != null) {
-							callback.onError(call, e);
-						}
-					}
-				});
+			@Override
+			public void onError(Call call, Exception e) {
+				if (callback != null) {
+					callback.onError(call, e);
+				}
+			}
+		});
 		// } else {
 		// if (callback != null) {
 		// callback.onResponseSucces(true, mMGroupList);
@@ -191,13 +190,11 @@ public class GroupAndCaseListManager {
 		// }
 	}
 
-	public static void initGroupList(boolean needCache,
-			List<EMConversation> list,
+	public static void initGroupList(boolean needCache, List<EMConversation> list,
 			QjHttpCallbackNoParse<MGroupList> callback) {
 		Map<String, EMConversation> conversations = null;
 		try {
-			conversations = EMClient.getInstance()
-					.chatManager().getAllConversations();
+			conversations = EMClient.getInstance().chatManager().getAllConversations();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -208,12 +205,12 @@ public class GroupAndCaseListManager {
 		 */
 		List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
 		StringBuilder sb = new StringBuilder();
-		if(conversations != null) {
+		if (conversations != null) {
 			synchronized (conversations) {
 				for (EMConversation conversation : conversations.values()) {
 					if (conversation.getAllMessages().size() != 0) {
-						sortList.add(new Pair<Long, EMConversation>(conversation
-								.getLastMessage().getMsgTime(), conversation));
+						sortList.add(new Pair<Long, EMConversation>(conversation.getLastMessage().getMsgTime(),
+								conversation));
 						if (conversation.isGroup()) {
 							sb.append(conversation.getUserName()).append(",");
 						}
@@ -241,24 +238,21 @@ public class GroupAndCaseListManager {
 
 	}
 
-	private static void sortConversationByLastChatTime(
-			List<Pair<Long, EMConversation>> conversationList) {
-		Collections.sort(conversationList,
-				new Comparator<Pair<Long, EMConversation>>() {
-					@Override
-					public int compare(final Pair<Long, EMConversation> con1,
-							final Pair<Long, EMConversation> con2) {
+	private static void sortConversationByLastChatTime(List<Pair<Long, EMConversation>> conversationList) {
+		Collections.sort(conversationList, new Comparator<Pair<Long, EMConversation>>() {
+			@Override
+			public int compare(final Pair<Long, EMConversation> con1, final Pair<Long, EMConversation> con2) {
 
-						if (con1.first == con2.first) {
-							return 0;
-						} else if (con2.first > con1.first) {
-							return 1;
-						} else {
-							return -1;
-						}
-					}
+				if (con1.first == con2.first) {
+					return 0;
+				} else if (con2.first > con1.first) {
+					return 1;
+				} else {
+					return -1;
+				}
+			}
 
-				});
+		});
 	}
 
 	public CaseInfo getCaseInfoByGroupId(String groupId) {
@@ -274,7 +268,7 @@ public class GroupAndCaseListManager {
 	}
 
 	public CaseInfo getCaseInfoByCaseId(String caseId) {
-		if(!TextUtils.isEmpty(caseId)) {
+		if (!TextUtils.isEmpty(caseId)) {
 			return mCaseIdCaseInfoMap.get(caseId);
 		}
 		return null;

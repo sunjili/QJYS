@@ -11,13 +11,28 @@
 
     <include layout="@layout/qj_me_split_line" />
 
-    <EditText
-        android:id="@+id/et_bed"
-        style="@style/qj_et_style"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="number"
-        android:hint="请输入床号" />
+        android:gravity="center_vertical" >
+
+        <EditText
+            android:id="@+id/et_bed"
+            style="@style/qj_et_style"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="请输入床号"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:text="床"
+            android:textColor="@color/black" />
+    </RelativeLayout>
 
     <include layout="@layout/qj_me_split_line" />
 

@@ -47,7 +47,7 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 	@Override
 	public void onUploadProgress(PhotoUploadStateInfo state) {
 		// TODO Auto-generated method stub
-//		Log.d("ssssss", "onUploadProgress progress=" + state.progress);
+		// Log.d("ssssss", "onUploadProgress progress=" + state.progress);
 
 		// if (mAdapter != null) {
 		// mAdapter.notifyDataSetChanged();
@@ -203,6 +203,8 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataUploadingActivity.class);
 		context.startActivity(intent);
+		context.overridePendingTransition(R.anim.push_bottom_in, 0);
+
 	}
 
 	public class ImageUploadingAdapter extends SectionedBaseAdapter {
@@ -318,19 +320,19 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 			// }
 		}
 
-//		Runnable refreshRunnable = new Runnable() {
-//			@Override
-//			public void run() {
-//				setProgress(info);
-//			}
-//		};
+		// Runnable refreshRunnable = new Runnable() {
+		// @Override
+		// public void run() {
+		// setProgress(info);
+		// }
+		// };
 
 		@SuppressLint("NewApi")
 		public void build(final PhotoUploadStateInfo info) {
 			if (info.imageInfo != null) {
 				name.setText(info.imageInfo.name);
 				ImageLoader.getInstance().displayImage("file://" + info.imageInfo.localPath, avatar, options);
-				if (info.imageInfo.state == PhotoDataInfo.STATE_UPLOAD_FAILED){
+				if (info.imageInfo.state == PhotoDataInfo.STATE_UPLOAD_FAILED) {
 					state_tv.setTextColor(state_tv.getContext().getResources().getColor(R.color.red));
 					state_tv.setText("上传失败");
 					setProgress(0);
@@ -340,10 +342,9 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 					state_tv.setTextColor(state_tv.getContext().getResources().getColor(R.color.c7e));
 					state_tv.setText("正在上传");
 					setProgress(info.progress);
-					speed_tv.setText(((int)(Math.random() * 100)) + "kb/s");
+					speed_tv.setText(((int) (Math.random() * 100)) + "kb/s");
 
 				}
-				
 
 				info.setCallbackForList(new QjHttpCallback<MUploadImageInfo>() {
 
@@ -366,14 +367,22 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 					@Override
 					public void inProgress(float progress) {
 						setProgress((int) progress);
-						Log.d("ssssssss","PhotoDataUploadingActivity progress = "+progress);
+						Log.d("ssssssss", "PhotoDataUploadingActivity progress = " + progress);
 					}
 				});
-//				if (info.imageInfo.state == PhotoDataInfo.STATE_UPLOADING) {
-//				} else if (info.imageInfo.state == PhotoDataInfo.STATE_UPLOAD_FAILED) {
-//				}
+				// if (info.imageInfo.state == PhotoDataInfo.STATE_UPLOADING) {
+				// } else if (info.imageInfo.state ==
+				// PhotoDataInfo.STATE_UPLOAD_FAILED) {
+				// }
 			}
 		}
 	}
 
+	@Override
+	public void finish() {
+		// TODO Auto-generated method stub
+		super.finish();
+		// 关闭窗体动画显示
+		this.overridePendingTransition(R.anim.push_bottom_out, R.anim.push_top_in);
+	}
 }

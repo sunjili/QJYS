@@ -149,7 +149,7 @@ public class CustomSimpleDialog extends Dialog {
             dialog.addContentView(layout, new LayoutParams(  
                     LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));  
         	// set the dialog title 
-            if(title != null){ 
+            if(title != null&&!title.equals("")){ 
                 ((TextView) layout.findViewById(R.id.title)).setText(title);  
                 ((TextView) layout.findViewById(R.id.title)).getPaint().setFakeBoldText(true);; 
             }else {
@@ -165,6 +165,7 @@ public class CustomSimpleDialog extends Dialog {
                                 public void onClick(View v) {  
                                     confirm_btnClickListener.onClick(dialog,  
                                             DialogInterface.BUTTON_POSITIVE);  
+                                    dialog.dismiss();
                                 }  
                             });  
                 }  
@@ -186,6 +187,8 @@ public class CustomSimpleDialog extends Dialog {
                                 public void onClick(View v) {  
                                     cancel_btnClickListener.onClick(dialog,  
                                             DialogInterface.BUTTON_NEGATIVE);  
+                                    dialog.dismiss();
+
                                 }  
                             });  
                 }  

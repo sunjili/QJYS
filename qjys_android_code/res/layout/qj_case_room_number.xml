@@ -11,13 +11,28 @@
 
     <include layout="@layout/qj_me_split_line" />
 
-    <EditText
-        android:id="@+id/et_room_number"
-        style="@style/qj_et_style"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="text"
-        android:hint="请输入病房号" />
+        android:gravity="center_vertical" >
+
+        <EditText
+            android:id="@+id/et_room_number"
+            style="@style/qj_et_style"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="请输入病房号"
+            android:inputType="text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:text="病房"
+            android:textColor="@color/black" />
+    </RelativeLayout>
 
     <include layout="@layout/qj_me_split_line" />
 

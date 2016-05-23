@@ -25,6 +25,7 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.ui.BaseActivity;
@@ -50,7 +51,8 @@ public class CaseFlowEditActivity extends MeFlowEditActivity implements
 	@Override
 	protected void initView() {
 		super.initView();
-		btn_delete.setVisibility(View.GONE);
+		btn_delete.setVisibility(View.VISIBLE);
+		findViewById(R.id.bottom_layout).setVisibility(View.GONE);
 
 	}
 
@@ -66,9 +68,42 @@ public class CaseFlowEditActivity extends MeFlowEditActivity implements
 
 	@Override
 	public void onClick(View v) {
+		final CaseInfo mCaseInfo;
 		switch (v.getId()) {
 		case R.id.btn_delete:
-			Toast.makeText(getActivity(), "删除此规范", Toast.LENGTH_SHORT).show();
+//			Toast.makeText(getActivity(), "删除此规范", Toast.LENGTH_SHORT).show();
+			mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+			if (mCaseInfo != null) {
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("procedure_title", "");
+				params.put("procedure_text", "");
+				params.put("patient_id", mCaseInfo.id);
+				OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
+
+					@Override
+					public void onError(Call call, Exception e) {
+						Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
+
+					}
+
+					@Override
+					public void onResponseSucces(MBase response) {
+						Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_LONG).show();
+
+						CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
+						if (caseInfo != null) {
+							caseInfo.procedure_title = "";
+							caseInfo.procedure_text = "";
+						}
+						Intent data = new Intent();
+						data.putExtra("string", "");
+						setResult(MeNameActivity.RESULT_OK, data);
+						finish();
+					}
+				});
+
+				return;
+			}
 			break;
 		case R.id.iv_right:
 			Toast.makeText(getActivity(), "保存为模板", Toast.LENGTH_SHORT).show();

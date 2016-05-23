@@ -30,9 +30,11 @@
             android:layout_width="match_parent"
             android:paddingLeft="8dp"
             android:hint="请输入手机号"
+            android:gravity="center_vertical"
+            android:singleLine="true"
             android:layout_margin="6dp"
             android:layout_toLeftOf="@id/search"
-            android:paddingRight="5dp"
+            android:paddingRight="30dp"
             android:background="@drawable/em_btn_white_normal_shape"/>
     </RelativeLayout>
     
@@ -40,7 +42,7 @@
     <RelativeLayout 
         android:id="@+id/rl_search"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_top_bar"
+        android:layout_height="60dp"
         android:background="@color/btn_white_normal"
         android:gravity="center_vertical"
         android:onClick="searchContact"
@@ -53,13 +55,14 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/em_right_arrow_icon"/>
+            android:src="@drawable/btn_rightarrow"/>
         
         <ImageView 
             android:id="@+id/iv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:scaleType="fitXY"
+            android:layout_margin="12dp"
             android:layout_alignParentLeft="true"
             android:src="@drawable/ic_addresslist_search"/>
         
@@ -69,7 +72,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/iv_search"
             android:text="搜索："
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:gravity="center_vertical"
             android:textColor="@color/black"/>
         
@@ -79,7 +82,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/tv_search"
             android:layout_toLeftOf="@id/iv_right"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:gravity="center_vertical"
             android:textColor="@color/black"/>
         

@@ -281,6 +281,7 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 	}
 
 	protected synchronized void onImagePicked(List<String> paths) {
+		super.onImagePicked(paths);
 		if (imageDataList == null) {
 			imageDataList = new ImageDataList();
 		}

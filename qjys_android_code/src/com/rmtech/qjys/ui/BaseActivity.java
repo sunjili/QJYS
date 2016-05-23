@@ -91,7 +91,7 @@ public class BaseActivity extends EaseBaseActivity {
 	
 	protected void setLeftTitle(String leftTitle) {
 		if (mTopTitleView != null) {
-			mTopTitleView.setLeftView(leftTitle);
+			mTopTitleView.setLeftTitle(leftTitle, null);
 		}
 	}
 

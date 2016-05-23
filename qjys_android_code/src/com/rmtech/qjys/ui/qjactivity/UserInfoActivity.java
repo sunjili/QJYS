@@ -3,7 +3,7 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -123,9 +123,11 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		setRightTitle("", null);
 	}
 
+	@SuppressLint("ResourceAsColor")
 	private void initView() {
 		user_beizhu = (MeItemLayout) findViewById(R.id.user_beizhu);
 		user_beizhu.setOnClickListener(this);
+		user_beizhu.v_bottom_line.setPadding(0, 0, 0, 0);
 		if(doctorInfo != null && !TextUtils.isEmpty(doctorInfo.remark)) {
 			user_beizhu.setRightText(doctorInfo.remark);
 		} else {
@@ -154,10 +156,11 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		ImageLoader.getInstance().displayImage(doctorInfo.head, ivHead,
 				QjConstant.optionsHead);
 		tv_name.setText(doctorInfo.remark!=null ? doctorInfo.remark : doctorInfo.name);
-		tvNickname.setText(doctorInfo.name);
+		tvNickname.setText("昵称："+doctorInfo.name);
 		tvDepartment.setText(doctorInfo.department);
 		tvHospital.setText(doctorInfo.hos_fullname);
 		userPhone.setRightText(doctorInfo.phone);
+		userPhone.setRightTextColor_c3264aa(UserInfoActivity.this);
 	}
 
 	protected boolean showTitleBar() {

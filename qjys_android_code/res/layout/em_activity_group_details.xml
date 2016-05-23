@@ -11,9 +11,10 @@
         android:gravity="center_vertical" >
 
         <LinearLayout
-            android:layout_width="45dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:background="@drawable/ease_common_tab_bg"
+            android:gravity="center_vertical"
             android:onClick="back" >
 
             <ImageView
@@ -22,7 +23,13 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="9dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/em_mm_title_back" />
+                android:src="@drawable/btn_back" />
+            <TextView 
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="返回"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
         <TextView
@@ -92,6 +99,7 @@
                             android:singleLine="true"
                             android:text="张主任"
                             android:textColor="@color/c3"
+                            android:drawableRight="@drawable/ic_addresslist_administrators"
                             android:textSize="19sp" />
 
                         <TextView
@@ -112,6 +120,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@color/cd9"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp" />
@@ -123,13 +133,8 @@
                     android:layout_height="50dp"
                     app:leftText="管理权转让"
                     app:rightText=""
-                    app:visibleLinePadding="true" />
+                    app:visibleLinePadding="false" />
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/cd9" />
 
             <TextView
                 android:layout_width="wrap_content"

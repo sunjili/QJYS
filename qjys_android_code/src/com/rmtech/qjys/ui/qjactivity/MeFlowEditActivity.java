@@ -100,10 +100,11 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 									if (newcase != null) {
 										newcase.procedure_title = procedure_title;
 										newcase.procedure_text = procedure_text;
-										CaseEvent caseEvent = new CaseEvent(
-												CaseEvent.TYPE_FLOW_CHANGED);
-										caseEvent.setCaseInfoId(caseId);
-										EventBus.getDefault().post(caseEvent);
+										newcase = getCaseInfo();
+//										CaseEvent caseEvent = new CaseEvent(
+//												CaseEvent.TYPE_FLOW_CHANGED);
+//										caseEvent.setCaseInfoId(caseId);
+//										EventBus.getDefault().post(caseEvent);
 										setResult(RESULT_OK, new Intent());
 										MeFlowEditActivity.this.finish();
 									}

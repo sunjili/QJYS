@@ -156,7 +156,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 	// }
 
 	protected void onImagePicked(List<String> paths) {
-
+		PhotoDataUploadingActivity.show(getActivity());
 	}
 
 	private File mTmpFile;
@@ -266,14 +266,14 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 	public void onUploadError(PhotoUploadStateInfo state, Exception e) {
 		// TODO Auto-generated method stub
 		L.e("Upload onUploadError" + e);
-		Toast.makeText(getActivity(), "上传失败！" + e.getMessage(), Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getActivity(), "上传失败！" + e.getMessage(), Toast.LENGTH_SHORT).show();
 
 	}
 
 	@Override
 	public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info) {
 		// TODO Auto-generated method stub
-		Toast.makeText(getActivity(), "上传成功！", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getActivity(), "上传成功！", Toast.LENGTH_SHORT).show();
 	}
 
 	public static interface OnDeleteCallback {

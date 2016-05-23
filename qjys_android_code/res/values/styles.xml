@@ -54,6 +54,9 @@
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
 
+    <style name="AnimBottom2" parent="android:Theme.NoTitleBar">
+    </style>
+
     <style name="AnimTop" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/push_top_in</item>
         <item name="android:windowExitAnimation">@anim/push_top_out</item>
@@ -86,8 +89,7 @@
     <!--
     <style name="horizontal_slide2" parent="android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/AnimFade2</item>
-    </style>
-    -->
+    </style>    -->
 
     <style name="MyDialogStyle">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -325,7 +327,7 @@
     </style>
 
     <style name="qj_me_item_left_tv">
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">15.5sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -337,7 +339,7 @@
     </style>
 
     <style name="qj_me_item_right_tv">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15.5sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

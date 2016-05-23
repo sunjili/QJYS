@@ -36,6 +36,7 @@ public class CaseRoomNumberActivity extends CaseEidtBaseActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_case_room_number);
 		setTitle("病房号");
+		setLeftTitle("返回");
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override

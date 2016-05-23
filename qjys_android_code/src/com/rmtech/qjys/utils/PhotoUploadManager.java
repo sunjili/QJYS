@@ -27,7 +27,7 @@ public class PhotoUploadManager {
 	private static ConcurrentLinkedQueue<PhotoUploadStateInfo> queue = new ConcurrentLinkedQueue<PhotoUploadStateInfo>();
 	private static List<PhotoUploadStateInfo> uploadingList = Collections.synchronizedList(new ArrayList<PhotoUploadStateInfo>());
 
-	private static final int MAX_UPLOAD_COUNT = 3;
+	private static final int MAX_UPLOAD_COUNT = 1;
 	
 	public void registerPhotoUploadListener(OnPhotoUploadListener listener) {
 		mListenerList.add(listener);

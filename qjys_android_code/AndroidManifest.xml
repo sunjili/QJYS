@@ -283,8 +283,9 @@
         </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.PhotoDataUploadingActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
+            android:theme="@style/AnimBottom2" >
         </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.PhotoDataEditActivity"
@@ -345,7 +346,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>
         -->
         <activity
             android:name="com.sjl.lib.sample.filechooser.FileChooserExampleActivity"
@@ -406,7 +407,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
+        </activity>
         -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.QjLoginActivity"

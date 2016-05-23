@@ -11,13 +11,29 @@
 
     <include layout="@layout/qj_me_split_line" />
 
-    <EditText
-        android:id="@+id/et_age"
-        style="@style/qj_et_style"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="number"
-        android:hint="请输入年龄" />
+        android:gravity="center_vertical" >
+
+        <EditText
+            android:id="@+id/et_age"
+            style="@style/qj_et_style"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="请输入年龄"
+            android:layout_alignParentLeft="true"
+            android:inputType="number" />
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="岁"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
     <include layout="@layout/qj_me_split_line" />
 

@@ -41,6 +41,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_case_diagnose);
 		setTitle("诊断");
+		setLeftTitle("返回");
 		context = CaseDiagnoseActivity.this;
 		setRightTitle("保存", new OnClickListener() {
 			@Override

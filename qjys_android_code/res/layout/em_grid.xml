@@ -11,12 +11,14 @@
         android:orientation="vertical"
         android:gravity="center_horizontal"
         >
-        <ImageView 
+        <com.sjl.lib.multi_image_selector.view.SquaredImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/iv_avatar"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:src="@drawable/em_smiley_add_btn"
             android:scaleType="fitXY"
+            app:riv_corner_radius="5dip" 
             />
         <TextView 
             android:id="@+id/tv_name"

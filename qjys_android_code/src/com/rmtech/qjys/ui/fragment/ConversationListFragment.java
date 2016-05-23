@@ -2,6 +2,7 @@ package com.rmtech.qjys.ui.fragment;
 
 import java.util.List;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -24,8 +25,13 @@ import com.hyphenate.util.NetUtils;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.InviteMessgeDao;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.ui.ChatActivity;
+import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.MainActivity;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
 public class ConversationListFragment extends EaseConversationListFragment {
 
@@ -39,8 +45,8 @@ public class ConversationListFragment extends EaseConversationListFragment {
 		View errorView = (ViewGroup) View.inflate(getActivity(), R.layout.em_chat_neterror_item, null);
 		errorItemContainer.addView(errorView);
 		errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg);
-		errormsg_layout =  errorView.findViewById(R.id.errormsg_layout);
-//		conversationListView.addHeaderView(errormsg_layout);
+		errormsg_layout = errorView.findViewById(R.id.errormsg_layout);
+		// conversationListView.addHeaderView(errormsg_layout);
 		no_data_view = (ImageView) errorView.findViewById(R.id.no_data_view);
 		no_data_view.setVisibility(View.GONE);
 
@@ -57,8 +63,8 @@ public class ConversationListFragment extends EaseConversationListFragment {
 			errormsg_layout.setVisibility(View.GONE);
 		} else {
 			errorItemContainer.setVisibility(View.GONE);
-//			conversationListView.setPadding(0, 0, 0, 0);
-			
+			conversationListView.setPadding(0, 0, 0, 0);
+
 			Log.e("onConnectionConnected", "in");
 		}
 	}
@@ -67,7 +73,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 	protected void onConnectionDisconnected() {
 		super.onConnectionDisconnected();
 		errormsg_layout.setVisibility(View.VISIBLE);
-//		conversationListView.setPadding(0, 100, 0, 0);
+		conversationListView.setPadding(0, 100, 0, 0);
 		if (NetUtils.hasNetwork(getActivity())) {
 			errorText.setText(R.string.can_not_connect_chat_server_connection);
 		} else {
@@ -91,20 +97,44 @@ public class ConversationListFragment extends EaseConversationListFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				EMConversation conversation = conversationListView.getItem(position);
-				String username = conversation.getUserName();
+				final String username = conversation.getUserName();
 				if (username.equals(EMClient.getInstance().getCurrentUser()))
 					Toast.makeText(getActivity(), R.string.Cant_chat_with_yourself, 0).show();
 				else {
 					// 进入聊天页面
 					Intent intent = new Intent(getActivity(), ChatActivity.class);
 					if (conversation.isGroup()) {
-						if (conversation.getType() == EMConversationType.ChatRoom) {
-							// it's group chat
-							intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_CHATROOM);
+						CaseInfo mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(username);
+						if (mCaseInfo == null) {
+							CustomSimpleDialog.Builder builder = new Builder(getActivity());
+							DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									try {
+										// 删除此会话
+										EMClient.getInstance().chatManager().deleteConversation(username, false);
+										InviteMessgeDao inviteMessgeDao = new InviteMessgeDao(getActivity());
+										inviteMessgeDao.deleteMessage(username);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									refresh();
+
+									// 更新消息未读数
+									((MainActivity) getActivity()).updateUnreadLabel();
+								}
+
+							};
+							builder.setTitle("");
+							builder.setMessage("病例已删除");
+							builder.setNegativeButton("取消", listener);
+							builder.setPositiveButton("确定", listener);
+							builder.create().show();
+							return;
 						} else {
 							intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
 						}
-
 					}
 					// it's single chat
 					intent.putExtra(QjConstant.EXTRA_USER_ID, username);
@@ -112,9 +142,9 @@ public class ConversationListFragment extends EaseConversationListFragment {
 				}
 			}
 		});
-		
+
 	}
-	
+
 	@Override
 	protected void initConversationList(List<EMConversation> sortList) {
 		super.initConversationList(sortList);
@@ -129,7 +159,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 			conversationListView.setVisibility(View.VISIBLE);
 
 		}
-			
+
 	}
 
 	private boolean noData() {

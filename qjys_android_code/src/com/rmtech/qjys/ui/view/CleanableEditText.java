@@ -85,10 +85,13 @@ public class CleanableEditText extends EditText {
   
     //当内容不为空，而且获得焦点，才显示右侧删除按钮  
     public void updateCleanable(int length, boolean hasFocus){  
-        if(length() > 0 && hasFocus)  
-            setCompoundDrawablesWithIntrinsicBounds(mDrawableSearch, null, mDrawable, null);  
-        else  
+        if(length() > 0 && hasFocus){
+            setCompoundDrawablesWithIntrinsicBounds(mDrawableSearch, null, mDrawable, null);
+            setCompoundDrawablePadding(10);
+        }else  {
             setCompoundDrawablesWithIntrinsicBounds(mDrawableSearch, null, null, null);  
+            setCompoundDrawablePadding(10);
+        }
     }  
       
   

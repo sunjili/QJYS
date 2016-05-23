@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.ui.view.MeItemLayout;
@@ -56,6 +57,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 	private MeItemLayout case_state;
 	private Context context;
 	private CaseInfo mCaseInfo;
+	public boolean isOwner;
 
 	@SuppressLint("ResourceAsColor")
 	private void setViewState() {
@@ -88,11 +90,13 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_qj_edit_case);
-		setTitle("编辑病例");
+		setLeftTitle("返回");
 		context = EditCaseActivity.this;
-		initView();
 		// mCaseInfo=new CaseInfo();
 		mCaseInfo = (CaseInfo) getIntent().getParcelableExtra("case_info");
+		setTitle(mCaseInfo.name);
+		isOwner = TextUtils.equals(UserContext.getInstance().getUserId(), mCaseInfo.admin_doctor.id);
+		initView();
 	}
 
 	@Override
@@ -186,6 +190,34 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 		ll_state = (LinearLayout) findViewById(R.id.ll_state);
 		case_state = (MeItemLayout) findViewById(R.id.case_state);
 		case_state.setOnClickListener(this);
+		if(!isOwner){
+			setClickble(false);
+			setRightGone();
+		}
+	}
+	
+	public void setClickble(boolean isClickble){
+		case_name.setClickable(isClickble);
+		case_sex.setClickable(isClickble);
+		case_age.setClickable(isClickble);
+		case_hospital.setClickable(isClickble);
+		case_room.setClickable(isClickble);
+		case_room_number.setClickable(isClickble);
+		case_bed_number.setClickable(isClickble);
+		case_state.setClickable(isClickble);
+		case_diagnosis.setClickable(isClickble);
+	}
+	
+	public void setRightGone(){
+		case_name.setRightGone();
+		case_sex.setRightGone();
+		case_age.setRightGone();
+		case_hospital.setRightGone();
+		case_room.setRightGone();
+		case_room_number.setRightGone();
+		case_bed_number.setRightGone();
+		case_state.setRightGone();
+		case_diagnosis.getChildAt(2).setVisibility(View.INVISIBLE);
 	}
 
 	@Override

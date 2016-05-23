@@ -19,6 +19,8 @@ import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.sjl.lib.http.okhttp.OkHttpUtils;
 
 /***
  * 临床诊疗规范及流程 详情页面
@@ -49,7 +51,7 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 						params.put("patient_id", caseId);
 						params.put("procedure_title", flowInfo.title);
 						params.put("procedure_text", flowInfo.procedure);
-						QjHttp.updateUserinfo(params, new BaseModelCallback() {
+						OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
 
 							@Override
 							public void onError(Call call, Exception e) {
@@ -85,9 +87,21 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
 			case QjConstant.REQUEST_CODE_NEW_CASE_FLOW:
-			case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
 				setResult(RESULT_OK, data);
 				finish();
+				break;
+			case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
+				CaseInfo cas = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+				if(cas == null) {
+					finish();
+					return;
+				}
+				String result = cas.procedure_title;
+				if(TextUtils.isEmpty(result)) {
+					finish();
+				} else {
+					bindView();
+				}
 				break;
 			}
 		}

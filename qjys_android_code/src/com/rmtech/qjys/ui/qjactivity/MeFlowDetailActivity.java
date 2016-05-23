@@ -114,12 +114,14 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 		}
 	}
 
-	private void bindView() {
+	protected void bindView() {
 		if (requestType == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW) {
 			CaseInfo tempcaseInfo = getCaseInfo();
 			if (tempcaseInfo != null && tempcaseInfo.hasFlow()) {
 				tv_title.setText(tempcaseInfo.procedure_title);
 				tv_content.setText(tempcaseInfo.procedure_text);
+				tv_title.setVisibility(View.VISIBLE);
+				tv_content.setVisibility(View.VISIBLE);
 				rl_empty.setVisibility(View.GONE);
 				btn_add_flow_detail.setVisibility(View.GONE);
 			} else {

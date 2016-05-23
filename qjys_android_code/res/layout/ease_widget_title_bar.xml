@@ -10,6 +10,7 @@
         android:id="@+id/left_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/ease_common_tab_bg"
         android:clickable="true" >
 
@@ -17,6 +18,7 @@
             android:id="@+id/left_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_centerInParent="true" />
     </RelativeLayout>
 

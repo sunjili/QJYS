@@ -37,6 +37,7 @@ public class CaseAgeActivity extends CaseEidtBaseActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_case_age);
 		setTitle("年龄");
+		setLeftTitle("返回");
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override

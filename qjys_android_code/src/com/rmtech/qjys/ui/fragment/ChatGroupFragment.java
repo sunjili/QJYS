@@ -43,7 +43,11 @@ public class ChatGroupFragment extends ChatFragment implements
 		mCaseTopBarView.setVisibility(View.VISIBLE);
 		mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(
 				toChatUsername);
-        if(mCaseInfo.participate_doctor.isEmpty()){
+		if(mCaseInfo == null) {
+			getActivity().finish();
+			return;
+		}
+        if(mCaseInfo.participate_doctor == null || mCaseInfo.participate_doctor.isEmpty()){
         	CustomSimpleDialog.Builder builder = new Builder(getActivity());  
             builder.setTitle("");  
             builder.setMessage("请先添加医护组成员后\n再进行群聊");

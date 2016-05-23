@@ -141,6 +141,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	}
 
 	protected synchronized void onImagePicked(List<String> paths) {
+		super.onImagePicked(paths);
 		if(mPhotoManagerFragment != null) {
 			mPhotoManagerFragment.onImagePicked(paths);
 		}

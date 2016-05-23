@@ -3,6 +3,7 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import okhttp3.Call;
 import android.app.Activity;
@@ -203,6 +204,9 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 
 	private void initView() {
 		lv_hospital = (ListView) findViewById(R.id.lv_hospital);
+		View line = View.inflate(this, R.layout.qj_me_split_line, null);
+		lv_hospital.addHeaderView(line);
+		lv_hospital.addFooterView(line);
 		et_hospital = (EditText) findViewById(R.id.et_hospital);
 		et_hospital.addTextChangedListener(new TextWatcher() {
 

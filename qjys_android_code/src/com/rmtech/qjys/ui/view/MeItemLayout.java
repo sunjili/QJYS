@@ -23,11 +23,11 @@ import com.sjl.lib.utils.ScreenUtil;
 public class MeItemLayout extends RelativeLayout implements
 		View.OnClickListener {
 
-	private LinearLayout v_bottom_line;
-	private TextView tv_left;
-	private TextView tv_right;
-	private ImageView iv_right;
-	private View inflate;
+	public LinearLayout v_bottom_line;
+	public TextView tv_left;
+	public TextView tv_right;
+	public ImageView iv_right;
+	public View inflate;
 
 	public MeItemLayout(Context context) {
 		super(context);
@@ -55,6 +55,10 @@ public class MeItemLayout extends RelativeLayout implements
 	public void setQRcodeRightDrawble(){
 		Drawable drawable = getResources().getDrawable(R.drawable.ic_me_qr_code);
 		tv_right.setCompoundDrawables(null, null, drawable, null);
+	}
+	
+	public void setRightTextColor_c3264aa(Context context){
+		tv_right.setTextColor(context.getResources().getColor(R.color.c3264aa));
 	}
 
 	private void initView(Context context, AttributeSet attrs,
@@ -94,6 +98,10 @@ public class MeItemLayout extends RelativeLayout implements
 		a.recycle();
 
 	}
+	
+	public void setRightGone(){
+		this.iv_right.setVisibility(View.INVISIBLE);
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -111,5 +119,7 @@ public class MeItemLayout extends RelativeLayout implements
 	public String getRightText(){
 		return tv_right.getText().toString();
 	}
+	
+	
 	
 }

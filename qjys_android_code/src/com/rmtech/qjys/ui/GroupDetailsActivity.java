@@ -115,7 +115,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			finish();
 			return;
 		}
-
 		setContentView(R.layout.em_activity_group_details);
 		instance = this;
 		st = getResources().getString(R.string.people);
@@ -152,7 +151,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			exitBtn.setVisibility(View.GONE);
 			deleteBtn.setVisibility(View.VISIBLE);
 		}
-
 		groupChangeListener = new GroupChangeListener();
 		EMClient.getInstance().groupManager().addGroupChangeListener(groupChangeListener);
 
@@ -701,7 +699,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = LayoutInflater.from(getContext()).inflate(res, null);
-				holder.imageView = (ImageView) convertView.findViewById(R.id.iv_avatar);
+				holder.imageView = (SquaredImageView) convertView.findViewById(R.id.iv_avatar);
 				holder.textView = (TextView) convertView.findViewById(R.id.tv_name);
 				holder.badgeDeleteView = (ImageView) convertView.findViewById(R.id.badge_delete);
 				convertView.setTag(holder);
@@ -713,7 +711,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			if (position == getCount() - 1) {
 				holder.textView.setText("");
 				// 设置成删除按钮
-				holder.imageView.setImageResource(R.drawable.em_smiley_minus_btn);
+				holder.imageView.setImageResource(R.drawable.btn_message_subtract);
 				// button.setCompoundDrawablesWithIntrinsicBounds(0,
 				// R.drawable.smiley_minus_btn, 0, 0);
 				// 如果不是创建者或者没有相应权限，不提供加减人按钮
@@ -744,7 +742,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				}
 			} else if (position == getCount() - 2) { // 添加群组成员按钮
 				holder.textView.setText("");
-				holder.imageView.setImageResource(R.drawable.em_smiley_add_btn);
+				holder.imageView.setImageResource(R.drawable.btn_message_add);
 				// button.setCompoundDrawablesWithIntrinsicBounds(0,
 				// R.drawable.smiley_add_btn, 0, 0);
 				// 如果不是创建者或者没有相应权限
@@ -985,7 +983,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	}
 
 	private static class ViewHolder {
-		ImageView imageView;
+		SquaredImageView imageView;
 		TextView textView;
 		ImageView badgeDeleteView;
 	}

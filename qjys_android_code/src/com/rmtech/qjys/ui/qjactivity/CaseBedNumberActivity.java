@@ -36,6 +36,7 @@ public class CaseBedNumberActivity extends CaseEidtBaseActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_case_bed);
+		setLeftTitle("返回");
 		setTitle("病床号");
 		setRightTitle("保存", new OnClickListener() {
 

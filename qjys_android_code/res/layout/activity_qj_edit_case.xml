@@ -101,7 +101,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/em_ic_right_arrow" />
+                android:src="@drawable/btn_rightarrow" />
 
             <TextView
                 android:id="@+id/tv_case_right"

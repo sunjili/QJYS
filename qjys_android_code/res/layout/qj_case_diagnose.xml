@@ -63,6 +63,7 @@
                     android:gravity="center"
                     android:background="@null"
                     android:text="添加诊断"
+                    android:layout_marginLeft="5dp"
                     android:textColor="@color/c3264aa"
                     android:textSize="17sp" />
                 	<View 
