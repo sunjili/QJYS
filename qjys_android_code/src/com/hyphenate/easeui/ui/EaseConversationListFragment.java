@@ -327,7 +327,7 @@ public class EaseConversationListFragment extends QjBaseFragment {
 	 * 连接到服务器
 	 */
 	protected void onConnectionConnected() {
-		// errorItemContainer.setVisibility(View.GONE);
+		 errorItemContainer.setVisibility(View.GONE);
 	}
 
 	/**

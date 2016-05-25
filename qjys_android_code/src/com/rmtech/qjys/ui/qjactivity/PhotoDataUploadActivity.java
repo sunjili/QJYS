@@ -63,7 +63,9 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 			}
 		});
 		initViews();
-		EventBus.getDefault().register(this);
+		if(!EventBus.getDefault().isRegistered(this)) {
+			EventBus.getDefault().register(this);
+		}
 
 	}
 

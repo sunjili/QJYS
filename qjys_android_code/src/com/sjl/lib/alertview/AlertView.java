@@ -221,8 +221,8 @@ public class AlertView {
 
                 //取消按钮的样式
                 if (data == cancel){
-                    tvAlert.setTypeface(Typeface.DEFAULT_BOLD);
-                    tvAlert.setTextColor(context.getResources().getColor(R.color.textColor_alert_button_cancel));
+                    tvAlert.setTypeface(Typeface.SANS_SERIF);
+                    tvAlert.setTextColor(context.getResources().getColor(R.color.c7e));
                     tvAlert.setOnClickListener(new OnTextClickListener(CANCELPOSITION));
                     position = position - 1;
                 }

@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dip"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <TextView

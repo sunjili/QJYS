@@ -80,6 +80,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		super.onCreate(arg0);
 		setContentView(R.layout.qjactivity_add_case);
 		setTitle("添加病例");
+		setLeftTitle("病例列表");
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override

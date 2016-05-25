@@ -89,6 +89,12 @@ public class BaseActivity extends EaseBaseActivity {
 		}
 	}
 	
+	protected void setBackImageGone() {
+		if (mTopTitleView != null) {
+			mTopTitleView.getBackImage().setVisibility(View.GONE);
+		}
+	}
+	
 	protected void setLeftTitle(String leftTitle) {
 		if (mTopTitleView != null) {
 			mTopTitleView.setLeftTitle(leftTitle, null);

@@ -67,7 +67,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 			setTitle(folderDataInfo.name);
 			setLeftTitle("根目录");
 		}
-
+        setLeftTitle("病例列表");
 		mPhotoManagerFragment = new PhotoManagerFragment();
 		getSupportFragmentManager().beginTransaction().add(R.id.container, mPhotoManagerFragment).commit();
 		mCaseTopBarView = (CaseTopBarView) findViewById(R.id.topbar_view);

@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rmtech.qjys.R;
@@ -18,6 +19,7 @@ public class TopTitleView extends FrameLayout {
 	private TextView mLeftView;
 	private TextView mTitleTextView;
 	private TextView mRightView;
+	private ImageView mBackImage;
 	private TextView sub_right_title;
 
 	public static final int ACTION_BAR_LEFT = 0;
@@ -41,7 +43,7 @@ public class TopTitleView extends FrameLayout {
 	protected void onFinishInflate() {
 		setDrawingCacheEnabled(true);
 		setAlwaysDrawnWithCacheEnabled(true);
-
+		mBackImage = (ImageView) findViewById(R.id.backImage);
 		mLeftView = (TextView) findViewById(R.id.left_title);
 		mTitleTextView = (TextView) findViewById(R.id.title);
 		mRightView = (TextView) findViewById(R.id.right_title);
@@ -53,6 +55,10 @@ public class TopTitleView extends FrameLayout {
 			mTitleTextView.setText(title);
 		}
 		return mTitleTextView;
+	}
+	
+	public View getBackImage(){
+		return mBackImage;
 	}
 
 	public void setTitle(String title, String extra) {

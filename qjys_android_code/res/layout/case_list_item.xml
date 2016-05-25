@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingRight="50dip"
+            android:paddingRight="40dip"
             android:text="主管医生:孙医生 参与医生:王大夫、朱大夫、等"
             android:textColor="@color/c7e"
             android:textSize="13sp" />
@@ -72,7 +72,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:gravity="center"
             android:text="门诊"
             android:textColor="@color/c3264aa"

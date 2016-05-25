@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         ImageView avatar;
         TextView nameView;
         TextView headerView;
+        LinearLayout split_line;
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -61,6 +63,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
             holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
             holder.nameView = (TextView) convertView.findViewById(R.id.name);
             holder.headerView = (TextView) convertView.findViewById(R.id.header);
+            holder.split_line = (LinearLayout) convertView.findViewById(R.id.split_line);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
@@ -73,18 +76,23 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         String header = user.getInitialLetter();
         if(position == 0 && user.doctorInfo != null  && user.doctorInfo.mostUser == 1) {
         	 holder.headerView.setVisibility(View.VISIBLE);
+        	 holder.split_line.setVisibility(View.VISIBLE);
              holder.headerView.setText("常用联系人");
         } else if(position != 0 && user.doctorInfo != null  && user.doctorInfo.mostUser == 1) {
         	holder.headerView.setVisibility(View.GONE);
+        	holder.split_line.setVisibility(View.GONE);
         } else if (position == 0 || header != null && !header.equals(getItem(position - 1).getInitialLetter())) {
             if (TextUtils.isEmpty(header)) {
                 holder.headerView.setVisibility(View.GONE);
+                holder.split_line.setVisibility(View.GONE);
             } else {
                 holder.headerView.setVisibility(View.VISIBLE);
+                holder.split_line.setVisibility(View.VISIBLE);
                 holder.headerView.setText(header);
             }
         } else {
             holder.headerView.setVisibility(View.GONE);
+            holder.split_line.setVisibility(View.GONE);
         }
         //设置头像
         EaseUserUtils.setUserNick(username, holder.nameView);

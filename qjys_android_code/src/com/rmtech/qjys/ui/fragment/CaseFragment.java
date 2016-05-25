@@ -521,8 +521,10 @@ public class CaseFragment extends QjBaseFragment {
 			String genderStr = "";
 			if (info.sex == 1) {
 				genderStr = "男";// 99
+				genderTv.setBackgroundResource(R.drawable.bg_gender_man);
 			} else {
 				genderStr = "女";
+				genderTv.setBackgroundResource(R.drawable.bg_gender_woman);
 			}
 			if (!TextUtils.isEmpty(info.age)
 					&& !TextUtils.equals("0", info.age)) {

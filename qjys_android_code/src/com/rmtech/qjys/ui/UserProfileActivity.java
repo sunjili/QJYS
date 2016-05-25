@@ -29,12 +29,13 @@ import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
+import com.sjl.lib.roundedimageview.RoundedImageView;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener{
 	
 	private static final int REQUESTCODE_PICK = 1;
 	private static final int REQUESTCODE_CUTTING = 2;
-	private ImageView headAvatar;
+	private RoundedImageView headAvatar;
 	private ImageView headPhotoUpdate;
 	private ImageView iconRightArrow;
 	private TextView tvNickName;
@@ -53,7 +54,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	}
 	
 	private void initView() {
-		headAvatar = (ImageView) findViewById(R.id.user_head_avatar);
+		headAvatar = (RoundedImageView) findViewById(R.id.user_head_avatar);
 		headPhotoUpdate = (ImageView) findViewById(R.id.user_head_headphoto_update);
 		tvUsername = (TextView) findViewById(R.id.user_username);
 		tvNickName = (TextView) findViewById(R.id.user_nickname);

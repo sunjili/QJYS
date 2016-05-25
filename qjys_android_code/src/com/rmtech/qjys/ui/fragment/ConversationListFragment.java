@@ -63,7 +63,6 @@ public class ConversationListFragment extends EaseConversationListFragment {
 			errormsg_layout.setVisibility(View.GONE);
 		} else {
 			errorItemContainer.setVisibility(View.GONE);
-			conversationListView.setPadding(0, 0, 0, 0);
 
 			Log.e("onConnectionConnected", "in");
 		}
@@ -73,7 +72,6 @@ public class ConversationListFragment extends EaseConversationListFragment {
 	protected void onConnectionDisconnected() {
 		super.onConnectionDisconnected();
 		errormsg_layout.setVisibility(View.VISIBLE);
-		conversationListView.setPadding(0, 100, 0, 0);
 		if (NetUtils.hasNetwork(getActivity())) {
 			errorText.setText(R.string.can_not_connect_chat_server_connection);
 		} else {

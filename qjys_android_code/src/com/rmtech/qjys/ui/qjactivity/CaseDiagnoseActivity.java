@@ -1,6 +1,8 @@
 package com.rmtech.qjys.ui.qjactivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Call;
 import android.content.Context;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 	private LinearLayout ll_diagnose_add;
 	private Context context;
 	private String stringExtra;
+	private String[] newStrings;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -123,13 +127,35 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 		if (TextUtils.isEmpty(tempStr)) {
 		} else {
 			String[] strings = tempStr.split("&&");
+			final List<String> list = new ArrayList<String>();
 			for (int i = 0; i < strings.length; i++) {
 				if(TextUtils.isEmpty(strings[i])) {
 					continue;
 				}
+				list.add(strings[i]);
+				final int posi = i;
 				View view = LayoutInflater.from(context).inflate(R.layout.qj_case_diagnose_item, null);
-				EditText tv_name = (EditText) view.findViewById(R.id.tv_name);
+				TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
+				ImageView btn_delete = (ImageView) view.findViewById(R.id.btn_delete);
 				tv_name.setText(strings[i]);
+				btn_delete.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						list.remove(posi);
+						ll_layout.removeViewAt(posi);
+						String newString = "";
+						for(String s : list){
+							if(newString.equals("")){
+								newString = s;
+							}else{
+								newString = newString + "&&" + s;
+							}
+						}
+						stringExtra = newString;
+					}
+				});
 				ll_layout.addView(view);
 			}
 		}

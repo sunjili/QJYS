@@ -22,7 +22,7 @@
         android:layout_height="15dp"
         android:layout_alignParentRight="true"
         android:layout_alignRight="@id/textview"
-        android:background="@drawable/qj_red_circle"
+        android:background="@drawable/ease_unread_count_bg"
         android:gravity="center"
         android:text="7"
         android:textColor="@android:color/white"

@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="17dp"
                     android:layout_marginTop="1dp"
                     android:background="@drawable/em_unread_count_bg"
                     android:gravity="center"
@@ -106,11 +106,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:gravity="center"
-                    android:padding="5dp"
-                    android:scaleX="1.2"
-                    android:scaleY="1.2"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/em_unread_dot"
+                    android:textColor="@android:color/white"
+                    android:layout_marginRight="17dp"
+                    android:layout_marginTop="1dp"
+                    android:textSize="12sp" 
+                    android:background="@drawable/ease_unread_count_bg"
                     android:visibility="visible" />
             </RelativeLayout>
 

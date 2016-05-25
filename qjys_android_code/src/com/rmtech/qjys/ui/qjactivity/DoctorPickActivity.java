@@ -179,6 +179,8 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		}else if(type==QjConstant.REQUEST_CODE_DELETE_DOCTORS) {
 			setTitle("删除讨论组成员");
 		}
+		setLeftTitle("取消");
+		setBackImageGone();
 		listView = (ListView) findViewById(R.id.list);
 
 		((EaseSidebar) findViewById(R.id.sidebar)).setListView(listView);

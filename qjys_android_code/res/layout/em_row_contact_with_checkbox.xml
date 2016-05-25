@@ -4,16 +4,25 @@
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:orientation="vertical" >
+    
+    <include 
+        android:id="@+id/split_line"
+        layout="@layout/qj_me_split_line"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ease_mm_listitem_disable"
+        android:background="@color/cf4f5f9"
+        android:paddingBottom="2dp"
         android:paddingLeft="10dp"
-        android:textColor="@android:color/black"
+        android:paddingTop="2dp"
+        android:textColor="@color/c9"
         android:textSize="15sp"
         android:visibility="gone" />
+    
+    <include layout="@layout/qj_me_split_line"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,14 +37,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:focusable="false"
+            android:layout_marginLeft="8dp"
             android:button="@drawable/em_checkbox_bg_selector" />
 
-        <ImageView
+        <com.sjl.lib.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/avatar"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_gravity="center_vertical"
             android:scaleType="fitXY"
+            app:riv_corner_radius="5dip"
             android:src="@drawable/em_default_avatar" />
 
         <TextView

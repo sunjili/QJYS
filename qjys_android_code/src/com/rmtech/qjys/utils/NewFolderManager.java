@@ -144,7 +144,7 @@ public class NewFolderManager {
 		if(mAlertViewExt != null) {
 			mAlertViewExt.forceDismiss();
 		}
-		mAlertViewExt = new AlertView("新建文件夹", null, "取消", null, new String[] { "完成" }, context, AlertView.Style.Alert,
+		mAlertViewExt = new AlertView("新建文件夹", null, "取消", null, new String[] { "创建" }, context, AlertView.Style.Alert,
 				new OnItemClickListener() {
 
 					@Override

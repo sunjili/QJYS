@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/cf4f5f9"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="13dip"
+        android:layout_marginBottom="20dip"
         android:src="@drawable/btn_case_camera_nor" />
 
     <com.rmtech.qjys.ui.view.UploadingView

@@ -19,11 +19,13 @@ import org.greenrobot.eventbus.Subscribe;
 import okhttp3.Call;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -87,7 +89,7 @@ public class ContactListFragment extends EaseContactListFragment {
 		EventBus.getDefault().register(this);
 
 	}
-
+	
 	@Subscribe
 	public void onEvent(DoctorEvent event) {
 		// mAdapter.add();
