@@ -42,6 +42,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 
 	
 	private View rightTitleView;
+	private boolean isFirstCreate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +78,27 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 
 		mCaseTopBarView.setCaseInfo(caseInfo);
 		mPhotoManagerFragment.setIds(caseInfo, folderDataInfo);
+		isFirstCreate = true;
 	}
 	
+	
+	
+	@Override
+	protected void onResume() {
+		if(!isFirstCreate) {
+			if(caseInfo != null) {
+				CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
+				if(tempCase != null) {
+					caseInfo = tempCase;
+					mCaseTopBarView.setCaseInfo(caseInfo);
+//					mPhotoManagerFragment.setIds(caseInfo, folderDataInfo);
+				}
+			}
+		}
+		isFirstCreate = false;
+		super.onResume();
+	}
+
 	@Override
 	protected ImageDataList getImageDataList() {
 		if(mPhotoManagerFragment != null) {

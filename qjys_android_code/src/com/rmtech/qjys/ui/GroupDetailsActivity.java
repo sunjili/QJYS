@@ -217,7 +217,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					nike_tv.setText("昵称：" + caseInfo.admin_doctor.name);
 					ImageLoader.getInstance().displayImage(caseInfo.admin_doctor.head, avatar,
 							QjConstant.optionsHead);
-					
 				}
 			});
 		}
@@ -271,26 +270,29 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			}
 			case QjConstant.REQUEST_CODE_ADD_DOCTORS: {// 添加群成员
 				ArrayList<DoctorInfo> currentDoctorList = data.getParcelableArrayListExtra("selectedDoctorList");
-				groupId = data.getStringExtra("group_id");
-//				if (caseInfo != null) {
-//					if (caseInfo.participate_doctor == null) {
-//						caseInfo.participate_doctor = new ArrayList<DoctorInfo>();
+				if(requestType == QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR) {
+					groupId = data.getStringExtra("group_id");
+					if (caseInfo != null) {
+						if (caseInfo.participate_doctor == null) {
+							caseInfo.participate_doctor = new ArrayList<DoctorInfo>();
+						}
+						caseInfo.participate_doctor.addAll(currentDoctorList);
+						GroupAndCaseListManager.getInstance().setIsChanged(true);
+					}
+					
+//					progressDialog.setMessage(st1);
+//					progressDialog.show();
+//					String[] newmembers = new String[currentDoctorList.size()];
+//					for (int i = 0; i < currentDoctorList.size(); i++) {// DoctorInfo
+//																		// info :
+//																		// currentDoctorList)
+//																		// {
+//						newmembers[i] = currentDoctorList.get(i).id;
 //					}
-//					caseInfo.participate_doctor.addAll(currentDoctorList);
-//					GroupAndCaseListManager.getInstance().setIsChanged(true);
-//				}
-//				progressDialog.setMessage(st1);
-//				progressDialog.show();
-//
-//				String[] newmembers = new String[currentDoctorList.size()];
-//				for (int i = 0; i < currentDoctorList.size(); i++) {// DoctorInfo
-//																	// info :
-//																	// currentDoctorList)
-//																	// {
-//					newmembers[i] = currentDoctorList.get(i).id;
-//				}
-//				addMembersToGroup(newmembers);
-//				refreshMembers();
+					refreshMembers();
+					((TextView) findViewById(R.id.group_name)).setText(caseInfo.name + "("
+							+ caseInfo.getGroupCount() + st);
+				}
 				break;
 			}
 			case QjConstant.REQUEST_CODE_DELETE_DOCTORS:// 删除群成员

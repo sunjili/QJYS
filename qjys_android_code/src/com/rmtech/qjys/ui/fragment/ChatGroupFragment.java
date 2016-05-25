@@ -57,6 +57,7 @@ public class ChatGroupFragment extends ChatFragment implements
     			public void onClick(DialogInterface dialog, int which) {
     				// TODO Auto-generated method stub
     				dialog.dismiss();
+    				getActivity().finish();
     			}
 
     		});  
@@ -66,6 +67,8 @@ public class ChatGroupFragment extends ChatFragment implements
     			public void onClick(DialogInterface dialog, int which) {
     				// TODO 添加医护组成员页面
     				GroupDetailsActivity.show(getActivity(), mCaseInfo);
+    				getActivity().finish();
+
     			}
 
     		});
