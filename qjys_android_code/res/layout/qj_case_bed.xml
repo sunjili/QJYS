@@ -18,7 +18,7 @@
 
         <EditText
             android:id="@+id/et_bed"
-            style="@style/qj_et_style"
+            style="@style/qj_et_style_nobg"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="请输入床号"

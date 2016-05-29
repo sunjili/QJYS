@@ -40,6 +40,16 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_photo_select);
 		setTitle("文件多选");
+		setLeftTitle("取消");
+		setBackImageGone();
+		setRightTitle("全选", new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO 全选功能
+				selectAll();
+			}
+		});
 		initViews();
 		EventBus.getDefault().register(this);
 
@@ -201,7 +211,11 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 			mSelectedImages.add(select);
 		}
 		mAdapter.notifyDataSetChanged();
-
+	}
+	
+	private void selectAll(){
+		mSelectedImages.addAll(mDataList);
+		mAdapter.notifyDataSetChanged();
 	}
 	//
 	// public class SelectGridAdapter extends BaseAdapter {

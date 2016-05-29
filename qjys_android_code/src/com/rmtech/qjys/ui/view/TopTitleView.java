@@ -20,6 +20,7 @@ public class TopTitleView extends FrameLayout {
 	private TextView mTitleTextView;
 	private TextView mRightView;
 	private ImageView mBackImage;
+	private ImageView rightIcon;
 	private TextView sub_right_title;
 
 	public static final int ACTION_BAR_LEFT = 0;
@@ -48,6 +49,7 @@ public class TopTitleView extends FrameLayout {
 		mTitleTextView = (TextView) findViewById(R.id.title);
 		mRightView = (TextView) findViewById(R.id.right_title);
 		sub_right_title = (TextView) findViewById(R.id.sub_right_title);
+		rightIcon = (ImageView) findViewById(R.id.right_icon);
 	}
 
 	public TextView setTitle(String title) {
@@ -85,6 +87,14 @@ public class TopTitleView extends FrameLayout {
 			mRightView.setText("");
 			mRightView.setVisibility(View.VISIBLE);
 			setView(mRightView, drawRid, listener);
+		}
+		return mRightView;
+	}
+	
+	public View setRightIcon(int drawRid, View.OnClickListener listener) {
+		if (mRightView != null) {
+			rightIcon.setVisibility(View.VISIBLE);
+			setView(rightIcon, drawRid, listener);
 		}
 		return mRightView;
 	}

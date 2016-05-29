@@ -14,12 +14,6 @@
         android:id="@+id/topbar_view"
         android:layout_width="match_parent"
         android:layout_height="95dip" />
-    
-    <View 
-        android:layout_width="match_parent"
-        android:layout_height="1px" 
-        android:background="@color/cd9"
-        android:layout_below="@id/topbar_view"/>
 
     <ImageView
         android:id="@+id/btn_camera"

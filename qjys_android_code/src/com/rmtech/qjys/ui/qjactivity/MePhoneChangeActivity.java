@@ -36,6 +36,7 @@ public class MePhoneChangeActivity extends BaseActivity implements
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_phone_change);
 		setTitle("更换手机号");
+		setLeftTitle("返回");
 		context = MePhoneChangeActivity.this;
 		setRightTitle("下一步", new OnClickListener() {
 

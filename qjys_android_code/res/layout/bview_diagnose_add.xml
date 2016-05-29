@@ -6,9 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="@dimen/qj_add_case_item_height" >
+        android:layout_height="@dimen/qj_add_case_item_height"
+        android:gravity="center_vertical" >
 
         <TextView
             android:id="@+id/diagnose_tv"

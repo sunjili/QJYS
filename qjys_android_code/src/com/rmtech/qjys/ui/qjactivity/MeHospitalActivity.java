@@ -208,6 +208,7 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 		lv_hospital.addHeaderView(line);
 		lv_hospital.addFooterView(line);
 		et_hospital = (EditText) findViewById(R.id.et_hospital);
+		setTextWhacher(MeHospitalActivity.this, et_hospital, 60);
 		et_hospital.addTextChangedListener(new TextWatcher() {
 
 			@Override

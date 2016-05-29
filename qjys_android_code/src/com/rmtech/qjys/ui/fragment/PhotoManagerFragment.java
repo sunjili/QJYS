@@ -172,7 +172,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 					if (imagePosition < 0 || imagePosition >= list.size()) {
 						imagePosition = 0;
 					}
-					PhotoDataBrowseActivity.show(getActivity(), imagePosition, list, caseInfo.id, folderId);
+					PhotoDataBrowseActivity.show(getActivity(), imagePosition, list, caseInfo.id, caseInfo, folderId);
 				} else if (itemInfo instanceof FolderDataInfo) {
 					PhotoDataManagerActivity.show(getActivity(), caseInfo, (FolderDataInfo) itemInfo);
 				}

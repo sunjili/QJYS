@@ -22,6 +22,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.zbarlib.camera.CameraManager;
@@ -49,6 +50,7 @@ public class ScanActivity extends FragmentActivity implements Callback, OnClickL
 	private RelativeLayout mCropLayout = null;
 	private boolean isNeedCapture = false;
 	private View flash_image;
+	private TextView return_tv;
 	
 	public boolean isNeedCapture() {
 		return isNeedCapture;
@@ -113,8 +115,8 @@ public class ScanActivity extends FragmentActivity implements Callback, OnClickL
 		mAnimation.setInterpolator(new LinearInterpolator());
 		mQrLineView.setAnimation(mAnimation);
 		
-		flash_image = findViewById(R.id.flash_image);
-		flash_image.setOnClickListener(this);
+		return_tv = (TextView) findViewById(R.id.return_tv);
+		return_tv.setOnClickListener(this);
 	}
 
 
@@ -122,8 +124,11 @@ public class ScanActivity extends FragmentActivity implements Callback, OnClickL
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch(v.getId()) {
-		case R.id.flash_image:
-			light();
+//		case R.id.flash_image:
+//			light();
+//			break;
+		case R.id.return_tv:
+			ScanActivity.this.finish();
 			break;
 		}
 	}

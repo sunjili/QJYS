@@ -10,34 +10,46 @@
         android:layout_width="match_parent"
         android:layout_height="27dp"
         android:text="请描述您的问题" />
+    
+    <include layout="@layout/qj_me_split_line"/>
 
     <EditText
         android:paddingTop="10dp"
         android:id="@+id/et_string"
         android:layout_width="match_parent"
         android:layout_height="170dp"
-        android:background="@drawable/qj_me_edit_selector"
+        android:background="@color/white"
+        android:textColorHint="@color/c9"
+        android:textSize="14sp"
         android:gravity="top|left"
         android:hint="请输入您的问题"
         android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
+    
+    <include layout="@layout/qj_me_split_line"/>
 
     <TextView
         style="@style/qj_text_small_explain_style"
         android:layout_width="match_parent"
         android:layout_height="22dp"
         android:text="请填写您的联系方式" />
+    
+    <include layout="@layout/qj_me_split_line"/>
 
     <EditText
         android:id="@+id/et_phone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/qj_me_edit_selector"
+        android:background="@color/white"
         android:hint="电话/邮箱/QQ/微信"
+        android:textColorHint="@color/c9"
+        android:textSize="14sp"
         android:inputType="text"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:singleLine="true" />
+    
+    <include layout="@layout/qj_me_split_line"/>
 
 </LinearLayout>

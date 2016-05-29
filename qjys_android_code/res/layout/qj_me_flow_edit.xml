@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/cf4f5f9"
     android:orientation="vertical" >
 
     <include layout="@layout/qj_me_split_line" />
@@ -15,12 +15,11 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
+        android:textColorHint="@color/cd9"
         android:background="@drawable/qj_me_edit_selector"
         android:hint="请输入规范名称"
         android:inputType="text"
         android:singleLine="true" />
-
-    <include layout="@layout/qj_me_split_line" />
 
     <View
         android:layout_width="match_parent"
@@ -38,7 +37,7 @@
 
         <EditText
             android:id="@+id/et_content"
-            style="@style/qj_et_style"
+            style="@style/qj_et_style_nobg"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="20dp"
@@ -46,6 +45,7 @@
             android:layout_marginRight="1dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:textColorHint="@color/cd9"
             android:gravity="top|left"
             android:hint="请填写规范内容"
             android:inputType="textMultiLine"
@@ -66,7 +66,8 @@
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_gravity="bottom" >
+        android:layout_gravity="bottom" 
+        android:background="@color/white">
 
         <View
             android:id="@+id/v_top"
@@ -78,15 +79,12 @@
         <CheckBox
             android:id="@+id/iv_right"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:background="@drawable/qj_me_right_selector"
             android:button="@null"
-            android:paddingBottom="14dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="14dp" />
+            android:layout_margin="8dp" />
 
         <TextView
             android:layout_width="match_parent"

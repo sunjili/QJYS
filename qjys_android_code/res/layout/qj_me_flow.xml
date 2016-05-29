@@ -25,14 +25,15 @@
             style="@style/qj_text_small_explain_style"
             android:layout_width="match_parent"
             android:layout_height="27dp"
-            android:text="以下是你的诊疗规范模板" />
-
+            android:text="" />
+        
+        <include layout="@layout/qj_me_split_line"/>
+        
         <ListView
             android:id="@+id/lv_flow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/qj_me_listview_treament_state_background"
-            android:divider="@color/cd9"
+            android:divider="#00000000"
             android:dividerHeight="1px" >
         </ListView>
     </LinearLayout>

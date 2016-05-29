@@ -164,6 +164,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 	private void initView() {
 		ll_layout = (LinearLayout) findViewById(R.id.ll_layout);
 		et_diagnose = (EditText) findViewById(R.id.et_diagnose);
+		setTextWhacher(CaseDiagnoseActivity.this, et_diagnose, 75);
 		ll_diagnose_add = (LinearLayout) findViewById(R.id.ll_diagnose_add);
 		ll_diagnose_add.setOnClickListener(this);
 	}

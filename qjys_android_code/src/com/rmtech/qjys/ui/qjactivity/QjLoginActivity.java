@@ -87,7 +87,7 @@ public class QjLoginActivity extends BaseActivity {
 		CustomSimpleDialog.Builder builder = new Builder(QjLoginActivity.this);  
         builder.setTitle("提示");  
         builder.setMessage("验证码不正确，请重新输入");  
-        builder.setNegativeButton("好的", new OnClickListener() {
+        builder.setPositiveButton("好的", new OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

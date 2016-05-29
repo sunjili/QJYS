@@ -135,6 +135,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		
 		// idText.setText(groupId);
 		if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR) {
+			findViewById(R.id.line1).setVisibility(View.GONE);
+			findViewById(R.id.line2).setVisibility(View.GONE);
+			findViewById(R.id.line3).setVisibility(View.GONE);
 			exitBtn.setVisibility(View.GONE);
 			deleteBtn.setVisibility(View.GONE);
 			clearAllHistory.setVisibility(View.GONE);
@@ -158,7 +161,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		// findViewById(R.id.group_name)).setText(group.getGroupName() + "(" +
 		// group.getAffiliationsCount() + st);
 		if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR) {
-			((TextView) findViewById(R.id.group_name)).setText("创建" + caseInfo.name + "病例讨论组");
+			((TextView) findViewById(R.id.group_name)).setText("创建" + "病例讨论组");
 
 		} else {
 			((TextView) findViewById(R.id.group_name)).setText(caseInfo.name);
@@ -202,7 +205,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			CaseInfo newCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
 			if(newCaseInfo != null) {
 				caseInfo = newCaseInfo;
-				
 			}
 		}
 		if(caseInfo.admin_doctor != null) {
@@ -217,6 +219,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					nike_tv.setText("昵称：" + caseInfo.admin_doctor.name);
 					ImageLoader.getInstance().displayImage(caseInfo.admin_doctor.head, avatar,
 							QjConstant.optionsHead);
+					
 				}
 			});
 		}
@@ -225,6 +228,12 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		List<DoctorInfo> participateDoctors = caseInfo.participate_doctor;
 		adapter = new GridAdapter(this, R.layout.em_grid, participateDoctors);
 		userGridview.setAdapter(adapter);
+		change_admin_view.setVisibility(UserContext.getInstance().isMyself(caseInfo.admin_doctor.id)?
+				View.VISIBLE : View.GONE);
+		if(!isOwner()){
+			exitBtn.setVisibility(View.VISIBLE);
+			deleteBtn.setVisibility(View.GONE);
+		}
 	}
 
 
@@ -589,7 +598,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		// break;
 		case R.id.change_admin_view:
 			ArrayList<DoctorInfo> list = new ArrayList<>();
-			list.add(caseInfo.admin_doctor);
+			list.addAll(caseInfo.participate_doctor);
 			DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, list, QjConstant.REQUEST_CODE_CHANGE_DOCTOR);
 
 			break;

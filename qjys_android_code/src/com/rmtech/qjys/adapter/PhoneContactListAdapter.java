@@ -75,6 +75,7 @@ public class PhoneContactListAdapter extends BaseAdapter implements
 			holder.group_title = (TextView) view.findViewById(R.id.group_title);
 			holder.phoneContact_name = (TextView) view.findViewById(R.id.tv_name);
 			holder.btn_add=(Button)view.findViewById(R.id.btn_add);
+			holder.line = (View) view.findViewById(R.id.line);
 			view.setTag(holder);
 		} else {
 			view = convertView;
@@ -87,9 +88,11 @@ public class PhoneContactListAdapter extends BaseAdapter implements
 			int section = mIndexer.getSectionForPosition(position);
 			if (mIndexer.getPositionForSection(section) == position) {
 				holder.group_title.setVisibility(View.VISIBLE);
+				holder.line.setVisibility(View.VISIBLE);
 				holder.group_title.setText(phoneContact.getPinyinFirst());
 			} else {
 				holder.group_title.setVisibility(View.GONE);
+				holder.line.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,6 +139,7 @@ public class PhoneContactListAdapter extends BaseAdapter implements
 		public TextView group_title;
 		public TextView phoneContact_name;
 		public Button btn_add;
+		public View line;
 	}
 
 	@Override

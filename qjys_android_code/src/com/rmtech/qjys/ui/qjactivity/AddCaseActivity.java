@@ -114,6 +114,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 		nameTv = (TextView) findViewById(R.id.name_tv);
 		nameEt = (EditText) findViewById(R.id.name_et);
+		setTextWhacher(AddCaseActivity.this, nameEt, 60);
 		genderTv = (TextView) findViewById(R.id.gender_tv);
 		genderWomanTv = (TextView) findViewById(R.id.gender_woman_tv);
 		genderWomanTv.setOnClickListener(this);
@@ -122,6 +123,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		ageTv = (TextView) findViewById(R.id.age_tv);
 		ageTitleTv = (TextView) findViewById(R.id.age_title_tv);
 		ageEt = (EditText) findViewById(R.id.age_et);
+		
 		hosArrowImage = (ImageView) findViewById(R.id.hos_arrow_image);
 		findViewById(R.id.hospital_layout).setOnClickListener(this);
 		hospitalTv = (TextView) findViewById(R.id.hospital_tv);
@@ -130,13 +132,16 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		currentHospital = UserContext.getInstance().getUser().hos_fullname;
 		keshiTv = (TextView) findViewById(R.id.keshi_tv);
 		keshiEt = (EditText) findViewById(R.id.keshi_et);
+		setTextWhacher(AddCaseActivity.this, keshiEt, 60);
 		keshiEt.setText(UserContext.getInstance().getUser().department);
 		roomTv = (TextView) findViewById(R.id.room_tv);
 		roomTitleTv = (TextView) findViewById(R.id.room_title_tv);
 		roomEt = (EditText) findViewById(R.id.room_et);
+		setTextWhacher(AddCaseActivity.this, roomEt, 30);
 		bedTv = (TextView) findViewById(R.id.bed_tv);
 		bedTitleTv = (TextView) findViewById(R.id.bed_title_tv);
 		bedEt = (EditText) findViewById(R.id.bed_et);
+		setTextWhacher(AddCaseActivity.this, bedEt, 30);
 		diagnose_view = (DiagnoseAddView) findViewById(R.id.diagnose_view);
 		stateLayout = (MeItemLayout) findViewById(R.id.state_layout);
 		stateLayout.setOnClickListener(this);
@@ -149,6 +154,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		abstractLayout = (RelativeLayout) findViewById(R.id.abstract_layout);
 		abstractTv = (TextView) findViewById(R.id.abstract_tv);
 		abstractEt = (EditText) findViewById(R.id.abstract_et);
+		setTextWhacher(AddCaseActivity.this, bedEt, 8000);
 	}
 
 	private CaseInfo createCaseInfo(int state) {
@@ -170,6 +176,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.state = state;
 		return info;
 	}
+	
 
 	private String getHospitalName() {
 		String hostv = (String) hospitalTv.getText();

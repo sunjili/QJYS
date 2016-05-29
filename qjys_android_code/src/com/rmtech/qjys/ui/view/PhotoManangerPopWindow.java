@@ -31,7 +31,7 @@ public class PhotoManangerPopWindow {
 		mFolderPopupWindow.setHeight(LayoutParams.WRAP_CONTENT);
 		mFolderPopupWindow.setAnchorView(anchorView);
 		mFolderPopupWindow.setModal(true);
-		mFolderPopupWindow.setVerticalOffset(ScreenUtil.dp2px(10));
+		mFolderPopupWindow.setVerticalOffset(ScreenUtil.dp2px(5));
 		mFolderPopupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.popping_box));
 		mFolderPopupWindow.setListSelector(context.getResources().getDrawable(R.drawable.bg_transparent));
 //	    android:background="@color/c3164aa"

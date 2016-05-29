@@ -18,12 +18,14 @@
         android:id="@+id/primary_menu_container"
         >
     </FrameLayout>
+    
+    <include layout="@layout/qj_me_split_line"/>
 
     <FrameLayout
         android:id="@+id/extend_menu_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
+        android:background="@color/cf4f5f9"
         android:visibility="gone" >
 
         <com.hyphenate.easeui.widget.EaseChatExtendMenu

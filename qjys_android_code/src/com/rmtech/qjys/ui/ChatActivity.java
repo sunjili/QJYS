@@ -35,6 +35,7 @@ public class ChatActivity extends BaseActivity{
         } else {
         	chatFragment = new ChatFragment();
         }
+        setLeftTitle("消息列表");
         //传入参数
         chatFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();

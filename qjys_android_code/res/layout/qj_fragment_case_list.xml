@@ -9,12 +9,13 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        hyphenate:titleBarRightImage="@drawable/em_add"
+        hyphenate:titleBarRightImage="@drawable/btn_case_new"
         hyphenate:titleBarTitle="@string/address_book" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent" 
+        android:background="@color/cf4f5f9">
 
         <in.srain.cube.views.ptr.PtrClassicFrameLayout
             xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
@@ -45,11 +46,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:padding="10dip"
+            android:padding="5dip"
             android:gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_case_nocase"
-            android:visibility="gone" />
+            android:src="@drawable/ic_case_nocase" />
     </RelativeLayout>
 
 </LinearLayout>

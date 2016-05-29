@@ -90,7 +90,8 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 			@Override
 			public void onResponseSucces(boolean iscache, MDoctorList response) {
 				if (response.ret == 0 && response.data != null && !response.data.isEmpty()) {
-					if (type == QjConstant.REQUEST_CODE_DELETE_DOCTORS) {
+					if (type == QjConstant.REQUEST_CODE_DELETE_DOCTORS || 
+							type == QjConstant.REQUEST_CODE_CHANGE_DOCTOR) {
 						ArrayList<DoctorInfo> exitingMembers2 = getIntent().getParcelableArrayListExtra(
 								"selectedDoctorList");
 
@@ -110,7 +111,7 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 						DoctorListManager.initDoctorList(alluserList, response.data);
 						initAdapter();
 					} else {
-
+						
 						DoctorListManager.initDoctorList(alluserList, response.data);
 						initAdapter();
 						if (selectedDoctorList != null) {
@@ -176,11 +177,17 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		// }
 		if(type==QjConstant.REQUEST_CODE_ADD_DOCTORS){
 			setTitle("添加讨论组成员");
+			setLeftTitle("取消");
+			setBackImageGone();
 		}else if(type==QjConstant.REQUEST_CODE_DELETE_DOCTORS) {
 			setTitle("删除讨论组成员");
+			setLeftTitle("返回");
+		}else if(type==QjConstant.REQUEST_CODE_CHANGE_DOCTOR) {
+			setTitle("管理权限移交");
+			setLeftTitle("返回");
+		}else {
+			
 		}
-		setLeftTitle("取消");
-		setBackImageGone();
 		listView = (ListView) findViewById(R.id.list);
 
 		((EaseSidebar) findViewById(R.id.sidebar)).setListView(listView);
@@ -196,7 +203,7 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		if (type == QjConstant.REQUEST_CODE_CHANGE_DOCTOR) {
 			isSignleChecked = true;
 			selectedDoctorList = getIntent().getParcelableArrayListExtra("selectedDoctorList");
-			setRightTitle("保存", new OnClickListener() {
+			setRightTitle("确认", new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {

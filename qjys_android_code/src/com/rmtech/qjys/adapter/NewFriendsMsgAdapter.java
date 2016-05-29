@@ -118,13 +118,11 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			        msg.getStatus() == InviteMesageStatus.GROUPINVITATION) {
 			    holder.agree.setVisibility(View.VISIBLE);
                 holder.agree.setEnabled(true);
-                holder.agree.setBackgroundResource(android.R.drawable.btn_default);
-                holder.agree.setText(str2);
 			    
-				holder.status.setVisibility(View.VISIBLE);
-				holder.status.setEnabled(true);
-				holder.status.setBackgroundResource(android.R.drawable.btn_default);
-				holder.status.setText(str7);
+				holder.status.setVisibility(View.GONE);
+//				holder.status.setEnabled(true);
+//				holder.status.setBackgroundResource(android.R.drawable.btn_default);
+//				holder.status.setText(str7);
 				if(msg.getStatus() == InviteMesageStatus.BEINVITEED){
 					if (msg.getReason() == null) {
 						// 如果没写理由
@@ -156,21 +154,29 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 					}
 				});
 			} else if (msg.getStatus() == InviteMesageStatus.AGREED) {
+				holder.status.setVisibility(View.VISIBLE);
 				holder.status.setText(str5);
+				holder.status.setTextColor(context.getResources().getColor(R.color.c9));
 				holder.status.setBackgroundDrawable(null);
 				holder.status.setEnabled(false);
 			} else if(msg.getStatus() == InviteMesageStatus.REFUSED){
+				holder.status.setVisibility(View.VISIBLE);
+				holder.status.setTextColor(context.getResources().getColor(R.color.c9));
 				holder.status.setText(str6);
 				holder.status.setBackgroundDrawable(null);
 				holder.status.setEnabled(false);
 			} else if(msg.getStatus() == InviteMesageStatus.GROUPINVITATION_ACCEPTED){
 			    String str = msg.getGroupInviter() + str9 + msg.getGroupName();
+				holder.status.setVisibility(View.VISIBLE);
                 holder.status.setText(str);
+				holder.status.setTextColor(context.getResources().getColor(R.color.c9));
                 holder.status.setBackgroundDrawable(null);
                 holder.status.setEnabled(false);
             } else if(msg.getStatus() == InviteMesageStatus.GROUPINVITATION_DECLINED){
                 String str = msg.getGroupInviter() + str10 + msg.getGroupName();
+				holder.status.setVisibility(View.VISIBLE);
                 holder.status.setText(str);
+				holder.status.setTextColor(context.getResources().getColor(R.color.c9));
                 holder.status.setBackgroundDrawable(null);
                 holder.status.setEnabled(false);
             }
@@ -219,6 +225,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 							EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_ADD));
 							pd.dismiss();
 							buttonAgree.setText(str2);
+							buttonAgree.setTextColor(context.getResources().getColor(R.color.c9));
 							buttonAgree.setBackgroundDrawable(null);
 							buttonAgree.setEnabled(false);
 							

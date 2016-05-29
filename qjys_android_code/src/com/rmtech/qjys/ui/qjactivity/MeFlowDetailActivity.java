@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
@@ -55,9 +56,9 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 		context = MeFlowDetailActivity.this;
 		initView();
 		setLeftTitle("返回");
-		if (requestType != QjConstant.REQUEST_CODE_CASE_FLOW_LIST) {
-			setRightTitle("编辑", clickListener);
-		}
+//		if (requestType != QjConstant.REQUEST_CODE_CASE_FLOW_LIST) {
+//			setRightTitle("编辑", clickListener);
+//		}
 	}
 
 	OnClickListener clickListener = new OnClickListener() {
@@ -124,7 +125,15 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 				tv_content.setVisibility(View.VISIBLE);
 				rl_empty.setVisibility(View.GONE);
 				btn_add_flow_detail.setVisibility(View.GONE);
-			} else {
+			} else if(tempcaseInfo == null){
+				
+			}else if(tempcaseInfo != null && !tempcaseInfo.hasFlow() &&
+					!UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
+				tv_title.setVisibility(View.GONE);
+				tv_content.setVisibility(View.GONE);
+				rl_empty.setVisibility(View.VISIBLE);
+				btn_add_flow_detail.setVisibility(View.GONE);
+			}else{
 				tv_title.setVisibility(View.GONE);
 				tv_content.setVisibility(View.GONE);
 				rl_empty.setVisibility(View.VISIBLE);

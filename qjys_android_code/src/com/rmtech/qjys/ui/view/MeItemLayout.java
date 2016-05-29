@@ -54,7 +54,7 @@ public class MeItemLayout extends RelativeLayout implements
 	
 	public void setQRcodeRightDrawble(){
 		Drawable drawable = getResources().getDrawable(R.drawable.ic_me_qr_code);
-		tv_right.setCompoundDrawables(null, null, drawable, null);
+		tv_right.setBackgroundDrawable(drawable);
 	}
 	
 	public void setRightTextColor_c3264aa(Context context){

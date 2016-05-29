@@ -84,6 +84,7 @@ public class UserInfoBeizhuActivity extends BaseActivity {
 
 	private void initView() {
 		et_name = (EditText) findViewById(R.id.et_name);
+		setTextWhacher(UserInfoBeizhuActivity.this, et_name, 30);
 		if (!TextUtils.isEmpty(mDoctorInfo.remark)) {
 			et_name.setText(mDoctorInfo.remark);
 		}

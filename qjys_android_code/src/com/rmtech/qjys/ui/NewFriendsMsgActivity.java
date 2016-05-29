@@ -36,7 +36,7 @@ import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
  * 申请与通知
  *
  */
-public class NewFriendsMsgActivity extends BaseActivity implements OnItemClickListener{
+public class NewFriendsMsgActivity extends BaseActivity{
 	private ListView listView;
 
 	List<InviteMessage> msgs = new ArrayList<InviteMessage>();
@@ -47,12 +47,39 @@ public class NewFriendsMsgActivity extends BaseActivity implements OnItemClickLi
 
 		listView = (ListView) findViewById(R.id.list);
 		listView.setClickable(true);
-		listView.setOnItemClickListener(this);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				DoctorListManager.getInstance().getDoctorInfoByHXid(msgs.get(arg2).getFrom(), 
+						new OnGetDoctorInfoCallback() {
+					
+					@Override
+					public void onGet(DoctorInfo info) {
+						if(info != null) {
+							UserInfoActivity.show(getActivity(),info, "newFriendsMsg");
+						} 
+					}
+				});
+			}
+			
+		});
 		InviteMessgeDao dao = new InviteMessgeDao(this);
 		msgs = dao.getMessagesList();
 		//设置adapter
 		NewFriendsMsgAdapter adapter = new NewFriendsMsgAdapter(this, 1, msgs); 
 		listView.setAdapter(adapter);
+		setLeftTitle("通讯录");
+		setTitle("新的朋友");
+		setRightTitle("添加朋友", new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		dao.saveUnreadMessageCount(0);
 		
 	}
@@ -61,20 +88,8 @@ public class NewFriendsMsgActivity extends BaseActivity implements OnItemClickLi
 		finish();
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		// TODO Auto-generated method stub
-//		DoctorListManager.getInstance().getDoctorInfoByHXid(msgs.get(position).getFrom(), 
-//				new OnGetDoctorInfoCallback() {
-//			
-//			@Override
-//			public void onGet(DoctorInfo info) {
-//				if(info != null) {
-//					UserInfoActivity.show(getActivity(),info, "newFriendsMsg");
-//				} 
-//			}
-//		});
+	protected boolean showTitleBar() {
+		return true;
 	}
-	
 	
 }

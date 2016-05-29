@@ -9,6 +9,9 @@
         style="@style/qj_text_small_explain_style"
         android:layout_width="match_parent"
         android:layout_height="27dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:lineSpacingMultiplier="1.2"
         android:text="@string/_qj_me_phone_change" />
 
     <include layout="@layout/qj_me_split_line" />
@@ -23,9 +26,10 @@
         <EditText
             android:id="@+id/et_phone"
             android:maxLength="11"
-            style="@style/qj_et_style"
+            style="@style/qj_et_style_nobg"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:textColorHint="@color/c9"
             android:hint="请输入你当前手机号"
             android:inputType="phone"
             android:singleLine="true" />
@@ -48,9 +52,10 @@
         <EditText
             android:maxLength="6"
             android:id="@+id/et_verify"
-            style="@style/qj_et_style"
+            style="@style/qj_et_style_nobg"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:textColorHint="@color/c9"
             android:layout_alignParentLeft="true"
             android:hint="请输入验证码"
             android:inputType="number" />
@@ -67,7 +72,8 @@
             android:layout_marginTop="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="获取验证码" />
+            android:text="获取验证码" 
+            android:textSize="14sp"/>
     </RelativeLayout>
 
     <include layout="@layout/qj_me_split_line" />

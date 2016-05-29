@@ -109,6 +109,7 @@ public class MeRoomActivity extends CaseEidtBaseActivity {
 
 	private void initView() {
 		et_name = (EditText) findViewById(R.id.et_room_name);
+		setTextWhacher(MeRoomActivity.this, et_name, 60);
 		if (mCaseInfo != null) {
 			et_name.setText(mCaseInfo.department);
 		} else if (UserContext.getInstance().getUser().department != null) {

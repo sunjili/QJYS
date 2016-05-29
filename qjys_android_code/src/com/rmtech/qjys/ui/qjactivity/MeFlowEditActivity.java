@@ -7,6 +7,7 @@ import okhttp3.Call;
 import org.greenrobot.eventbus.EventBus;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -29,6 +30,8 @@ import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.utils.FlowListManager;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
@@ -66,7 +69,7 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 		setTitle("编辑临床诊疗规范及流程");
 		context = MeFlowEditActivity.this;
 		flowInfo = getIntent().getParcelableExtra("FlowInfo");
-		setLeftTitle("");
+		setLeftTitle("返回");
 		initView();
 		setRightTitle("保存", new OnClickListener() {
 
@@ -76,12 +79,16 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 						.trim();
 				final String procedure_text = et_content.getText().toString()
 						.trim();
-				if (TextUtils.isEmpty(procedure_title)) {
-					Toast.makeText(getActivity(), "请输入标题", 1).show();
+				if (TextUtils.isEmpty(procedure_title)&&TextUtils.isEmpty(procedure_text)) {
+					showDialog("请填写规范名称及规范内容");
 					return;
 				}
-				if (TextUtils.isEmpty(procedure_text)) {
-					Toast.makeText(getActivity(), "请输入内容", 1).show();
+				if (TextUtils.isEmpty(procedure_title)&&!TextUtils.isEmpty(procedure_text)) {
+					showDialog("请填写规范名称");
+					return;
+				}
+				if (!TextUtils.isEmpty(procedure_title)&&TextUtils.isEmpty(procedure_text)) {
+					showDialog("请填写规范内容");
 					return;
 				}
 				if (requestType == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW) {
@@ -138,10 +145,27 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 			}
 		});
 	}
+	
+	public void showDialog(String str){
+		CustomSimpleDialog.Builder builder = new Builder(MeFlowEditActivity.this);  
+        builder.setTitle("提示");  
+        builder.setMessage(str);  
+        builder.setPositiveButton("好的", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});  
+        builder.create().show();
+	}
 
 	protected void initView() {
 		et_title = (EditText) findViewById(R.id.et_title);
+		setTextWhacher(MeFlowEditActivity.this, et_title, 75);
 		et_content = (EditText) findViewById(R.id.et_content);
+		setTextWhacher(MeFlowEditActivity.this, et_content, 8000);
 		btn_delete = (Button) findViewById(R.id.btn_delete);
 		btn_delete.setOnClickListener(this);
 		iv_right = (CheckBox) findViewById(R.id.iv_right);

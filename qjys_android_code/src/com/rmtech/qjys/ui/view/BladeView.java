@@ -49,7 +49,7 @@ public class BladeView extends View {
 		int width = getWidth();
 		int singleHeight = height / b.length;
 		for (int i = 0; i < b.length; i++) {
-			paint.setColor(Color.parseColor("#ff2f2f2f"));
+			paint.setColor(Color.parseColor("#7e7e7e"));
 //			paint.setTypeface(Typeface.DEFAULT_BOLD);	//加粗
 			paint.setTextSize(getResources().getDimensionPixelSize(R.dimen.bladeview_fontsize));//设置字体的大小
 			paint.setFakeBoldText(true);

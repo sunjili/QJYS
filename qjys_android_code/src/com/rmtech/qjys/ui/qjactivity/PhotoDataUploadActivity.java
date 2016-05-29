@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -91,8 +92,7 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 		}
 		context.startActivity(intent);
 	}
-
-
+	
 	@Subscribe
 	public void onEvent(PhotoDataEvent event) {
 		if (event != null && event.dataInfo != null && event.type == PhotoDataEvent.TYPE_EDIT && mAdapter != null
@@ -185,7 +185,7 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 					if (imagePosition < 0 || imagePosition >= list.size()) {
 						imagePosition = 0;
 					}
-					PhotoDataBrowseActivity.show(getActivity(), imagePosition, list, caseId, folderId);
+					PhotoDataBrowseActivity.show(getActivity(), imagePosition, list, caseId, caseInfo, folderId);
 				} else if (itemInfo instanceof FolderDataInfo) {
 					PhotoDataUploadActivity.show(getActivity(), caseId, (FolderDataInfo) itemInfo);
 				}

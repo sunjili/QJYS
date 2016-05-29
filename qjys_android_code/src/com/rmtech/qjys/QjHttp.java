@@ -9,6 +9,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
+import android.R.integer;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
@@ -700,12 +701,14 @@ public class QjHttp {
 
 	}
 
-	public static void getPatientList(boolean needCache, final QjHttpCallbackNoParse<MPatientList> callback) {
+	public static void getPatientList(String type, boolean needCache, final QjHttpCallbackNoParse<MPatientList> callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("type", type);
 		String cacheKey = null;
 		if (needCache) {
 			cacheKey = URL_PATIENT_LIST + UserContext.getInstance().getCookie();
 		}
-		postWitchCache(cacheKey, URL_PATIENT_LIST, null, new QjHttpCallbackNoParse<MPatientList>() {
+		postWitchCache(cacheKey, URL_PATIENT_LIST, params, new QjHttpCallbackNoParse<MPatientList>() {
 
 			@Override
 			public MPatientList parseNetworkResponse(String str) throws Exception {

@@ -106,7 +106,7 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 	}
 
 	DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.drawable.default_error)
-			.showImageOnFail(R.drawable.default_error).showImageOnLoading(R.drawable.default_error).resetViewBeforeLoading(true).cacheOnDisk(true)
+			.showImageOnFail(R.drawable.default_error).showImageOnLoading(null).resetViewBeforeLoading(true).cacheOnDisk(true)
 			.cacheInMemory(true).build();
 	
 	private class ViewHolder {

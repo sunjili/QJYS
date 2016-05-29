@@ -17,6 +17,7 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
@@ -135,6 +136,11 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 	@Override
 	protected void initView() {
 		super.initView();
+		if(getCaseInfo()!=null && !UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
+			btn_add_flow_detail.setVisibility(View.GONE);
+		}else {
+			btn_add_flow_detail.setVisibility(View.VISIBLE);
+		}
 		btn_add_flow_detail.setOnClickListener(this);
 	}
 

@@ -52,6 +52,9 @@ public class MePasswordChangeActivity extends BaseActivity implements
 				
 				if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)) {
 					//TODO  保存新密码到服务器
+					
+					
+					
 					finish();
 				}
 			}
@@ -62,7 +65,9 @@ public class MePasswordChangeActivity extends BaseActivity implements
 	private void initView() {
 		et_password_old = (EditText) findViewById(R.id.et_password_old);
 		et_password_new_1 = (EditText) findViewById(R.id.et_password_new_1);
+		setTextWhacher(MePasswordChangeActivity.this, et_password_new_1, 16);
 		et_password_new_2 = (EditText) findViewById(R.id.et_password_new_2);
+		setTextWhacher(MePasswordChangeActivity.this, et_password_new_2, 16);
 
 	}
 

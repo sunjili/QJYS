@@ -85,6 +85,7 @@ public class CaseRoomNumberActivity extends CaseEidtBaseActivity {
 
 	private void initView() {
 		et_room_number = (EditText) findViewById(R.id.et_room_number);
+		setTextWhacher(CaseRoomNumberActivity.this, et_room_number, 30);
 		if (mCaseInfo != null) {
 			et_room_number.setText(mCaseInfo.ward_no);
 		}

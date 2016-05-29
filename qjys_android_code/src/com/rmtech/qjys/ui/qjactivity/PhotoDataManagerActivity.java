@@ -108,7 +108,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	}
 
 	protected void setRightTitleForPopWindow() {
-		rightTitleView = setRightTitle(R.drawable.btn_case_more, new OnClickListener() {
+		rightTitleView = setRightIcon(R.drawable.btn_case_more, new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

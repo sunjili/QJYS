@@ -110,6 +110,7 @@ public class MeNameActivity extends CaseEidtBaseActivity {
 
 	private void initView() {
 		et_name = (EditText) findViewById(R.id.et_name);
+		setTextWhacher(MeNameActivity.this, et_name, 60);
 		et_name.setText(name);
 	}
 

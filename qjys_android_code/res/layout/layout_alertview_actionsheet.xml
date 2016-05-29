@@ -34,7 +34,8 @@
             android:layout_height="match_parent"
             android:listSelector="@drawable/bg_alertbutton_none"
             android:cacheColorHint="@android:color/transparent"
-            android:divider="@null"
+            android:divider="@color/c7e"
+            android:dividerHeight="1px"
             android:scrollbars="none"/>
     </LinearLayout>
 
@@ -47,7 +48,7 @@
         android:gravity="center"
         android:clickable="true"
         android:background="@drawable/bg_actionsheet_cancel"
-        android:textColor="@color/textColor_alert_button_cancel"
-        android:textStyle="bold"
+        android:textColor="@color/c7e"
+        android:textStyle="normal"
         android:textSize="@dimen/textSize_alert_button" />
 </LinearLayout>

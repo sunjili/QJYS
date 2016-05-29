@@ -20,11 +20,11 @@
             android:layout_below="@id/divider_view"
             android:layout_weight="1"
             android:drawableLeft="@drawable/btn_choice_nor"
-            android:drawablePadding="5dip"
+            android:drawablePadding="3dip"
             android:gravity="center_vertical"
             android:text="按文件名排序"
             android:textColor="@color/c3"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/scsj_sort_view"
@@ -33,11 +33,11 @@
             android:layout_below="@id/divider_view"
             android:layout_weight="1"
             android:drawableLeft="@drawable/btn_choice_nor"
-            android:drawablePadding="5dip"
+            android:drawablePadding="3dip"
             android:gravity="center_vertical"
             android:text="按上传时间排序"
             android:textColor="@color/c3"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
         <RelativeLayout
             android:id="@+id/zdy_sort_view"
@@ -57,19 +57,19 @@
                 android:id="@+id/zdy_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dip"
+                android:layout_marginLeft="3dip"
                 android:layout_marginTop="12dip"
                 android:layout_toRightOf="@id/zdy_sort_imageview"
                 android:gravity="center_vertical"
                 android:text="自定义排序"
                 android:textColor="@color/c3"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/zdy_text"
-                android:layout_marginLeft="5dip"
+                android:layout_marginLeft="3dip"
                 android:layout_toRightOf="@id/zdy_sort_imageview"
                 android:gravity="center_vertical"
                 android:text="拖拽文件进行操作"

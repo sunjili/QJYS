@@ -10,6 +10,8 @@
 	    android:layout_width="match_parent"
 	    android:layout_weight="1"
 	    />
+	
+	<include layout="@layout/qj_me_split_line"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
@@ -25,17 +27,15 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/qj_me_edit_selector"
+            android:background="@null"
             android:hint="请输入自定义就诊状态"
+            android:textColorHint="@color/c9"
             android:inputType="text"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:paddingLeft="10dp" />
     </RelativeLayout>
-    	<View 
-	    android:layout_height="0dp"
-	    android:layout_width="match_parent"
-	    android:layout_weight="1"
-	    />
+    
+    <include layout="@layout/qj_me_split_line"/>
     <TextView
         android:id="@+id/tv_explain_text"
         style="@style/qj_text_small_explain_style"

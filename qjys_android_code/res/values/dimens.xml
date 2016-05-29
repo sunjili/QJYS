@@ -36,7 +36,7 @@
     <dimen name="margin_alert_left_right">40dp</dimen>
     <dimen name="margin_actionsheet_left_right">10dp</dimen>
     <!--线条粗细-->
-    <dimen name="size_divier">1dp</dimen>
+    <dimen name="size_divier">1px</dimen>
     <!--按钮的高度-->
     <dimen name="height_alert_button">48dp</dimen>
     <!--按钮文字大小-->

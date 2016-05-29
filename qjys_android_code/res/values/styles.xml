@@ -89,7 +89,8 @@
     <!--
     <style name="horizontal_slide2" parent="android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/AnimFade2</item>
-    </style>    -->
+    </style>
+    -->
 
     <style name="MyDialogStyle">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -351,6 +352,15 @@
     </style>
 
     <style name="qj_et_style" parent="android:Widget.Holo.Light.EditText">
+        <item name="android:background">@drawable/bg_alertview_edit</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/c3</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <style name="qj_et_style_nobg" parent="android:Widget.Holo.Light.EditText">
         <item name="android:background">@color/white</item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:paddingLeft">10dp</item>

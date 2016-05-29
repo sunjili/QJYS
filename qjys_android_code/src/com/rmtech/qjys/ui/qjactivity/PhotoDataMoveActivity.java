@@ -50,11 +50,11 @@ public class PhotoDataMoveActivity extends CaseWithIdActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_photo_uploading);
-		setTitle("传输列表");
-		setLeftTitle("返回");
+		setLeftTitle("取消");
 		datalist = getIntent().getParcelableArrayListExtra("folder_list");
 		imagelist = getIntent().getParcelableArrayListExtra("image_list");
 		CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+		setTitle(tempCase.name);
 		if(tempCase != null && tempCase.imageDataList != null) {
 			datalist = tempCase.imageDataList.folders;
 		}

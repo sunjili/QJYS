@@ -154,8 +154,8 @@ public class AlertView {
             TextView tvAlert = (TextView) itemView.findViewById(R.id.tvAlert);
             tvAlert.setText(cancel);
             tvAlert.setClickable(true);
-            tvAlert.setTypeface(Typeface.DEFAULT_BOLD);
-            tvAlert.setTextColor(context.getResources().getColor(R.color.textColor_alert_button_cancel));
+            tvAlert.setTypeface(Typeface.SANS_SERIF);
+            tvAlert.setTextColor(context.getResources().getColor(R.color.c7e));
             tvAlert.setBackgroundResource(R.drawable.bg_alertbutton_bottom);
             tvAlert.setOnClickListener(new OnTextClickListener(CANCELPOSITION));
             alertButtonListView.addFooterView(itemView);

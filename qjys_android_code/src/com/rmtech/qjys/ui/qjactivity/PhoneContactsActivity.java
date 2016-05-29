@@ -83,6 +83,7 @@ public class PhoneContactsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_phone_contacts);
 		setTitle("手机通讯录朋友");
+		setLeftTitle("返回");
 		context = PhoneContactsActivity.this;
 		counts = new int[sections.length];
 		initView();

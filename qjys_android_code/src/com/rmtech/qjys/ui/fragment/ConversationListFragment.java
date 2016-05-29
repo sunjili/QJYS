@@ -2,8 +2,12 @@ package com.rmtech.qjys.ui.fragment;
 
 import java.util.List;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -51,7 +55,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 		no_data_view.setVisibility(View.GONE);
 
 	}
-
+	
 	/**
 	 * 连接到服务器
 	 */
@@ -63,7 +67,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 			errormsg_layout.setVisibility(View.GONE);
 		} else {
 			errorItemContainer.setVisibility(View.GONE);
-
+			conversationListView.setPadding(0, 0, 0, 0);
 			Log.e("onConnectionConnected", "in");
 		}
 	}
@@ -81,7 +85,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 			no_data_view.setVisibility(View.VISIBLE);
 		} else {
 			no_data_view.setVisibility(View.GONE);
-
+			conversationListView.setPadding(0, 100, 0, 0);
 		}
 	}
 

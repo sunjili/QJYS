@@ -47,6 +47,8 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 		super.onCreate(arg0);
 		context = EditCaseStateActivity.this;
 		setContentView(R.layout.qj_case_state);
+		setLeftTitle("取消");//244改完了！！！
+		setBackImageGone();
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override
@@ -102,28 +104,7 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 
 	private void initView() {
 		et_state_add = (EditText) findViewById(R.id.et_state_add);
-		et_state_add.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				state.name = s.toString();
-				if (mAdapter != null) {
-					mAdapter.notifyDataSetChanged();
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+		setTextWhacher(EditCaseStateActivity.this, et_state_add, 15);
 		lv_state = (ListView) findViewById(R.id.lv_state);
 		if (mCaseInfo != null) {
 			et_state_add.setText(mCaseInfo.treat_state);

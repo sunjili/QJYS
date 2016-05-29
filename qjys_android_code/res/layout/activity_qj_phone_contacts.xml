@@ -5,30 +5,38 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_top_search"
         android:layout_width="fill_parent"
         android:layout_height="55dp"
+        android:layout_alignParentTop="true"
         android:background="@color/white"
-        android:padding="10dp" >
+        android:orientation="vertical" >
 
         <com.rmtech.qjys.ui.view.SearchView
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_centerVertical="true"
+            android:layout_margin="9dp"
             android:background="@drawable/qj_me_edit_selector"
             android:gravity="center_vertical|left"
             android:inputType="text"
             android:paddingLeft="10dip"
             android:singleLine="true"
             android:textSize="14sp" />
-    </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/cd9" />
+    </LinearLayout>
 
     <com.rmtech.qjys.ui.view.PinnedHeaderListView
         android:id="@+id/contact_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/rl_top_search"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/cd9"

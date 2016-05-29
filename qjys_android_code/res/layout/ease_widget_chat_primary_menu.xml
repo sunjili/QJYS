@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="2dip"
-    android:paddingTop="2dip" >
+    android:background="@color/cf4f5f9"
+    android:paddingBottom="2dip">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/gray_normal" />
+        android:background="@color/cd9" />
 
     <LinearLayout
         android:id="@+id/rl_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#aaffffff"
+        android:background="@color/cf4f5f9"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingTop="4dp" >
@@ -33,17 +33,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_weight="1"
-            android:gravity="bottom" >
+            android:layout_marginTop="3dp"
+            android:layout_weight="1" >
 
             <EditText
                 android:id="@+id/et_sendmessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="35dip"
-                android:background="@null"
+                android:background="@drawable/bg_alertview_edit"
                 android:maxLines="3"
                 android:minHeight="40dp"
                 android:paddingBottom="3dp"
@@ -59,7 +56,7 @@
             android:layout_height="32dip"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/ease_type_select_btn" />
+            android:background="@drawable/btn_message_chaton" />
 
         <Button
             android:id="@+id/btn_send"

@@ -51,6 +51,6 @@
     <string name="exit_app">你确定要退出应用吗?</string>
     <string name="confirm">确定</string>
     <string name="dismiss">隐藏</string>
-    <string name="scan_tips">将二维码图片对准扫描框即可自动扫描</string>
+    <string name="scan_tips">将二维码/条形码放入框内，即可自动扫描</string>
 
 </resources>

@@ -28,8 +28,9 @@ public class MeAboutErweimaActivity extends BaseActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_about_erweima);
 		setTitle("奇迹医生二维码");
+		setLeftTitle("返回");
 		context = MeAboutErweimaActivity.this;
-		setRightTitle("分享", new OnClickListener() {
+		setRightTitle(R.drawable.btn_me_share, new OnClickListener() {
 
 			@SuppressLint("NewApi")
 			@Override

@@ -45,7 +45,7 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 		setTitle("设置临床诊疗规范及流程");
 		setLeftTitle("我");
 		context = MeFlowActivity.this;
-		setRightTitle("添加", new OnClickListener() {
+		setRightTitle(R.drawable.btn_case_new, new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

@@ -34,6 +34,7 @@ public class ChatDetailActivity  extends BaseActivity implements OnClickListener
 		private TextView name_tv;
 		private TextView nike_tv;
 		private TextView title;
+		private TextView left_title;
 		private int requestType;
 		private SquaredImageView avatar;
 		private String toChatUsername;
@@ -50,6 +51,8 @@ public class ChatDetailActivity  extends BaseActivity implements OnClickListener
 		}
 		title = (TextView) findViewById(R.id.title);
 		title.setText("聊天消息设置");
+		left_title = (TextView) findViewById(R.id.left_title);
+		left_title.setText("返回");
 		avatar = (SquaredImageView) findViewById(R.id.avatar);
 		name_tv = (TextView) findViewById(R.id.name_tv);
 		nike_tv = (TextView) findViewById(R.id.nike_tv);

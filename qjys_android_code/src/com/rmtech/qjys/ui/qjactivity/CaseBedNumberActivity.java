@@ -87,6 +87,7 @@ public class CaseBedNumberActivity extends CaseEidtBaseActivity {
 
 	private void initView() {
 		et_bed = (EditText) findViewById(R.id.et_bed);
+		setTextWhacher(CaseBedNumberActivity.this, et_bed, 30);
 		if (mCaseInfo != null) {
 			et_bed.setText(mCaseInfo.bed_no);
 		}

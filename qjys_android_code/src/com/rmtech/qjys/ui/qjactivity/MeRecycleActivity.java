@@ -84,7 +84,7 @@ public class MeRecycleActivity extends BaseActivity {
 	public void onEvent(CaseEvent event) {
 		// mAdapter.add();
 		L.d("onEvent " + event.type);
-		QjHttp.getPatientList(false, httpCallback);
+		QjHttp.getPatientList("2", false, httpCallback);
 
 	}
 
@@ -99,15 +99,16 @@ public class MeRecycleActivity extends BaseActivity {
 		title_bar = (EaseTitleBar) findViewById(R.id.title_bar);
 		title_bar.setVisibility(View.GONE);
 		mImageView = (ImageView) findViewById(R.id.list_view_with_empty_view_fragment_empty_view);
+		mImageView.setVisibility(View.GONE);
 		mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.list_view_with_empty_view_fragment_ptr_frame);
 
-		mImageView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mPtrFrame.setVisibility(View.VISIBLE);
-				mPtrFrame.autoRefresh();
-			}
-		});
+//		mImageView.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				mPtrFrame.setVisibility(View.VISIBLE);
+//				mPtrFrame.autoRefresh();
+//			}
+//		});
 		mListView = (PinnedHeaderListView) findViewById(R.id.pinnedListView);
 		mAdapter = new CaseSectionedAdapter();
 		mListView.setAdapter(mAdapter);
@@ -269,7 +270,7 @@ public class MeRecycleActivity extends BaseActivity {
 		// }
 		// });
 
-		QjHttp.getPatientList(true, httpCallback);
+		QjHttp.getPatientList("2", true, httpCallback);
 
 	}
 
@@ -301,7 +302,7 @@ public class MeRecycleActivity extends BaseActivity {
 	}
 
 	private void updateData() {
-		QjHttp.getPatientList(false, httpCallback);
+		QjHttp.getPatientList("2", false, httpCallback);
 
 		// TODO Auto-generated method stub
 		// mListView.postDelayed(new Runnable() {

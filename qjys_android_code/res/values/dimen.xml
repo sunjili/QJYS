@@ -10,6 +10,6 @@
     <dimen name="selectcity_group_item_padding">14dp</dimen>
     <dimen name="bladeview_popup_height">80dp</dimen>
     
-    <dimen name="bladeview_fontsize">12sp</dimen>
+    <dimen name="bladeview_fontsize">11sp</dimen>
     <dimen name="bladeview_popup_fontsize">20sp</dimen>
 </resources>

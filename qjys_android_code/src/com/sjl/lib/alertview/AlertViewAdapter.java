@@ -58,17 +58,22 @@ public class AlertViewAdapter extends BaseAdapter{
     }
     class Holder {
         private TextView tvAlert;
+        private View divier;
 
         public Holder(View view){
             tvAlert = (TextView) view.findViewById(R.id.tvAlert);
+            divier = (View) view.findViewById(R.id.divier);
         }
         public void UpdateUI(Context context,String data,int position){
             tvAlert.setText(data);
+            if(position == 0){
+            	divier.setVisibility(View.GONE);
+            }
             if (mDestructive!= null && mDestructive.contains(data)){
-                tvAlert.setTextColor(context.getResources().getColor(R.color.textColor_alert_button_destructive));
+                tvAlert.setTextColor(context.getResources().getColor(R.color.c3));
             }
             else{
-                tvAlert.setTextColor(context.getResources().getColor(R.color.textColor_alert_button_others));
+                tvAlert.setTextColor(context.getResources().getColor(R.color.c3));
             }
         }
     }

@@ -38,6 +38,7 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.event.PhotoDataEvent;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MBase;
@@ -79,6 +80,14 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 		mTitleLayout = (RelativeLayout) findViewById(R.id.title_layout);
 		mTitleLayout.setVisibility(View.GONE);
 		mReturnTv = (TextView) findViewById(R.id.return_tv);
+		mReturnTv.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				PhotoDataBrowseActivity.this.finish();
+			}
+		});
 		mTitleTv = (TextView) findViewById(R.id.title_tv);
 		mEditTv = (TextView) findViewById(R.id.edit_tv);
 		mEditTv.setOnClickListener(new OnClickListener() {
@@ -172,7 +181,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 		mViewPager.setCurrentItem(current_position, false);
 		currentPhotoData = datalist.get(current_position);
 		mBottomTitleTv.setText(currentPhotoData.name);
-		mTitleTv.setText((current_position + 1) + "/" + datalist.size());
+		mTitleTv.setText(caseInfo.name);
 		mBottomTimeTv.setText(currentPhotoData.getCreateTimeStr());
 		DoctorListManager.getInstance().getDoctorInfoByHXid(currentPhotoData.doc_id, new OnGetDoctorInfoCallback() {
 
@@ -195,6 +204,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 		initViews();
 		datalist = getIntent().getParcelableArrayListExtra("iamge_list");
 		current_position = getIntent().getIntExtra("current_position", 0);
+		caseInfo = getIntent().getParcelableExtra("case_info");
 		if (datalist == null || datalist.size() == 0) {
 			finish();
 			return;
@@ -211,7 +221,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 			public void onPageSelected(int arg0) {
 				current_position = arg0;
 				currentPhotoData = datalist.get(arg0);
-				mTitleTv.setText((arg0 + 1) + "/" + mAdapter.getCount());
+				mTitleTv.setText(caseInfo.name);
 				mBottomTitleTv.setText(currentPhotoData.name);
 				mBottomTimeTv.setText(currentPhotoData.getCreateTimeStr());
 				DoctorListManager.getInstance().getDoctorInfoByHXid(currentPhotoData.doc_id,
@@ -243,14 +253,14 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 
 	}
 
-	public static void show(Activity context, int current_position, ArrayList<PhotoDataInfo> arrayList, String caseId,
+	public static void show(Activity context, int current_position, ArrayList<PhotoDataInfo> arrayList, String caseId, CaseInfo caseInfo,
 			String folderId) {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataBrowseActivity.class);
 		intent.putParcelableArrayListExtra("iamge_list", arrayList);
 		setCaseId(intent, caseId);
 		setFolderId(intent, folderId);
-
+		setCaseInfo(intent, caseInfo);
 		intent.putExtra("current_position", current_position);
 		// setCaseInfo(intent, arrayList);
 

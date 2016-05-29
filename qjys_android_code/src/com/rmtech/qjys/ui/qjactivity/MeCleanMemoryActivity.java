@@ -44,7 +44,7 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 		btn_clean = (Button) findViewById(R.id.btn_clean);
 		btn_clean.setOnClickListener(this);
 		tv_memory_value = (TextView) this.findViewById(R.id.tv_memory_value);
-		tv_memory_value.setText("");
+//		tv_memory_value.setText("");
 	}
 
 	protected boolean showTitleBar() {

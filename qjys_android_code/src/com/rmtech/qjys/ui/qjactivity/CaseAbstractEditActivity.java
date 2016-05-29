@@ -9,6 +9,8 @@ import org.greenrobot.eventbus.EventBus;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Selection;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,12 +44,13 @@ public class CaseAbstractEditActivity extends CaseWithIdActivity {
 		setContentView(R.layout.qj_case_abs_edit);
 		setTitle("编辑病例摘要");
 		initView();
-		setLeftTitle("");
+		setLeftTitle("返回");
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				absString = tv_content.getText().toString().trim();
+				
 				if (caseInfo != null) {
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("abs", absString);
@@ -85,7 +88,9 @@ public class CaseAbstractEditActivity extends CaseWithIdActivity {
 	private void initView() {
 
 		tv_content = (EditText) findViewById(R.id.et_content);
-
+		setTextWhacher(CaseAbstractEditActivity.this, tv_content, 8000);
+		Editable etext = tv_content.getText();
+		Selection.setSelection(etext, etext.length());
 		if (caseInfo != null && !TextUtils.isEmpty(caseInfo.abs)) {
 			tv_content.setText(caseInfo.abs);
 		}

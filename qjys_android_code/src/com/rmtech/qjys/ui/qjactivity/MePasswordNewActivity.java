@@ -58,13 +58,15 @@ public class MePasswordNewActivity extends BaseActivity implements
 			et_password_2.setHint("请再次输入密码");
 			btn_set_password.setVisibility(View.GONE);
 			setTitle("设置密码");
+			setLeftTitle("我");
 			setRightTitle("完成", new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					password1=et_password_1.getText().toString().trim();
 					password2=et_password_2.getText().toString().trim();
-					if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)) {
+					if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
+							&&password1.length()>=8) {
 						//  保存新密码到服务器
 						QjHttp.setPassword(password1, new BaseModelCallback() {
 							
@@ -84,6 +86,8 @@ public class MePasswordNewActivity extends BaseActivity implements
 								Toast.makeText(MePasswordNewActivity.this, "密码设置失败!", Toast.LENGTH_LONG).show();
 							}
 						});
+					}else {
+						//各种提示消息：密码不足8位，不相同等等。
 					}
 				}
 			});
@@ -110,7 +114,9 @@ public class MePasswordNewActivity extends BaseActivity implements
 
 	private void initView() {
 		et_password_1 = (EditText) findViewById(R.id.et_password_1);
+		setTextWhacher(MePasswordNewActivity.this, et_password_1, 16);
 		et_password_2 = (EditText) findViewById(R.id.et_password_2);
+		setTextWhacher(MePasswordNewActivity.this, et_password_2, 16);
 		btn_set_password = (Button) findViewById(R.id.btn_set_password);
 		btn_set_password.setOnClickListener(this);
 		tv_top = (TextView) findViewById(R.id.tv_top);

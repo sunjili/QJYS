@@ -9,6 +9,7 @@
         style="@style/qj_text_small_explain_style"
         android:layout_width="match_parent"
         android:layout_height="61dp"
+        android:lineSpacingMultiplier="1.2"
         android:text="@string/_qj_me_clean_memory" />
 
     <include layout="@layout/qj_me_split_line" />
@@ -57,6 +58,7 @@
 	    android:layout_marginRight="10dp"
 	    android:background="@drawable/qj_me_redbutton_selector"
 	    android:text="一键清理"
+	    android:textSize="18sp"
 	    android:textColor="@color/white" />
 
 </LinearLayout>
