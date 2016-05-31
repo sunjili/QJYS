@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.WebViewActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
 
 /***
@@ -41,17 +42,14 @@ public class MeAboutActivity extends BaseActivity implements
 		case R.id.me_about_erweima:
 			jumpActivity(MeAboutErweimaActivity.class);
 			break;
-		case R.id.me_about_pingfen:
-			Toast.makeText(context, "关于我们", Toast.LENGTH_SHORT).show();
-			break;
 		case R.id.me_about_jianjie:
-			Toast.makeText(context, "关于我们", Toast.LENGTH_SHORT).show();
+			jumpToWebAty("jianjie", "http://www.baidu.com", WebViewActivity.class);
 			break;
 		case R.id.me_about_gongneng:
-			Toast.makeText(context, "关于我们", Toast.LENGTH_SHORT).show();
+			jumpToWebAty("gongneng", "http://www.163.com", WebViewActivity.class);
 			break;
 		case R.id.me_about_xieyi:
-			Toast.makeText(context, "关于我们", Toast.LENGTH_SHORT).show();
+			jumpToWebAty("xieyi", "http://www.qq.com", WebViewActivity.class);
 			break;
 		case R.id.me_about_fankui:
 			jumpActivity(MeAboutFankuiActivity.class);
@@ -60,6 +58,13 @@ public class MeAboutActivity extends BaseActivity implements
 		default:
 			break;
 		}
+	}
+	
+	public void jumpToWebAty(String tag, String url, Class<?> cls){
+		Intent intent = new Intent(context, cls);
+		intent.putExtra("from", tag);
+		intent.putExtra("url", url);
+		startActivity(intent);
 	}
 	
 	private void jumpActivity(Class<?> cls) {
@@ -79,8 +84,6 @@ public class MeAboutActivity extends BaseActivity implements
 	private void initView() {
 		me_about_erweima = (MeItemLayout) findViewById(R.id.me_about_erweima);
 		me_about_erweima.setOnClickListener(this);
-		me_about_pingfen = (MeItemLayout) findViewById(R.id.me_about_pingfen);
-		me_about_pingfen.setOnClickListener(this);
 		me_about_jianjie = (MeItemLayout) findViewById(R.id.me_about_jianjie);
 		me_about_jianjie.setOnClickListener(this);
 		me_about_gongneng = (MeItemLayout) findViewById(R.id.me_about_gongneng);

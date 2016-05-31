@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,8 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 	private Button btnSendmessage;
 	private Button btnDelete;
 	private TextView tv_name;
+	private RelativeLayout rl_changyong;
+	private View line_padding;
 	
 	private ArrayList<String> tempPhones = new ArrayList<String>();
 	private boolean isFriend = false;
@@ -106,27 +109,30 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		}
 		if(!isFriend){
 			setLeftTitle("通讯录");
+			line_padding.setVisibility(View.GONE);
+			rl_changyong.setVisibility(View.GONE);
 			if(from.equals("newFriendsMsg")){
 				btnDelete.setVisibility(View.GONE);
-				user_beizhu.setVisibility(View.GONE);
+				user_beizhu.setVisibility(View.VISIBLE);
 				userPhone.setVisibility(View.VISIBLE);
 				btnSendmessage.setText("通过验证");
+				tvHello.setText(doctorInfo.name + "请求添加您为好友");
 			}else if(from.equals("qrcode")){
 				setLeftTitle("扫一扫");
 				btnDelete.setVisibility(View.GONE);
 				user_beizhu.setVisibility(View.VISIBLE);
-				userPhone.setVisibility(View.GONE);
+				userPhone.setVisibility(View.VISIBLE);
 				btnSendmessage.setText("添加到通讯录");
 			}else if(from.equals("group")){
 				setLeftTitle("群组详情");
 				btnDelete.setVisibility(View.GONE);
 				user_beizhu.setVisibility(View.VISIBLE);
-				userPhone.setVisibility(View.GONE);
+				userPhone.setVisibility(View.VISIBLE);
 				btnSendmessage.setText("添加到通讯录");
 			}else{
 				btnDelete.setVisibility(View.GONE);
 				user_beizhu.setVisibility(View.VISIBLE);
-				userPhone.setVisibility(View.GONE);
+				userPhone.setVisibility(View.VISIBLE);
 				btnSendmessage.setText("添加到通讯录");
 			}
 		}else{
@@ -162,6 +168,8 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		} else {
 			user_beizhu.setRightText("未设置");
 		}
+		line_padding = (View) findViewById(R.id.line_padding);
+		rl_changyong = (RelativeLayout) findViewById(R.id.rl_changyong);
 		ivHead = (ImageView) findViewById(R.id.iv_head);
 		tv_name = (TextView) findViewById(R.id.tv_name);
 		tvNickname = (TextView) findViewById(R.id.tv_nickname);

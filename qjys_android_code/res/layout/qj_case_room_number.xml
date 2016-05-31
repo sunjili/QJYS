@@ -31,7 +31,7 @@
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
             android:text="病房"
-            android:textColor="@color/black" />
+            android:textColor="@color/c3" />
     </RelativeLayout>
 
     <include layout="@layout/qj_me_split_line" />

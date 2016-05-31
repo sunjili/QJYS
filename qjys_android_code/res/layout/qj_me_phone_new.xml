@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:textColorHint="@color/c9"
-            android:hint="请输入你当前手机号"
+            android:hint="请输入新的手机号"
             android:inputType="phone"
             android:singleLine="true" />
     </RelativeLayout>

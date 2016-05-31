@@ -47,13 +47,6 @@
             app:visibleLinePadding="true" />
 
         <com.rmtech.qjys.ui.view.MeItemLayout
-            android:id="@+id/me_about_pingfen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:leftText="去评分"
-            app:visibleLinePadding="true" />
-
-        <com.rmtech.qjys.ui.view.MeItemLayout
             android:id="@+id/me_about_jianjie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

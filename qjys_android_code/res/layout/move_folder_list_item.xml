@@ -30,7 +30,7 @@
             android:layout_toRightOf="@id/avatar"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@android:color/black"
+            android:textColor="@color/c3"
             android:textSize="20sp" />
 
         <CheckBox

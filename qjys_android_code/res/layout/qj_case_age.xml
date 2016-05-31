@@ -30,7 +30,7 @@
             android:layout_height="match_parent"
             android:text="岁"
             android:gravity="center_vertical"
-            android:textColor="@color/black"
+            android:textColor="@color/c3"
             android:layout_marginRight="15dp"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>

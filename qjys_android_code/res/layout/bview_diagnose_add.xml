@@ -18,6 +18,7 @@
             android:id="@+id/diagnose_et"
             style="@style/qj_add_case_right_hit_et"
             android:layout_alignParentRight="true"
+            android:gravity="right"
             android:hint="输入患者诊断信息" />
     </RelativeLayout>
 
@@ -44,6 +45,7 @@
         <EditText
             android:id="@+id/diagnose_et2"
             style="@style/qj_add_case_right_hit_et"
+            android:gravity="right"
             android:layout_alignParentRight="true"
             android:hint="输入患者诊断信息" />
     </RelativeLayout>

@@ -49,7 +49,7 @@
             android:layout_marginRight="10dip"
             android:gravity="center_vertical"
             android:text="编辑"
-            android:textColor="@color/c7e"
+            android:textColor="@color/white"
             android:textSize="14sp" />
     </RelativeLayout>
 

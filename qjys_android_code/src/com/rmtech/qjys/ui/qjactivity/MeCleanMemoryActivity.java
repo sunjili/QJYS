@@ -24,7 +24,9 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 	private Button btn_clean;
 	private Context context;
 	private TextView tv_memory_value;
+	private TextView tv_memory;
 	private PackageManager pm;
+	private TextView tv_top;
 	
 
 	@Override
@@ -35,6 +37,14 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 		setLeftTitle("我");
 		context = MeCleanMemoryActivity.this;
 		initView();
+		if(getIntent().getStringExtra("from").equals("PhotoDataSettingActivity")){
+			setTitle("本地控件清理");
+			setLeftTitle("返回");
+			tv_memory.setText("缓存");
+			tv_top.setText("");
+			btn_clean.setText("清空缓存");
+		}
+		showBytes();
 	}
 	
 	
@@ -44,7 +54,21 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 		btn_clean = (Button) findViewById(R.id.btn_clean);
 		btn_clean.setOnClickListener(this);
 		tv_memory_value = (TextView) this.findViewById(R.id.tv_memory_value);
+		tv_memory = (TextView) this.findViewById(R.id.tv_memory);
+		tv_top = (TextView) this.findViewById(R.id.tv_top);
 //		tv_memory_value.setText("");
+	}
+	
+	public void showBytes(){
+		if(getIntent().getStringExtra("from").equals("PhotoDataSettingActivity")){
+			//TODO 获取病例缓存
+			
+			tv_memory_value.setText("(" + "已使用" + "123.4" + "M" + ")");
+		}else{
+			//TODO 获取程序总存储
+			
+			tv_memory_value.setText("(" + "已使用" + "123.4" + "M" + ")");
+		}
 	}
 
 	protected boolean showTitleBar() {
@@ -61,7 +85,13 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_clean:
-			Toast.makeText(context, "一键清理", Toast.LENGTH_SHORT).show();
+			if(getIntent().getStringExtra("from").equals("PhotoDataSettingActivity")){
+				//TODO 清除病例缓存具体操作
+				
+			}else{
+				//TODO 清除程序总存储具体操作
+				
+			}
 			break;
 
 		default:

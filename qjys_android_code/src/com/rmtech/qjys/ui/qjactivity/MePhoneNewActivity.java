@@ -20,7 +20,7 @@ import com.rmtech.qjys.ui.BaseActivity;
  * @author Administrator
  * 
  */
-public class MePhoneChangeActivity extends BaseActivity implements
+public class MePhoneNewActivity extends BaseActivity implements
 		View.OnClickListener {
 	private EditText et_phone;
 	/**手机号*/
@@ -34,11 +34,11 @@ public class MePhoneChangeActivity extends BaseActivity implements
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		setContentView(R.layout.qj_me_phone_change);
+		setContentView(R.layout.qj_me_phone_new);
 		setTitle("更换手机号");
 		setLeftTitle("返回");
-		context = MePhoneChangeActivity.this;
-		setRightTitle("下一步", new OnClickListener() {
+		context = MePhoneNewActivity.this;
+		setRightTitle("保存", new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -46,7 +46,7 @@ public class MePhoneChangeActivity extends BaseActivity implements
 				verify=et_verify.getText().toString().trim();
 				//TODO  校验验证码
 				if(!TextUtils.isEmpty(phone)&&!TextUtils.isEmpty(verify)){
-					//TODO  校验验证码,需要接口支持，校验成功需要跳转到设置新手机的页面
+					//TODO  变更绑定的手机，需要接口支持、
 					
 				}else{
 					
@@ -71,7 +71,7 @@ public class MePhoneChangeActivity extends BaseActivity implements
 
 	public static void show(Context context) {
 		Intent intent = new Intent();
-		intent.setClass(context, MePhoneChangeActivity.class);
+		intent.setClass(context, MePhoneNewActivity.class);
 		context.startActivity(intent);
 	}
 
