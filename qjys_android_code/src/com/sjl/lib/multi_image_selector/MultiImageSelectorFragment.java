@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.qjactivity.ImageSelectBrowseActivity;
 import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.adapter.FolderAdapter;
 import com.sjl.lib.multi_image_selector.adapter.ImageGridAdapter;
@@ -173,6 +174,7 @@ public class MultiImageSelectorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO 预览
+            	ImageSelectBrowseActivity.show(getActivity(), resultList);
             }
         });
 

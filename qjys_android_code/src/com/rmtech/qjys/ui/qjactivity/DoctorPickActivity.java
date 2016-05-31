@@ -217,6 +217,12 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 
 							CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
 							if (newCase != null && !resultList.isEmpty()) {
+								if(newCase.participate_doctor == null) {
+									newCase.participate_doctor = new ArrayList<DoctorInfo>();
+								}
+								DoctorInfo newAdmin = resultList.get(0);
+								newCase.participate_doctor.add(newCase.admin_doctor);
+								newCase.participate_doctor.remove(newAdmin);
 								newCase.admin_doctor = resultList.get(0);
 							}
 							// event.setAddDoctorList(caseInfo.id, resultList);

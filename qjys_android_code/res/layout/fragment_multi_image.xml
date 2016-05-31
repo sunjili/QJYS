@@ -62,7 +62,6 @@
             android:paddingRight="16dp"
             android:textColor="@color/default_text_color"
             android:textSize="14sp"
-            android:visibility="gone"
             tools:text="预览(1)" />
     </RelativeLayout>
 

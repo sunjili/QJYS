@@ -1,6 +1,7 @@
 package com.hyphenate.easeui.ui;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -62,7 +63,9 @@ import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 import com.rmtech.qjys.ui.qjactivity.ChatDetailActivity;
 import com.rmtech.qjys.ui.qjactivity.DoctorPickActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.PhotoUtil;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
+import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 
 /**
  * 可以直接new出来使用的聊天对话页面fragment，
@@ -426,6 +429,13 @@ public class EaseChatFragment extends QjBaseFragment {
                         sendPicByUri(selectedImage);
                     }
                 }
+            } else if(requestCode == QjConstant.REQUEST_IMAGE) {
+    				ArrayList<String> mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+    				if(mSelectPath != null) {
+    					for(String path : mSelectPath) {
+    			            sendImageMessage(path);
+    					}
+    				}
             } else if (requestCode == REQUEST_CODE_MAP) { // 地图
                 double latitude = data.getDoubleExtra("latitude", 0);
                 double longitude = data.getDoubleExtra("longitude", 0);
@@ -825,15 +835,16 @@ public class EaseChatFragment extends QjBaseFragment {
      * 从图库获取图片
      */
     protected void selectPicFromLocal() {
-        Intent intent;
-        if (Build.VERSION.SDK_INT < 19) {
-            intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-
-        } else {
-            intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        }
-        startActivityForResult(intent, REQUEST_CODE_LOCAL);
+//        Intent intent;
+//        if (Build.VERSION.SDK_INT < 19) {
+//            intent = new Intent(Intent.ACTION_GET_CONTENT);
+//            intent.setType("image/*");
+//
+//        } else {
+//            intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        }
+//        startActivityForResult(intent, REQUEST_CODE_LOCAL);
+		PhotoUtil.startImageSelector(getActivity(), true);
     }
 
 
