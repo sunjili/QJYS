@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
 import android.view.SurfaceHolder;
@@ -23,8 +24,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.zbarlib.camera.CameraManager;
 import com.rmtech.qjys.zbarlib.decode.CaptureActivityHandler;
 import com.rmtech.qjys.zbarlib.decode.InactivityTimer;
@@ -189,9 +194,27 @@ public class ScanActivity extends FragmentActivity implements Callback, OnClickL
 		playBeepSoundAndVibrate();
 //		ChargingActivity.show(ScanActivity.this, result);
 //		finish();
-		//Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-		// 连续扫描，不发送此消息扫描一次结束后就不能再次扫描
-		// handler.sendEmptyMessage(R.id.restart_preview);
+	    String[] strings = result.split("_");
+	    if(!strings[0].equals("http://www.qijiyisheng.com")){
+	    	
+	    } else {
+	    	DoctorListManager.getInstance().getDoctorInfoByHXid(strings[1], 
+					new OnGetDoctorInfoCallback() {
+				@Override
+				public void onGet(DoctorInfo info) {
+					if(info != null) {
+						Intent intent = new Intent();
+						intent.setClass(ScanActivity.this, UserInfoActivity.class);
+						intent.putExtra("DoctorInfo", (Parcelable) info);
+						intent.putExtra("from", "qrcode");
+						ScanActivity.this.startActivity(intent);
+					} 
+				}
+			});
+	    }
+//		Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+//		 连续扫描，不发送此消息扫描一次结束后就不能再次扫描
+//		 handler.sendEmptyMessage(R.id.restart_preview);
 	}
 
 	private void initCamera(SurfaceHolder surfaceHolder) {

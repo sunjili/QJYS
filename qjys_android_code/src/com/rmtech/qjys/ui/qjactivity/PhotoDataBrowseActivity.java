@@ -181,7 +181,11 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 		mViewPager.setCurrentItem(current_position, false);
 		currentPhotoData = datalist.get(current_position);
 		mBottomTitleTv.setText(currentPhotoData.name);
-		mTitleTv.setText(caseInfo.name);
+		String title = "新病人";
+		if(caseInfo != null) {
+			title = caseInfo.name;
+		}
+		mTitleTv.setText(title);
 		mBottomTimeTv.setText(currentPhotoData.getCreateTimeStr());
 		DoctorListManager.getInstance().getDoctorInfoByHXid(currentPhotoData.doc_id, new OnGetDoctorInfoCallback() {
 
@@ -204,7 +208,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 		initViews();
 		datalist = getIntent().getParcelableArrayListExtra("iamge_list");
 		current_position = getIntent().getIntExtra("current_position", 0);
-		caseInfo = getIntent().getParcelableExtra("case_info");
+//		caseInfo = getIntent().getParcelableExtra("case_info");
 		if (datalist == null || datalist.size() == 0) {
 			finish();
 			return;
@@ -221,7 +225,9 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 			public void onPageSelected(int arg0) {
 				current_position = arg0;
 				currentPhotoData = datalist.get(arg0);
-				mTitleTv.setText(caseInfo.name);
+				if(caseInfo != null) {
+					mTitleTv.setText(caseInfo.name);
+				}
 				mBottomTitleTv.setText(currentPhotoData.name);
 				mBottomTimeTv.setText(currentPhotoData.getCreateTimeStr());
 				DoctorListManager.getInstance().getDoctorInfoByHXid(currentPhotoData.doc_id,
@@ -307,7 +313,11 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 			ImageView smallView = (ImageView) root.findViewById(R.id.small_image);
 			PhotoView photoView = (PhotoView) root.findViewById(R.id.big_image);
 			ImageLoader.getInstance().displayImage(info.thumb_url, smallView, optionsThumb);
-			ImageLoader.getInstance().displayImage(info.origin_url, photoView, optionsOrigin);
+			if(!TextUtils.isEmpty(info.localPath)) {
+				ImageLoader.getInstance().displayImage("file://"+info.localPath, photoView, optionsOrigin);
+			} else {
+				ImageLoader.getInstance().displayImage(info.origin_url, photoView, optionsOrigin);
+			}
 			photoView.setOnViewTapListener(listener);
 			container.addView(root, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 

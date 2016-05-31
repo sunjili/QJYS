@@ -3,8 +3,13 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.greenrobot.eventbus.EventBus;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,12 +23,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.signature.MediaStoreSignature;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.widget.EaseSwitchButton;
 import com.hyphenate.exceptions.HyphenateException;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.db.InviteMessgeDao;
+import com.rmtech.qjys.domain.InviteMessage;
+import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
+import com.rmtech.qjys.event.DoctorEvent;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.ChatActivity;
@@ -45,8 +55,9 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 	private MeItemLayout user_beizhu;
 	private String beizhu;
 	public DoctorInfo doctorInfo;
+	public InviteMessage msg;
 	private String from;
-
+	public int location;
 	private ImageView ivHead;
 	private TextView tvBeizhu;
 	private TextView tvNickname;
@@ -76,7 +87,6 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		
 		doctorInfo = getIntent().getParcelableExtra("DoctorInfo");
 		from = getIntent().getStringExtra("from");
-
 		if(doctorInfo == null) {
 			return;
 		}
@@ -96,11 +106,23 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		}
 		if(!isFriend){
 			setLeftTitle("通讯录");
-			if(from.equals("newFriendsMsg")){//暂时不知道从哪跳转过来
+			if(from.equals("newFriendsMsg")){
 				btnDelete.setVisibility(View.GONE);
 				user_beizhu.setVisibility(View.GONE);
 				userPhone.setVisibility(View.VISIBLE);
 				btnSendmessage.setText("通过验证");
+			}else if(from.equals("qrcode")){
+				setLeftTitle("扫一扫");
+				btnDelete.setVisibility(View.GONE);
+				user_beizhu.setVisibility(View.VISIBLE);
+				userPhone.setVisibility(View.GONE);
+				btnSendmessage.setText("添加到通讯录");
+			}else if(from.equals("group")){
+				setLeftTitle("群组详情");
+				btnDelete.setVisibility(View.GONE);
+				user_beizhu.setVisibility(View.VISIBLE);
+				userPhone.setVisibility(View.GONE);
+				btnSendmessage.setText("添加到通讯录");
 			}else{
 				btnDelete.setVisibility(View.GONE);
 				user_beizhu.setVisibility(View.VISIBLE);
@@ -116,9 +138,16 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 				setLeftTitle("聊天");
 				btnDelete.setVisibility(View.VISIBLE);
 				btnSendmessage.setText("发消息");
+			}else if(from.equals("newFriendsMsg")){
+				setLeftTitle("新的朋友");
+				btnDelete.setVisibility(View.VISIBLE);
+				btnSendmessage.setText("发消息");
+			}else if(from.equals("qrcode")){
+				setLeftTitle("扫一扫");
+				btnDelete.setVisibility(View.VISIBLE);
+				btnSendmessage.setText("发消息");
 			}
 		}
-		
 		
 		setRightTitle("", null);
 	}
@@ -174,6 +203,63 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		intent.putExtra("from", from);
 		context.startActivity(intent);
 	}
+	
+	/**
+	 * 同意好友请求
+	 * @param username
+	 */
+	private void acceptInvitation(final InviteMessage msg) {
+		final ProgressDialog pd = new ProgressDialog(getActivity());
+		String str1 = getActivity().getResources().getString(R.string.Are_agree_with);
+		final String str2 = getActivity().getResources().getString(R.string.Has_agreed_to);
+		final String str3 = getActivity().getResources().getString(R.string.Agree_with_failure);
+		pd.setMessage(str1);
+		pd.setCanceledOnTouchOutside(false);
+		pd.show();
+
+		new Thread(new Runnable() {
+			public void run() {
+				// 调用sdk的同意方法
+				try {
+					if (msg.getStatus() == InviteMesageStatus.BEINVITEED) {//同意好友请求
+						EMClient.getInstance().contactManager().acceptInvitation(msg.getFrom());
+					} 
+//					else if (msg.getStatus() == InviteMesageStatus.BEAPPLYED) { //同意加群申请
+//						EMClient.getInstance().groupManager().acceptApplication(msg.getFrom(), msg.getGroupId());
+//					} else if (msg.getStatus() == InviteMesageStatus.GROUPINVITATION) {
+//					    EMClient.getInstance().groupManager().acceptInvitation(msg.getGroupId(), msg.getGroupInviter());
+//					}
+                    msg.setStatus(InviteMesageStatus.AGREED);
+                    // 更新db
+                    ContentValues values = new ContentValues();
+                    values.put(InviteMessgeDao.COLUMN_NAME_STATUS, msg.getStatus().ordinal());
+                    new InviteMessgeDao(getActivity()).updateMessage(msg.getId(), values);
+					getActivity().runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_ADD));
+							pd.dismiss();
+							btnDelete.setVisibility(View.VISIBLE);
+							btnSendmessage.setText("发消息");
+							user_beizhu.setVisibility(View.VISIBLE);
+							userPhone.setVisibility(View.VISIBLE);
+						}
+					});
+				} catch (final Exception e) {
+					getActivity().runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							pd.dismiss();
+							Toast.makeText(getActivity(), str3 + e.getMessage(), 1).show();
+						}
+					});
+
+				}
+			}
+		}).start();
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -189,17 +275,16 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 			// Intent intent = new Intent(this, UserInfoBeizhuActivity.class);
 			// startActivityForResult(intent, USER_BEIZHU);
 			// break;
-			if(!isFriend&&!from.equals("newFriendsMsg")){//TODO 添加到通讯录；这里条件不确定，以后有可能增加从群聊点进来但不是好友的情况。
-				//TODO 添加好友功能
-				try {
-					EMClient.getInstance().contactManager().addContact(doctorInfo.id, "");
-					Toast.makeText(UserInfoActivity.this, "好友请求已发送！", Toast.LENGTH_SHORT).show();
-				} catch (HyphenateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}else if(from.equals("newFriendsMsg")){
+			if(!isFriend&&!from.equals("newFriendsMsg")){//TODO.
+		        Intent intent = new Intent(UserInfoActivity.this, CaseAddFriendActivity.class);
+		        intent.putExtra("userId", doctorInfo.id);
+		        intent.putExtra("from", "UserInfoActivity");
+		        startActivity(intent);
+			}else if(!isFriend&&from.equals("newFriendsMsg")){
 				//TODO 通过验证
+				location = getIntent().getIntExtra("location", 0);
+				msg = new InviteMessgeDao(getActivity()).getMessagesList().get(location);
+				acceptInvitation(msg);
 				
 			}else{//发消息
 				if (doctorInfo.isMyself()) {
@@ -242,6 +327,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+								UserInfoActivity.this.finish();
 								break;
 							}
 						}

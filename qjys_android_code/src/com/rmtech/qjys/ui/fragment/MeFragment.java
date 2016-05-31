@@ -44,6 +44,7 @@ import com.rmtech.qjys.ui.qjactivity.MeNameActivity;
 import com.rmtech.qjys.ui.qjactivity.MePasswordChangeActivity;
 import com.rmtech.qjys.ui.qjactivity.MePasswordNewActivity;
 import com.rmtech.qjys.ui.qjactivity.MePhoneActivity;
+import com.rmtech.qjys.ui.qjactivity.MeQRCreatActivity;
 import com.rmtech.qjys.ui.qjactivity.MeRecycleActivity;
 import com.rmtech.qjys.ui.qjactivity.MeRoomActivity;
 import com.rmtech.qjys.ui.qjactivity.MeSexActivity;
@@ -335,7 +336,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 			break;
 		case R.id.me_qrcode:
 			//TODO 我的二维码页面
-			
+			MeQRCreatActivity.show(context);
 			break;
 		case R.id.me_phone:
 			jumpActivity(MePhoneActivity.class, REQUEST_ME_PHONE, meValue.phone);

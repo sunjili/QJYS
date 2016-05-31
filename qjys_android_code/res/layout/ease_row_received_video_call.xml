@@ -36,7 +36,7 @@
             android:layout_marginLeft="@dimen/margin_chat_activity"
             android:layout_toRightOf="@id/iv_userhead"
             android:layout_below="@+id/tv_userid"
-            android:background="@drawable/ease_chatfrom_bg" >
+            android:background="@drawable/dialogwhite" >
 
             <ImageView
                 android:layout_marginLeft="4dp"
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                android:padding="6dp"
-                android:minHeight="40dp"
+                android:minHeight="30dp"
                 android:textSize="15sp"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"

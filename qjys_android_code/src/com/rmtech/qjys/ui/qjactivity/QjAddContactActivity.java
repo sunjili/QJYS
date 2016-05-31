@@ -33,7 +33,13 @@ public class QjAddContactActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_add_contact);
 		setTitle("添加新朋友");
-		setLeftTitle("通讯录");
+		if(getIntent().getStringExtra("from")!=null && 
+				getIntent().getStringExtra("from").equals("NewFriendsMsgActivity")){
+			setLeftTitle("返回");
+		}else{
+			setLeftTitle("通讯录");
+		}
+		
 	}
 
 	public void onSearchByPhoneClick(View view) {

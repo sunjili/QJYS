@@ -74,6 +74,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
+		
 		String str1 = context.getResources().getString(R.string.Has_agreed_to_your_friend_request);
 		String str2 = context.getResources().getString(R.string.agree);
 		
@@ -89,7 +90,6 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 		
 		final InviteMessage msg = getItem(position);
 		if (msg != null) {
-		    
 		    holder.agree.setVisibility(View.INVISIBLE);
 		    
 			if(msg.getGroupId() != null){ // 显示群聊提示

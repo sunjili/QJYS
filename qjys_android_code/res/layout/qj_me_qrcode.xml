@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cf4f5f9" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/qj_me_edit_normal"
+        android:orientation="vertical" >
+
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:gravity="center_vertical" >
+
+            <RelativeLayout
+                android:id="@+id/avatar_container"
+                android:layout_width="64dp"
+                android:layout_height="49dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true" >
+
+                <com.sjl.lib.roundedimageview.RoundedImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/avatar"
+                    android:layout_width="49dp"
+                    android:layout_height="49dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_default_avatar"
+                    app:riv_corner_radius="5dip" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/avatar_container"
+                android:textColor="@color/c3"
+                android:text="name"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/hospital_and_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/avatar_container"
+                android:layout_below="@id/name"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:padding="2dp"
+                android:layout_marginLeft="6dp"
+                android:text="name"
+                android:textColor="@color/c9"
+                android:textSize="13sp" />
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/qrcode"
+            android:layout_width="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="2" 
+            android:gravity="center"
+            android:textSize="12sp"
+            android:text="用奇迹医生app扫描以上二维码图案，加我为好友"
+            android:textColor="@color/c7e" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -137,6 +137,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
+        <!-- 我-二维码 -->
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.MeQRCreatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <!-- 关于奇迹医生  反馈与建议 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeAboutFankuiActivity"

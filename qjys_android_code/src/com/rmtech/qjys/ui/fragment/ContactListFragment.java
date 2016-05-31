@@ -13,6 +13,8 @@
  */
 package com.rmtech.qjys.ui.fragment;
 
+import java.util.List;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -32,7 +34,9 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.util.EMLog;
@@ -121,10 +125,45 @@ public class ContactListFragment extends EaseContactListFragment {
 		loadData(true);
 	}
 	
+	EMMessageListener messageListener = new EMMessageListener() {
+
+		@Override
+		public void onMessageReceived(List<EMMessage> messages) {
+			// 提示新消息
+			for (EMMessage message : messages) {
+				QjHelper.getInstance().getNotifier().onNewMsg(message);
+			}
+			inviteMessgeDao = new InviteMessgeDao(getActivity());
+			if (inviteMessgeDao.getUnreadMessagesCount() > 0) {
+				applicationItem.showUnreadMsgView();
+				applicationItem.setUnreadCount(inviteMessgeDao.getUnreadMessagesCount());
+			} else {
+				applicationItem.hideUnreadMsgView();
+			}
+		}
+
+		@Override
+		public void onCmdMessageReceived(List<EMMessage> messages) {
+		}
+
+		@Override
+		public void onMessageReadAckReceived(List<EMMessage> messages) {
+		}
+
+		@Override
+		public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+		}
+
+		@Override
+		public void onMessageChanged(EMMessage message, Object change) {
+		}
+	};
+	
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		EMClient.getInstance().chatManager().addMessageListener(messageListener);
 		loadData(true);
 	}
 

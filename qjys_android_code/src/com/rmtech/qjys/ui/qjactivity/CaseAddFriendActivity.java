@@ -28,6 +28,7 @@ public class CaseAddFriendActivity extends BaseActivity {
 	/** 姓名 */
 	private EditText et_name;
 	private String name;
+	private String from;
 	private int position;
 	private ImageView iv_clean;
 	int[] state1 = new int[] {};
@@ -38,37 +39,57 @@ public class CaseAddFriendActivity extends BaseActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_case_friend_add);
 		setTitle("添加新朋友");
+		from = getIntent().getStringExtra("from");
 		phoneContact = (PhoneContact) getIntent().getSerializableExtra("class");
 		setRightTitle("发送", new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DoctorListManager.addFriendByPhoneNumber(getActivity(), phoneContact.getPhone(), et_name.getText()
-						.toString(), new OnAddFriendCallback() {
+				if(from!=null && from.equals("UserInfoActivity")){
+					DoctorListManager.sendAddFriendRequest(getActivity(), 
+							getIntent().getStringExtra("userId"), 
+							et_name.getText().toString(), new OnAddFriendCallback() {
+						
+						@Override
+						public void onSendRequestSuccess() {
+							// TODO Auto-generated method stub
+							name = et_name.getText().toString().trim();
+							finish();
+						}
+						
+						@Override
+						public void onSendRequestError() {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				}else{
+					DoctorListManager.addFriendByPhoneNumber(getActivity(), phoneContact.getPhone(), et_name.getText()
+							.toString(), new OnAddFriendCallback() {
 
-							@Override
-							public void onSendRequestSuccess() {
-								name = et_name.getText().toString().trim();
-								Intent data = new Intent();
-								Bundle bundle = new Bundle();
-								bundle.putSerializable("class", phoneContact);
-								data.putExtras(bundle);
-								setResult(CaseAddFriendActivity.RESULT_OK, data);
-								finish();
-							}
+								@Override
+								public void onSendRequestSuccess() {
+									name = et_name.getText().toString().trim();
+									Intent data = new Intent();
+									Bundle bundle = new Bundle();
+									bundle.putSerializable("class", phoneContact);
+									data.putExtras(bundle);
+									setResult(CaseAddFriendActivity.RESULT_OK, data);
+									finish();
+								}
 
-							@Override
-							public void onSendRequestError() {
-								// TODO Auto-generated method stub
-//								name = et_name.getText().toString().trim();
-//								Intent data = new Intent();
-//								Bundle bundle = new Bundle();
-//								bundle.putSerializable("class", phoneContact);
-//								data.putExtras(bundle);
-//								setResult(CaseAddFriendActivity.RESULT_OK, data);
-//								finish();
-							}
-				});
-				
+								@Override
+								public void onSendRequestError() {
+									// TODO Auto-generated method stub
+//									name = et_name.getText().toString().trim();
+//									Intent data = new Intent();
+//									Bundle bundle = new Bundle();
+//									bundle.putSerializable("class", phoneContact);
+//									data.putExtras(bundle);
+//									setResult(CaseAddFriendActivity.RESULT_OK, data);
+//									finish();
+								}
+					});
+				}
 			}
 		});
 		initView();

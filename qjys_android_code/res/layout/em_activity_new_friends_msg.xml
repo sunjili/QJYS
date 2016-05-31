@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
+        android:clickable="true"
         android:descendantFocusability="afterDescendants"
         android:divider="@color/cd9"
         android:dividerHeight="1px" />
