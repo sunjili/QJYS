@@ -307,10 +307,11 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 									newCase.participate_doctor = new ArrayList<DoctorInfo>();
 								}
 								newCase.participate_doctor.addAll(resultList);
-							}
-							event.setCaseInfoId(caseInfo.id);
+								event.setCaseInfoId(caseInfo.id);
 
-							EventBus.getDefault().post(event);
+								EventBus.getDefault().post(event);
+							}
+				
 
 							Intent intent = new Intent();
 							intent.putParcelableArrayListExtra("selectedDoctorList", resultList);// ("newmembers",

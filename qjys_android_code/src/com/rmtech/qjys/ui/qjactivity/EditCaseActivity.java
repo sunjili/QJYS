@@ -27,7 +27,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 
 	public static final int REQUEST_ME_NAME = 0x2000;
 	public static final int REQUEST_ME_SEX = 0x2001;
-	public static final int REQUEST_ME_HOSPITAL = 0x2002;
+	public static final int REQUEST_CASE_HOSPITAL = 0x2002;
 	public static final int REQUEST_ME_ROOM = 0x2003;
 	public static final int REQUEST_CASE_AGE = 0x2102;
 	public static final int REQUEST_CASE_ROOM_NUMBER = 0x2105;
@@ -140,7 +140,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 			jumpActivity(CaseAgeActivity.class, REQUEST_CASE_AGE);
 			break;
 		case R.id.case_hospital:
-			jumpActivity(MeHospitalActivity.class, REQUEST_ME_HOSPITAL);
+			jumpActivity(MeHospitalActivity.class, REQUEST_CASE_HOSPITAL);
 			break;
 		case R.id.case_room:
 			jumpActivity(MeRoomActivity.class, REQUEST_ME_ROOM);
@@ -166,6 +166,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 	private void jumpActivity(Class<?> cls, int requestCode) {
 		Intent intent = new Intent(context, cls);
 		intent.putExtra("CaseInfo", (Parcelable) mCaseInfo);
+		intent.putExtra("requestCode", requestCode);
 		startActivityForResult(intent, requestCode);
 	}
 

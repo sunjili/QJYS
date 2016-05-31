@@ -286,7 +286,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							caseInfo.participate_doctor = new ArrayList<DoctorInfo>();
 						}
 						caseInfo.participate_doctor.addAll(currentDoctorList);
-						GroupAndCaseListManager.getInstance().setIsChanged(true);
+//						GroupAndCaseListManager.getInstance().setIsChanged(true);
 					}
 					
 //					progressDialog.setMessage(st1);
@@ -299,8 +299,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 //						newmembers[i] = currentDoctorList.get(i).id;
 //					}
 					refreshMembers();
-					((TextView) findViewById(R.id.group_name)).setText(caseInfo.name + "("
-							+ caseInfo.getGroupCount() + st);
+//					((TextView) findViewById(R.id.group_name)).setText(caseInfo.name + "("
+//							+ caseInfo.getGroupCount() + st);
 				}
 				break;
 			}
@@ -344,8 +344,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 								EMClient.getInstance().groupManager().changeGroupName(groupId, returnData);
 								runOnUiThread(new Runnable() {
 									public void run() {
-										((TextView) findViewById(R.id.group_name)).setText(returnData + "("
-												+ caseInfo.getGroupCount() + st);
+//										((TextView) findViewById(R.id.group_name)).setText(returnData + "("
+//												+ caseInfo.getGroupCount() + st);
 										progressDialog.dismiss();
 										Toast.makeText(getApplicationContext(), st6, 0).show();
 									}
@@ -399,11 +399,11 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	}
 
 	private void refreshMembers() {
-		adapter.clear();
-		List<DoctorInfo> members = new ArrayList<DoctorInfo>();
-		// members.add(caseInfo.admin_doctor);
-		members.addAll(caseInfo.participate_doctor);
-		adapter.addAll(members);
+//		adapter.clear();
+//		List<DoctorInfo> members = new ArrayList<DoctorInfo>();
+//		// members.add(caseInfo.admin_doctor);
+//		members.addAll(caseInfo.participate_doctor);
+//		adapter.addAll(members);
 
 		adapter.notifyDataSetChanged();
 	}
@@ -542,8 +542,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							// if (group == null) {
 							// QjHttp.getGroupinfo(true, group_ids,
 							// callback)
-							((TextView) findViewById(R.id.group_name)).setText(caseInfo.name + "("
-									+ caseInfo.getGroupCount() + st);
+//							((TextView) findViewById(R.id.group_name)).setText(caseInfo.name + "("
+//									+ caseInfo.getGroupCount() + st);
 							// } else {
 							// ((TextView)
 							// findViewById(R.id.group_name)).setText(group.getGroupName()
@@ -915,8 +915,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						public void run() {
 							// deleteDialog.dismiss();
 							refreshMembers();
-							((TextView) findViewById(R.id.group_name)).setText(caseInfo.name + "("
-									+ caseInfo.getGroupCount() + st);
+//							((TextView) findViewById(R.id.group_name)).setText(caseInfo.name + "("
+//									+ caseInfo.getGroupCount() + st);
 						}
 					});
 				} catch (final Exception e) {
@@ -941,8 +941,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 					runOnUiThread(new Runnable() {
 						public void run() {
-							((TextView) findViewById(R.id.group_name)).setText(group.getGroupName() + "("
-									+ group.getAffiliationsCount() + ")");
+//							((TextView) findViewById(R.id.group_name)).setText(group.getGroupName() + "("
+//									+ group.getAffiliationsCount() + ")");
 							// loadingPB.setVisibility(View.INVISIBLE);
 							refreshMembers();
 							if (EMClient.getInstance().getCurrentUser().equals(group.getOwner())) {

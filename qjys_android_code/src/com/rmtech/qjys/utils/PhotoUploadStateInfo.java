@@ -1,7 +1,5 @@
 package com.rmtech.qjys.utils;
 
-import java.util.ArrayList;
-
 import okhttp3.Call;
 import okhttp3.Request;
 
@@ -10,6 +8,7 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
+import com.sjl.lib.http.okhttp.OkHttpUtils;
 
 public class PhotoUploadStateInfo extends QjHttpCallback<MUploadImageInfo> {
 	private String caseId;
@@ -22,19 +21,28 @@ public class PhotoUploadStateInfo extends QjHttpCallback<MUploadImageInfo> {
 	private QjHttpCallback<MUploadImageInfo> callbackForList;
 	private QjHttpCallback<MUploadImageInfo> callback;
 
+	private int key;
+
 	public PhotoUploadStateInfo() {
 
 	}
 
-	public PhotoUploadStateInfo(String caseId, String folder_id, PhotoDataInfo info) {
+	public PhotoUploadStateInfo(String caseId, String folder_id,
+			PhotoDataInfo info) {
 		this.caseId = caseId;
 		this.folder_id = folder_id;
 		this.imageInfo = info;
 		this.localPath = info.localPath;
+		key = PhotoUploadManager.createKey(caseId, folder_id, localPath);
 
 	}
 
-	public void setCallbackForList(QjHttpCallback<MUploadImageInfo> qjHttpCallback) {
+	public int getKey() {
+		return key;
+	}
+
+	public void setCallbackForList(
+			QjHttpCallback<MUploadImageInfo> qjHttpCallback) {
 		callbackForList = qjHttpCallback;
 	}
 
@@ -42,8 +50,9 @@ public class PhotoUploadStateInfo extends QjHttpCallback<MUploadImageInfo> {
 		callback = qjHttpCallback;
 	}
 
-	public void upload(int tag) {
-		QjHttp.uploadImage(tag, caseId, folder_id, imageInfo.name, localPath, this);
+	public void upload() {
+		QjHttp.uploadImage(key, caseId, folder_id, imageInfo.name, localPath,
+				this);
 	}
 
 	@Override
@@ -94,12 +103,12 @@ public class PhotoUploadStateInfo extends QjHttpCallback<MUploadImageInfo> {
 	 */
 	public void inProgress(float pro) {
 		int newprogress = (int) (pro * 100f);
-		if(newprogress == progress) {
+		if (newprogress == progress) {
 			return;
 		}
 		imageInfo.state = PhotoDataInfo.STATE_UPLOADING;
 		this.progress = (int) (pro * 100f);
-		if(progress >= 100) {
+		if (progress >= 100) {
 			progress = 99;
 		}
 
@@ -162,6 +171,18 @@ public class PhotoUploadStateInfo extends QjHttpCallback<MUploadImageInfo> {
 
 	public float getProgress() {
 		return progress;
+	}
+
+	public void cancel() {
+		OkHttpUtils.getInstance().cancelTag(key);
+	}
+
+	public void retry() {
+		if (imageInfo.state == PhotoDataInfo.STATE_UPLOAD_FAILED) {
+			imageInfo.state = PhotoDataInfo.STATE_NORMAL;
+			progress = 0;
+			upload();
+		}
 	}
 
 }

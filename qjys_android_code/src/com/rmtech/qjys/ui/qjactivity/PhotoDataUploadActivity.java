@@ -113,7 +113,7 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 		}
 		if (event != null
 				&& (event.type == PhotoDataEvent.TYPE_MOVE || event.type == PhotoDataEvent.TYPE_DELETE || event.type == PhotoDataEvent.TYPE_SORT)) {
-			if (!TextUtils.equals(caseInfo.id, event.caseId)) {
+			if (!TextUtils.equals(caseId, event.caseId)) {
 				return;
 			}
 			// if (TextUtils.equals(folderId, event.folderId)) {
@@ -150,7 +150,6 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 					onDataChanged();
 				}
 			});
-
 		}
 	}
 
@@ -209,10 +208,6 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 								}
 								switch (position) {
 								case 0:
-									if (!UserContext.getInstance().isMyself(caseInfo.admin_doctor.id)) {
-										Toast.makeText(getActivity(), "非管理员，没有权限！", 1).show();
-										return;
-									}
 									PhotoDataBaseActivity.deleteItem(getActivity(), mAdapter.getItem(itemposition),
 											new OnDeleteCallback() {
 
@@ -224,11 +219,6 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 											});
 									break;
 								case 1:
-									if (!UserContext.getInstance().isMyself(caseInfo.admin_doctor.id)) {
-										Toast.makeText(getActivity(), "非管理员，没有权限！", 1).show();
-										return;
-									}
-
 									PhotoDataBaseActivity.renameItem(getActivity(),
 											(FolderDataInfo) mAdapter.getItem(itemposition), imageDataList.folders,
 											new OnRenameListener() {

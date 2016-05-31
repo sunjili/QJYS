@@ -342,6 +342,8 @@ public class PhotoManagerFragment extends QjBaseFragment {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 			}
 		});
+		mAdapter = new PhotoDataGridAdapter(getActivity(), new ArrayList<FolderDataInfo>());
+		mGridView.setAdapter(mAdapter);
 	}
 
 	public void setQuickReturnView(CaseTopBarView mCaseTopBarView) {

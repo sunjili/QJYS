@@ -39,7 +39,8 @@ import com.sjl.lib.swipemenulistview.SwipeMenuItem;
 import com.sjl.lib.swipemenulistview.SwipeMenuListView;
 import com.sjl.lib.utils.ScreenUtil;
 
-public class PhotoDataUploadingActivity extends CaseWithIdActivity implements OnPhotoUploadListener {
+public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
+		OnPhotoUploadListener {
 
 	private PinnedHeaderListView mListView;
 	private ImageUploadingAdapter mAdapter;
@@ -74,7 +75,8 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 	}
 
 	private void resetAdapter() {
-		SparseArray<PhotoUploadStateInfo> map = PhotoUploadManager.getInstance().getUploadTaskArray();
+		SparseArray<PhotoUploadStateInfo> map = PhotoUploadManager
+				.getInstance().getUploadTaskArray();
 
 		ArrayList<PhotoUploadStateInfo> datalist = new ArrayList<PhotoUploadStateInfo>();
 		for (int i = 0; i < map.size(); i++) {
@@ -97,21 +99,26 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 		mAdapter = new ImageUploadingAdapter();
 		resetAdapter();
 		mListView.setAdapter(mAdapter);
-		mListView.setOnItemClickListener(new PinnedHeaderListView.OnItemClickListener() {
+		mListView
+				.setOnItemClickListener(new PinnedHeaderListView.OnItemClickListener() {
 
-			@Override
-			public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
-				// TODO Auto-generated method stub
+					@Override
+					public void onSectionClick(AdapterView<?> adapterView,
+							View view, int section, long id) {
+						// TODO Auto-generated method stub
 
-			}
+					}
 
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
-				// CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
-				// PhotoDataManagerActivity.show(getActivity(), info, null);
+					@Override
+					public void onItemClick(AdapterView<?> adapterView,
+							View view, int section, int position, long id) {
+						// CaseInfo info = mAdapter.getCaseInfoByPos(section,
+						// position);
+						// PhotoDataManagerActivity.show(getActivity(), info,
+						// null);
 
-			}
-		});
+					}
+				});
 		// step 1. create a MenuCreator
 		SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -120,28 +127,36 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 				// create "open" item
 				SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
 				// set item background
-				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
+				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+						0xCE)));
+
 				// set item width
 				openItem.setWidth(ScreenUtil.dp2px(90));
 				// set item title
-				openItem.setTitle("重新上传");
+				openItem.setTitle("取消上传");
 				// set item title fontsize
 				openItem.setTitleSize(18);
 				// set item title font color
-				openItem.setTitleColor(Color.WHITE);
+				openItem.setTitleColor(Color.RED);
 				// add to menu
 				menu.addMenuItem(openItem);
 
 				// create "delete" item
 				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
 				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+				// deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+				// 0x3F, 0x25)));
+				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xCC,
+						0xC9, 0xA0)));
+
 				// set item width
 				deleteItem.setWidth(ScreenUtil.dp2px(90));
-				openItem.setTitle("取消上传");
+				deleteItem.setTitle("重新上传");
+				deleteItem.setTitleSize(18);
 
 				// set a icon
-				deleteItem.setIcon(R.drawable.ic_delete);
+				deleteItem.setTitleColor(Color.WHITE);
+				// deleteItem.setIcon(R.drawable.ic_delete);
 				// add to menu
 				menu.addMenuItem(deleteItem);
 			}
@@ -150,24 +165,32 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 		mListView.setMenuCreator(creator);
 
 		// step 2. listener item click event
-		mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				switch (index) {
-				case 0:
-					// open
-					// open(null);
-					break;
-				case 1:
-					// delete
-					// delete(item);
-					// mAppList.remove(position);
-					mAdapter.notifyDataSetChanged();
-					break;
-				}
-				return false;
-			}
-		});
+		mListView
+				.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(int position,
+							SwipeMenu menu, int index) {
+						switch (index) {
+						case 0: {
+							PhotoUploadStateInfo info = (PhotoUploadStateInfo) mAdapter
+									.getItem(position);
+							PhotoUploadManager.getInstance().cancel(info);
+
+							resetAdapter();
+							mAdapter.notifyDataSetChanged();
+							break;
+						}
+						case 1: {
+							PhotoUploadStateInfo info = (PhotoUploadStateInfo) mAdapter
+									.getItem(position);
+							PhotoUploadManager.getInstance().retry(info);
+							mAdapter.notifyDataSetChanged();
+							break;
+						}
+						}
+						return false;
+					}
+				});
 
 		// set SwipeListener
 		mListView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
@@ -184,15 +207,16 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 		});
 
 		// set MenuStateChangeListener
-		mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
-			@Override
-			public void onMenuOpen(int position) {
-			}
+		mListView
+				.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+					@Override
+					public void onMenuOpen(int position) {
+					}
 
-			@Override
-			public void onMenuClose(int position) {
-			}
-		});
+					@Override
+					public void onMenuClose(int position) {
+					}
+				});
 	}
 
 	protected boolean showTitleBar() {
@@ -215,6 +239,10 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 
 		@Override
 		public Object getItem(int section, int position) {
+			if (imageList != null && position >= 0
+					&& position < imageList.size()) {
+				return imageList.get(position);
+			}
 			return null;
 		}
 
@@ -236,17 +264,21 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 
 		@Override
 		public int getCountForSection(int section) {
-
+			if (imageList == null) {
+				return 0;
+			}
 			return imageList.size();
 		}
 
 		@Override
-		public View getItemView(int section, int position, View convertView, ViewGroup parent) {
+		public View getItemView(int section, int position, View convertView,
+				ViewGroup parent) {
 			View layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
-						Context.LAYOUT_INFLATER_SERVICE);
-				layout = inflator.inflate(R.layout.image_uploading_list_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				layout = inflator.inflate(R.layout.image_uploading_list_item,
+						null);
 			} else {
 				layout = convertView;
 			}
@@ -267,25 +299,31 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 		}
 
 		@Override
-		public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+		public View getSectionHeaderView(int section, View convertView,
+				ViewGroup parent) {
 			LinearLayout layout = null;
 			if (convertView == null) {
-				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(
-						Context.LAYOUT_INFLATER_SERVICE);
-				layout = (LinearLayout) inflator.inflate(R.layout.case_list_header_item, null);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				layout = (LinearLayout) inflator.inflate(
+						R.layout.case_list_header_item, null);
 			} else {
 				layout = (LinearLayout) convertView;
 			}
-			((TextView) layout.findViewById(R.id.textItem)).setText("上传中" + "("
-					+ PhotoUploadManager.getInstance().getUploadTaskArray().size() + ")");
+			((TextView) layout.findViewById(R.id.textItem)).setText("上传中"
+					+ "("
+					+ PhotoUploadManager.getInstance().getUploadTaskArray()
+							.size() + ")");
 			return layout;
 		}
 
 	}
 
 	static DisplayImageOptions options = new DisplayImageOptions.Builder()
-			.showImageForEmptyUri(R.drawable.default_error).showImageOnFail(R.drawable.default_error)
-			.resetViewBeforeLoading(true).cacheOnDisk(true).cacheInMemory(true).build();
+			.showImageForEmptyUri(R.drawable.default_error)
+			.showImageOnFail(R.drawable.default_error)
+			.resetViewBeforeLoading(true).cacheOnDisk(true).cacheInMemory(true)
+			.build();
 
 	private static class ViewHolder {
 
@@ -331,15 +369,18 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 		public void build(final PhotoUploadStateInfo info) {
 			if (info.imageInfo != null) {
 				name.setText(info.imageInfo.name);
-				ImageLoader.getInstance().displayImage("file://" + info.imageInfo.localPath, avatar, options);
+				ImageLoader.getInstance().displayImage(
+						"file://" + info.imageInfo.localPath, avatar, options);
 				if (info.imageInfo.state == PhotoDataInfo.STATE_UPLOAD_FAILED) {
-					state_tv.setTextColor(state_tv.getContext().getResources().getColor(R.color.red));
+					state_tv.setTextColor(state_tv.getContext().getResources()
+							.getColor(R.color.red));
 					state_tv.setText("上传失败");
 					setProgress(0);
 					speed_tv.setText(0 + "kb/s");
 
 				} else {
-					state_tv.setTextColor(state_tv.getContext().getResources().getColor(R.color.c7e));
+					state_tv.setTextColor(state_tv.getContext().getResources()
+							.getColor(R.color.c7e));
 					state_tv.setText("正在上传");
 					setProgress(info.progress);
 					speed_tv.setText(((int) (Math.random() * 100)) + "kb/s");
@@ -349,7 +390,8 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 				info.setCallbackForList(new QjHttpCallback<MUploadImageInfo>() {
 
 					@Override
-					public MUploadImageInfo parseNetworkResponse(String str) throws Exception {
+					public MUploadImageInfo parseNetworkResponse(String str)
+							throws Exception {
 						return null;
 					}
 
@@ -367,7 +409,9 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 					@Override
 					public void inProgress(float progress) {
 						setProgress((int) progress);
-						Log.d("ssssssss", "PhotoDataUploadingActivity progress = " + progress);
+						Log.d("ssssssss",
+								"PhotoDataUploadingActivity progress = "
+										+ progress);
 					}
 				});
 				// if (info.imageInfo.state == PhotoDataInfo.STATE_UPLOADING) {
@@ -383,6 +427,7 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements On
 		// TODO Auto-generated method stub
 		super.finish();
 		// 关闭窗体动画显示
-		this.overridePendingTransition(R.anim.push_bottom_out, R.anim.push_top_in);
+		this.overridePendingTransition(R.anim.push_bottom_out,
+				R.anim.push_top_in);
 	}
 }

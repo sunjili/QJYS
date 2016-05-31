@@ -3,13 +3,11 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import okhttp3.Call;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -33,7 +31,7 @@ import com.rmtech.qjys.model.HospitalInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MHosList;
-import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
 
@@ -52,74 +50,99 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 	private Context context;
 	List<HospitalInfo> listems;
 
+	private int requestCode;
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		context = MeHospitalActivity.this;
 		setContentView(R.layout.qj_me_hospital);
+		requestCode = getIntent().getIntExtra("requestCode",
+				QjConstant.REQUEST_CODE_ADD_HOSPITAL);
+
 		setLeftTitle("返回");
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				final String hospital = et_hospital.getEditableText().toString();
+				final String hospital = et_hospital.getEditableText()
+						.toString();
+				if (requestCode == QjConstant.REQUEST_CODE_ADD_HOSPITAL) {
+					Intent data = new Intent();
+					data.putExtra("string", hospital);
+					setResult(MeNameActivity.RESULT_OK, data);
+					finish();
+				} else if (requestCode == EditCaseActivity.REQUEST_CASE_HOSPITAL) {
 
-				if (mCaseInfo != null) {
+					if (mCaseInfo != null) {
 
+						HashMap<String, String> params = new HashMap<String, String>();
+						params.put("hos_name", hospital);
+						params.put("patient_id", mCaseInfo.id);
+						OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params,
+								new BaseModelCallback() {
+
+									@Override
+									public void onError(Call call, Exception e) {
+										Toast.makeText(getActivity(), "保存失败",
+												Toast.LENGTH_LONG).show();
+
+									}
+
+									@Override
+									public void onResponseSucces(MBase response) {
+										Toast.makeText(getActivity(), "保存成功",
+												Toast.LENGTH_LONG).show();
+
+										CaseInfo caseInfo = GroupAndCaseListManager
+												.getInstance()
+												.getCaseInfoByCaseId(
+														mCaseInfo.id);
+										if (caseInfo != null) {
+											caseInfo.hos_fullname = hospital;
+										}
+										Intent data = new Intent();
+										data.putExtra("string", hospital);
+										setResult(MeNameActivity.RESULT_OK,
+												data);
+										finish();
+									}
+								});
+						return;
+					}
+				} else if (requestCode == MeFragment.REQUEST_ME_HOSPITAL) {
+					if (TextUtils.equals(
+							UserContext.getInstance().getUser().hos_fullname,
+							hospital)) {
+						Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG)
+								.show();
+						finish();
+						return;
+					}
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("hos_name", hospital);
-					params.put("patient_id", mCaseInfo.id);
-					OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
+					QjHttp.updateUserinfo(params, new BaseModelCallback() {
 
 						@Override
 						public void onError(Call call, Exception e) {
-							Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_LONG).show();
-
+							Toast.makeText(getActivity(), "保存失败",
+									Toast.LENGTH_LONG).show();
 						}
 
 						@Override
 						public void onResponseSucces(MBase response) {
-							Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
+							UserContext.getInstance().setUserHospital(hospital);
+							Toast.makeText(getActivity(), "保存成功",
+									Toast.LENGTH_LONG).show();
 
-							CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
-							if (caseInfo != null) {
-								caseInfo.hos_fullname = hospital;
-							}
 							Intent data = new Intent();
 							data.putExtra("string", hospital);
 							setResult(MeNameActivity.RESULT_OK, data);
 							finish();
 						}
+
 					});
-					return;
 				}
-
-				if (TextUtils.equals(UserContext.getInstance().getUser().hos_fullname, hospital)) {
-					Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
-					finish();
-					return;
-				}
-				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("hos_name", hospital);
-				QjHttp.updateUserinfo(params, new BaseModelCallback() {
-
-					@Override
-					public void onError(Call call, Exception e) {
-						Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_LONG).show();
-					}
-
-					@Override
-					public void onResponseSucces(MBase response) {
-						UserContext.getInstance().setUserHospital(hospital);
-						Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
-
-						Intent data = new Intent();
-						data.putExtra("string", hospital);
-						setResult(MeNameActivity.RESULT_OK, data);
-						finish();
-					}
-
-				});
 
 			}
 		});
@@ -131,12 +154,11 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 	private void setValue() {
 		listems = new ArrayList<HospitalInfo>();
 		String name = "";
-		int type = getIntent().getIntExtra("type",0);
-		
+
 		if (mCaseInfo != null) {
 			name = mCaseInfo.hos_fullname;
 		} else {
-			if(type == QjConstant.REQUEST_CODE_ADD_HOSPITAL) {
+			if (requestCode == QjConstant.REQUEST_CODE_ADD_HOSPITAL) {
 				name = getIntent().getStringExtra("hosPital");
 			} else {
 				if (UserContext.getInstance().getUser() != null) {
@@ -151,53 +173,64 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 
 		@Override
 		public void run() {
-			QjHttp.getHosByName(et_hospital.getText().toString(), new QjHttpCallback<MHosList>() {
+			QjHttp.getHosByName(et_hospital.getText().toString(),
+					new QjHttpCallback<MHosList>() {
 
-				@Override
-				public MHosList parseNetworkResponse(String str) throws Exception {
-					// TODO Auto-generated method stub
-					return new Gson().fromJson(str, MHosList.class);
-				}
-
-				@Override
-				public void onResponseSucces(MHosList response) {
-
-					// for (int i = 0; i < s.length(); i++) {
-					// listems.add("测试" + i);
-					// }
-					if (response.data == null) {
-						return;
-					}
-					listems.clear();
-					listems.addAll(response.data);
-					mAdapter = new CommonAdapter<HospitalInfo>(getApplicationContext(), listems,
-							R.layout.qj_me_hospital_item) {
 						@Override
-						public void convert(ViewHolder viewHolder, final HospitalInfo item) {
-							// viewHolder.setTextAndColor(R.id.tv_name, item,
-							// s.toString(), Color.rgb(52, 100, 169));
-							viewHolder.setText(R.id.tv_name, item.fullname);
-							viewHolder.getView(R.id.rl_hospital_item).setOnClickListener(new OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									// Toast.makeText(context, item,
-									// Toast.LENGTH_SHORT).show();
-									et_hospital.setText(item.fullname);
-								}
-							});
+						public MHosList parseNetworkResponse(String str)
+								throws Exception {
+							// TODO Auto-generated method stub
+							return new Gson().fromJson(str, MHosList.class);
 						}
-					};
-					lv_hospital.setAdapter(mAdapter);
-					mAdapter.notifyDataSetChanged();
-				}
 
-				@Override
-				public void onError(Call call, Exception e) {
-					// TODO Auto-generated method stub
+						@Override
+						public void onResponseSucces(MHosList response) {
 
-				}
-			});
+							// for (int i = 0; i < s.length(); i++) {
+							// listems.add("测试" + i);
+							// }
+							if (response.data == null) {
+								return;
+							}
+							listems.clear();
+							listems.addAll(response.data);
+							mAdapter = new CommonAdapter<HospitalInfo>(
+									getApplicationContext(), listems,
+									R.layout.qj_me_hospital_item) {
+								@Override
+								public void convert(ViewHolder viewHolder,
+										final HospitalInfo item) {
+									// viewHolder.setTextAndColor(R.id.tv_name,
+									// item,
+									// s.toString(), Color.rgb(52, 100, 169));
+									viewHolder.setText(R.id.tv_name,
+											item.fullname);
+									viewHolder.getView(R.id.rl_hospital_item)
+											.setOnClickListener(
+													new OnClickListener() {
+
+														@Override
+														public void onClick(
+																View v) {
+															// Toast.makeText(context,
+															// item,
+															// Toast.LENGTH_SHORT).show();
+															et_hospital
+																	.setText(item.fullname);
+														}
+													});
+								}
+							};
+							lv_hospital.setAdapter(mAdapter);
+							mAdapter.notifyDataSetChanged();
+						}
+
+						@Override
+						public void onError(Call call, Exception e) {
+							// TODO Auto-generated method stub
+
+						}
+					});
 
 		}
 	};
@@ -212,12 +245,14 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 		et_hospital.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onTextChanged(final CharSequence s, int start, int before, int count) {
+			public void onTextChanged(final CharSequence s, int start,
+					int before, int count) {
 
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
 				// TODO Auto-generated method stub
 
 			}
@@ -243,7 +278,8 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 		Intent intent = new Intent();
 		intent.setClass(context, MeHospitalActivity.class);
 		intent.putExtra("hosPital", hosPital);
-		intent.putExtra("type", QjConstant.REQUEST_CODE_ADD_HOSPITAL);
-		context.startActivityForResult(intent, QjConstant.REQUEST_CODE_ADD_HOSPITAL);
+		intent.putExtra("requestCode", QjConstant.REQUEST_CODE_ADD_HOSPITAL);
+		context.startActivityForResult(intent,
+				QjConstant.REQUEST_CODE_ADD_HOSPITAL);
 	}
 }

@@ -415,6 +415,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 
 	private void jumpActivity(Class<?> cls, int requestCode) {
 		Intent intent = new Intent(context, cls);
+		intent.putExtra("requestCode", requestCode);
 		startActivityForResult(intent, requestCode);
 	}
 

@@ -9,7 +9,6 @@ import okhttp3.Call;
 
 import org.greenrobot.eventbus.EventBus;
 
-import android.util.Log;
 import android.util.SparseArray;
 
 import com.rmtech.qjys.callback.QjHttpCallback;
@@ -118,8 +117,8 @@ public class PhotoUploadManager {
 				PhotoUploadStateInfo task = queue.poll();
 				if(task != null) {
 					uploadingList.add(task);
-					int key = taskMap.indexOfValue(task);
-					task.upload(key);
+//					int key = taskMap.indexOfValue(task);
+					task.upload();
 				}
 			}
 		}
@@ -136,6 +135,50 @@ public class PhotoUploadManager {
 		public void onUploadError(PhotoUploadStateInfo state, Exception e);
 
 		public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info);
+	}
+
+	public void cancel(PhotoUploadStateInfo info) {
+		if(uploadingList.contains(info)) {
+			info.cancel();
+		} 
+		uploadingList.remove(info);
+		taskMap.remove(info.getKey());
+		postUploadEvent();
+	}
+
+	public void retry(final PhotoUploadStateInfo task) {
+		task.retry();
+		task.setCallback(new QjHttpCallback<MUploadImageInfo>() {
+
+			@Override
+			public MUploadImageInfo parseNetworkResponse(String str) throws Exception {
+				return null;
+			}
+
+			@Override
+			public void onResponseSucces(MUploadImageInfo response) {
+				
+				onUploadSuccess(task.getKey(), task);
+				for (OnPhotoUploadListener listener : mListenerList) {
+					listener.onUploadComplete(task, response.data);
+				}
+			}
+
+			@Override
+			public void onError(Call call, Exception e) {
+				onUploadError(task);
+				for (OnPhotoUploadListener listener : mListenerList) {
+					listener.onUploadError(task, e);
+				}
+			}
+
+			public void inProgress(float progress) {
+//				Log.d("ssssssssss", "PhotoUploadManager progress =" + progress);
+				for (OnPhotoUploadListener listener : mListenerList) {
+					listener.onUploadProgress(task);
+				}
+			}
+		});
 	}
 
 }

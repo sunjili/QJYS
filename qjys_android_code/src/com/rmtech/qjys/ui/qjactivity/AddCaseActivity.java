@@ -34,8 +34,10 @@ import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.model.gson.MIdData;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.GroupDetailsActivity;
+import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.view.DiagnoseAddView;
 import com.rmtech.qjys.ui.view.MeItemLayout;
+import com.sjl.lib.alertview.AlertView;
 
 @SuppressLint("NewApi")
 public class AddCaseActivity extends BaseActivity implements OnClickListener {
@@ -114,6 +116,10 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 		nameTv = (TextView) findViewById(R.id.name_tv);
 		nameEt = (EditText) findViewById(R.id.name_et);
+		String str = nameEt.getEditableText().toString();
+		if (TextUtils.isEmpty(str)) {
+			nameEt.setText("新病人"+ ((((int)(Math.random()*10))%9) +1));
+		}
 		setTextWhacher(AddCaseActivity.this, nameEt, 60);
 		genderTv = (TextView) findViewById(R.id.gender_tv);
 		genderWomanTv = (TextView) findViewById(R.id.gender_woman_tv);
@@ -159,7 +165,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 	private CaseInfo createCaseInfo(int state) {
 		CaseInfo info = new CaseInfo();
-		info.name = getName();
+		info.name = nameEt.getEditableText().toString();
 		info.sex = selectSex;
 		info.age = ageEt.getEditableText().toString();
 		info.hos_fullname = getHospitalName();
@@ -205,6 +211,12 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	protected void save(final int state, final int targetId) {
 
 		CaseInfo info = createCaseInfo(state);
+		if(TextUtils.isEmpty(info.name)) {
+			new AlertView("提示","患者姓名必须填写", "好的", null,
+					null, getActivity(), AlertView.Style.Alert,
+					null).setCancelable(true).show();
+			return;
+		}
 		QjHttp.createpatient(info, new QjHttpCallback<MIdData>() {
 
 			@Override
@@ -259,7 +271,9 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private String getName() {
 		String str = nameEt.getEditableText().toString();
 		if (TextUtils.isEmpty(str)) {
-			return "新病人"+ ((((int)(Math.random()*10))%9) +1);
+			String s =  "新病人"+ ((((int)(Math.random()*10))%9) +1);
+			nameEt.setText(s);
+			return s;
 		}
 		return str;
 	}
