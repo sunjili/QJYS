@@ -37,6 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/white"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:maxEms="10"
         android:textSize="19sp" />
 
     <!-- <LinearLayout -->

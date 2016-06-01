@@ -55,7 +55,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 				if(mCaseInfo != null) {
 					for(int i = 0 ; i< ll_layout.getChildCount();i++) {
 						View view = ll_layout.getChildAt(i);
-						EditText tv_name = (EditText) view.findViewById(R.id.tv_name);
+						TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
 						String itemStr = tv_name.getText().toString();
 						if(TextUtils.isEmpty(itemStr)) {
 							continue;

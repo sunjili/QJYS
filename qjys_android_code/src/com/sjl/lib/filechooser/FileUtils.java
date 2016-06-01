@@ -23,6 +23,8 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -64,7 +66,61 @@ public class FileUtils {
     
     private static final String JPEG_FILE_PREFIX = "IMG_";
     private static final String JPEG_FILE_SUFFIX = ".jpg";
-
+    
+ // Image file types
+    public static final int FILE_TYPE_JPEG    = 31;
+    public static final int FILE_TYPE_GIF     = 32;
+    public static final int FILE_TYPE_PNG     = 33;
+    public static final int FILE_TYPE_BMP     = 34;
+    private static final int FIRST_IMAGE_FILE_TYPE = FILE_TYPE_JPEG;
+    private static final int LAST_IMAGE_FILE_TYPE = FILE_TYPE_BMP;
+    
+    //静态内部类
+    static class MediaFileType {
+    
+        int fileType;
+        String mimeType;
+        
+        MediaFileType(int fileType, String mimeType) {
+            this.fileType = fileType;
+            this.mimeType = mimeType;
+        }
+    }
+    
+    private static HashMap<String, MediaFileType> sFileTypeMap 
+    				= new HashMap<String, MediaFileType>();
+    static {
+    	addFileType("JPG", FILE_TYPE_JPEG, "image/jpeg");
+        addFileType("JPEG", FILE_TYPE_JPEG, "image/jpeg");
+        addFileType("GIF", FILE_TYPE_GIF, "image/gif");
+        addFileType("PNG", FILE_TYPE_PNG, "image/png"); 
+    }
+    
+    static void addFileType(String extension, int fileType, String mimeType) {
+        sFileTypeMap.put(extension, new MediaFileType(fileType, mimeType));
+//        sMimeTypeMap.put(mimeType, new Integer(fileType));
+    }
+    
+    public static MediaFileType getFileType(String path) {
+        int lastDot = path.lastIndexOf(".");
+        if (lastDot < 0)
+            return null;
+        return sFileTypeMap.get(path.substring(lastDot + 1).toUpperCase());
+    }
+    public static boolean isImageFileType(int fileType) {
+        return (fileType >= FIRST_IMAGE_FILE_TYPE &&
+                fileType <= LAST_IMAGE_FILE_TYPE);
+    }
+    
+    //根据图片文件路径判断文件类型
+    public static boolean isImageFileType(String path) {  //自己增加
+        MediaFileType type = getFileType(path);
+        if(null != type) {
+            return isImageFileType(type.fileType);
+        }
+        return false;
+    }
+    
     public static File createTmpFile(Context context) throws IOException{
         File dir = null;
         if(TextUtils.equals(Environment.getExternalStorageState(), Environment.MEDIA_MOUNTED)) {

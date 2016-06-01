@@ -119,7 +119,8 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 			case_sex.setRightText("女");
 		}
 		case_age.setRightText(mCaseInfo.age);
-		case_hospital.setRightText(mCaseInfo.hos_fullname);
+		case_hospital.setRightText(mCaseInfo.hos_name
+				);
 		case_room.setRightText(mCaseInfo.department);
 		case_room_number.setRightText(mCaseInfo.ward_no);
 		case_bed_number.setRightText(mCaseInfo.bed_no);
@@ -242,7 +243,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 		case MeFragment.REQUEST_ME_HOSPITAL:
 			if (resultCode == Activity.RESULT_OK) {
 				string = data.getStringExtra("string");
-				mCaseInfo.hos_fullname = string;
+				mCaseInfo.hos_name = string;
 				setViewValue();
 			}
 

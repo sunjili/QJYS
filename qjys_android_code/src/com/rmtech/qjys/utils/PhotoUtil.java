@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.sjl.lib.filechooser.FileChooserActivity;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 
 public class PhotoUtil {
@@ -39,15 +40,16 @@ public class PhotoUtil {
 	}
 
 	public static void showChooser(Activity context) {
-		// Use the GET_CONTENT intent from the utility class
-		Intent target = com.sjl.lib.filechooser.FileUtils.createGetContentIntent();
-		// Create the chooser Intent
-		Intent intent = Intent.createChooser(target, "chooser_title");
-		try {
-			context.startActivityForResult(intent, QjConstant.REQUEST_CODE);
-		} catch (ActivityNotFoundException e) {
-			// The reason for the existence of aFileChooser
-		}
+//		// Use the GET_CONTENT intent from the utility class
+//		Intent target = com.sjl.lib.filechooser.FileUtils.createGetContentIntent();
+//		// Create the chooser Intent
+//		Intent intent = Intent.createChooser(target, "chooser_title");
+//		try {
+//			context.startActivityForResult(intent, QjConstant.REQUEST_CODE);
+//		} catch (ActivityNotFoundException e) {
+//			// The reason for the existence of aFileChooser
+//		}
+		FileChooserActivity.show(context);
 	}
 
 	public static void startImageSelector(Activity context, boolean multiSelect) {

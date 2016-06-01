@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rmtech.qjys.R;
@@ -37,87 +38,105 @@ import com.rmtech.qjys.R;
  */
 public class FileListAdapter extends BaseAdapter {
 
-    private final static int ICON_FOLDER = R.drawable.ic_folder;
-    private final static int ICON_FILE = R.drawable.ic_file;
+	private final static int ICON_FOLDER = R.drawable.ic_folder;
+	private final static int ICON_FILE = R.drawable.ic_file;
 
-    private final LayoutInflater mInflater;
+	private final LayoutInflater mInflater;
 
-    private List<File> mData = new ArrayList<File>();
+	private List<File> mData = new ArrayList<File>();
+	private Context mContext;
 
-    public FileListAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
-    }
+	public FileListAdapter(Context context) {
+		mContext = context;
+		mInflater = LayoutInflater.from(context);
+	}
 
-    public void add(File file) {
-        mData.add(file);
-        notifyDataSetChanged();
-    }
+	public ArrayList<String> getResultList() {
+		return ((FileChooserActivity) mContext).getResultList();
+	}
 
-    public void remove(File file) {
-        mData.remove(file);
-        notifyDataSetChanged();
-    }
+	public void add(File file) {
+		mData.add(file);
+		notifyDataSetChanged();
+	}
 
-    public void insert(File file, int index) {
-        mData.add(index, file);
-        notifyDataSetChanged();
-    }
+	public void remove(File file) {
+		mData.remove(file);
+		notifyDataSetChanged();
+	}
 
-    public void clear() {
-        mData.clear();
-        notifyDataSetChanged();
-    }
+	public void insert(File file, int index) {
+		mData.add(index, file);
+		notifyDataSetChanged();
+	}
 
-    @Override
-    public File getItem(int position) {
-        return mData.get(position);
-    }
+	public void clear() {
+		mData.clear();
+		notifyDataSetChanged();
+	}
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+	@Override
+	public File getItem(int position) {
+		return mData.get(position);
+	}
 
-    @Override
-    public int getCount() {
-        return mData.size();
-    }
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
 
-    public List<File> getListItems() {
-        return mData;
-    }
+	@Override
+	public int getCount() {
+		return mData.size();
+	}
 
-    /**
-     * Set the list items without notifying on the clear. This prevents loss of
-     * scroll position.
-     *
-     * @param data
-     */
-    public void setListItems(List<File> data) {
-        mData = data;
-        notifyDataSetChanged();
-    }
+	public List<File> getListItems() {
+		return mData;
+	}
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
+	/**
+	 * Set the list items without notifying on the clear. This prevents loss of
+	 * scroll position.
+	 * 
+	 * @param data
+	 */
+	public void setListItems(List<File> data) {
+		mData = data;
+		notifyDataSetChanged();
+	}
 
-        if (row == null)
-            row = mInflater.inflate(R.layout.file, parent, false);
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View row = convertView;
 
-        TextView view = (TextView) row;
+		if (row == null) {
+			row = mInflater.inflate(R.layout.file, parent, false);
+		}
 
-        // Get the file at the current position
-        final File file = getItem(position);
+		TextView view = (TextView) row.findViewById(R.id.textView);
+		ImageView cbox = (ImageView) row.findViewById(R.id.checkbox);
 
-        // Set the TextView as the file name
-        view.setText(file.getName());
+		// Get the file at the current position
+		final File file = getItem(position);
+		if (file.isDirectory()) {
+			cbox.setVisibility(View.GONE);
+		} else {
+			if (getResultList().contains(file.getAbsolutePath())) {
+				cbox.setImageResource(R.drawable.btn_choice_press);
+			} else {
+				cbox.setImageResource(R.drawable.btn_choice_nor);
+			}
+			cbox.setVisibility(View.VISIBLE);
+		}
 
-        // If the item is not a directory, use the file icon
-        int icon = file.isDirectory() ? ICON_FOLDER : ICON_FILE;
-        view.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
+		// Set the TextView as the file name
+		view.setText(file.getName());
 
-        return row;
-    }
+		// If the item is not a directory, use the file icon
+		int icon = file.isDirectory() ? ICON_FOLDER : ICON_FILE;
+		view.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
+
+		return row;
+	}
 
 }

@@ -17,8 +17,10 @@
 package com.sjl.lib.filechooser;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,23 +29,27 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.ui.BaseActivity;
+import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 
 /**
  *
  * @version 2013-06-25
  * @author jilisun
  */
-public class FileChooserActivity extends FragmentActivity implements
+public class FileChooserActivity extends BaseActivity implements
         OnBackStackChangedListener, FileListFragment.Callbacks {
 
     public static final String PATH = "path";
@@ -61,12 +67,13 @@ public class FileChooserActivity extends FragmentActivity implements
         }
     };
 
+    private ArrayList<String> resultList = new ArrayList<String>();
     private String mPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_image_chooser);
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.addOnBackStackChangedListener(this);
 
@@ -76,9 +83,34 @@ public class FileChooserActivity extends FragmentActivity implements
         } else {
             mPath = savedInstanceState.getString(PATH);
         }
-
+        resultList.clear();
         setTitle(mPath);
+        setRightTitle("确定", rightClickListener);
     }
+    
+    OnClickListener rightClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent();
+			intent.putStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT, resultList);
+			setResult(RESULT_OK, intent);
+	        finish();
+		}
+	};
+    public ArrayList<String> getResultList() {
+    	return resultList;
+    }
+    
+    public static void show(Activity context) {
+		Intent intent = new Intent();
+		intent.setClass(context, FileChooserActivity.class);
+		context.startActivityForResult(intent , QjConstant.REQUEST_CODE);
+
+    }
+    protected boolean showTitleBar() {
+		return true;
+	}
 
     @Override
     protected void onPause() {
@@ -147,7 +179,7 @@ public class FileChooserActivity extends FragmentActivity implements
     private void addFragment() {
         FileListFragment fragment = FileListFragment.newInstance(mPath);
         mFragmentManager.beginTransaction()
-                .add(android.R.id.content, fragment).commit();
+                .add(R.id.container, fragment).commit();
     }
 
     /**
@@ -161,7 +193,7 @@ public class FileChooserActivity extends FragmentActivity implements
 
         FileListFragment fragment = FileListFragment.newInstance(mPath);
         mFragmentManager.beginTransaction()
-                .replace(android.R.id.content, fragment)
+                .replace(R.id.container, fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(mPath).commit();
     }
@@ -192,13 +224,33 @@ public class FileChooserActivity extends FragmentActivity implements
         if (file != null) {
             if (file.isDirectory()) {
                 replaceFragment(file);
+                return;
+            } 
+            String path = file.getAbsolutePath();
+            if(FileUtils.isImageFileType(path)){
+            	if(resultList.contains(path)) {
+            		resultList.remove(path);
+            	}else {
+            		resultList.add(path);
+            	}
+            	if(resultList.size() > 0 ){
+            		setRightTitle("确定"+"("+resultList.size()+")", rightClickListener);
+            	} else {
+            		setRightTitle("确定", rightClickListener);
+            	}
             } else {
-                finishWithResult(file);
+//                finishWithResult(file);
+            	  Toast.makeText(FileChooserActivity.this, "只能选择图片文件",
+                          Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(FileChooserActivity.this, R.string.error_selecting_file,
                     Toast.LENGTH_SHORT).show();
         }
+    }
+    @Override
+    public void back(View view) {
+        super.onBackPressed();
     }
 
     /**

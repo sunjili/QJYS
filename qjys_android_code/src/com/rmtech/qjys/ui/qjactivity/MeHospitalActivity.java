@@ -99,7 +99,7 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 												.getCaseInfoByCaseId(
 														mCaseInfo.id);
 										if (caseInfo != null) {
-											caseInfo.hos_fullname = hospital;
+											caseInfo.hos_name = hospital;
 										}
 										Intent data = new Intent();
 										data.putExtra("string", hospital);
@@ -156,7 +156,7 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 		String name = "";
 
 		if (mCaseInfo != null) {
-			name = mCaseInfo.hos_fullname;
+			name = mCaseInfo.hos_name;
 		} else {
 			if (requestCode == QjConstant.REQUEST_CODE_ADD_HOSPITAL) {
 				name = getIntent().getStringExtra("hosPital");

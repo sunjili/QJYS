@@ -77,7 +77,12 @@ public class PostFormRequest extends OkHttpRequest {
 
 	private String guessMimeType(String path) {
 		FileNameMap fileNameMap = URLConnection.getFileNameMap();
-		String contentTypeFor = fileNameMap.getContentTypeFor(path);
+		String contentTypeFor = null;
+		try {
+			contentTypeFor = fileNameMap.getContentTypeFor(path);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+		}
 		if (contentTypeFor == null) {
 			contentTypeFor = "application/octet-stream";
 		}

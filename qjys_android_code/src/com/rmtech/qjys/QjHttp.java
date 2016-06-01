@@ -560,8 +560,8 @@ public class QjHttp {
 		if (!TextUtils.isEmpty(info.name)) {
 			params.put("name", info.name);
 		}
-		if (!TextUtils.isEmpty(info.hos_fullname)) {
-			params.put("hos_name", info.hos_fullname);
+		if (!TextUtils.isEmpty(info.hos_name)) {
+			params.put("hos_name", info.hos_name);
 		}
 		params.put("sex", info.sex + "");
 		if (!TextUtils.isEmpty(info.age)) {
@@ -613,8 +613,8 @@ public class QjHttp {
 		if (!TextUtils.isEmpty(info.name)) {
 			params.put("name", info.name);
 		}
-		if (!TextUtils.isEmpty(info.hos_fullname)) {
-			params.put("hos_name", info.hos_fullname);
+		if (!TextUtils.isEmpty(info.hos_name)) {
+			params.put("hos_name", info.hos_name);
 		}
 		params.put("sex", info.sex + "");
 		if (!TextUtils.isEmpty(info.age)) {

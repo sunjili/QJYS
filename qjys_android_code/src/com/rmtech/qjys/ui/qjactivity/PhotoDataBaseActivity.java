@@ -167,20 +167,24 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 		case QjConstant.REQUEST_CODE:
 			// If the file selection was successful
 			if (resultCode == RESULT_OK) {
-				if (data != null) {
-					// Get the URI of the selected file
-					final Uri uri = data.getData();
-					try {
-						// Get the file path from the URI
-						final String path = FileUtils.getPath(getActivity(), uri);
-						L.e("文件选择：path = " + path);
-						ArrayList<String> list = new ArrayList<String>();
-						list.add(path);
-						onImagePicked(list);
-						Toast.makeText(getActivity(), "File Selected: " + path, Toast.LENGTH_LONG).show();
-					} catch (Exception e) {
-						Log.e("FileSelectorTestActivity", "File select error", e);
-					}
+//				if (data != null) {
+//					// Get the URI of the selected file
+//					final Uri uri = data.getData();
+//					try {
+//						// Get the file path from the URI
+//						final String path = FileUtils.getPath(getActivity(), uri);
+//						L.e("文件选择：path = " + path);
+//						ArrayList<String> list = new ArrayList<String>();
+//						list.add(path);
+//						onImagePicked(list);
+//						Toast.makeText(getActivity(), "File Selected: " + path, Toast.LENGTH_LONG).show();
+//					} catch (Exception e) {
+//						Log.e("FileSelectorTestActivity", "File select error", e);
+//					}
+//				}
+				if (resultCode == RESULT_OK) {
+					ArrayList<String> mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+					onImagePicked(mSelectPath);
 				}
 			}
 			break;
