@@ -37,7 +37,7 @@
             android:layout_marginRight="@dimen/margin_chat_activity"
             android:layout_toLeftOf="@id/iv_userhead"
             android:layout_toRightOf="@+id/ll_loading"
-            android:background="@drawable/ease_chatto_bg" >
+            android:background="@drawable/ease_chatto_bg_normal" >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textColor="#818181"
+                        android:textColor="@color/white"
                         android:textSize="14sp" />
 
                     <TextView
@@ -82,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="center_vertical"
-                        android:textColor="#818181"
+                        android:textColor="@color/white"
                         android:textSize="14sp" />
                 </RelativeLayout>
             </LinearLayout>

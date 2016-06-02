@@ -56,7 +56,7 @@ import com.rmtech.qjys.ui.fragment.QjBaseFragment;
  */
 public class EaseContactListFragment extends QjBaseFragment {
     private static final String TAG = "EaseContactListFragment";
-    protected List<EaseUser> contactList;
+    public List<EaseUser> contactList;
     protected ListView listView;
     protected boolean hidden;
     protected ImageButton clearSearch;
@@ -230,7 +230,7 @@ public class EaseContactListFragment extends QjBaseFragment {
     /**
      * 获取联系人列表，并过滤掉黑名单和排序
      */
-    protected void getContactList() {
+    public void getContactList() {
         contactList.clear();
         
             //获取联系人列表

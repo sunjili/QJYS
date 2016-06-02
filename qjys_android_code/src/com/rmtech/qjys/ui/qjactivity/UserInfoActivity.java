@@ -98,6 +98,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		for(int i = 0;i<tempPhones.size();i++){
 			if(doctorInfo.phone!=null&&doctorInfo.phone.equals(tempPhones.get(i))){
 				isFriend = true;
+				doctorInfo.isFriend = 1;
 				break;
 			}
 		}
@@ -293,6 +294,9 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 				location = getIntent().getIntExtra("location", 0);
 				msg = new InviteMessgeDao(getActivity()).getMessagesList().get(location);
 				acceptInvitation(msg);
+				line_padding.setVisibility(View.VISIBLE);
+				rl_changyong.setVisibility(View.VISIBLE);
+				tvHello.setText("");
 				
 			}else{//发消息
 				if (doctorInfo.isMyself()) {
@@ -327,14 +331,20 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 						public void onItemClick(Object o, int position) {
 							switch (position) {
 							case 0://TODO 具体删除操作
-								Toast.makeText(UserInfoActivity.this, "删除联系人", Toast.LENGTH_SHORT).show();
+//								Toast.makeText(UserInfoActivity.this, "删除联系人", Toast.LENGTH_SHORT).show();
 								//TODO 有可能需要进一步调整
-								try {
-									EMClient.getInstance().contactManager().deleteContact(doctorInfo.id);
-								} catch (HyphenateException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+								new Thread(new Runnable() {
+									@Override
+									public void run() {
+										// TODO Auto-generated method stub
+										try {
+											EMClient.getInstance().contactManager().deleteContact(doctorInfo.id);
+										} catch (HyphenateException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}
+								}).start();
 								UserInfoActivity.this.finish();
 								break;
 							}

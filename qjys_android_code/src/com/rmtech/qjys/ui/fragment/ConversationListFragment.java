@@ -62,43 +62,30 @@ public class ConversationListFragment extends EaseConversationListFragment {
 	protected void onConnectionConnected() {
 		Log.e("onConnectionConnected", "start");
 		errormsg_layout.setVisibility(View.GONE);
+		conversationListView.hideErrorView();
 		if (noData()) {
 			errorItemContainer.setVisibility(View.VISIBLE);
 			no_data_view.setVisibility(View.VISIBLE);
 		} else {
 			errorItemContainer.setVisibility(View.GONE);
 			Log.e("onConnectionConnected", "in");
-			conversationListView.setPadding(0, 0, 0, 0);
 		}
 	}
 
 	@Override
 	protected void onConnectionDisconnected() {
 		super.onConnectionDisconnected();
-		if (NetUtils.hasNetwork(getActivity())) {
-			errorText.setText(R.string.can_not_connect_chat_server_connection);
-		} else {
-			errorText.setText(R.string.the_current_network);
-		}
+//		if (NetUtils.hasNetwork(getActivity())) {
+//			errorText.setText(R.string.can_not_connect_chat_server_connection);
+//		} else {
+//			errorText.setText(R.string.the_current_network);
+//		}
 		if (noData()) {
 			no_data_view.setVisibility(View.VISIBLE);
 		} else {
-			errormsg_layout.setVisibility(View.VISIBLE);
-			no_data_view.setVisibility(View.GONE);
-			conversationListView.setPadding(0, 100, 0, 0);
-		}
-	}
-	
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		if (NetUtils.hasNetwork(getActivity())){
-			conversationListView.setPadding(0, 0, 0, 0);
 			errormsg_layout.setVisibility(View.GONE);
-		}else {
-			conversationListView.setPadding(0, 100, 0, 0);
-			errormsg_layout.setVisibility(View.VISIBLE);
+			no_data_view.setVisibility(View.GONE);
+			conversationListView.showErrorView();
 		}
 	}
 

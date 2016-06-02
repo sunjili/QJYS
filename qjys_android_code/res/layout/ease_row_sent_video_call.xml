@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_chat_activity"
             android:layout_toLeftOf="@id/iv_userhead"
-            android:background="@drawable/ease_chatto_bg" >
+            android:background="@drawable/ease_chatto_bg_normal" >
 
             <ImageView
                 android:layout_marginLeft="4dp"
@@ -50,6 +50,7 @@
                 style="@style/chat_content_date_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/iv_call_icon"
                 android:background="@null"

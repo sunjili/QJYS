@@ -9,6 +9,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -46,6 +47,9 @@ import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.model.gson.MGroupData;
+import com.rmtech.qjys.ui.MainActivity;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
@@ -252,44 +256,81 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 
 				@Override
 				public void onClick(View v) {
-
-					QjHttp.deleteMembers(caseInfo.id, getMembersString(), new BaseModelCallback() {
-
+					final int length = contactAdapter.isCheckedArray.length;
+					String usernames = "";
+					for (int i = 0; i < length; i++) {
+						if (contactAdapter.isCheckedArray[i]) {
+						    usernames = usernames + contactAdapter.getItem(i).getNick() + " ";
+					    }
+				    }
+					CustomSimpleDialog.Builder builder = new Builder(DoctorPickActivity.this);  
+			        builder.setTitle("提示");  
+			        builder.setMessage("确定要删除讨论组成员 "+ usernames + "吗？");  
+			        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+						
 						@Override
-						public void onResponseSucces(MBase response) {
-							int length = contactAdapter.isCheckedArray.length;
-							for (int i = 0; i < length; i++) {
-								String username = contactAdapter.getItem(i).getUsername();
-								if (contactAdapter.isCheckedArray[i]) {
-									try {
-										EMClient.getInstance().groupManager()
-												.removeUserFromGroup(caseInfo.group_id, username);
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-								}
-							}
-							ArrayList<DoctorInfo> resultList = getToBeAddMembers();
-							CaseEvent event = new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED_DELETE);
-							CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
-							if (newCase != null && null != newCase.participate_doctor) {
-								newCase.participate_doctor.removeAll(resultList);
-							}
-							event.setCaseInfoId(caseInfo.id);
-
-							EventBus.getDefault().post(event);
-							setResult(RESULT_OK,
-									new Intent().putParcelableArrayListExtra("deleteDoctorList", resultList));// ("newmembers",
-
-							finish();
-						}
-
-						@Override
-						public void onError(Call call, Exception e) {
+						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
-							onActionFinish();
+							QjHttp.deleteMembers(caseInfo.id, getMembersString(), new BaseModelCallback() {
+
+							@Override
+							public void onResponseSucces(MBase response) {
+								
+								new Thread(new Runnable()  
+						        {  
+						            @Override  
+						            public void run()  
+						            {  
+						                // TODO Auto-generated method stub  
+						            	for (int i = 0; i < contactAdapter.isCheckedArray.length; i++) {
+										    String username = contactAdapter.getItem(i).getUsername();
+										    if (contactAdapter.isCheckedArray[i]) {
+											    try {
+												    EMClient.getInstance().groupManager()
+														    .removeUserFromGroup(caseInfo.group_id, username);
+											    } catch (Exception e) {
+												    e.printStackTrace();
+											    }
+										    }
+									    }
+						            }  
+						        }).start();
+								
+								ArrayList<DoctorInfo> resultList = getToBeAddMembers();
+								CaseEvent event = new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED_DELETE);
+								CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
+								if (newCase != null && null != newCase.participate_doctor) {
+									newCase.participate_doctor.removeAll(resultList);
+								}
+								event.setCaseInfoId(caseInfo.id);
+
+								EventBus.getDefault().post(event);
+								setResult(RESULT_OK,
+										new Intent().putParcelableArrayListExtra("deleteDoctorList", resultList));// ("newmembers",
+
+								finish();
+							}
+
+							@Override
+							public void onError(Call call, Exception e) {
+								// TODO Auto-generated method stub
+								onActionFinish();
+							}
+						});
+							dialog.dismiss();
+						}
+					});  
+			        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							dialog.dismiss();
 						}
 					});
+			        builder.create().show();
+
+					
 				}
 			});
 		} else if (type == QjConstant.REQUEST_CODE_ADD_DOCTORS) {

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -54,6 +55,8 @@ import com.rmtech.qjys.ui.fragment.ConversationListFragment;
 import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 
 public class MainActivity extends BaseActivity {
 
@@ -295,6 +298,7 @@ public class MainActivity extends BaseActivity {
 	public class MyContactListener implements EMContactListener {
 		@Override
 		public void onContactAdded(String username) {
+			contactListFragment.refresh();
 		}
 
 		@Override
@@ -318,10 +322,23 @@ public class MainActivity extends BaseActivity {
 
 		@Override
 		public void onContactAgreed(String username) {
+			CustomSimpleDialog.Builder builder = new Builder(MainActivity.this);  
+	        builder.setTitle("提示");  
+	        builder.setMessage(username + "已经同意添加您为好友，现在可以聊天了！");  
+	        builder.setPositiveButton("好的", new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					dialog.dismiss();
+				}
+			});  
+	        builder.create().show();
 		}
 
 		@Override
 		public void onContactRefused(String username) {
+			
 		}
 	}
 

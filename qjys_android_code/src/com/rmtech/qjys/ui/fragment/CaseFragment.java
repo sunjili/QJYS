@@ -10,6 +10,7 @@ import in.srain.cube.views.ptr.indicator.PtrIndicator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import okhttp3.Call;
 
@@ -62,12 +63,19 @@ public class CaseFragment extends QjBaseFragment {
 	private View mNodataView;
 	private PinnedHeaderListView mListView;
 	private CaseSectionedAdapter mAdapter;
+	private View errorView;
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		initErrorView();
 		return inflater.inflate(R.layout.qj_fragment_case_list, container,
 				false);
+	}
+	
+	public void initErrorView(){
+		errorView = (ViewGroup) View.inflate(getActivity(), R.layout.layout_net_error, null);
 	}
 
 	@Subscribe

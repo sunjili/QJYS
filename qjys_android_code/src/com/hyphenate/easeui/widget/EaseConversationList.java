@@ -11,10 +11,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Pair;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.adapter.EaseConversationAdapater;
+import com.rmtech.qjys.R;
 import com.sjl.lib.swipemenulistview.SwipeMenuListView;
 
 public class EaseConversationList extends SwipeMenuListView {
@@ -33,6 +36,7 @@ public class EaseConversationList extends SwipeMenuListView {
     protected EaseConversationAdapater adapter;
     protected List<EMConversation> conversations = new ArrayList<EMConversation>();
     protected List<EMConversation> passedListRef = null;
+    public View netErrorView;
     
     
     public EaseConversationList(Context context, AttributeSet attrs) {
@@ -57,7 +61,10 @@ public class EaseConversationList extends SwipeMenuListView {
 //        timeSize = ta.getDimension(R.styleable.EaseConversationList_cvsListTimeTextSize, 0);
 //        
 //        ta.recycle();
-        
+        netErrorView = (ViewGroup) View.inflate(context, R.layout.layout_net_error, null);
+        if(getHeaderViewsCount()<1){
+            addHeaderView(netErrorView);
+        }
     }
     
     public void init(List<EMConversation> conversationList){
@@ -68,8 +75,8 @@ public class EaseConversationList extends SwipeMenuListView {
     	conversations.clear();
         conversations.addAll(conversationList);
 //        if(adapter == null) {
-        	adapter = new EaseConversationAdapater(context, 0, conversations);
-            setAdapter(adapter);
+        adapter = new EaseConversationAdapater(context, 0, conversations);
+        setAdapter(adapter);
 //        } else {
 //        	adapter.notifyDataSetChanged();
 //        }
@@ -79,6 +86,14 @@ public class EaseConversationList extends SwipeMenuListView {
 //        adapter.setSecondarySize(secondarySize);
 //        adapter.setTimeColor(timeColor);
 //        adapter.setTimeSize(timeSize);
+    }
+    
+    public void showErrorView(){
+    	netErrorView.setVisibility(View.VISIBLE);
+    }
+    
+    public void hideErrorView(){
+    	netErrorView.setVisibility(View.GONE);
     }
     
     Handler handler = new Handler() {
