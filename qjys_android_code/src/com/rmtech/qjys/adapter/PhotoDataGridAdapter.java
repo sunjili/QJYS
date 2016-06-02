@@ -101,7 +101,7 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.build(info);
+		holder.build(convertView, info);
 		return convertView;
 	}
 
@@ -113,15 +113,17 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 		public ImageView itemImg;
 		public ImageView checkmark;
 		public TextView itemName;
+		public TextView number;
 		
 
 		public ViewHolder(View container) {
 			itemImg = (ImageView) container.findViewById(R.id.item_img);
 			checkmark = (ImageView) container.findViewById(R.id.checkmark);
 			itemName = (TextView) container.findViewById(R.id.item_name);
+			number = (TextView) container.findViewById(R.id.number);
 		}
 
-		public void build(FolderDataInfo data) {
+		public void build(View view, FolderDataInfo data) {
 			if (debug) {
 				itemImg.setImageResource(R.drawable.ic_launcher);
 				itemName.setText("ssssssss");
@@ -147,6 +149,11 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 					}
 					
 				}
+			} else if(data instanceof FolderDataInfo) {
+				if(number == null) {
+					number = (TextView) view.findViewById(R.id.number);
+				}
+				number.setText(data.image_count+"");
 			}
 			itemName.setText(data.name);
 			

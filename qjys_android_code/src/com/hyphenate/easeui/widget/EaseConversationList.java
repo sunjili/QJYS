@@ -62,9 +62,9 @@ public class EaseConversationList extends SwipeMenuListView {
 //        
 //        ta.recycle();
         netErrorView = (ViewGroup) View.inflate(context, R.layout.layout_net_error, null);
-        if(getHeaderViewsCount()<1){
-            addHeaderView(netErrorView);
-        }
+//        if(getHeaderViewsCount()<1){
+//            addHeaderView(netErrorView);
+//        }
     }
     
     public void init(List<EMConversation> conversationList){

@@ -28,6 +28,7 @@ public class PhotoDataInfo extends FolderDataInfo {
 		this.doc_id = data.doc_id;
 		this.create_time = data.create_time;
 		this.update_time = data.update_time;
+		this.image_count = data.image_count;
 	}
 
 	@Override

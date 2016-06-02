@@ -194,7 +194,15 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		ImageLoader.getInstance().displayImage(doctorInfo.head, ivHead,
 				QjConstant.optionsHead);
 		tv_name.setText(doctorInfo.remark!=null ? doctorInfo.remark : doctorInfo.name);
+
 		tvNickname.setText("昵称："+doctorInfo.name);
+		if(doctorInfo.remark!=null){
+			tvNickname.setVisibility(View.VISIBLE);
+			vNikename.setVisibility(View.VISIBLE);
+		}else {
+			tvNickname.setVisibility(View.GONE);
+			vNikename.setVisibility(View.GONE);
+		}
 		tvDepartment.setText(doctorInfo.department);
 		tvHospital.setText(doctorInfo.hos_fullname);
 		userPhone.setRightText(doctorInfo.phone);
@@ -403,6 +411,8 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 				user_beizhu.setRightText(beizhu);
 				tv_name.setText(beizhu);
 				doctorInfo.remark = beizhu;
+				tvNickname.setVisibility(View.VISIBLE);
+				vNikename.setVisibility(View.VISIBLE);
 			}
 			break;
 

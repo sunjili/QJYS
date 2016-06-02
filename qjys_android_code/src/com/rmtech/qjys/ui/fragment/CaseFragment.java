@@ -77,6 +77,13 @@ public class CaseFragment extends QjBaseFragment {
 	public void initErrorView(){
 		errorView = (ViewGroup) View.inflate(getActivity(), R.layout.layout_net_error, null);
 	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		updateData();
+	}
 
 	@Subscribe
 	public void onEvent(CaseEvent event) {
@@ -530,9 +537,12 @@ public class CaseFragment extends QjBaseFragment {
 			if (info.sex == 1) {
 				genderStr = "男";// 99
 				genderTv.setBackgroundResource(R.drawable.bg_gender_man);
-			} else {
+			} else if(info.sex == 2){
 				genderStr = "女";
 				genderTv.setBackgroundResource(R.drawable.bg_gender_woman);
+			}else{
+				genderStr = "未知";
+				genderTv.setBackgroundResource(R.drawable.bg_gender_weizhi);
 			}
 			if (!TextUtils.isEmpty(info.age)
 					&& !TextUtils.equals("0", info.age)) {

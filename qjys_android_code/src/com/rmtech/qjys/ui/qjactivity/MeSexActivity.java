@@ -122,9 +122,12 @@ public class MeSexActivity extends CaseEidtBaseActivity implements OnClickListen
 			man = 1;
 			iv_man.setVisibility(View.VISIBLE);
 			iv_woman.setVisibility(View.INVISIBLE);
-		} else {
+		} else if (sex == 2){
 			man = 2;
 			iv_woman.setVisibility(View.VISIBLE);
+			iv_man.setVisibility(View.INVISIBLE);
+		} else {
+			iv_woman.setVisibility(View.INVISIBLE);
 			iv_man.setVisibility(View.INVISIBLE);
 		}
 

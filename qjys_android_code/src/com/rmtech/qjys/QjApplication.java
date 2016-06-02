@@ -30,6 +30,7 @@ import com.rmtech.qjys.hx.QjHelper;
 import com.sjl.lib.http.okhttp.AndroidDeviceManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
 import com.sjl.lib.utils.ScreenUtil;
+import com.umeng.socialize.PlatformConfig;
 
 public class QjApplication extends Application {
 
@@ -58,6 +59,10 @@ public class QjApplication extends Application {
         QjHelper.getInstance().init(applicationContext);
         initImageLoader(getApplicationContext());
         ScreenUtil.init(applicationContext);
+	}
+	
+	{
+		PlatformConfig.setWeixin("wx4ab3d7cb0f89ea99", "2634bb8e2552f249fd3948315886fc84");
 	}
 
 	public static void initImageLoader(Context context) {

@@ -147,7 +147,8 @@ public class MePasswordNewActivity extends BaseActivity implements
 					@Override
 					public void onResponseSucces(MBase response) {
 						// TODO 改变UserInfo中的isset_passwd值
-						
+
+						UserContext.getInstance().getUser().isset_passwd = 1;
 						
 						Intent data=new Intent();
 						data.putExtra("boolean", true);

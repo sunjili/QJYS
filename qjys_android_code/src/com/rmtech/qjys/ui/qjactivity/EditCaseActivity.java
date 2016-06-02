@@ -10,17 +10,26 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import okhttp3.Call;
 
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.UserContext;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.ui.view.MeItemLayout;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.sjl.lib.alertview.AlertView;
+import com.tencent.a.a.a.a.g;
 
 public class EditCaseActivity extends BaseActivity implements View.OnClickListener {
 	private String tempStr = "";
@@ -55,6 +64,8 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 	private LinearLayout ll_state;
 	/** 就诊状态 */
 	private MeItemLayout case_state;
+	/** 删除病例 */
+	private Button case_delete;
 	private Context context;
 	private CaseInfo mCaseInfo;
 	public boolean isOwner;
@@ -115,8 +126,10 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 		case_name.setRightText(mCaseInfo.name);
 		if (mCaseInfo.sex == 1) {
 			case_sex.setRightText("男");
-		} else {
+		} else if (mCaseInfo.sex == 2){
 			case_sex.setRightText("女");
+		} else {
+			case_sex.setRightText("未知");
 		}
 		case_age.setRightText(mCaseInfo.age);
 		case_hospital.setRightText(mCaseInfo.hos_name
@@ -158,8 +171,43 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 		case R.id.case_state:
 			jumpActivity(EditCaseStateActivity.class, REQUEST_CASE_STATE);
 			break;
+		case R.id.case_delete:
+			if (mCaseInfo != null
+				&& mCaseInfo.admin_doctor != null
+				&& UserContext.getInstance().isMyself(
+						mCaseInfo.admin_doctor.id)) {
+			new AlertView("确定删除？", null, "取消", new String[] { "确定" },
+					null, getActivity(), AlertView.Style.Alert,
+					new com.sjl.lib.alertview.OnItemClickListener() {
 
-		default:
+						@Override
+						public void onItemClick(Object o, int position) {
+							if (position == 0) {
+								QjHttp.deletePatient(mCaseInfo.id, new BaseModelCallback() {
+									
+									@Override
+									public void onResponseSucces(MBase response) {
+										// TODO 病例列表需要更新，activity直接全退出
+										
+										
+										Toast.makeText(getActivity(), "病例已删除！", Toast.LENGTH_SHORT).show();
+										CaseFragment.deleteGrop(getActivity(),
+												mCaseInfo.group_id);
+										getActivity().finish();
+										
+									}
+									
+									@Override
+									public void onError(Call call, Exception e) {
+										// TODO Auto-generated method stub
+										
+									}
+								});
+							}
+
+						}
+					}).setCancelable(true).show();
+		        }
 			break;
 		}
 	}
@@ -192,9 +240,12 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 		ll_state = (LinearLayout) findViewById(R.id.ll_state);
 		case_state = (MeItemLayout) findViewById(R.id.case_state);
 		case_state.setOnClickListener(this);
+		case_delete = (Button) findViewById(R.id.case_delete);
+		case_delete.setOnClickListener(this);
 		if(!isOwner){
 			setClickble(false);
 			setRightGone();
+			case_delete.setVisibility(View.GONE);
 		}
 	}
 	
@@ -301,8 +352,6 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 				setViewValue();
 			}
 
-			break;
-		default:
 			break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);

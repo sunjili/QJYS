@@ -62,7 +62,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 	protected void onConnectionConnected() {
 		Log.e("onConnectionConnected", "start");
 		errormsg_layout.setVisibility(View.GONE);
-		conversationListView.hideErrorView();
+//		conversationListView.hideErrorView();
 		if (noData()) {
 			errorItemContainer.setVisibility(View.VISIBLE);
 			no_data_view.setVisibility(View.VISIBLE);
@@ -85,7 +85,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 		} else {
 			errormsg_layout.setVisibility(View.GONE);
 			no_data_view.setVisibility(View.GONE);
-			conversationListView.showErrorView();
+//			conversationListView.showErrorView();
 		}
 	}
 

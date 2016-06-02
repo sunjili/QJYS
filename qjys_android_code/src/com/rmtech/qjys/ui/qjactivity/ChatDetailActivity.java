@@ -10,7 +10,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.sjl.lib.multi_image_selector.view.SquaredImageView;
 
 import android.os.Bundle;
@@ -39,6 +42,7 @@ public class ChatDetailActivity  extends BaseActivity implements OnClickListener
 		private SquaredImageView avatar;
 		private String toChatUsername;
 		private boolean isMian;
+		public DoctorInfo doctorInfo;
 	
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -46,14 +50,12 @@ public class ChatDetailActivity  extends BaseActivity implements OnClickListener
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_chatdetail);
 		toChatUsername = getIntent().getStringExtra("toChatUsername");
-		if(toChatUsername!=null){
-			loadData(toChatUsername);
-		}
 		title = (TextView) findViewById(R.id.title);
 		title.setText("聊天消息设置");
 		left_title = (TextView) findViewById(R.id.left_title);
 		left_title.setText("返回");
 		avatar = (SquaredImageView) findViewById(R.id.avatar);
+		avatar.setOnClickListener(this);
 		name_tv = (TextView) findViewById(R.id.name_tv);
 		nike_tv = (TextView) findViewById(R.id.nike_tv);
 		switchButton = (EaseSwitchButton) findViewById(R.id.switch_btn);
@@ -62,15 +64,30 @@ public class ChatDetailActivity  extends BaseActivity implements OnClickListener
 		rl_switch_block_groupmsg = (RelativeLayout) findViewById(R.id.rl_switch_block_groupmsg);
 		switchButton = (EaseSwitchButton) findViewById(R.id.switch_btn);
 		rl_switch_block_groupmsg.setOnClickListener(this);
-		name_tv.setText(EaseUserUtils.getUserInfo(toChatUsername).getNick()); //应该是备注名
-		nike_tv.setText("昵称：" + EaseUserUtils.getUserInfo(toChatUsername).getNick());
-		ImageLoader.getInstance().displayImage(EaseUserUtils.getUserInfo(toChatUsername).getAvatar(), avatar,
-				QjConstant.optionsHead);
+		if(toChatUsername!=null){
+			loadData(toChatUsername);
+		}
+//		name_tv.setText(EaseUserUtils.getUserInfo(toChatUsername).getNick()); //应该是备注名
+//		nike_tv.setText("昵称：" + EaseUserUtils.getUserInfo(toChatUsername).getNick());
+//		ImageLoader.getInstance().displayImage(EaseUserUtils.getUserInfo(toChatUsername).getAvatar(), avatar,
+//				QjConstant.optionsHead);
 	}
 
 	private void loadData(String toChatUsername) {
 		// TODO Auto-generated method stub
-		
+		DoctorListManager.getInstance().getDoctorInfoByHXid(toChatUsername, new OnGetDoctorInfoCallback() {
+			
+			@Override
+			public void onGet(DoctorInfo info) {
+				if(info != null) {
+					doctorInfo = info;
+					name_tv.setText(info.remark==null?info.name:info.remark);
+					nike_tv.setText("昵称：" + info.name);
+					ImageLoader.getInstance().displayImage(info.head, avatar,
+							QjConstant.optionsHead);
+				}
+			}
+		});
 	}
 	
 	@Override
@@ -109,6 +126,9 @@ public class ChatDetailActivity  extends BaseActivity implements OnClickListener
 				//TODO 设置为 免打扰
 				
 			}
+			break;
+		case R.id.avatar:
+			UserInfoActivity.show(ChatDetailActivity.this, doctorInfo, "chat");
 			break;
 		}
 	}

@@ -24,6 +24,8 @@ public class FolderDataInfo implements Serializable, Parcelable {
 	public String patient_id;// : 病例
 	public int update_time;// : 更新时间
 	public int create_time;// : 创建时间
+	public int image_count;// : 图片数量
+
 	
 	public String getUpdateTimeStr() {
 		if (update_time > 0) {
@@ -56,6 +58,7 @@ public class FolderDataInfo implements Serializable, Parcelable {
 		dest.writeString(this.patient_id);
 		dest.writeInt(this.update_time);
 		dest.writeInt(this.create_time);
+		dest.writeInt(this.image_count);
 	}
 
 	protected FolderDataInfo(Parcel in) {
@@ -64,6 +67,7 @@ public class FolderDataInfo implements Serializable, Parcelable {
 		this.patient_id = in.readString();
 		this.update_time = in.readInt();
 		this.create_time = in.readInt();
+		this.image_count = in.readInt();
 	}
 
 	public static final Creator<FolderDataInfo> CREATOR = new Creator<FolderDataInfo>() {
