@@ -20,6 +20,7 @@ import android.text.TextUtils.TruncateAt;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
+import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.fragment.PhotoManagerFragment;
@@ -27,6 +28,7 @@ import com.rmtech.qjys.ui.view.CaseTopBarView;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow.ListPopupWindowAdapter;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.rmtech.qjys.utils.QjUtil;
 
 
@@ -149,6 +151,12 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 			setFolderId(intent,itemInfo.id);
 		}
 		context.startActivity(intent);
+	}
+	@Override
+	public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info) {
+		if(mPhotoManagerFragment != null) {
+			mPhotoManagerFragment.onUploadComplete(state);
+		}
 	}
 
 	@Override

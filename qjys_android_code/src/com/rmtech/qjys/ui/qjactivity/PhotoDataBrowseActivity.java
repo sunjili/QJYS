@@ -160,6 +160,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 				if (TextUtils.equals(info.id, event.dataInfo.id)) {
 					info.origin_url = event.dataInfo.origin_url;
 					info.thumb_url = event.dataInfo.thumb_url;
+					info.localPath = null;
 					if (mAdapter != null) {
 						mAdapter.notifyDataSetChanged();
 					}

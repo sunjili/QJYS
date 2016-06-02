@@ -43,7 +43,9 @@ import com.rmtech.qjys.ui.view.CaseTopBarView;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.NewFolderManager.OnRenameListener;
 import com.rmtech.qjys.utils.PhotoUploadManager;
+import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.sjl.lib.alertview.AlertView;
+import com.sjl.lib.db.DBUtil;
 import com.sjl.lib.dynamicgrid.DynamicGridView;
 import com.sjl.lib.utils.L;
 
@@ -147,6 +149,13 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	@Override
 	public void onDestroy() {
 		EventBus.getDefault().unregister(this);
+		String cacheKey = QjHttp.URL_PATIENT_IMAGE_LIST + UserContext.getInstance().getCookie() + caseId + folderId;
+		Object obj = DBUtil.getCache(cacheKey);
+		if(obj != null && obj instanceof MImageList) {
+			MImageList imagelist = (MImageList) obj;
+			imagelist.data = imageDataList;
+			DBUtil.saveCache(cacheKey, imagelist);
+		}
 		super.onDestroy();
 	}
 
@@ -427,6 +436,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 		});
 	}
 
+	
 	public void onImagePicked(List<String> paths) {
 		if (imageDataList == null) {
 			imageDataList = new ImageDataList();
@@ -438,18 +448,20 @@ public class PhotoManagerFragment extends QjBaseFragment {
 		for (String path : paths) {
 			PhotoDataInfo info = new PhotoDataInfo();
 			info.localPath = path;
-			L.e("localPath = " + path);
 			int index = path.lastIndexOf('/');
 			info.name = path.substring(index + 1, path.length());
-			L.e("info.name = " + info.name);
 			info.state = PhotoDataInfo.STATE_UPLOADING;
-			mAdapter.add(info);
 			PhotoUploadManager.getInstance().addUploadTask(caseInfo.id, folderId, info);
-			imageDataList.images.add(info);
-
 		}
 
-		onDataChanged();
+	}
+
+	public void onUploadComplete(PhotoUploadStateInfo state) {
+		if(TextUtils.equals(state.getCaseId(),caseId)) {
+			imageDataList.images.add(state.getPhotoInfo());
+			mAdapter.add(state.getPhotoInfo());
+			onDataChanged();
+		}
 	}
 
 }

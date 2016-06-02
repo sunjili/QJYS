@@ -36,6 +36,7 @@ import com.rmtech.qjys.utils.NewFolderManager.OnRenameListener;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.sjl.lib.alertview.AlertView;
+import com.sjl.lib.db.DBUtil;
 import com.sjl.lib.utils.L;
 
 public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
@@ -103,6 +104,7 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 					if (TextUtils.equals(info.id, event.dataInfo.id)) {
 						info.origin_url = event.dataInfo.origin_url;
 						info.thumb_url = event.dataInfo.thumb_url;
+						info.localPath = null;
 						if (mAdapter != null) {
 							mAdapter.notifyDataSetChanged();
 						}
@@ -156,6 +158,13 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 	@Override
 	public void onDestroy() {
 		EventBus.getDefault().unregister(this);
+		String cacheKey = QjHttp.URL_PATIENT_IMAGE_LIST + UserContext.getInstance().getCookie() + caseId + folderId;
+		Object obj = DBUtil.getCache(cacheKey);
+		if(obj != null && obj instanceof MImageList) {
+			MImageList imagelist = (MImageList) obj;
+			imagelist.data = imageDataList;
+			DBUtil.saveCache(cacheKey, imagelist);
+		}
 		super.onDestroy();
 	}
 
@@ -293,12 +302,14 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 			info.name = path.substring(index + 1, path.length());
 			L.e("info.name = " + info.name);
 			info.state = PhotoDataInfo.STATE_UPLOADING;
-			mAdapter.add(info);
+//			mAdapter.add(info);
 			PhotoUploadManager.getInstance().addUploadTask(caseId, folderId, info);
-			imageDataList.images.add(info);
+//			imageDataList.images.add(info);
 		}
-		onDataChanged();
+//		onDataChanged();
 	}
+	
+	
 
 	@Override
 	public void onUploadProgress(PhotoUploadStateInfo state) {
@@ -317,8 +328,11 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 	@Override
 	public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info) {
 		super.onUploadComplete(state, info);
-		L.e("Upload onUploadComplete =" + info.origin_url);
-
+		if(TextUtils.equals(state.getCaseId(),caseId)) {
+			imageDataList.images.add(state.getPhotoInfo());
+			mAdapter.add(state.getPhotoInfo());
+			onDataChanged();
+		}
 	}
 
 }

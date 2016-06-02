@@ -1,5 +1,7 @@
 package com.rmtech.qjys.utils;
 
+import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Request;
 
@@ -183,6 +185,10 @@ public class PhotoUploadStateInfo extends QjHttpCallback<MUploadImageInfo> {
 			progress = 0;
 			upload();
 		}
+	}
+
+	public PhotoDataInfo getPhotoInfo() {
+		return imageInfo;
 	}
 
 }
