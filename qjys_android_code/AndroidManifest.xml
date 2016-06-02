@@ -757,7 +757,7 @@
         <!-- umeng appkey，可忽略 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="56aefe07e0f55a250d001a7c" >
+            android:value="57453cf967e58eaaa6000a1f" >
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
