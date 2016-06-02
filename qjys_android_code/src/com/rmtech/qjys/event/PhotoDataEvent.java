@@ -33,4 +33,8 @@ public class PhotoDataEvent {
 		this.imagelist = imagelist;
 	}
 
+	public void setCaseId(String caseId2) {
+		this.caseId = caseId2;
+	}
+
 }

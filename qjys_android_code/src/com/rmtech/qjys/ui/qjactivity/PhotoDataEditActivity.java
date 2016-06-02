@@ -141,6 +141,7 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 				public void onResponseSucces(MUploadImageInfo response) {
 					PhotoDataInfo data = response.data;
 					PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_EDIT, data);
+					event.setMovedImageList(caseId, folderId, null);
 					EventBus.getDefault().post(event);
 					pd.dismiss();
 					finish();

@@ -28,6 +28,7 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
+import com.rmtech.qjys.event.ImageUploadEvent;
 import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
@@ -113,10 +114,39 @@ public class PhotoManagerFragment extends QjBaseFragment {
 		mAdapter.notifyDataSetChanged();
 
 	}
+	
+	@Subscribe
+	public void onEvent(ImageUploadEvent event) {
+		if(event == null || event.stateInfo == null) {//
+			return;
+		}
+		if(!TextUtils.equals(event.stateInfo.getCaseId(), caseId)) {
+			return;
+		}
+		if (event.isAdd && mAdapter != null
+				&& mAdapter.getItems() != null) {
+			for (Object obj : mAdapter.getItems()) {
+				if ((obj instanceof FolderDataInfo)  && !(obj instanceof PhotoDataInfo)) {
+					FolderDataInfo info = (FolderDataInfo) obj;
+					if (TextUtils.equals(info.id, event.stateInfo.getFolder_id())) {
+						info.image_count += 1;
+						mAdapter.notifyDataSetChanged();
+						break;
+					}
+				}
+
+			}
+		}
+
+	}
+
 
 	@Subscribe
 	public void onEvent(PhotoDataEvent event) {
-		if (event != null && event.dataInfo != null && event.type == PhotoDataEvent.TYPE_EDIT && mAdapter != null
+		if(event == null || !TextUtils.equals(event.caseId, caseId)) {
+			return;
+		}
+		if (event.dataInfo != null && event.type == PhotoDataEvent.TYPE_EDIT && mAdapter != null
 				&& mAdapter.getItems() != null) {
 			for (Object obj : mAdapter.getItems()) {
 				if (obj instanceof PhotoDataInfo) {
@@ -132,7 +162,20 @@ public class PhotoManagerFragment extends QjBaseFragment {
 				}
 			}
 		}
-		if (event != null && (event.type == PhotoDataEvent.TYPE_MOVE 
+		if (event.type == PhotoDataEvent.TYPE_ADD && mAdapter != null
+				&& mAdapter.getItems() != null) {
+			for (Object obj : mAdapter.getItems()) {
+				if ((obj instanceof FolderDataInfo)  && !(obj instanceof PhotoDataInfo)) {
+					FolderDataInfo info = (FolderDataInfo) obj;
+					if (TextUtils.equals(info.id, event.folderId)) {
+						info.image_count += 1;
+						mAdapter.notifyDataSetChanged();
+						break;
+					}
+				}
+			}
+		}
+		if ((event.type == PhotoDataEvent.TYPE_MOVE 
 				|| event.type ==  PhotoDataEvent.TYPE_DELETE
 				|| event.type ==  PhotoDataEvent.TYPE_SORT)) {
 			if (!TextUtils.equals(caseInfo.id, event.caseId)) {
@@ -451,16 +494,17 @@ public class PhotoManagerFragment extends QjBaseFragment {
 			int index = path.lastIndexOf('/');
 			info.name = path.substring(index + 1, path.length());
 			info.state = PhotoDataInfo.STATE_UPLOADING;
-			PhotoUploadManager.getInstance().addUploadTask(caseInfo.id, folderId, info);
+			PhotoUploadManager.getInstance().addUploadTask(caseId, folderId, info);
 		}
 
 	}
 
 	public void onUploadComplete(PhotoUploadStateInfo state) {
-		if(TextUtils.equals(state.getCaseId(),caseId)) {
+		if(TextUtils.equals(state.getCaseId(),caseId) && TextUtils.equals(state.getFolder_id(),folderId)) {
 			imageDataList.images.add(state.getPhotoInfo());
 			mAdapter.add(state.getPhotoInfo());
 			onDataChanged();
+			
 		}
 	}
 

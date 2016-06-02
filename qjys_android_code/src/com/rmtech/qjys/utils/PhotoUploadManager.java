@@ -91,7 +91,7 @@ public class PhotoUploadManager {
 					}
 				}
 			});
-			postUploadEvent();
+			postUploadEvent(task, false);
 //			task.upload(key);//
 		}
 		checkAndUpload();
@@ -100,13 +100,13 @@ public class PhotoUploadManager {
 	private void onUploadSuccess(int key, PhotoUploadStateInfo task) {
 		taskMap.remove(key);
 		uploadingList.remove(task);
-		postUploadEvent();
+		postUploadEvent(task, true);
 		checkAndUpload();
 	}
 	
 	private void onUploadError(PhotoUploadStateInfo task) {
 		uploadingList.remove(task);
-		postUploadEvent();
+		postUploadEvent(task, false);
 		checkAndUpload();
 	}
 	
@@ -124,8 +124,9 @@ public class PhotoUploadManager {
 		}
 	}
 
-	private void postUploadEvent() {
-		EventBus.getDefault().post(new ImageUploadEvent(taskMap.size()));
+	private void postUploadEvent(PhotoUploadStateInfo info, boolean isAdd) {
+		ImageUploadEvent event = new ImageUploadEvent(info, taskMap.size(), isAdd);
+		EventBus.getDefault().post(event);
 	}
 
 	public interface OnPhotoUploadListener {
@@ -143,7 +144,7 @@ public class PhotoUploadManager {
 		} 
 		uploadingList.remove(info);
 		taskMap.remove(info.getKey());
-		postUploadEvent();
+		postUploadEvent(info,false);
 	}
 
 	public void retry(final PhotoUploadStateInfo task) {

@@ -26,6 +26,7 @@ import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
+import com.rmtech.qjys.event.ImageUploadEvent;
 import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
@@ -95,8 +96,43 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 	}
 	
 	@Subscribe
+	public void onEvent(ImageUploadEvent event) {
+		if (getActivity() == null) {
+			return;
+		}
+		if(event == null || event.stateInfo == null) {//
+			return;
+		}
+		if(!TextUtils.equals(event.stateInfo.getCaseId(), caseId)) {
+			return;
+		}
+		if (event.isAdd && mAdapter != null
+				&& mAdapter.getItems() != null) {
+			for (Object obj : mAdapter.getItems()) {
+				if ((obj instanceof FolderDataInfo)  && !(obj instanceof PhotoDataInfo)) {
+					FolderDataInfo info = (FolderDataInfo) obj;
+					if (TextUtils.equals(info.id, event.stateInfo.getFolder_id())) {
+						info.image_count += 1;
+						mAdapter.notifyDataSetChanged();
+						break;
+					}
+				}
+
+			}
+		}
+
+	}
+
+	
+	@Subscribe
 	public void onEvent(PhotoDataEvent event) {
-		if (event != null && event.dataInfo != null && event.type == PhotoDataEvent.TYPE_EDIT && mAdapter != null
+		if (getActivity() == null) {
+			return;
+		}
+		if(event == null || !TextUtils.equals(event.caseId, caseId)) {
+			return;
+		}
+		if (event.dataInfo != null && event.type == PhotoDataEvent.TYPE_EDIT && mAdapter != null
 				&& mAdapter.getItems() != null) {
 			for (Object obj : mAdapter.getItems()) {
 				if (obj instanceof PhotoDataInfo) {
@@ -113,8 +149,20 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 				}
 			}
 		}
-		if (event != null
-				&& (event.type == PhotoDataEvent.TYPE_MOVE || event.type == PhotoDataEvent.TYPE_DELETE || event.type == PhotoDataEvent.TYPE_SORT)) {
+		if (event.type == PhotoDataEvent.TYPE_ADD && mAdapter != null
+				&& mAdapter.getItems() != null) {
+			for (Object obj : mAdapter.getItems()) {
+				if ((obj instanceof FolderDataInfo)  && !(obj instanceof PhotoDataInfo)) {
+					FolderDataInfo info = (FolderDataInfo) obj;
+					if (TextUtils.equals(info.id, event.folderId)) {
+						info.image_count += 1;
+						mAdapter.notifyDataSetChanged();
+						break;
+					}
+				}
+			}
+		}
+		if (event.type == PhotoDataEvent.TYPE_MOVE || event.type == PhotoDataEvent.TYPE_DELETE || event.type == PhotoDataEvent.TYPE_SORT) {
 			if (!TextUtils.equals(caseId, event.caseId)) {
 				return;
 			}
@@ -328,10 +376,16 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 	@Override
 	public void onUploadComplete(PhotoUploadStateInfo state, PhotoDataInfo info) {
 		super.onUploadComplete(state, info);
-		if(TextUtils.equals(state.getCaseId(),caseId)) {
+		if(TextUtils.equals(state.getCaseId(),caseId) && TextUtils.equals(state.getFolder_id(),folderId)) {
 			imageDataList.images.add(state.getPhotoInfo());
 			mAdapter.add(state.getPhotoInfo());
 			onDataChanged();
+//			
+//			PhotoDataEvent event = new PhotoDataEvent(
+//					PhotoDataEvent.TYPE_ADD);
+//			event.setMovedImageList(caseId, folderId, null);
+//			EventBus.getDefault().post(event);
+			
 		}
 	}
 
