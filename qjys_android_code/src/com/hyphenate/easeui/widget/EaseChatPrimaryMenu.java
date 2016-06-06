@@ -388,7 +388,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 		int index = editText.getSelectionStart();
 		Editable editable = editText.getText();
 
-		String appendStr = data.name + " ";
+		String appendStr = data.getDisplayName() + " ";
 		if(index == 0) {
 			appendStr = "@"+appendStr;
 		} else if (index > 0){

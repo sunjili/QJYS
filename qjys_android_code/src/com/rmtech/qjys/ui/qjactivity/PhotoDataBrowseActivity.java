@@ -193,7 +193,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 			@Override
 			public void onGet(DoctorInfo info) {
 				if (info != null) {
-					mBottomAuthTv.setText("由" + info.name + "上传");
+					mBottomAuthTv.setText("由" + info.getDisplayName() + "上传");
 				}
 
 			}
@@ -237,7 +237,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 							@Override
 							public void onGet(DoctorInfo info) {
 								if (info != null) {
-									mBottomAuthTv.setText("由" + info.name + "上传");
+									mBottomAuthTv.setText("由" + info.getDisplayName() + "上传");
 								}
 
 							}

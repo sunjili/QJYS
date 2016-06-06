@@ -56,8 +56,8 @@ public class EaseUser extends EMContact {
 	@Override
 	public String getNick() {
 		if (doctorInfo != null) {
-			if (!TextUtils.isEmpty(doctorInfo.name)) {
-				return doctorInfo.name;
+			if (!TextUtils.isEmpty(doctorInfo.getDisplayName())) {
+				return doctorInfo.getDisplayName();
 
 			} else if (!TextUtils.isEmpty(doctorInfo.phone)) {
 				return doctorInfo.phone;

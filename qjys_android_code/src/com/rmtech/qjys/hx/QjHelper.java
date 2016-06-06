@@ -615,8 +615,8 @@ public class QjHelper {
 
 					@Override
 					public void onGet(DoctorInfo info) {
-						if (info != null && !TextUtils.isEmpty(info.name)) {
-							msg.addBody(new EMTextMessageBody(info.name + " " + st3));
+						if (info != null && !TextUtils.isEmpty(info.getDisplayName())) {
+							msg.addBody(new EMTextMessageBody(info.getDisplayName() + " " + st3));
 						} else {
 							msg.addBody(new EMTextMessageBody(inviter + " " + st3));
 						}

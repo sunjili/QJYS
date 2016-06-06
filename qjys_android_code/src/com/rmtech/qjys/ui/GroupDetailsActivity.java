@@ -216,8 +216,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					if(info != null) {
 						caseInfo.admin_doctor = info;
 					}
-					name_tv.setText(caseInfo.admin_doctor.name);
-					nike_tv.setText("昵称：" + caseInfo.admin_doctor.name);
+					name_tv.setText(caseInfo.admin_doctor.getDisplayName());
+					nike_tv.setText("昵称：" + caseInfo.admin_doctor.getDisplayName());
 					ImageLoader.getInstance().displayImage(caseInfo.admin_doctor.head, avatar,
 							QjConstant.optionsHead);
 					
@@ -796,11 +796,11 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						@Override
 						public void onGet(DoctorInfo info) {
 							if(info != null) {
-								holder.textView.setText(info.name);
+								holder.textView.setText(info.getDisplayName());
 								ImageLoader.getInstance().displayImage(info.head, holder.imageView,
 									QjConstant.optionsHead);
 							} else {
-								holder.textView.setText(user.name);
+								holder.textView.setText(user.getDisplayName());
 								ImageLoader.getInstance().displayImage(user.head, holder.imageView,
 										QjConstant.optionsHead);
 							}

@@ -68,8 +68,8 @@ public class EaseUserUtils {
         	
         	EaseUser user = getUserInfo(username);
         	if(user != null){
-        		if(user.doctorInfo != null && user.doctorInfo.name != null){
-        			textView.setText(user.doctorInfo.name);
+        		if(user.doctorInfo != null && user.doctorInfo.getDisplayName() != null){
+        			textView.setText(user.doctorInfo.getDisplayName());
         		} else if(user.getNick() != null) {
         			textView.setText(user.getNick());
         		}

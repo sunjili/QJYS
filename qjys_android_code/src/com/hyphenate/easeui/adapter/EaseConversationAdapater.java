@@ -28,7 +28,10 @@ import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.util.DateUtils;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
 /**
@@ -132,7 +135,21 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         if (conversation.getAllMsgCount() != 0) {
             // 把最后一条消息的内容作为item的message内容
             EMMessage lastMessage = conversation.getLastMessage();
-            holder.message.setText(EaseSmileUtils.getSmiledText(getContext(), EaseCommonUtils.getMessageDigest(lastMessage, (this.getContext()))),
+            String lastStr =  EaseCommonUtils.getMessageDigest(lastMessage, (this.getContext()));
+            if(UserContext.getInstance().isMyself(lastMessage.getFrom())) {
+            	lastStr="我："+lastStr;
+            } else {
+            	DoctorListManager.getInstance().getDoctorInfoByHXid(lastMessage.getFrom(), new OnGetDoctorInfoCallback() {
+					
+					@Override
+					public void onGet(DoctorInfo info) {
+						if(info != null) {
+							info.getDisplayName();
+						}
+					}
+				});
+            };
+            holder.message.setText(EaseSmileUtils.getSmiledText(getContext(), lastStr),
                     BufferType.SPANNABLE);
 
             holder.time.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));

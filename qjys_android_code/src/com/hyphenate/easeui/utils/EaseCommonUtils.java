@@ -160,8 +160,8 @@ public class EaseCommonUtils {
      */
     public static void setUserInitialLetter(EaseUser user) {
     	String headerName = null;
-        if(user.doctorInfo != null && !TextUtils.isEmpty(user.doctorInfo.name)) {
-        	headerName = user.doctorInfo.name;
+        if(user.doctorInfo != null && !TextUtils.isEmpty(user.doctorInfo.getDisplayName())) {
+        	headerName = user.doctorInfo.getDisplayName();
         } else if(user.doctorInfo != null && !TextUtils.isEmpty(user.doctorInfo.phone)) {
         	headerName = user.doctorInfo.phone;
         } else if (!TextUtils.isEmpty(user.getNick())) {

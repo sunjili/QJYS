@@ -115,4 +115,17 @@ public class DoctorInfo implements Serializable, Parcelable {
 		}
 		return TextUtils.equals(id, UserContext.getInstance().getUserId());
 	}
+
+	public String getDisplayName() {
+		if(!TextUtils.isEmpty(remark)) {
+			return remark;
+		} else 	if(!TextUtils.isEmpty(name)) {
+			return name;
+		} else 	if(!TextUtils.isEmpty(phone)) {
+			return phone;
+		} else 	if(!TextUtils.isEmpty(id)) {
+			return id;
+		}
+		return "";
+	}
 }

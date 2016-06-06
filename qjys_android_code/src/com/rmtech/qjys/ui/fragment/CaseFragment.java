@@ -584,7 +584,7 @@ public class CaseFragment extends QjBaseFragment {
 			}
 			genderTv.setText(genderStr);
 
-			String doctorsStr = "主管医生:" + info.admin_doctor.name;
+			String doctorsStr = "主管医生:" + info.admin_doctor.getDisplayName();
 			if (info.participate_doctor != null
 					&& !info.participate_doctor.isEmpty()) {
 				StringBuilder sb = new StringBuilder();

@@ -111,7 +111,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 				@Override
 				public void onGet(DoctorInfo info) {
 					if(info != null) {
-						holder.name.setText(info.name);
+						holder.name.setText(info.getDisplayName());
 						ImageLoader.getInstance().displayImage(info.head, holder.avator,QjConstant.optionsHead);
 					}
 				}

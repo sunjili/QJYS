@@ -17,6 +17,7 @@ import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.sjl.lib.multi_image_selector.view.SquaredImageView;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -81,8 +82,12 @@ public class ChatDetailActivity  extends BaseActivity implements OnClickListener
 			public void onGet(DoctorInfo info) {
 				if(info != null) {
 					doctorInfo = info;
-					name_tv.setText(info.remark==null?info.name:info.remark);
-					nike_tv.setText("昵称：" + info.name);
+					name_tv.setText(TextUtils.isEmpty(info.name)?info.phone:info.name);
+					if(TextUtils.isEmpty(info.remark)) {
+						nike_tv.setVisibility(View.GONE);
+					} else {
+						nike_tv.setText("昵称：" + info.remark);
+					}
 					ImageLoader.getInstance().displayImage(info.head, avatar,
 							QjConstant.optionsHead);
 				}

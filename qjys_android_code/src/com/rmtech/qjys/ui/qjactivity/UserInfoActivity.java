@@ -117,7 +117,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 				user_beizhu.setVisibility(View.VISIBLE);
 				userPhone.setVisibility(View.VISIBLE);
 				btnSendmessage.setText("通过验证");
-				tvHello.setText(doctorInfo.name + "请求添加您为好友");
+				tvHello.setText(doctorInfo.getDisplayName() + "请求添加您为好友");
 			}else if(from.equals("qrcode")){
 				setLeftTitle("扫一扫");
 				btnDelete.setVisibility(View.GONE);
@@ -193,9 +193,17 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 
 		ImageLoader.getInstance().displayImage(doctorInfo.head, ivHead,
 				QjConstant.optionsHead);
-		tv_name.setText(doctorInfo.remark!=null ? doctorInfo.remark : doctorInfo.name);
+//		tv_name.setText(doctorInfo.remark!=null ? doctorInfo.remark : doctorInfo.name);
 
-		tvNickname.setText("昵称："+doctorInfo.name);
+		tvNickname.setText("昵称："+doctorInfo.getDisplayName());
+		
+		tv_name.setText(TextUtils.isEmpty(doctorInfo.name)?doctorInfo.phone:doctorInfo.name);
+		if(TextUtils.isEmpty(doctorInfo.remark)) {
+			tvNickname.setVisibility(View.GONE);
+		} else {
+			tvNickname.setText("昵称：" + doctorInfo.remark);
+		}
+		
 		if(doctorInfo.remark!=null){
 			tvNickname.setVisibility(View.VISIBLE);
 			vNikename.setVisibility(View.VISIBLE);

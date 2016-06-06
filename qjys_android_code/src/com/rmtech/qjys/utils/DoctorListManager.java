@@ -129,7 +129,7 @@ public class DoctorListManager {
 			EaseUser user = new EaseUser(info.id);
 			EaseCommonUtils.setUserInitialLetter(user);
 			user.setAvatar(info.head);
-			user.setNick(info.name);
+			user.setNick(info.getDisplayName());
 			contactList.add(user);
 		}
 		// 排序

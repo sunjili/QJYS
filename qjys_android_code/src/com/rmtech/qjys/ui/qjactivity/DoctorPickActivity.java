@@ -104,7 +104,7 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 							EaseUser user = new EaseUser(info.id);
 							EaseCommonUtils.setUserInitialLetter(user);
 							user.setAvatar(info.head);
-							user.setNick(info.name);
+							user.setNick(info.getDisplayName());
 							alluserList.add(user);
 						}
 
