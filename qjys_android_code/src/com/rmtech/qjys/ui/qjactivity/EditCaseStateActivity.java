@@ -41,6 +41,7 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 	List<StateInfo> listems;
 	private StateInfo state = new StateInfo();
 	private boolean isNew = false;
+	private String stateStr = "";
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -53,17 +54,18 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				stateStr = et_state_add.getText().toString().trim();
 				if (mCaseInfo != null) {
-					if (TextUtils.equals(state.name, mCaseInfo.treat_state)) {
+					if (TextUtils.equals(stateStr, mCaseInfo.treat_state)) {
 						Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
 						Intent data = new Intent();
-						data.putExtra("string", state.name);
+						data.putExtra("string", stateStr);
 						setResult(MeNameActivity.RESULT_OK, data);
 						finish();
 						return;
 					}
 					HashMap<String, String> params = new HashMap<String, String>();
-					params.put("treat_state", state.name);
+					params.put("treat_state", stateStr);
 					params.put("patient_id", mCaseInfo.id);
 					OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
 
@@ -78,10 +80,10 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 
 							CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
 							if (caseInfo != null) {
-								caseInfo.treat_state = state.name;
+								caseInfo.treat_state = stateStr;
 							}
 							Intent data = new Intent();
-							data.putExtra("string", state.name);
+							data.putExtra("string", stateStr);
 							setResult(MeNameActivity.RESULT_OK, data);
 							finish();
 						}
@@ -90,9 +92,9 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 					return;
 
 				}
-				if (!TextUtils.isEmpty(state.name)) {
+				if (!TextUtils.isEmpty(stateStr)) {
 					Intent data = new Intent();
-					data.putExtra("string", state.name);
+					data.putExtra("string", stateStr);
 					setResult(MeNameActivity.RESULT_OK, data);
 				}
 				finish();

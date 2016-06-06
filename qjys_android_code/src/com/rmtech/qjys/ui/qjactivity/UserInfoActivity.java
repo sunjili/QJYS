@@ -265,6 +265,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 						public void run() {
 							EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_ADD));
 							pd.dismiss();
+							doctorInfo.isFriend = 1;
 							btnDelete.setVisibility(View.VISIBLE);
 							btnSendmessage.setText("发消息");
 							user_beizhu.setVisibility(View.VISIBLE);
@@ -361,6 +362,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 										}
 									}
 								}).start();
+								doctorInfo.isFriend = 0;
 								UserInfoActivity.this.finish();
 								break;
 							}

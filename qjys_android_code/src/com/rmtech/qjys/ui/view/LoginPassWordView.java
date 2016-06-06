@@ -16,14 +16,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import okhttp3.Call;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.rmtech.qjys.QjApplication;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.db.DemoDBManager;
 import com.rmtech.qjys.hx.QjHelper;
+import com.rmtech.qjys.model.UserContext;
+import com.rmtech.qjys.model.gson.MUser;
 import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
@@ -92,7 +97,7 @@ public class LoginPassWordView extends LoginBaseView implements View.OnClickList
 			}
 		});
 		if (QjHelper.getInstance().getCurrentUsernName() != null) {
-			usernameEditText.setText(QjHelper.getInstance().getCurrentUsernName());
+			usernameEditText.setText("");
 		}
 	}
 
@@ -141,6 +146,27 @@ public class LoginPassWordView extends LoginBaseView implements View.OnClickList
 		QjHelper.getInstance().setCurrentUserName(currentUsername);
 
 		final long start = System.currentTimeMillis();
+		QjHttp.pwLogin(currentUsername, currentPassword, new QjHttpCallback<MUser>() {
+			
+			@Override
+			public MUser parseNetworkResponse(String str) throws Exception {
+				// TODO Auto-generated method stub
+				Log.e("parseNetworkResponse", str);
+				
+				return null;
+			}
+			
+			@Override
+			public void onResponseSucces(MUser response) {
+				// TODO Auto-generated method stub
+				Log.e("onResponseSucces", response.toString());
+			}
+			
+			@Override
+			public void onError(Call call, Exception e) {
+				// TODO Auto-generated method stub
+			}
+		});
 		// 调用sdk登陆方法登陆聊天服务器
 		Log.d(TAG, "EMClient.getInstance().login");
 		EMClient.getInstance().login(currentUsername, currentPassword, new EMCallBack() {

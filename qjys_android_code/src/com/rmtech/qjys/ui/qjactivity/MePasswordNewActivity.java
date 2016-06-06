@@ -91,8 +91,11 @@ public class MePasswordNewActivity extends BaseActivity implements
 								Toast.makeText(MePasswordNewActivity.this, "密码设置失败!", Toast.LENGTH_LONG).show();
 							}
 						});
-					}else {
-						//各种提示消息：密码不足8位，不相同等等。
+					}else if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
+							&&password1.length() < 8){
+						Toast.makeText(MePasswordNewActivity.this, "您输入的密码不足8位，请重新输入!", Toast.LENGTH_LONG).show();
+						et_password_1.setText("");
+						et_password_2.setText("");
 					}
 				}
 			});

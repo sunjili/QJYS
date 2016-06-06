@@ -15,11 +15,11 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
-        android:textColorHint="@color/cd9"
         android:background="@drawable/qj_me_edit_selector"
         android:hint="请输入规范名称"
         android:inputType="text"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textColorHint="@color/cd9" />
 
     <View
         android:layout_width="match_parent"
@@ -45,29 +45,29 @@
             android:layout_marginRight="1dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:textColorHint="@color/cd9"
             android:gravity="top|left"
             android:hint="请填写规范内容"
             android:inputType="textMultiLine"
             android:minHeight="350dp"
-            android:singleLine="false" />
-
-        <Button
-            android:id="@+id/btn_delete"
-            style="@style/redbutton"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="15dp"
-            android:text="删除此规范" />
+            android:singleLine="false"
+            android:textColorHint="@color/cd9" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_delete"
+        style="@style/redbutton"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="15dp"
+        android:text="删除此规范" />
 
     <RelativeLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_gravity="bottom" 
-        android:background="@color/white">
+        android:layout_gravity="bottom"
+        android:background="@color/white" >
 
         <View
             android:id="@+id/v_top"
@@ -82,9 +82,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_margin="8dp"
             android:background="@drawable/qj_me_right_selector"
-            android:button="@null"
-            android:layout_margin="8dp" />
+            android:button="@null" />
 
         <TextView
             android:layout_width="match_parent"

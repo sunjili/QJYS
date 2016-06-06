@@ -792,11 +792,11 @@ public class QjHelper {
 		intent.putExtra(QjConstant.ACCOUNT_REMOVED, true);
 		appContext.startActivity(intent);
 	}
-
-	private EaseUser getUserInfo(String username) {
-		// 获取user信息，demo是从内存的好友列表里获取，
-		// 实际开发中，可能还需要从服务器获取用户信息,
-		// 从服务器获取的数据，最好缓存起来，避免频繁的网络请求
+	
+	public EaseUser getUserInfo(String username){
+	    //获取user信息，demo是从内存的好友列表里获取，
+        //实际开发中，可能还需要从服务器获取用户信息,
+        //从服务器获取的数据，最好缓存起来，避免频繁的网络请求
 		EaseUser user = null;
 		if (username.equals(EMClient.getInstance().getCurrentUser())) {
 			EaseUser cuser = getUserProfileManager().getCurrentUserInfo();

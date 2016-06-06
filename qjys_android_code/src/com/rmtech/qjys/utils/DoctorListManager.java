@@ -11,6 +11,10 @@ import java.util.Set;
 import okhttp3.Call;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -28,6 +32,9 @@ import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.model.gson.MUser;
+import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.sjl.lib.db.DBUtil;
 
 public class DoctorListManager {
@@ -233,7 +240,7 @@ public class DoctorListManager {
 		public void onSendRequestError();
 	}
 
-	public static void addFriendByPhoneNumber(final Activity activity, String phoneNumber, final String reason,
+	public static void addFriendByPhoneNumber(final Activity activity, final String phoneNumber, final String reason,
 			final OnAddFriendCallback callback) {
 		if (TextUtils.isEmpty(phoneNumber)) {
 			new EaseAlertDialog(activity, R.string.Please_enter_a_username).show();
@@ -268,7 +275,35 @@ public class DoctorListManager {
 						return;
 					}
 				}
-				new EaseAlertDialog(activity, "服务器未查询到此用户").show();
+//				new EaseAlertDialog(activity, "服务器未查询到此用户").show();
+
+				CustomSimpleDialog.Builder builder = new Builder(activity);  
+		        builder.setTitle("提示");  
+		        builder.setMessage("您的好友尚未安装奇迹医生App，赶紧给Ta发短信提醒Ta下载吧！");  
+		        builder.setPositiveButton("发短信", new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO 发短信操作
+						Uri smsToUri = Uri.parse("smsto:" + phoneNumber);    
+					    Intent mIntent = new Intent(android.content.Intent.ACTION_SENDTO, smsToUri);  
+					    mIntent.putExtra("sms_body", "您的好友 " + UserContext.getInstance().getUserName() 
+					        + " 正在使用奇迹医生App，并申请加您为好友，您可以访问此链接下载并安装奇迹医生App：" + "{网址}"
+					    		+ "，然后通过搜索Ta的手机号就可以加Ta为好友了。【奇迹医生】");
+					    activity.startActivity(mIntent);
+						
+						dialog.dismiss();
+					}
+				});  
+                builder.setNegativeButton("取消", new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						dialog.dismiss();
+					}
+				}); 
+		        builder.create().show();
 				if (callback != null) {
 					callback.onSendRequestError();
 				}

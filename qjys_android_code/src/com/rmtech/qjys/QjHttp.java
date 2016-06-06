@@ -46,8 +46,10 @@ public class QjHttp {
 	private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
 	public static final String URL_DOCTOR_SETPASS = "/doctor/setpass";
+	public static final String URL_DOCTOR_RESETPASS = "/doctor/resetpass";
 	public static final String URL_DOCTOR_APPLYCODE = "/doctor/applycode";
-	public static final String URL_DOCTOR_SMSLOGIN = "/doctor/smslogin";
+	public static final String URL_DOCTOR_SMSLOGIN = "/doctor/smslogin"; 
+	public static final String URL_DOCTOR_PASSLOGIN = "/doctor/passlogin";  
 	public static final String URL_DOCTOR_SEARCH = "/doctor/search";
 	public static final String URL_CREATE_PATIENT = "/patient/createpatient";
 	public static final String URL_PATIENT_LIST = "/patient/patientlist";
@@ -169,7 +171,7 @@ public class QjHttp {
 	}
 
 	/**
-	 * 设置/重置登录密码 /doctor/setpass 请求方法： post
+	 * 设置/重置登录密码  /doctor/setpass 请求方法： post
 	 * 
 	 * 请求参数 password: 密码
 	 */
@@ -180,6 +182,21 @@ public class QjHttp {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("passwd", password);
 		OkHttpUtils.post(URL_DOCTOR_SETPASS, params, callback);
+	}
+	
+	/**
+	 * 设置/重置登录密码  /doctor/setpass 请求方法： post
+	 * 
+	 * 请求参数 password: 密码
+	 */
+	public static void resetPassword(String oldPassword, String newPassword, BaseModelCallback callback) {
+		if (oldPassword == null || newPassword == null) {
+			return;
+		}
+		HashMap<String, String> params = new HashMap<>();
+		params.put("old_pass", oldPassword);
+		params.put("new_pass", newPassword);
+		OkHttpUtils.post(URL_DOCTOR_RESETPASS, params, callback);
 	}
 
 	/**
@@ -539,6 +556,13 @@ public class QjHttp {
 		params.put("phone", inuptPhoneStr);
 		params.put("code", codeStr);
 		OkHttpUtils.post(URL_DOCTOR_SMSLOGIN, params, callback);
+	}
+	
+	public static void pwLogin(String inuptPhoneStr, String passwd, QjHttpCallback<MUser> callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("phone", inuptPhoneStr);
+		params.put("passwd ", passwd);
+		OkHttpUtils.post(URL_DOCTOR_PASSLOGIN, params, callback);
 	}
 
 	public static void serchContact(String toAddUsername, QjHttpCallback<MUser> callback) {

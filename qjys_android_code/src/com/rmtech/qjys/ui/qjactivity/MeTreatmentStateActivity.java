@@ -50,14 +50,14 @@ public class MeTreatmentStateActivity extends BaseActivity implements View.OnCli
 		super.onCreate(arg0);
 		context = MeTreatmentStateActivity.this;
 		setContentView(R.layout.qj_me_treament_state);
-		setRightTitle("保存", new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				//
-				MeTreatmentStateActivity.this.finish();
-			}
-		});
+//		setRightTitle("保存", new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				//
+//				MeTreatmentStateActivity.this.finish();
+//			}
+//		});
 		setTitle("设置就诊状态");
 		setLeftTitle("我");
 		initView();

@@ -7,8 +7,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.Toast;
+import okhttp3.Call;
 
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.model.UserContext;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
 
 /***
@@ -45,17 +51,41 @@ public class MePasswordChangeActivity extends BaseActivity implements
 				password_old=et_password_old.getText().toString().trim();
 				password1=et_password_new_1.getText().toString().trim();
 				password2=et_password_new_2.getText().toString().trim();
-				if(password_old.equals("")){
+				if(password_old.length()<8){
 					//TODO 判断登录密码是否正确
 					
 				}
-				
-				if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)) {
-					//TODO  保存新密码到服务器
-					
-					
-					
-					finish();
+				if(!password1.equals(password2)){
+					Toast.makeText(MePasswordChangeActivity.this, "两次输入的密码不相同！", Toast.LENGTH_LONG).show();
+					return;
+				}
+				if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
+						&&password1.length()>=8) {
+					//  保存新密码到服务器
+					QjHttp.resetPassword(password_old, password1, new BaseModelCallback() {
+						
+						@Override
+						public void onResponseSucces(MBase response) {
+							// TODO 改变UserInfo中的isset_passwd值？？怎么改
+							
+							Intent data=new Intent();
+							data.putExtra("boolean", true);
+							setResult(MeNameActivity.RESULT_OK, data);
+							UserContext.getInstance().setPasswordFlag(true);
+							finish();
+						}
+						
+						@Override
+						public void onError(Call call, Exception e) {
+							// TODO Auto-generated method stub
+							Toast.makeText(MePasswordChangeActivity.this, "密码设置失败!", Toast.LENGTH_LONG).show();
+						}
+					});
+				}else if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
+						&&password1.length() < 8){
+					Toast.makeText(MePasswordChangeActivity.this, "您输入的新密码不足8位，请重新输入!", Toast.LENGTH_LONG).show();
+					et_password_new_1.setText("");
+					et_password_new_2.setText("");
 				}
 			}
 		});
@@ -64,6 +94,7 @@ public class MePasswordChangeActivity extends BaseActivity implements
 
 	private void initView() {
 		et_password_old = (EditText) findViewById(R.id.et_password_old);
+		setTextWhacher(MePasswordChangeActivity.this, et_password_old, 16);
 		et_password_new_1 = (EditText) findViewById(R.id.et_password_new_1);
 		setTextWhacher(MePasswordChangeActivity.this, et_password_new_1, 16);
 		et_password_new_2 = (EditText) findViewById(R.id.et_password_new_2);
