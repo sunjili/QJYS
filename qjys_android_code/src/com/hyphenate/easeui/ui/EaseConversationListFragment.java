@@ -13,9 +13,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import okhttp3.Call;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -30,6 +35,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMConversationListener;
@@ -41,6 +47,7 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.gson.MGroupList;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
+import com.rmtech.qjys.ui.fragment.CaseFragment.MyNetworkReceiver;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.swipemenulistview.SwipeMenu;
 import com.sjl.lib.swipemenulistview.SwipeMenuCreator;
@@ -60,9 +67,11 @@ public class EaseConversationListFragment extends QjBaseFragment {
 	protected List<EMConversation> conversationList = new ArrayList<EMConversation>();
 	protected EaseConversationList conversationListView;
 	protected ViewGroup errorItemContainer;
+	
 
 	protected boolean isConflict;
 	private PtrClassicFrameLayout mPtrFrame;
+	public LinearLayout neterrorview;
 
 	protected EMConversationListener convListener = new EMConversationListener() {
 
@@ -75,6 +84,9 @@ public class EaseConversationListFragment extends QjBaseFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		IntentFilter filter= new IntentFilter();    
+	    filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+	    getActivity().registerReceiver(new MyNetworkReceiver(), filter);
 		return inflater.inflate(R.layout.ease_fragment_conversation_list, container, false);
 	}
 
@@ -90,6 +102,7 @@ public class EaseConversationListFragment extends QjBaseFragment {
 		inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		// 会话列表控件
 		conversationListView = (EaseConversationList) getView().findViewById(R.id.list);
+		neterrorview = (LinearLayout) getView().findViewById(R.id.neterrorview);
 		// 搜索框
 		// query = (EditText) getView().findViewById(R.id.query);
 		// 搜索框中清除button
@@ -322,6 +335,31 @@ public class EaseConversationListFragment extends QjBaseFragment {
 			}
 		}
 	};
+	
+	public class MyNetworkReceiver extends BroadcastReceiver {  
+	    @Override  
+	    public void onReceive(Context context, Intent intent) {  
+	        // TODO Auto-generated method stub  
+	    	
+	        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);  
+	        NetworkInfo mobileInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);  
+	        NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);  
+	        NetworkInfo activeInfo = manager.getActiveNetworkInfo();  
+//	        Toast.makeText(context, "mobile:"+mobileInfo.isConnected()+"\n"+"wifi:"+wifiInfo.isConnected()  
+//	                        +"\n"+"active:"+activeInfo.getTypeName(), 1).show();
+	        if (conversationList == null || conversationList.size() == 0) {
+				neterrorview.setVisibility(View.GONE);
+			} else {
+				if(activeInfo!=null&&activeInfo.isConnectedOrConnecting()){
+					neterrorview.setVisibility(View.GONE);
+		        }else{
+		        	neterrorview.setVisibility(View.VISIBLE);
+		        }
+			}
+	        
+	    } 
+	  
+	}  
 
 	/**
 	 * 连接到服务器

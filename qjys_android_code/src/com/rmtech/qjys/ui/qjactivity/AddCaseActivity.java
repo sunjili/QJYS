@@ -7,6 +7,7 @@ import okhttp3.Call;
 import org.greenrobot.eventbus.EventBus;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -73,6 +74,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	private String currentHospital;
 	private String tempCaseId;
 	private ArrayList<DoctorInfo> currentDoctorList = new ArrayList<DoctorInfo>();
+	private ProgressDialog mProgressDialog;
 
 	// private String procedure_title;
 	// private String procedure_text;
@@ -193,6 +195,9 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 	}
 
 	private void onJumpAction(final int targetId) {
+		if(mProgressDialog != null) {
+			mProgressDialog.dismiss();
+		}
 		if (targetId == R.id.photo_data_layout) {
 			PhotoDataUploadActivity.show(getActivity(), tempCaseId);
 		} else if (targetId == R.id.doctors_layout) {
@@ -310,9 +315,11 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 			selectSex = 2;
 			break;
 		case R.id.photo_data_layout:
+			showProgressDialog();
 			jumpActivity(1, R.id.photo_data_layout);
 			break;
 		case R.id.doctors_layout:
+			showProgressDialog();
 			jumpActivity(1, R.id.doctors_layout);
 			break;
 		case R.id.hospital_layout:
@@ -334,6 +341,10 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 			// }
 			break;
 		}
+	}
+
+	private void showProgressDialog() {
+		mProgressDialog = ProgressDialog.show(getActivity(), null, "保存临时病例");
 	}
 
 	private FlowInfo mFlowInfo = new FlowInfo();

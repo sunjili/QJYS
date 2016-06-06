@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:hyphenate="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,16 +17,38 @@
     <FrameLayout
         android:id="@+id/fl_error_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/titlebar" >
+        android:layout_height="match_parent" >
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/neterrorview"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#fdf0b7"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ease_login_error_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:text="当前网络不可用，请检查你的网络设置！"
+            android:textColor="@color/c3"
+            android:textSize="13sp" />
+    </LinearLayout>
 
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
         xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_view_with_empty_view_fragment_ptr_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/titlebar"
         cube_ptr:ptr_duration_to_close="200"
         cube_ptr:ptr_duration_to_close_header="1000"
         cube_ptr:ptr_keep_header_when_refresh="true"
@@ -40,8 +62,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:cacheColorHint="#00000000"
-            android:divider="@null"
-             />
+            android:divider="@null" />
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
-</RelativeLayout>
+</LinearLayout>

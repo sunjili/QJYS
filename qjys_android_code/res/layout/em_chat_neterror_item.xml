@@ -7,9 +7,9 @@
     <LinearLayout
         android:id="@+id/errormsg_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
-        android:background="@drawable/em_chat_error_item_bg"
+        android:background="#fdf0b7"
         android:gravity="center_vertical" >
 
         <ImageView

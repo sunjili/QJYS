@@ -65,6 +65,10 @@ public class MePasswordNewActivity extends BaseActivity implements
 				public void onClick(View v) {
 					password1=et_password_1.getText().toString().trim();
 					password2=et_password_2.getText().toString().trim();
+					if(!password1.equals(password2)){
+						Toast.makeText(MePasswordNewActivity.this, "两次输入的密码不相同！", Toast.LENGTH_LONG).show();
+						return;
+					}
 					if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
 							&&password1.length()>=8) {
 						//  保存新密码到服务器
@@ -77,6 +81,7 @@ public class MePasswordNewActivity extends BaseActivity implements
 								Intent data=new Intent();
 								data.putExtra("boolean", true);
 								setResult(MeNameActivity.RESULT_OK, data);
+								UserContext.getInstance().setPasswordFlag(true);
 								finish();
 							}
 							

@@ -528,9 +528,9 @@ public class QjHttp {
 		OkHttpUtils.post(URL_DOCTOR_APPLYCODE, params, callback);
 	}
 
-	public static void addFriend(String phoneNumer, BaseModelCallback callback) {
+	public static void addFriend(String friend_id, BaseModelCallback callback) {
 		HashMap<String, String> params = new HashMap<>();
-		params.put("phone", phoneNumer);
+		params.put("friend_id", friend_id);
 		OkHttpUtils.post(URL_ADD_FRIEND, params, callback);
 	}
 

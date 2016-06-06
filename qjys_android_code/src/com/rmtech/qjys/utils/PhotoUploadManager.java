@@ -125,7 +125,7 @@ public class PhotoUploadManager {
 	}
 
 	private void postUploadEvent(PhotoUploadStateInfo info, boolean isAdd) {
-		ImageUploadEvent event = new ImageUploadEvent(info, taskMap.size(), isAdd);
+		ImageUploadEvent event = new ImageUploadEvent(info, taskMap.size(), isAdd?ImageUploadEvent.TYPE_ADD:0);
 		EventBus.getDefault().post(event);
 	}
 

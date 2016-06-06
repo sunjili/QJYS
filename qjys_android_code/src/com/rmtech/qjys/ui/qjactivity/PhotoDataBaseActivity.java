@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.greenrobot.eventbus.EventBus;
+
 import okhttp3.Call;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,6 +30,7 @@ import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.event.ImageUploadEvent;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
@@ -284,7 +287,15 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 		public void onDeleteSuccess(FolderDataInfo item);
 	}
 
-	public static void deleteItem(final Context context, final Object item, final OnDeleteCallback callback) {
+	public static void deleteItem(final Context context,final String folderId, final Object item, final OnDeleteCallback callback) {
+		if (!(item instanceof PhotoDataInfo) && (item instanceof FolderDataInfo))  {
+			if(((FolderDataInfo) item).image_count > 0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setTitle("提示").setMessage("请先删除此文件夹下所有文件，再删除此文件夹！").setCancelable(false).setNegativeButton("确定", null);
+				builder.create().show();
+				return;
+			}
+		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage("确定删除？").setCancelable(false).setNegativeButton("确定", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
@@ -298,6 +309,9 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 							if (callback != null) {
 								callback.onDeleteSuccess((FolderDataInfo) item);
 							}
+							
+							ImageUploadEvent event = new ImageUploadEvent(folderId, ImageUploadEvent.TYPE_DELETE);
+							EventBus.getDefault().post(event);
 						}
 
 						@Override

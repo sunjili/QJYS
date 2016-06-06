@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sharepop_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/cf4f5f9" >
+    
+    <include layout="@layout/qj_me_split_line"/>
+    
+    <GridView 
+        android:id="@+id/grid_share"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:numColumns="4"
+        android:layout_margin="10dp"
+        android:background="@color/transparent">
+        
+    </GridView>
+    
+    <include layout="@layout/qj_me_split_line"/>
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/share_cancel"
+        android:text="取消"
+        android:textColor="@color/c7e"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:padding="10dp"/>
+
+    
+    
+
+</LinearLayout>

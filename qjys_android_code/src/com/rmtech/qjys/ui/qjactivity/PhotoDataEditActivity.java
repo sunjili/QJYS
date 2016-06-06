@@ -23,6 +23,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
@@ -61,11 +62,15 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		setContentView(R.layout.activity_qj_photo_edit);
 
 		photoView = (PhotoView) findViewById(R.id.photoView);
 		titleLayout = (RelativeLayout) findViewById(R.id.title_layout);
 		returnTv = (TextView) findViewById(R.id.return_tv);
+		returnTv.setOnClickListener(this);
+
 		titleTv = (TextView) findViewById(R.id.title_tv);
 		editTv = (TextView) findViewById(R.id.edit_tv);
 		editTv.setOnClickListener(this);
@@ -100,6 +105,9 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.return_tv:
+			finish();
+			break;
 		case R.id.mirror_tv:
 			photoView.setMirror();
 			break;

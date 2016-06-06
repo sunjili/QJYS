@@ -57,6 +57,7 @@ import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
+import com.rmtech.qjys.utils.DoctorListManager;
 
 public class MainActivity extends BaseActivity {
 
@@ -472,6 +473,7 @@ public class MainActivity extends BaseActivity {
 		sdkHelper.pushActivity(this);
 
 		EMClient.getInstance().chatManager().addMessageListener(messageListener);
+		DoctorListManager.getDeletedFriends();
 	}
 
 	@Override

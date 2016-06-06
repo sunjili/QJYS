@@ -3,7 +3,10 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -63,7 +66,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 //		}
 		if (isRootFolder()) {
 			TextView textView = setTitle(name);
-			textView.setMaxEms(4);
+			textView.setMaxEms(5);
 			textView.setEllipsize(TextUtils.TruncateAt.END);
 			textView.setSingleLine();
 		} else {
@@ -81,7 +84,25 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 		mCaseTopBarView.setCaseInfo(caseInfo);
 		mPhotoManagerFragment.setIds(caseInfo, folderDataInfo);
 		isFirstCreate = true;
+		
+		 IntentFilter filter= new IntentFilter();    
+	     filter.addAction("case_delete");
+	     registerReceiver(CaseDeleteReceiver , filter); 
 	}
+	
+	
+	private BroadcastReceiver CaseDeleteReceiver = new BroadcastReceiver() {    
+        public void onReceive(Context context, Intent intent) {    
+            if(intent.getAction().equals("case_delete")) {    
+            	if(intent.getStringExtra("delete").equals("true")){
+                    PhotoDataManagerActivity.this.finish();
+            	}
+            } else {    
+               
+            }    
+          
+        }    
+    }; 
 	
 	
 	

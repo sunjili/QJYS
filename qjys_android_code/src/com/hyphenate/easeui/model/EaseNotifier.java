@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
@@ -35,6 +36,7 @@ import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseSettingsProvider;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.EasyUtils;
+import com.rmtech.qjys.domain.InviteMessage;
 
 /**
  * 新消息提醒class
@@ -185,50 +187,23 @@ public class EaseNotifier {
      * This can be override by subclass to provide customer implementation
      * @param message
      */
-    protected void sendNotification(EMMessage message, boolean isForeground, boolean numIncrease) {
-        String username = message.getFrom();
-        try {
+    public void sendNotification(String username, String reason) {
+    	try {
+    		// 判断app是否在后台
+    		boolean	isForeground =  EasyUtils.isAppRunningForeground(appContext);
             String notifyText = username + " ";
-            switch (message.getType()) {
-            case TXT:
-                notifyText += msgs[0];
-                break;
-            case IMAGE:
-                notifyText += msgs[1];
-                break;
-            case VOICE:
 
-                notifyText += msgs[2];
-                break;
-            case LOCATION:
-                notifyText += msgs[3];
-                break;
-            case VIDEO:
-                notifyText += msgs[4];
-                break;
-            case FILE:
-                notifyText += msgs[5];
-                break;
-            }
+    		if(TextUtils.isEmpty(reason)) {
+    			notifyText = username + "申请添加你为朋友";
+    		} else {
+    			notifyText =  reason;
+    		}
             
             PackageManager packageManager = appContext.getPackageManager();
             String appname = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
             
             // notification titile
-            String contentTitle = appname;
-            if (notificationInfoProvider != null) {
-                String customNotifyText = notificationInfoProvider.getDisplayedText(message);
-                String customCotentTitle = notificationInfoProvider.getTitle(message);
-                if (customNotifyText != null){
-                    // 设置自定义的状态栏提示内容
-                    notifyText = customNotifyText;
-                }
-                    
-                if (customCotentTitle != null){
-                    // 设置自定义的通知栏标题
-                    contentTitle = customCotentTitle;
-                }   
-            }
+            String contentTitle = notifyText;
 
             // create and send notificaiton
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(appContext)
@@ -239,39 +214,15 @@ public class EaseNotifier {
             Intent msgIntent = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
             if (notificationInfoProvider != null) {
                 // 设置自定义的notification点击跳转intent
-                msgIntent = notificationInfoProvider.getLaunchIntent(message);
+               // msgIntent = notificationInfoProvider.getLaunchIntent(message);
             }
 
             PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-            if(numIncrease){
-                // prepare latest event info section
-                if(!isForeground){
-                    notificationNum++;
-                    fromUsers.add(message.getFrom());
-                }
-            }
-
-            int fromUsersNum = fromUsers.size();
-            String summaryBody = msgs[6].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2",Integer.toString(notificationNum));
             
-            if (notificationInfoProvider != null) {
-                // lastest text
-                String customSummaryBody = notificationInfoProvider.getLatestText(message, fromUsersNum,notificationNum);
-                if (customSummaryBody != null){
-                    summaryBody = customSummaryBody;
-                }
-                
-                // small icon
-                int smallIcon = notificationInfoProvider.getSmallIcon(message);
-                if (smallIcon != 0){
-                    mBuilder.setSmallIcon(smallIcon);
-                }
-            }
 
             mBuilder.setContentTitle(contentTitle);
             mBuilder.setTicker(notifyText);
-            mBuilder.setContentText(summaryBody);
+//            mBuilder.setContentText(summaryBody);
             mBuilder.setContentIntent(pendingIntent);
             // mBuilder.setNumber(notificationNum);
             Notification notification = mBuilder.build();
@@ -286,6 +237,108 @@ public class EaseNotifier {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    protected void sendNotification(EMMessage message, boolean isForeground, boolean numIncrease) {
+    	String username = message.getFrom();
+    	try {
+    		String notifyText = username + " ";
+    		switch (message.getType()) {
+    		case TXT:
+    			notifyText += msgs[0];
+    			break;
+    		case IMAGE:
+    			notifyText += msgs[1];
+    			break;
+    		case VOICE:
+    			
+    			notifyText += msgs[2];
+    			break;
+    		case LOCATION:
+    			notifyText += msgs[3];
+    			break;
+    		case VIDEO:
+    			notifyText += msgs[4];
+    			break;
+    		case FILE:
+    			notifyText += msgs[5];
+    			break;
+    		}
+    		
+    		PackageManager packageManager = appContext.getPackageManager();
+    		String appname = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
+    		
+    		// notification titile
+    		String contentTitle = appname;
+    		if (notificationInfoProvider != null) {
+    			String customNotifyText = notificationInfoProvider.getDisplayedText(message);
+    			String customCotentTitle = notificationInfoProvider.getTitle(message);
+    			if (customNotifyText != null){
+    				// 设置自定义的状态栏提示内容
+    				notifyText = customNotifyText;
+    			}
+    			
+    			if (customCotentTitle != null){
+    				// 设置自定义的通知栏标题
+    				contentTitle = customCotentTitle;
+    			}   
+    		}
+    		
+    		// create and send notificaiton
+    		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(appContext)
+    		.setSmallIcon(appContext.getApplicationInfo().icon)
+    		.setWhen(System.currentTimeMillis())
+    		.setAutoCancel(true);
+    		
+    		Intent msgIntent = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
+    		if (notificationInfoProvider != null) {
+    			// 设置自定义的notification点击跳转intent
+    			msgIntent = notificationInfoProvider.getLaunchIntent(message);
+    		}
+    		
+    		PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+    		
+    		if(numIncrease){
+    			// prepare latest event info section
+    			if(!isForeground){
+    				notificationNum++;
+    				fromUsers.add(message.getFrom());
+    			}
+    		}
+    		
+    		int fromUsersNum = fromUsers.size();
+    		String summaryBody = msgs[6].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2",Integer.toString(notificationNum));
+    		
+    		if (notificationInfoProvider != null) {
+    			// lastest text
+    			String customSummaryBody = notificationInfoProvider.getLatestText(message, fromUsersNum,notificationNum);
+    			if (customSummaryBody != null){
+    				summaryBody = customSummaryBody;
+    			}
+    			
+    			// small icon
+    			int smallIcon = notificationInfoProvider.getSmallIcon(message);
+    			if (smallIcon != 0){
+    				mBuilder.setSmallIcon(smallIcon);
+    			}
+    		}
+    		
+    		mBuilder.setContentTitle(contentTitle);
+    		mBuilder.setTicker(notifyText);
+    		mBuilder.setContentText(summaryBody);
+    		mBuilder.setContentIntent(pendingIntent);
+    		// mBuilder.setNumber(notificationNum);
+    		Notification notification = mBuilder.build();
+    		
+    		if (isForeground) {
+    			notificationManager.notify(foregroundNotifyID, notification);
+    			notificationManager.cancel(foregroundNotifyID);
+    		} else {
+    			notificationManager.notify(notifyID, notification);
+    		}
+    		
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
     /**

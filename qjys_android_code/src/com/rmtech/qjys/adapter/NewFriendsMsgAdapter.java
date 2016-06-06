@@ -15,6 +15,8 @@ package com.rmtech.qjys.adapter;
 
 import java.util.List;
 
+import okhttp3.Call;
+
 import org.greenrobot.eventbus.EventBus;
 
 import android.app.Activity;
@@ -33,14 +35,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessage.ChatType;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
 import com.rmtech.qjys.event.DoctorEvent;
 import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 
@@ -207,7 +214,21 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 				// 调用sdk的同意方法
 				try {
 					if (msg.getStatus() == InviteMesageStatus.BEINVITEED) {//同意好友请求
-						EMClient.getInstance().contactManager().acceptInvitation(msg.getFrom());
+						EMClient.getInstance().contactManager().acceptInvitation(msg.getFrom());	
+						//发消息
+						String content = "我通过了你的好友验证请求，现在我们可以开始聊天了";
+						EMMessage message = EMMessage.createTxtSendMessage(content , msg.getFrom());
+				        EMClient.getInstance().chatManager().sendMessage(message);
+				        QjHttp.addFriend(msg.getFrom(), null);
+				        DoctorListManager.getInstance().getDoctorInfoByHXid(msg.getFrom(), new OnGetDoctorInfoCallback() {
+							
+							@Override
+							public void onGet(DoctorInfo info) {
+								if(info != null) {
+									info.isFriend = 1;
+								}
+							}
+						});
 					} else if (msg.getStatus() == InviteMesageStatus.BEAPPLYED) { //同意加群申请
 						EMClient.getInstance().groupManager().acceptApplication(msg.getFrom(), msg.getGroupId());
 					} else if (msg.getStatus() == InviteMesageStatus.GROUPINVITATION) {
@@ -228,7 +249,6 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 							buttonAgree.setTextColor(context.getResources().getColor(R.color.c9));
 							buttonAgree.setBackgroundDrawable(null);
 							buttonAgree.setEnabled(false);
-							
 							buttonRefuse.setVisibility(View.INVISIBLE);
 						}
 					});

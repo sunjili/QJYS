@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:background="@color/cf4f5f9">
 
     <LinearLayout
         android:id="@+id/content_layout"
@@ -9,6 +10,8 @@
         android:layout_height="match_parent"
         android:background="@color/cf4f5f9"
         android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:paddingBottom="42dp" >
 
         <RelativeLayout
@@ -51,18 +54,23 @@
             android:textColor="@color/c3"
             android:textSize="17sp" />
 
-        <TextView
-            android:id="@+id/tv_content"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="top|left"
-            android:lineSpacingExtra="5dp"
-            android:selectAllOnFocus="true"
-            android:textColor="@color/c3"
-            android:textSize="14sp" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:gravity="top|left"
+                android:lineSpacingExtra="5dp"
+                android:selectAllOnFocus="true"
+                android:textColor="@color/c3"
+                android:textSize="14sp" />
+        </ScrollView>
     </LinearLayout>
 
     <Button

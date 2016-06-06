@@ -1,9 +1,16 @@
 package com.rmtech.qjys.ui.qjactivity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.Map;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.view.SharePopWindow;
+import com.sjl.lib.alertview.OnItemClickListener;
+import com.tencent.map.b.m;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.ShareAction;
@@ -14,16 +21,27 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.editorpage.ShareActivity;
 import com.umeng.socialize.handler.UMAPIShareHandler;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.utils.BitmapUtils;
 import com.umeng.socialize.utils.Log;
 import com.umeng.socialize.view.UMFriendListener;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 /***
@@ -39,13 +57,18 @@ public class MeAboutErweimaActivity extends BaseActivity {
 	private UMShareAPI mShareAPI;
 	private UMImage image;
 	private SHARE_MEDIA[] displaylist;
-
+	private ImageView iv_qrcode;
+	private RelativeLayout share_view;
+	private String qrImageUrl;
+	
+	
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_about_erweima);
 		setTitle("奇迹医生二维码");
 		setLeftTitle("返回");
+		initView();
 		initUMService();
 		context = MeAboutErweimaActivity.this;
 		setRightTitle(R.drawable.btn_me_share, new OnClickListener() {
@@ -54,58 +77,52 @@ public class MeAboutErweimaActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO 分享
-				if (mShareAPI.isInstall(MeAboutErweimaActivity.this, SHARE_MEDIA.WEIXIN)) {
-					
-					mShareAPI.doOauthVerify(MeAboutErweimaActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
-					mShareAPI.getPlatformInfo(MeAboutErweimaActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
-					mShareAPI.getFriend(MeAboutErweimaActivity.this, SHARE_MEDIA.WEIXIN, umGetfriendListener);
-					
-					new ShareAction(getActivity()).setDisplayList(displaylist).withText("呵呵").withTitle("title")
-							.withTargetUrl("http://www.zhihu.com").withMedia(image).setListenerList(umShareListener)
-							.open();
-				}
-				// final Dialog dialog = new Dialog(context, R.style.dialog);
-				// dialog.setContentView(R.layout.qj_me_dialog);
-				// dialog.findViewById(R.id.tv_paizhao).setOnClickListener(
-				// new OnClickListener() {
-				//
-				// @Override
-				// public void onClick(View v) {
-				// dialog.cancel();
-				// }
-				// });
-				// dialog.findViewById(R.id.tv_xiangce).setOnClickListener(
-				// new OnClickListener() {
-				//
-				// @Override
-				// public void onClick(View v) {
-				// dialog.cancel();
-				// }
-				// });
-				// dialog.findViewById(R.id.tv_guanliqi).setOnClickListener(
-				// new OnClickListener() {
-				//
-				// @Override
-				// public void onClick(View v) {
-				// dialog.cancel();
-				// }
-				// });
-				//
-				// dialog.findViewById(R.id.tv_cancle).setOnClickListener(
-				// new OnClickListener() {
-				//
-				// @Override
-				// public void onClick(View v) {
-				// dialog.cancel();
-				// }
-				// });
-				// dialog.setCancelable(true);
-				// dialog.create();
-				// dialog.show();
+				
+				SharePopWindow sharePopWindow = new SharePopWindow(context, displaylist, mItemClickListener);
+				sharePopWindow.setTouchable(true);
+				sharePopWindow.showAtLocation(share_view, Gravity.BOTTOM, 0, 0);
+				sharePopWindow.setBackgroundAlpha(0.5f);
 			}
 		});
-		initView();
 	}
+	
+	public AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			// TODO Auto-generated method stub
+			final int posi = position;
+			if(posi != displaylist.length){
+				if (mShareAPI.isInstall(MeAboutErweimaActivity.this, displaylist[posi])){
+					if(!(displaylist[posi].equals(SHARE_MEDIA.WEIXIN)||displaylist[posi].equals(SHARE_MEDIA.WEIXIN_CIRCLE))){
+						mShareAPI.doOauthVerify(MeAboutErweimaActivity.this, displaylist[posi], umAuthListener);
+						mShareAPI.getPlatformInfo(MeAboutErweimaActivity.this, displaylist[posi], umAuthListener);
+						mShareAPI.getFriend(MeAboutErweimaActivity.this, displaylist[posi], umGetfriendListener);
+					}
+					
+					new ShareAction(getActivity()).setPlatform(displaylist[posi]).withText("属于医生的奇迹！").withTitle("奇迹医生")
+							.withTargetUrl("http://www.ruimingtech.com").withMedia(image).setCallback(umShareListener)
+							.share();
+				}else {
+					// 将二维码压缩存到本地
+					try {
+						String filePath = Environment.getExternalStorageDirectory() + "/qjys" + File.separator + "qrQJYSPic" + ".jpg";
+					    iv_qrcode.setDrawingCacheEnabled(true);
+					    Bitmap bitmap = Bitmap.createBitmap(iv_qrcode.getDrawingCache());
+					    iv_qrcode.setDrawingCacheEnabled(false);
+						bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(filePath));
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}else {
+				
+			}
+			
+		}
+		
+	};
 
 	public void initUMService() {
 
@@ -114,8 +131,13 @@ public class MeAboutErweimaActivity extends BaseActivity {
 		Config.isloadUrl = true;
 		Config.OpenEditor = false;
 		Config.IsToastTip = true;
-		image = new UMImage(MeAboutErweimaActivity.this, "http://www.umeng.com/images/pic/social/integrated_3.png");
+		ProgressDialog dialog =  new ProgressDialog(this);
+        dialog.setMessage("跳转中，请稍候…");
+        Config.dialog = dialog;
+		image = new UMImage(MeAboutErweimaActivity.this, 
+				"https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1465111288&di=b6dbc97c643c1f660a4607746c78c0be&src=http://b.hiphotos.baidu.com/zhidao/pic/item/ae51f3deb48f8c5425ab12013a292df5e0fe7fa0.jpg");
 		displaylist = new SHARE_MEDIA[] { SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE };
+		
 	}
 
 	private UMFriendListener umGetfriendListener = new UMFriendListener() {
@@ -174,7 +196,8 @@ public class MeAboutErweimaActivity extends BaseActivity {
 	};
 
 	private void initView() {
-
+		iv_qrcode = (ImageView) findViewById(R.id.iv_qrcode);
+		share_view = (RelativeLayout) findViewById(R.id.share_view);
 	}
 
 	@Override

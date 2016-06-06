@@ -182,4 +182,11 @@ public class UserContext {
 		return false;
 	}
 
+	public void setPasswordFlag(boolean b) {
+		if (mUser != null) {
+			mUser.isset_passwd = b?1:0;
+			saveCookie();
+		}
+	}
+
 }

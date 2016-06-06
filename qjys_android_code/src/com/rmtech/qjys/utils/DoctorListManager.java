@@ -33,6 +33,8 @@ import com.sjl.lib.db.DBUtil;
 public class DoctorListManager {
 	static private DoctorListManager mInstance = null;
 
+	private static HashSet<String> mDeletedFriends;
+
 	private HashMap<String, DoctorInfo> mIdDoctorMap;
 
 	public static synchronized DoctorListManager getInstance() {
@@ -86,6 +88,22 @@ public class DoctorListManager {
 		final HashSet<String> cyIds = getChangyongList();
         if(cyIds==null){
 	        return;
+        }
+        if(mDeletedFriends == null) {
+        	getDeletedFriends();
+        }
+        if(mDeletedFriends != null) {
+        	for(String doc_id : mDeletedFriends) {
+        		getDoctorInfoByHXid(doc_id, new OnGetDoctorInfoCallback() {
+					
+					@Override
+					public void onGet(DoctorInfo info) {
+						if(info != null) {
+							info.isFriend = 0;
+						}
+					}
+				});
+        	}
         }
 		if (mMDoctorList != null && mMDoctorList.data != null) {
 			if (mIdDoctorMap == null) {
@@ -348,6 +366,28 @@ public class DoctorListManager {
 		return (HashSet<String>) DBUtil.getCache("changyong");
 	}
 	
+	public static void getDeletedFriends() {
+		mDeletedFriends = (HashSet<String>) DBUtil.getCache("DeletedFriends");
+	}
+	
+	public static void addDeletedFriends(String doc_id) {
+		DoctorListManager.getInstance().getDoctorInfoByHXid(doc_id, new OnGetDoctorInfoCallback() {
+
+			@Override
+			public void onGet(DoctorInfo info) {
+				if (info != null) {
+					info.isFriend = 0;
+				}
+			}
+		});
+		mDeletedFriends = getChangyongList();
+		if(mDeletedFriends==null){
+			mDeletedFriends = new HashSet<String>();
+		}
+		mDeletedFriends.add(doc_id);
+		DBUtil.saveCache("DeletedFriends", mDeletedFriends);
+	}
+	
 	public static void setMostUse(String doc_id, final boolean mostUse) {
 //		DoctorListManager.getInstance().setIsChanged(true);// = true;
 		DoctorListManager.getInstance().getDoctorInfoByHXid(doc_id, new OnGetDoctorInfoCallback() {
@@ -361,7 +401,7 @@ public class DoctorListManager {
 		});
 		HashSet<String> set = getChangyongList();
 		if(set==null){
-			return;
+			set = new HashSet<String>();
 		}
 		if (mostUse) {
 			set.add(doc_id);

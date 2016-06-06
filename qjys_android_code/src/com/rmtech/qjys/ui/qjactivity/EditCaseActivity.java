@@ -193,6 +193,9 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 										Toast.makeText(getActivity(), "病例已删除！", Toast.LENGTH_SHORT).show();
 										CaseFragment.deleteGrop(getActivity(),
 												mCaseInfo.group_id);
+										Intent intent = new Intent("case_delete");
+										intent.putExtra("delete", "true");
+										getActivity().sendBroadcast(intent);
 										getActivity().finish();
 										
 									}

@@ -18,9 +18,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -63,20 +68,20 @@ public class CaseFragment extends QjBaseFragment {
 	private View mNodataView;
 	private PinnedHeaderListView mListView;
 	private CaseSectionedAdapter mAdapter;
+	private LinearLayout neterrorview;
 	private View errorView;
 	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		initErrorView();
+		IntentFilter filter= new IntentFilter();    
+	    filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+	    getActivity().registerReceiver(new MyNetworkReceiver(), filter); 
 		return inflater.inflate(R.layout.qj_fragment_case_list, container,
 				false);
 	}
 	
-	public void initErrorView(){
-		errorView = (ViewGroup) View.inflate(getActivity(), R.layout.layout_net_error, null);
-	}
 	
 	@Override
 	public void onResume() {
@@ -95,6 +100,7 @@ public class CaseFragment extends QjBaseFragment {
 				@Override
 				public void run() {
 					GroupAndCaseListManager.getPatientList(false, httpCallback);
+					mAdapter.notifyDataSetChanged();
 				}
 			});
 		}
@@ -106,6 +112,32 @@ public class CaseFragment extends QjBaseFragment {
 		EventBus.getDefault().unregister(this);
 		super.onDestroy();
 	}
+	
+	public class MyNetworkReceiver extends BroadcastReceiver {  
+	    @Override  
+	    public void onReceive(Context context, Intent intent) {  
+	        // TODO Auto-generated method stub  
+	    	
+	        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);  
+	        NetworkInfo mobileInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);  
+	        NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);  
+	        NetworkInfo activeInfo = manager.getActiveNetworkInfo();  
+//	        Toast.makeText(context, "mobile:"+mobileInfo.isConnected()+"\n"+"wifi:"+wifiInfo.isConnected()  
+//	                        +"\n"+"active:"+activeInfo.getTypeName(), 1).show();
+	        if (mAdapter != null && mAdapter.getCount() > 0) {
+	        	if(activeInfo!=null&&activeInfo.isConnectedOrConnecting()){
+					neterrorview.setVisibility(View.GONE);
+		        }else{
+		        	neterrorview.setVisibility(View.VISIBLE);
+		        }
+			} else {
+				mNodataView.setVisibility(View.VISIBLE);
+				neterrorview.setVisibility(View.GONE);
+			}
+	        
+	    } 
+	  
+	}  
 
 	@Override
 	protected void initView() {
@@ -122,6 +154,7 @@ public class CaseFragment extends QjBaseFragment {
 		// mPtrFrame.autoRefresh();
 		// }
 		// });
+		neterrorview = (LinearLayout) getView().findViewById(R.id.neterrorview);
 		mListView = (PinnedHeaderListView) getView().findViewById(
 				R.id.pinnedListView);
 		mAdapter = new CaseSectionedAdapter();
@@ -293,7 +326,6 @@ public class CaseFragment extends QjBaseFragment {
 		});
 
 		GroupAndCaseListManager.getPatientList(true, httpCallback);
-
 	}
 
 	public void getPatientList() {
@@ -328,6 +360,7 @@ public class CaseFragment extends QjBaseFragment {
 	private void updateData() {
 		GroupAndCaseListManager.getPatientList(false, httpCallback);
 
+		mAdapter.notifyDataSetChanged();
 		// TODO Auto-generated method stub
 		// mListView.postDelayed(new Runnable() {
 		//
@@ -345,6 +378,7 @@ public class CaseFragment extends QjBaseFragment {
 			mNodataView.setVisibility(View.GONE);
 		} else {
 			mNodataView.setVisibility(View.VISIBLE);
+			neterrorview.setVisibility(View.GONE);
 		}
 	}
 

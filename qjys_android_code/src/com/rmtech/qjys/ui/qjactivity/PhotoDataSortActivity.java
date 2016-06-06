@@ -131,8 +131,24 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 		mZdySortView.setOnClickListener(this);
 		mZdySortImageview = (ImageView) findViewById(R.id.zdy_sort_imageview);
 		mGridView = (com.sjl.lib.dynamicgrid.DynamicGridView) findViewById(R.id.dynamic_grid);
-
+		mGridView.setEditModeEnabled(false);
 		mDataList = imageDataList.images;
+		int order = imageDataList.order;
+		switch (order) {
+		// : 0时间 1名称 2自定义
+		case 0:
+			sortType = R.id.scsj_sort_view;
+			mScsjSortView.performClick();
+			break;
+		case 1:
+			sortType = R.id.wjm_sort_view;
+			mWjmSortView.performClick();
+			break;
+		case 2:
+			sortType = R.id.zdy_sort_view;
+			mZdySortView.performClick();
+			break;
+		}
 
 		// add callback to stop edit mode if needed
 		// gridView.setOnDropListener(new DynamicGridView.OnDropListener()
@@ -166,7 +182,6 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 					}
 				});
 
-		mGridView.setEditModeEnabled(false);
 		initAdapter();
 
 	}

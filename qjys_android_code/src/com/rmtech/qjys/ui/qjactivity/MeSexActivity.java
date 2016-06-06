@@ -51,7 +51,7 @@ public class MeSexActivity extends CaseEidtBaseActivity implements OnClickListen
 				// TODO 保存性别
 				if(mCaseInfo != null) {
 					HashMap<String, String> params = new HashMap<String, String>();
-					params.put("sex", mCaseInfo.sex + "");
+					params.put("sex", man + "");
 					params.put("patient_id", mCaseInfo.id);
 					OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
 

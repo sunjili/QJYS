@@ -47,6 +47,7 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 	protected View nodata_layout;
 
 	private PhotoDataGridAdapter mAdapter;
+	private View mRightView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_photo_upload);
 		setTitle("上传影像资料");
-		setRightTitle(R.drawable.btn_case_newfolder, new OnClickListener() {
+		mRightView = setRightTitle(R.drawable.btn_case_newfolder, new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -100,13 +101,30 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 		if (getActivity() == null) {
 			return;
 		}
-		if(event == null || event.stateInfo == null) {//
+		if(event == null) {//
+			return;
+		}
+		if (event.type == ImageUploadEvent.TYPE_DELETE && mAdapter != null
+				&& mAdapter.getItems() != null) {
+			for (Object obj : mAdapter.getItems()) {
+				if ((obj instanceof FolderDataInfo)  && !(obj instanceof PhotoDataInfo)) {
+					FolderDataInfo info = (FolderDataInfo) obj;
+					if (TextUtils.equals(info.id, event.folderId)) {
+						info.image_count -= 1;
+						mAdapter.notifyDataSetChanged();
+						break;
+					}
+				}
+				
+			}
+		}
+		if(event.stateInfo == null) {
 			return;
 		}
 		if(!TextUtils.equals(event.stateInfo.getCaseId(), caseId)) {
 			return;
 		}
-		if (event.isAdd && mAdapter != null
+		if (event.type == ImageUploadEvent.TYPE_ADD && mAdapter != null
 				&& mAdapter.getItems() != null) {
 			for (Object obj : mAdapter.getItems()) {
 				if ((obj instanceof FolderDataInfo)  && !(obj instanceof PhotoDataInfo)) {
@@ -265,7 +283,7 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 								}
 								switch (position) {
 								case 0:
-									PhotoDataBaseActivity.deleteItem(getActivity(), mAdapter.getItem(itemposition),
+									PhotoDataBaseActivity.deleteItem(getActivity(),folderId, mAdapter.getItem(itemposition),
 											new OnDeleteCallback() {
 
 												@Override
@@ -324,6 +342,9 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 		if (mAdapter.getCount() > 0) {
 			if (nodata_layout.getVisibility() == View.VISIBLE) {
 				nodata_layout.setVisibility(View.GONE);
+			}
+			if(mRightView != null && mRightView.getVisibility() == View.VISIBLE) {
+				mRightView.setVisibility(View.GONE);
 			}
 			setRightTitleForPopWindow();
 		} else {

@@ -126,6 +126,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		change_admin_view = findViewById(R.id.change_admin_view);
 		change_admin_view.setOnClickListener(this);
 		avatar = (SquaredImageView) findViewById(R.id.avatar);
+		avatar.setOnClickListener(this);
 		name_tv = (TextView) findViewById(R.id.name_tv);
 		nike_tv = (TextView) findViewById(R.id.nike_tv);
 		rl_switch_block_groupmsg = (RelativeLayout) findViewById(R.id.rl_switch_block_groupmsg);
@@ -602,7 +603,10 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			DoctorPickActivity.show(GroupDetailsActivity.this, caseInfo, list, QjConstant.REQUEST_CODE_CHANGE_DOCTOR);
 
 			break;
-		default:
+		case R.id.avatar:
+			if(!UserContext.getInstance().isMyself(caseInfo.admin_doctor.id)){
+				UserInfoActivity.show(getActivity(), caseInfo.admin_doctor, "group");
+			}
 			break;
 		}
 

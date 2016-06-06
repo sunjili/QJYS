@@ -56,9 +56,9 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 		context = MeFlowDetailActivity.this;
 		initView();
 		setLeftTitle("返回");
-//		if (requestType != QjConstant.REQUEST_CODE_CASE_FLOW_LIST) {
-//			setRightTitle("编辑", clickListener);
-//		}
+		if (requestType != QjConstant.REQUEST_CODE_CASE_FLOW_LIST) {
+			setRightTitle("编辑", clickListener);
+		}
 	}
 
 	OnClickListener clickListener = new OnClickListener() {

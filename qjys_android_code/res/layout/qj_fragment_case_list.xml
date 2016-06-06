@@ -12,10 +12,34 @@
         hyphenate:titleBarRightImage="@drawable/btn_case_new"
         hyphenate:titleBarTitle="@string/address_book" />
 
+    <LinearLayout
+        android:id="@+id/neterrorview"        
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#fdf0b7"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ease_login_error_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:text="当前网络不可用，请检查你的网络设置！"
+            android:textColor="@color/c3"
+            android:textSize="13sp" />
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:background="@color/cf4f5f9">
+        android:layout_height="match_parent"
+        android:background="@color/cf4f5f9" >
 
         <in.srain.cube.views.ptr.PtrClassicFrameLayout
             xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
@@ -46,8 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:padding="5dip"
             android:gravity="center"
+            android:padding="5dip"
             android:scaleType="centerInside"
             android:src="@drawable/ic_case_nocase" />
     </RelativeLayout>
