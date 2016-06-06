@@ -117,6 +117,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 			CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
 			if (newCase != null) {
 				mCaseInfo = newCase;
+				setTitle(mCaseInfo.name);
 			}
 		}
 		setViewValue();

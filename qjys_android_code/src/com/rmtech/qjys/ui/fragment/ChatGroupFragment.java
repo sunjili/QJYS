@@ -87,8 +87,11 @@ public class ChatGroupFragment extends ChatFragment implements
 
 				@Override
 				public void onClick(View v) {
-					PhotoDataManagerActivity.show(getActivity(), mCaseInfo,
-							null);
+					if(getActivity() != null) {
+						PhotoDataManagerActivity.show(getActivity(), mCaseInfo,
+								null);
+						getActivity().finish();
+					}
 				}
 			});
 			titleBar.setRightText("影像资料");

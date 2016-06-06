@@ -150,7 +150,7 @@ public class BaseActivity extends EaseBaseActivity {
 		}
 	}
 
-	protected View setRightTitle(String title,View.OnClickListener listener) {
+	protected TextView setRightTitle(String title,View.OnClickListener listener) {
 		if (mTopTitleView != null) {
 			return mTopTitleView.setRightTitle(title, listener);
 		}

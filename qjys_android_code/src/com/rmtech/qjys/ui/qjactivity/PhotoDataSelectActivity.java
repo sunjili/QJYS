@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.Subscribe;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -42,14 +43,19 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 		setTitle("文件多选");
 		setLeftTitle("取消");
 		setBackImageGone();
-		setRightTitle("全选", new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO 全选功能
-				selectAll();
-			}
-		});
+		if(imageDataList == null) {
+			setRightTitle("全选", null).setTextColor(Color.GRAY);
+
+		}else {
+			setRightTitle("全选", new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					// TODO 全选功能
+					selectAll();
+				}
+			});
+		}
 		initViews();
 		EventBus.getDefault().register(this);
 
@@ -214,8 +220,10 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 	}
 	
 	private void selectAll(){
-		mSelectedImages.addAll(mDataList);
-		mAdapter.notifyDataSetChanged();
+		if(mDataList != null) {
+			mSelectedImages.addAll(mDataList);
+			mAdapter.notifyDataSetChanged();
+		}
 	}
 	//
 	// public class SelectGridAdapter extends BaseAdapter {

@@ -34,6 +34,7 @@ import com.rmtech.qjys.event.ImageUploadEvent;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
@@ -75,6 +76,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 					intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
 					intent.putExtra(QjConstant.EXTRA_USER_ID, caseInfo.group_id);
 					startActivity(intent);
+					finish();
 				}
 			});
 		}
@@ -417,4 +419,25 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 			mFolderPopupWindow.show();
 		}
 	}
+	
+	public static boolean hasPermission(CaseInfo caseInfo, FolderDataInfo info) {
+		if(info == null) {
+			return true;
+		}
+		boolean isMyself = UserContext.getInstance().isMyself(caseInfo.admin_doctor.id);
+		if(isMyself) {
+			return true;
+		}
+		if(info instanceof PhotoDataInfo) {
+			
+			String createid = ((PhotoDataInfo)info).doc_id;
+
+			if(UserContext.getInstance().isMyself(createid)) {
+				return true;
+			}
+
+		} 
+		return false;
+	}
+	
 }

@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -207,6 +208,9 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		if (type == QjConstant.REQUEST_CODE_CHANGE_DOCTOR) {
 			isSignleChecked = true;
 			selectedDoctorList = getIntent().getParcelableArrayListExtra("selectedDoctorList");
+			if(selectedDoctorList == null || selectedDoctorList.isEmpty()) {
+				((TextView)setRightTitle("确认", null)).setTextColor(Color.GRAY);
+			} else {
 			setRightTitle("确认", new OnClickListener() {
 
 				@Override
@@ -250,13 +254,20 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 					});
 				}
 			});
+			}
 		} else if (type == QjConstant.REQUEST_CODE_DELETE_DOCTORS) {
-
+			selectedDoctorList = getIntent().getParcelableArrayListExtra("selectedDoctorList");
+			if(selectedDoctorList == null || selectedDoctorList.isEmpty()) {
+				((TextView)setRightTitle("删除", null)).setTextColor(Color.GRAY);
+			} else {
 			setRightTitle("删除", new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					final int length = contactAdapter.isCheckedArray.length;
+					if(length == 0) {
+						return;
+					}
 					String usernames = "";
 					for (int i = 0; i < length; i++) {
 						if (contactAdapter.isCheckedArray[i]) {
@@ -333,6 +344,7 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 					
 				}
 			});
+			}
 		} else if (type == QjConstant.REQUEST_CODE_ADD_DOCTORS) {
 			exitingMembers = getIntent().getParcelableArrayListExtra("selectedDoctorList");
 

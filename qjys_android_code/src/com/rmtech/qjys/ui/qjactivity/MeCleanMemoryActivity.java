@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
 
@@ -86,11 +87,11 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 		switch (v.getId()) {
 		case R.id.btn_clean:
 			if(getIntent().getStringExtra("from").equals("PhotoDataSettingActivity")){
-				//TODO 清除病例缓存具体操作
-				
+				ImageLoader.getInstance().clearMemoryCache();
+				ImageLoader.getInstance().clearDiskCache();
 			}else{
-				//TODO 清除程序总存储具体操作
-				
+				ImageLoader.getInstance().clearMemoryCache();
+				ImageLoader.getInstance().clearDiskCache();
 			}
 			break;
 

@@ -265,9 +265,8 @@ public class PhotoManagerFragment extends QjBaseFragment {
 								}
 								switch (position) {
 								case 0:
-									if (!UserContext.getInstance().isMyself(caseInfo.admin_doctor.id)) {
+									if(!PhotoDataBaseActivity.hasPermission(caseInfo, (FolderDataInfo) mAdapter.getItem(itemposition))) {
 										Toast.makeText(getActivity(), "非管理员，没有权限！", 1).show();
-										return;
 									}
 									PhotoDataBaseActivity.deleteItem(getActivity(),folderId, mAdapter.getItem(itemposition),
 											new OnDeleteCallback() {
@@ -280,7 +279,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 											});
 									break;
 								case 1:
-									if (!UserContext.getInstance().isMyself(caseInfo.admin_doctor.id)) {
+									if (!PhotoDataBaseActivity.hasPermission(caseInfo, (FolderDataInfo) mAdapter.getItem(itemposition))) {
 										Toast.makeText(getActivity(), "非管理员，没有权限！", 1).show();
 										return;
 									}

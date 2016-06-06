@@ -83,18 +83,19 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.ease_row_chat_history, parent, false);
         }
-        ViewHolder holder = (ViewHolder) convertView.getTag();
-        if (holder == null) {
-            holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.unreadLabel = (TextView) convertView.findViewById(R.id.unread_msg_number);
-            holder.message = (TextView) convertView.findViewById(R.id.message);
-            holder.time = (TextView) convertView.findViewById(R.id.time);
-            holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
-            holder.msgState = convertView.findViewById(R.id.msg_state);
+       ViewHolder holder2 = (ViewHolder) convertView.getTag();
+        if (holder2 == null) {
+        	holder2 = new ViewHolder();
+        	holder2.name = (TextView) convertView.findViewById(R.id.name);
+        	holder2.unreadLabel = (TextView) convertView.findViewById(R.id.unread_msg_number);
+        	holder2.message = (TextView) convertView.findViewById(R.id.message);
+        	holder2.time = (TextView) convertView.findViewById(R.id.time);
+        	holder2.avatar = (ImageView) convertView.findViewById(R.id.avatar);
+        	holder2.msgState = convertView.findViewById(R.id.msg_state);
 //            holder.list_itease_layout = (RelativeLayout) convertView.findViewById(R.id.list_itease_layout);
-            convertView.setTag(holder);
+            convertView.setTag(holder2);
         }
+        final ViewHolder holder = (ViewHolder) convertView.getTag();
 //        holder.list_itease_layout.setBackgroundResource(R.drawable.ease_mm_listitem);
 //
         // 获取与此用户/群组的会话
@@ -135,22 +136,27 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         if (conversation.getAllMsgCount() != 0) {
             // 把最后一条消息的内容作为item的message内容
             EMMessage lastMessage = conversation.getLastMessage();
-            String lastStr =  EaseCommonUtils.getMessageDigest(lastMessage, (this.getContext()));
+            final String lastStr =  EaseCommonUtils.getMessageDigest(lastMessage, (this.getContext()));
             if(UserContext.getInstance().isMyself(lastMessage.getFrom())) {
-            	lastStr="我："+lastStr;
+            	 holder.message.setText(EaseSmileUtils.getSmiledText(getContext(),"我: " + lastStr),
+		                    BufferType.SPANNABLE);
             } else {
             	DoctorListManager.getInstance().getDoctorInfoByHXid(lastMessage.getFrom(), new OnGetDoctorInfoCallback() {
 					
 					@Override
 					public void onGet(DoctorInfo info) {
 						if(info != null) {
-							info.getDisplayName();
+							
+							holder.message.setText(EaseSmileUtils.getSmiledText(getContext(), info.getDisplayName() +": " +lastStr),
+					                    BufferType.SPANNABLE);
+						} else {
+							holder.message.setText(EaseSmileUtils.getSmiledText(getContext(), lastStr),
+				                    BufferType.SPANNABLE);
 						}
 					}
 				});
             };
-            holder.message.setText(EaseSmileUtils.getSmiledText(getContext(), lastStr),
-                    BufferType.SPANNABLE);
+           
 
             holder.time.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
             if (lastMessage.direct() == EMMessage.Direct.SEND && lastMessage.status() == EMMessage.Status.FAIL) {

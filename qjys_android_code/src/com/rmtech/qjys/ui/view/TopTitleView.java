@@ -73,7 +73,7 @@ public class TopTitleView extends FrameLayout {
 		}
 	}
 
-	public View setRightTitle(String title, View.OnClickListener listener) {
+	public TextView setRightTitle(String title, View.OnClickListener listener) {
 		if (mRightView != null) {
 			mRightView.setText(title);
 			mRightView.setVisibility(View.VISIBLE);

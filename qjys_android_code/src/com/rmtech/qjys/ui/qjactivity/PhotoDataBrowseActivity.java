@@ -40,6 +40,7 @@ import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.view.HackyViewPager;
@@ -103,6 +104,7 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 		mBottomAuthTv = (TextView) findViewById(R.id.bottom_auth_tv);
 		mBottomTitleTv = (TextView) findViewById(R.id.bottom_title_tv);
 		mDeleteImage = (TextView) findViewById(R.id.delete_image);
+
 		mDeleteImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -229,6 +231,15 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 				if(caseInfo != null) {
 					mTitleTv.setText(caseInfo.name);
 				}
+				
+				if (caseInfo != null && !PhotoDataBaseActivity.hasPermission(caseInfo, currentPhotoData)) {
+					mDeleteImage.setVisibility(View.GONE);
+					mEditTv.setVisibility(View.GONE);
+				} else {
+					mDeleteImage.setVisibility(View.VISIBLE);
+					mEditTv.setVisibility(View.VISIBLE);
+				}
+
 				mBottomTitleTv.setText(currentPhotoData.name);
 				mBottomTimeTv.setText(currentPhotoData.getCreateTimeStr());
 				DoctorListManager.getInstance().getDoctorInfoByHXid(currentPhotoData.doc_id,

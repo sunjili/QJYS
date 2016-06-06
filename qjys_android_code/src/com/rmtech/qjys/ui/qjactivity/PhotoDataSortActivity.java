@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -63,6 +64,9 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_photo_sort);
 		setTitle("文件排序");
+		if(imageDataList != null) {
+			setRightTitle("保存", null).setTextColor(Color.GRAY);
+		} else {
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override
@@ -80,6 +84,7 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 				}
 			}
 		});
+		}
 		initViews();
 	}
 
@@ -132,6 +137,7 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 		mZdySortImageview = (ImageView) findViewById(R.id.zdy_sort_imageview);
 		mGridView = (com.sjl.lib.dynamicgrid.DynamicGridView) findViewById(R.id.dynamic_grid);
 		mGridView.setEditModeEnabled(false);
+		if(imageDataList != null) {
 		mDataList = imageDataList.images;
 		int order = imageDataList.order;
 		switch (order) {
@@ -148,6 +154,7 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 			sortType = R.id.zdy_sort_view;
 			mZdySortView.performClick();
 			break;
+		}
 		}
 
 		// add callback to stop edit mode if needed
@@ -187,8 +194,10 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 	}
 
 	private void initAdapter() {
-		mAdapter = new PhotoDataGridAdapter(getActivity(), mDataList);
-		mGridView.setAdapter(mAdapter);
+		if(mDataList != null) {
+			mAdapter = new PhotoDataGridAdapter(getActivity(), mDataList);
+			mGridView.setAdapter(mAdapter);
+		}
 	}
 
 	@Override
@@ -241,6 +250,9 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 
 	public void sort(final int sortType) {
 		// 排序
+		if(mDataList == null) {
+			return;
+		}
 		Collections.sort(mDataList, new Comparator<PhotoDataInfo>() {
 
 			@Override
