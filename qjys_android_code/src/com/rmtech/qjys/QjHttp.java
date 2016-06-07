@@ -80,7 +80,17 @@ public class QjHttp {
 	public static final String URL_UPDATE_IMAGENAME = "/patient/updateimagename";
 	public static final String URL_DOCTOR_SETREMARK = "/doctor/setremark";
 	public static final String URL_SORT_IMAGE = "/patient/sortimage";
+	public static final String URL_DOCTOR_DELETEFRIEND = "/doctor/deletefriend";
 
+	/**
+	 * 33.1 删除好友 /doctor/deletefriend 参数 doc_id: 要删除的用户id
+	 */
+	public static void deleteFriend(String doc_id, BaseModelCallback callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("doc_id", doc_id);
+		OkHttpUtils.post(URL_DOCTOR_DELETEFRIEND, params, callback);
+	}
+	
 	/**
 	 * 24 更新图片排序 /patient/sortimage 请求方法：post
 	 * 

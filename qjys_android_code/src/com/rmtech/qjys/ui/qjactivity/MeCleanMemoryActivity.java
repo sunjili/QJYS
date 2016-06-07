@@ -38,7 +38,7 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 		setLeftTitle("我");
 		context = MeCleanMemoryActivity.this;
 		initView();
-		if(getIntent().getStringExtra("from").equals("PhotoDataSettingActivity")){
+		if("PhotoDataSettingActivity".equals(getIntent().getStringExtra("from"))){
 			setTitle("本地控件清理");
 			setLeftTitle("返回");
 			tv_memory.setText("缓存");

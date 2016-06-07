@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import okhttp3.Call;
+
 import org.greenrobot.eventbus.EventBus;
 
 import android.annotation.SuppressLint;
@@ -30,12 +32,17 @@ import com.hyphenate.easeui.widget.EaseSwitchButton;
 import com.hyphenate.exceptions.HyphenateException;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.db.InviteMessgeDao;
+import com.rmtech.qjys.db.UserDao;
 import com.rmtech.qjys.domain.InviteMessage;
 import com.rmtech.qjys.domain.InviteMessage.InviteMesageStatus;
 import com.rmtech.qjys.event.DoctorEvent;
+import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
@@ -350,20 +357,63 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 							case 0://TODO 具体删除操作
 //								Toast.makeText(UserInfoActivity.this, "删除联系人", Toast.LENGTH_SHORT).show();
 								//TODO 有可能需要进一步调整
-								new Thread(new Runnable() {
+								String st1 = getResources().getString(R.string.deleting);
+								final String st2 = getResources().getString(R.string.Delete_failed);
+								final ProgressDialog pd = new ProgressDialog(getActivity());
+								pd.setMessage(st1);
+								pd.setCanceledOnTouchOutside(false);
+								pd.show();
+								
+								QjHttp.deleteFriend(doctorInfo.id, new BaseModelCallback() {
+									
 									@Override
-									public void run() {
-										// TODO Auto-generated method stub
-										try {
-											EMClient.getInstance().contactManager().deleteContact(doctorInfo.id);
-										} catch (HyphenateException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
+									public void onResponseSucces(MBase response) {
+												new Thread(new Runnable() {
+													@Override
+													public void run() {		
+														try {
+															EMClient.getInstance().contactManager().deleteContact(doctorInfo.id);
+															DoctorListManager.getInstance().deleteDoctorInfo(doctorInfo.id);
+															
+															// 删除db和内存中此用户的数据
+															UserDao dao = new UserDao(getActivity());
+															dao.deleteContact(doctorInfo.id);
+															QjHelper.getInstance().getContactList().remove(doctorInfo.id);
+															getActivity().runOnUiThread(new Runnable() {
+																public void run() {
+																	pd.dismiss();
+																	UserInfoActivity.this.finish();
+																	EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_DELETE));
+
+																}
+															});
+															
+														} catch (final Exception e) {
+															getActivity().runOnUiThread(new Runnable() {
+																public void run() {
+																	pd.dismiss();
+																	Toast.makeText(getActivity(), st2 + e.getMessage(), 1).show();
+																}
+															});
+	
+														}
+													}
+												}).start();
 									}
-								}).start();
-								doctorInfo.isFriend = 0;
-								UserInfoActivity.this.finish();
+									
+									@Override
+									public void onError(Call call, Exception e) {
+										runOnUiThread(new Runnable() {
+											
+											@Override
+											public void run() {
+												Toast.makeText(getActivity(),st2, 1).show();
+											}
+										});
+
+									}
+								});
+								
 								break;
 							}
 						}

@@ -64,7 +64,7 @@ public class CaseAddFriendActivity extends BaseActivity {
 					});
 				}else{
 					String phoneNm = phoneContact.getPhone();
-					phoneNm = phoneNm.replace("-", "");
+					phoneNm = phoneNm.replace("-", "").trim();
 					DoctorListManager.addFriendByPhoneNumber(getActivity(), phoneNm, et_name.getText()
 							.toString(), new OnAddFriendCallback() {
 

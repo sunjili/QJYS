@@ -91,7 +91,7 @@ public class ContactListFragment extends EaseContactListFragment {
 		// 注册上下文菜单
 		registerForContextMenu(listView);
 		EventBus.getDefault().register(this);
-
+		EMClient.getInstance().chatManager().addMessageListener(messageListener);
 	}
 	
 	@Subscribe
@@ -163,8 +163,13 @@ public class ContactListFragment extends EaseContactListFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		EMClient.getInstance().chatManager().addMessageListener(messageListener);
-		loadData(true);
+		
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+
 	}
 
 	@Override
@@ -256,6 +261,8 @@ public class ContactListFragment extends EaseContactListFragment {
 	public void onDestroy() {
 		super.onDestroy();
 		EventBus.getDefault().unregister(this);
+		EMClient.getInstance().chatManager().removeMessageListener(messageListener);
+
 
 		// if (contactSyncListener != null) {
 		// QjHelper.getInstance().removeSyncContactListener(contactSyncListener);

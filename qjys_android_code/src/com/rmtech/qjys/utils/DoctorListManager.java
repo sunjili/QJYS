@@ -330,20 +330,41 @@ public class DoctorListManager {
 			}
 			return;
 		}
+		
+		DoctorListManager.getInstance().getDoctorInfoByHXid(tagUserId, new OnGetDoctorInfoCallback() {
+			
+			@Override
+			public void onGet(DoctorInfo info) {
+				if(info != null && info.isFriend == 1) {
+					if (callback != null) {
+						callback.onSendRequestError();
+					}
+					// 提示已在好友列表中(在黑名单列表里)，无需添加
+					if (EMClient.getInstance().contactManager().getBlackListUsernames().contains(tagUserId)) {
+						new EaseAlertDialog(context, R.string.user_already_in_contactlist).show();
 
-		if (QjHelper.getInstance().getContactList().containsKey(tagUserId)) {
-			if (callback != null) {
-				callback.onSendRequestError();
+						return;
+					}
+					new EaseAlertDialog(context, R.string.This_user_is_already_your_friend).show();
+					return;
+				}
+				
 			}
-			// 提示已在好友列表中(在黑名单列表里)，无需添加
-			if (EMClient.getInstance().contactManager().getBlackListUsernames().contains(tagUserId)) {
-				new EaseAlertDialog(context, R.string.user_already_in_contactlist).show();
-
-				return;
-			}
-			new EaseAlertDialog(context, R.string.This_user_is_already_your_friend).show();
-			return;
-		}
+		});
+		
+//		if (QjHelper.getInstance().getContactList().containsKey(tagUserId)) {
+//			if (callback != null) {
+//				callback.onSendRequestError();
+//			}
+//			// 提示已在好友列表中(在黑名单列表里)，无需添加
+//			if (EMClient.getInstance().contactManager().getBlackListUsernames().contains(tagUserId)) {
+//				new EaseAlertDialog(context, R.string.user_already_in_contactlist).show();
+//
+//				return;
+//			}
+//			new EaseAlertDialog(context, R.string.This_user_is_already_your_friend).show();
+//			return;
+//		}
 
 		final ProgressDialog progressDialog = new ProgressDialog(context);
 		String stri = context.getResources().getString(R.string.Is_sending_a_request);
@@ -449,5 +470,11 @@ public class DoctorListManager {
 //		PreferenceManager.getInstance().getEditor().remove("changyong");
 //		PreferenceManager.getInstance().getEditor().putStringSet("changyong", newSet).commit();
 
+	}
+
+	public void deleteDoctorInfo(String id) {
+		if(mIdDoctorMap != null) {
+			mIdDoctorMap.remove(id);
+		}
 	}
 }
