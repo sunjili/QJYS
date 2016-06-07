@@ -343,10 +343,10 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 			if (nodata_layout.getVisibility() == View.VISIBLE) {
 				nodata_layout.setVisibility(View.GONE);
 			}
-			if(mRightView != null && mRightView.getVisibility() == View.VISIBLE) {
-				mRightView.setVisibility(View.GONE);
-			}
-			setRightTitleForPopWindow();
+//			if(mRightView != null && mRightView.getVisibility() == View.VISIBLE) {
+//				mRightView.setVisibility(View.GONE);
+//			}
+//			setRightTitleForPopWindow();
 		} else {
 			nodata_layout.setVisibility(View.VISIBLE);
 		}
