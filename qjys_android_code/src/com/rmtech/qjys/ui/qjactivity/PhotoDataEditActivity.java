@@ -3,29 +3,28 @@ package com.rmtech.qjys.ui.qjactivity;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.greenrobot.eventbus.EventBus;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.Call;
+
+import org.greenrobot.eventbus.EventBus;
 
 import uk.co.senab.photoview.PhotoView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +38,8 @@ import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
-import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.PhotoUploadManager;
+import com.sjl.lib.filechooser.FileUtils;
 
 @SuppressLint("NewApi")
 public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClickListener {
@@ -130,7 +129,9 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 			// @Override
 			// protected void onPostExecute(String path) {
 			// super.onPostExecute(path);
-			String path = saveImage();
+			Bitmap bitmap = convertViewToBitmap(photoView);
+
+			String path = FileUtils.saveImage(getActivity(), bitmap);
 			if (TextUtils.isEmpty(path)) {
 				pd.dismiss();
 				return;
@@ -151,7 +152,11 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 					PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_EDIT, data);
 					event.setMovedImageList(caseId, folderId, null);
 					EventBus.getDefault().post(event);
-					pd.dismiss();
+					try {
+						pd.dismiss();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					finish();
 				}
 
@@ -159,8 +164,11 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 				public void onError(Call call, Exception e) {
 					Toast.makeText(getActivity(), "保存失败 "+e.toString(), 1)
 					.show();
-					pd.dismiss();
-
+					try {
+						pd.dismiss();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
 				}
 			});
 			// }
@@ -171,55 +179,21 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 
 	}
 
-	public static Bitmap convertViewToBitmap(View view) {
+	public static Bitmap convertViewToBitmap(PhotoView view) {
 //		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
 //				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 //		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
 //		view.buildDrawingCache();
 //		Bitmap bitmap = view.getDrawingCache();
 		
-		view.setDrawingCacheEnabled(true);  
-        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache());  
-        view.setDrawingCacheEnabled(false);  
-		return bmp;
+//		view.setDrawingCacheEnabled(true);  
+        Bitmap bitmap = view.getVisibleRectangleBitmap(); 
+//        Bitmap  bmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), view.getDrawMatrix(), true);  
+//        view.setDrawingCacheEnabled(false);  
+		return bitmap;
 	}
 
-	public static String getSDPath() {
-		boolean hasSDCard = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-		if (hasSDCard) {
-			return Environment.getExternalStorageDirectory().toString() + "/saving_picture";
-		} else
-			return "/data/data/com.rmtech.qjys/saving_picture";
-	}
 
-	public String saveImage() {
-		Bitmap bitmap = convertViewToBitmap(photoView);
-		String strPath = getSDPath();
 
-		try {
-			File destDir = new File(strPath);
-			if (!destDir.exists()) {
-				Log.d("MagicMirror", "Dir not exist create it " + strPath);
-				destDir.mkdirs();
-				Log.d("MagicMirror", "Make dir success: " + strPath);
-			}
-
-			String strFileName = "IMG_edit";
-			File imageFile = new File(strPath + "/" + strFileName);
-			imageFile.createNewFile();
-			FileOutputStream fos = new FileOutputStream(imageFile);
-			bitmap.compress(CompressFormat.JPEG, 50, fos);
-			fos.flush();
-			fos.close();
-			return imageFile.getAbsolutePath();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 }

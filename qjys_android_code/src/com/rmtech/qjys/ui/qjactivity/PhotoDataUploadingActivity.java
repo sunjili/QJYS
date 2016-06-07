@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -27,6 +29,8 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
+import com.rmtech.qjys.utils.BitmapUtils;
+import com.rmtech.qjys.utils.ExifUtils;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.rmtech.qjys.utils.PhotoUploadManager.OnPhotoUploadListener;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
@@ -369,8 +373,26 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 		public void build(final PhotoUploadStateInfo info) {
 			if (info.imageInfo != null) {
 				name.setText(info.imageInfo.name);
+				
 				ImageLoader.getInstance().displayImage(
 						"file://" + info.imageInfo.localPath, avatar, options);
+
+//				String path = "file://" + info.imageInfo.localPath;
+//				String path =  info.imageInfo.localPath;
+//				BitmapFactory.Options opts = new BitmapFactory.Options();// 获取缩略图显示到屏幕上
+//				opts.inSampleSize = 2;
+//				Bitmap srcBitmap = BitmapFactory.decodeFile(path, opts);
+//
+//				int degree = ExifUtils.getExifOrientation(path);
+//				if (degree != 0) {
+//					Bitmap resBitmap = BitmapUtils.rotateBitmap(srcBitmap,
+//							degree, true);
+//					avatar.setImageBitmap(resBitmap);
+//
+//				} else {
+//					avatar.setImageBitmap(srcBitmap);
+//				}
+
 				if (info.imageInfo.state == PhotoDataInfo.STATE_UPLOAD_FAILED) {
 					state_tv.setTextColor(state_tv.getContext().getResources()
 							.getColor(R.color.red));

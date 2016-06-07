@@ -13,6 +13,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -47,6 +49,8 @@ import com.rmtech.qjys.utils.NewFolderManager.OnNewFolderListener;
 import com.rmtech.qjys.utils.NewFolderManager.OnRenameListener;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.rmtech.qjys.utils.PhotoUploadManager.OnPhotoUploadListener;
+import com.rmtech.qjys.utils.BitmapUtils;
+import com.rmtech.qjys.utils.ExifUtils;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.rmtech.qjys.utils.PhotoUtil;
@@ -213,10 +217,30 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 			if (resultCode == Activity.RESULT_OK) {
 				if (mTmpFile != null) {
 					if (mTmpFile != null) {
-						sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mTmpFile)));
+						String path =  mTmpFile.getAbsolutePath();
+						Bitmap srcBitmap = BitmapFactory.decodeFile(path);
+
+						int degree = ExifUtils.getExifOrientation(path);
+						if (degree != 0) {
+							Bitmap resBitmap = BitmapUtils.rotateBitmap(srcBitmap,
+									degree, true);
+							path = FileUtils.saveImage(getActivity(), resBitmap);
+
+						} else {
+							path = FileUtils.saveImage(getActivity(), srcBitmap);
+
+						}
+
+						while (mTmpFile != null && mTmpFile.exists()) {
+							boolean success = mTmpFile.delete();
+							if (success) {
+								mTmpFile = null;
+							}
+						}
+						
+						sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(path))));
 						ArrayList<String> list = new ArrayList<String>();
-						list.add(mTmpFile.getAbsolutePath());
-						L.e("相机选择：path = " + mTmpFile.getAbsolutePath());
+						list.add(path);
 
 						onImagePicked(list);
 

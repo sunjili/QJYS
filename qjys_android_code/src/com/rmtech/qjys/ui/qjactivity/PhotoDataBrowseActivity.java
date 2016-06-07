@@ -179,6 +179,10 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 	}
 
 	private void initViewPage() {
+		if(datalist == null || datalist.isEmpty()) {
+			finish();
+			return;
+		}
 		mAdapter = new SamplePagerAdapter(datalist, this);
 		mViewPager.setAdapter(mAdapter);
 		mViewPager.setCurrentItem(current_position, false);

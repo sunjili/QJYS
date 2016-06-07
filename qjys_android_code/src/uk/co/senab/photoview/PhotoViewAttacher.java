@@ -828,7 +828,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
 
 	public Bitmap getVisibleRectangleBitmap() {
 		ImageView imageView = getImageView();
-		return imageView == null ? null : imageView.getDrawingCache();
+		return imageView == null ? null : imageView.getDrawingCache(true);
 	}
 
 	@Override

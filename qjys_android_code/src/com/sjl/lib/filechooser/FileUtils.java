@@ -20,9 +20,13 @@ import static android.os.Environment.MEDIA_MOUNTED;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -35,6 +39,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -136,7 +141,49 @@ public class FileUtils {
         }
         return File.createTempFile(JPEG_FILE_PREFIX, JPEG_FILE_SUFFIX, dir);
     }
+    
+    public static File createImageFile(Context context) throws IOException{
+    	File dir = null;
+    	if(TextUtils.equals(Environment.getExternalStorageState(), Environment.MEDIA_MOUNTED)) {
+    		dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+    		if (!dir.exists()) {
+    			dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera");
+    			if (!dir.exists()) {
+    				dir = getCacheDirectory(context, true);
+    			}
+    		}
+    	}else{
+    		dir = getCacheDirectory(context, true);
+    	}
+    	Date date = new Date(System.currentTimeMillis());  
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("'IMG'_MMdd_HHmmss");  
+		String strFileName = JPEG_FILE_PREFIX+dateFormat.format(date);
+    	return File.createTempFile(strFileName, JPEG_FILE_SUFFIX, dir);
+    }
 
+	public static String saveImage(Context context, Bitmap bitmap) {
+		FileOutputStream fos = null;
+		try {
+			File imageFile = FileUtils.createImageFile(context);
+			fos = new FileOutputStream(imageFile);
+			bitmap.compress(CompressFormat.JPEG, 100, fos);
+			fos.flush();
+			return imageFile.getAbsolutePath();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				fos.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 
     private static final String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
 

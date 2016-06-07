@@ -227,7 +227,7 @@ public class ImageGridAdapter extends BaseAdapter {
         		.showImageForEmptyUri(R.drawable.default_error)
         		.showImageOnFail(R.drawable.default_error)
         		.showImageOnLoading(R.drawable.default_error)
-        		.resetViewBeforeLoading(true)
+        		//.resetViewBeforeLoading(true)
         		.cacheInMemory(true)
         		.build();
             	

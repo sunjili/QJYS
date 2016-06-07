@@ -28,4 +28,11 @@ public class CaseEvent {
 		this.caseInfoId = caseInfoId;
 	}
 
+	public boolean isNeedReloadCaseList() {
+		if (type == TYPE_GROUP_CHANGED_ADD || type == TYPE_GROUP_CHANGED_DELETE || type == TYPE_GROUP_CHANGED_ADMIN) {
+			return false;
+		}
+		return true;
+	}
+
 }

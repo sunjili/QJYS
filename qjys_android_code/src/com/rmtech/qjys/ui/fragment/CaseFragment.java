@@ -94,6 +94,9 @@ public class CaseFragment extends QjBaseFragment {
 	public void onEvent(CaseEvent event) {
 		// mAdapter.add();
 		L.d("onEvent " + event.type);
+		if(event== null || !event.isNeedReloadCaseList()) {
+			return;
+		}
 		if (getActivity() != null) {
 			getActivity().runOnUiThread(new Runnable() {
 
