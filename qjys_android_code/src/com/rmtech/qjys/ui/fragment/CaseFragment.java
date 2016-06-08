@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.Subscribe;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -51,6 +52,9 @@ import com.rmtech.qjys.model.gson.MPatientList;
 import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
 import com.rmtech.qjys.ui.qjactivity.AddCaseActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
+import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
@@ -70,19 +74,17 @@ public class CaseFragment extends QjBaseFragment {
 	private CaseSectionedAdapter mAdapter;
 	private LinearLayout neterrorview;
 	private View errorView;
-	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		IntentFilter filter= new IntentFilter();    
-	    filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-	    getActivity().registerReceiver(new MyNetworkReceiver(), filter); 
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+		getActivity().registerReceiver(new MyNetworkReceiver(), filter);
 		return inflater.inflate(R.layout.qj_fragment_case_list, container,
 				false);
 	}
-	
-	
+
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
@@ -94,7 +96,7 @@ public class CaseFragment extends QjBaseFragment {
 	public void onEvent(CaseEvent event) {
 		// mAdapter.add();
 		L.d("onEvent " + event.type);
-		if(event== null || !event.isNeedReloadCaseList()) {
+		if (event == null || !event.isNeedReloadCaseList()) {
 			return;
 		}
 		if (getActivity() != null) {
@@ -115,32 +117,36 @@ public class CaseFragment extends QjBaseFragment {
 		EventBus.getDefault().unregister(this);
 		super.onDestroy();
 	}
-	
-	public class MyNetworkReceiver extends BroadcastReceiver {  
-	    @Override  
-	    public void onReceive(Context context, Intent intent) {  
-	        // TODO Auto-generated method stub  
-	    	
-	        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);  
-	        NetworkInfo mobileInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);  
-	        NetworkInfo wifiInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);  
-	        NetworkInfo activeInfo = manager.getActiveNetworkInfo();  
-//	        Toast.makeText(context, "mobile:"+mobileInfo.isConnected()+"\n"+"wifi:"+wifiInfo.isConnected()  
-//	                        +"\n"+"active:"+activeInfo.getTypeName(), 1).show();
-	        if (mAdapter != null && mAdapter.getCount() > 0) {
-	        	if(activeInfo!=null&&activeInfo.isConnectedOrConnecting()){
+
+	public class MyNetworkReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+
+			ConnectivityManager manager = (ConnectivityManager) context
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo mobileInfo = manager
+					.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+			NetworkInfo wifiInfo = manager
+					.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			NetworkInfo activeInfo = manager.getActiveNetworkInfo();
+			// Toast.makeText(context,
+			// "mobile:"+mobileInfo.isConnected()+"\n"+"wifi:"+wifiInfo.isConnected()
+			// +"\n"+"active:"+activeInfo.getTypeName(), 1).show();
+			if (mAdapter != null && mAdapter.getCount() > 0) {
+				if (activeInfo != null && activeInfo.isConnectedOrConnecting()) {
 					neterrorview.setVisibility(View.GONE);
-		        }else{
-		        	neterrorview.setVisibility(View.VISIBLE);
-		        }
+				} else {
+					neterrorview.setVisibility(View.VISIBLE);
+				}
 			} else {
 				mNodataView.setVisibility(View.VISIBLE);
 				neterrorview.setVisibility(View.GONE);
 			}
-	        
-	    } 
-	  
-	}  
+
+		}
+
+	}
 
 	@Override
 	protected void initView() {
@@ -173,8 +179,33 @@ public class CaseFragment extends QjBaseFragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
-					int section, int position, long id) {
+					final int section, final int position, long id) {
+
 				CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
+				if (DoctorListManager.isGroupDeleted(info.group_id) || DoctorListManager.isGroupBeDeleted(info.group_id) ) {
+					CustomSimpleDialog.Builder builder = new Builder(
+							getActivity());
+					builder.setTitle("提示");
+					String str = "群组已解散";
+					if(DoctorListManager.isGroupBeDeleted(info.group_id)) {
+						str = "你已被移除群组";
+					}
+					builder.setMessage(str);
+					
+					builder.setNegativeButton("确定",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									mAdapter.deleteItem(section, position);
+									dialog.dismiss();
+								}
+
+							});
+					builder.create().show();
+					return;
+				}
 				PhotoDataManagerActivity.show(getActivity(), info, null);
 
 			}
@@ -431,6 +462,7 @@ public class CaseFragment extends QjBaseFragment {
 										}
 										notifyDataSetChanged();
 										onDisplayData();
+
 									}
 
 								}
@@ -447,6 +479,31 @@ public class CaseFragment extends QjBaseFragment {
 			Log.d("ssssssssss", "removeData section=" + section);
 			Log.d("ssssssssss", "removeData positionInSection="
 					+ positionInSection);
+		}
+
+		private void deleteItem(int section, int position) {
+			final HospitalCaseInfo hosList = mPatientList.get(section);
+
+			try {
+				if (hosList != null && hosList.patients != null) {
+					final CaseInfo caseinfo = hosList.patients
+							.get(position);
+					QjHttp.deletePatient(caseinfo.id, null);
+				}
+				hosList.patients.remove(position);
+
+				if (hosList.patients.size() == 0) {
+					mPatientList.remove(hosList);
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+
+			notifyDataSetChanged();
+			onDisplayData();
+
 		}
 
 		public void setData(MPatientList patientList) {
@@ -568,16 +625,16 @@ public class CaseFragment extends QjBaseFragment {
 		}
 
 		public void build(CaseInfo info) {
-			
+
 			nameTv.setText(info.getShowName());
 			String genderStr = "";
 			if (info.sex == 1) {
 				genderStr = "男";// 99
 				genderTv.setBackgroundResource(R.drawable.bg_gender_man);
-			} else if(info.sex == 2){
+			} else if (info.sex == 2) {
 				genderStr = "女";
 				genderTv.setBackgroundResource(R.drawable.bg_gender_woman);
-			}else{
+			} else {
 				genderStr = "未知";
 				genderTv.setBackgroundResource(R.drawable.bg_gender_weizhi);
 			}
@@ -641,6 +698,7 @@ public class CaseFragment extends QjBaseFragment {
 			public void run() {
 				try {
 					EMClient.getInstance().groupManager().destroyGroup(groupId);
+					DoctorListManager.addDeletedGroupIds(groupId);
 				} catch (final Exception e) {
 					// activity.runOnUiThread(new Runnable() {
 					//

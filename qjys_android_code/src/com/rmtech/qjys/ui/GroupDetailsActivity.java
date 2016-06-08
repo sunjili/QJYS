@@ -493,9 +493,11 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						public void run() {
 							progressDialog.dismiss();
 							setResult(RESULT_OK);
+							DoctorListManager.addDeletedGroupIds(groupId);
 							finish();
-							if (ChatActivity.activityInstance != null)
+							if (ChatActivity.activityInstance != null) {
 								ChatActivity.activityInstance.finish();
+							}
 						}
 					});
 				} catch (final Exception e) {

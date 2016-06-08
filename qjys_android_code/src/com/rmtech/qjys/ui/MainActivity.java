@@ -473,7 +473,7 @@ public class MainActivity extends BaseActivity {
 		sdkHelper.pushActivity(this);
 
 		EMClient.getInstance().chatManager().addMessageListener(messageListener);
-		DoctorListManager.getDeletedFriends();
+		DoctorListManager.initData();
 	}
 
 	@Override

@@ -41,6 +41,8 @@ public class DoctorListManager {
 	static private DoctorListManager mInstance = null;
 
 	private static HashSet<String> mDeletedFriends;
+	private static HashSet<String> mDeletedGroups;
+	private static HashSet<String> mBeDeletedGroups;
 
 	private HashMap<String, DoctorInfo> mIdDoctorMap;
 
@@ -131,6 +133,7 @@ public class DoctorListManager {
 		}
 
 	}
+	
 
 	public static void initDoctorList(List<EaseUser> contactList, List<DoctorInfo> lists) {
 		contactList.clear();
@@ -425,8 +428,54 @@ public class DoctorListManager {
 		return (HashSet<String>) DBUtil.getCache("changyong");
 	}
 	
-	public static void getDeletedFriends() {
-		mDeletedFriends = (HashSet<String>) DBUtil.getCache("DeletedFriends");
+	private static HashSet<String> getDeleteGroupIds() {
+		try {
+			return (HashSet<String>) DBUtil.getCache("DeleteGroupIds");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	private static HashSet<String> getBeDeleteGroupIds() {
+		try {
+			return (HashSet<String>) DBUtil.getCache("BeDeletedGroups");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	private static HashSet<String>  getDeletedFriends() {
+		try {
+			return (HashSet<String>) DBUtil.getCache("DeletedFriends");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static void initData() {
+		mDeletedFriends = getDeletedFriends();
+		mDeletedGroups = getDeleteGroupIds();
+		mBeDeletedGroups = getBeDeleteGroupIds();
+	}
+
+	public static boolean isGroupDeleted(String group_id) {
+		if(mDeletedGroups != null) {
+			return mDeletedGroups.contains(group_id);
+		}
+		return false;
+	}
+	
+	public static boolean isGroupBeDeleted(String group_id) {
+		if(mBeDeletedGroups != null) {
+			return mBeDeletedGroups.contains(group_id);
+		}
+		return false;
 	}
 	
 	public static void addDeletedFriends(String doc_id) {
@@ -439,12 +488,31 @@ public class DoctorListManager {
 				}
 			}
 		});
-		mDeletedFriends = getChangyongList();
+		mDeletedFriends = getDeletedFriends();
 		if(mDeletedFriends==null){
 			mDeletedFriends = new HashSet<String>();
 		}
 		mDeletedFriends.add(doc_id);
 		DBUtil.saveCache("DeletedFriends", mDeletedFriends);
+	}
+	
+	public static void addDeletedGroupIds(String groupId) {
+		
+		mDeletedGroups = getDeleteGroupIds();
+		if(mDeletedGroups==null){
+			mDeletedGroups = new HashSet<String>();
+		}
+		mDeletedGroups.add(groupId);
+		DBUtil.saveCache("DeleteGroupIds", mDeletedGroups);
+	}
+	public static void addBeDeletedGroupIds(String groupId) {
+		
+		mBeDeletedGroups = getBeDeleteGroupIds();
+		if(mBeDeletedGroups==null){
+			mBeDeletedGroups = new HashSet<String>();
+		}
+		mBeDeletedGroups.add(groupId);
+		DBUtil.saveCache("BeDeletedGroups", mBeDeletedGroups);
 	}
 	
 	public static void setMostUse(String doc_id, final boolean mostUse) {
@@ -480,4 +548,5 @@ public class DoctorListManager {
 			mIdDoctorMap.remove(id);
 		}
 	}
+
 }

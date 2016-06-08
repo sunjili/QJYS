@@ -532,6 +532,7 @@ public class QjHelper {
 		@Override
 		public void onUserRemoved(String groupId, String groupName) {
 			// TODO 提示用户被T了，demo省略此步骤
+			DoctorListManager.addBeDeletedGroupIds(groupId);
 			broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
 		}
 
@@ -539,6 +540,7 @@ public class QjHelper {
 		public void onGroupDestroy(String groupId, String groupName) {
 			// 群被解散
 			// TODO 提示用户群被解散,demo省略
+			DoctorListManager.addDeletedGroupIds(groupId);
 			broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
 		}
 
