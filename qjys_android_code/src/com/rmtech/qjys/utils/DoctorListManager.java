@@ -63,6 +63,9 @@ public class DoctorListManager {
 
 		if (mMDoctorList == null || mMDoctorList.isEmpty() || isChanged) {
 
+			if(isChanged) {
+				needCache = false;
+			}
 			QjHttp.getDoctorList(needCache, new QjHttpCallbackNoParse<MDoctorList>() {
 
 				@Override

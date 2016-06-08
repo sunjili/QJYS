@@ -92,7 +92,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 				if (TextUtils.isEmpty(tempCaseId)) {
 					save(0, 0);
 				} else {
-					CaseInfo info = createCaseInfo(0);
+					final CaseInfo info = createCaseInfo(0);
 					info.id = tempCaseId;
 					QjHttp.updatepatient(info, new BaseModelCallback() {
 
@@ -109,6 +109,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 									Toast.LENGTH_SHORT).show();
 							EventBus.getDefault().post(
 									new CaseEvent(CaseEvent.TYPE_ADD));
+							onAddCaseSuccess(info);
 							finish();
 						}
 					});
@@ -215,7 +216,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 
 	protected void save(final int state, final int targetId) {
 
-		CaseInfo info = createCaseInfo(state);
+		final CaseInfo info = createCaseInfo(state);
 		if(TextUtils.isEmpty(info.name)) {
 			new AlertView("提示","患者姓名必须填写", "好的", null,
 					null, getActivity(), AlertView.Style.Alert,
@@ -244,7 +245,8 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 								Toast.LENGTH_SHORT).show();
 						EventBus.getDefault().post(
 								new CaseEvent(CaseEvent.TYPE_ADD));
-						finish();
+						info.id = response.data.id;
+						onAddCaseSuccess(info);
 					}
 				} else {
 					Toast.makeText(getActivity(), "新临时病例创建失败 ",
@@ -260,6 +262,11 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		});
 	}
 
+	private void onAddCaseSuccess(CaseInfo caseInfo) {
+		PhotoDataManagerActivity.show(getActivity(), caseInfo, null);
+		finish();
+	}
+	
 	protected void jumpActivity(final int state, final int targetId) {
 		if (TextUtils.isEmpty(tempCaseId)) {
 			save(state, targetId);

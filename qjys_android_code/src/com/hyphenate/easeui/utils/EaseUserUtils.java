@@ -12,71 +12,99 @@ import com.hyphenate.easeui.domain.EaseUser;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 
 public class EaseUserUtils {
-    
-    static EaseUserProfileProvider userProvider;
-    
-    static {
-        userProvider = EaseUI.getInstance().getUserProfileProvider();
-    }
-    
-    /**
-     * 根据username获取相应user
-     * @param username
-     * @return
-     */
-    public static EaseUser getUserInfo(String username){
-        if(userProvider != null) {
-        	EaseUser user = userProvider.getUser(username);
-        	return user;
-        }
-        
-        return null;
-    }
-    
-    /**
-     * 设置用户头像
-     * @param username
-     */
-    public static void setUserAvatar(Context context, String username, ImageView imageView){
-    	EaseUser user = getUserInfo(username);
-        if(user != null){
-        	if(user.doctorInfo != null && user.doctorInfo.head != null){
-                Glide.with(context).load(user.doctorInfo.head).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_default_avatar).into(imageView);
 
-        	}else if(user.getAvatar() != null) {
-        		try {
-                    int avatarResId = Integer.parseInt(user.getAvatar());
-                    Glide.with(context).load(avatarResId).into(imageView);
-                } catch (Exception e) {
-                    //正常的string路径
-                    Glide.with(context).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_default_avatar).into(imageView);
-                }
-        	}
-            
-        }else{
-            Glide.with(context).load(R.drawable.ic_default_avatar).into(imageView);
-        }
-    }
-    
-    /**
-     * 设置用户昵称
-     */
-    public static void setUserNick(String username,TextView textView){
-        if(textView != null){
-        	
-        	EaseUser user = getUserInfo(username);
-        	if(user != null){
-        		if(user.doctorInfo != null && user.doctorInfo.getDisplayName() != null){
-        			textView.setText(user.doctorInfo.getDisplayName());
-        		} else if(user.getNick() != null) {
-        			textView.setText(user.getNick());
-        		}
-        	}else{
-        		textView.setText(username);
-        	}
-        }
-    }
-    
+	static EaseUserProfileProvider userProvider;
+
+	static {
+		userProvider = EaseUI.getInstance().getUserProfileProvider();
+	}
+
+	/**
+	 * 根据username获取相应user
+	 * 
+	 * @param username
+	 * @return
+	 */
+	public static EaseUser getUserInfo(String username) {
+		if (userProvider != null) {
+			EaseUser user = userProvider.getUser(username);
+			return user;
+		}
+
+		return null;
+	}
+
+	/**
+	 * 设置用户头像
+	 * 
+	 * @param username
+	 */
+	public static void setUserAvatar(Context context, String username,
+			ImageView imageView) {
+		EaseUser user = getUserInfo(username);
+		if (user != null) {
+			if (user.doctorInfo != null && user.doctorInfo.head != null) {
+				Glide.with(context).load(user.doctorInfo.head)
+						.diskCacheStrategy(DiskCacheStrategy.ALL)
+						.placeholder(R.drawable.ic_default_avatar)
+						.into(imageView);
+
+			} else if (user.getAvatar() != null) {
+				try {
+					int avatarResId = Integer.parseInt(user.getAvatar());
+					Glide.with(context).load(avatarResId).into(imageView);
+				} catch (Exception e) {
+					// 正常的string路径
+					Glide.with(context).load(user.getAvatar())
+							.diskCacheStrategy(DiskCacheStrategy.ALL)
+							.placeholder(R.drawable.ic_default_avatar)
+							.into(imageView);
+				}
+			}
+
+		} else {
+			Glide.with(context).load(R.drawable.ic_default_avatar)
+					.into(imageView);
+		}
+	}
+
+	/**
+	 * 设置用户昵称
+	 */
+	public static void setUserNick(final String username,
+			final TextView textView) {
+		if (textView != null) {
+
+			final EaseUser user = getUserInfo(username);
+
+			if (user == null || user.doctorInfo == null) {
+				DoctorListManager.getInstance().getDoctorInfoByHXid(username,
+						new OnGetDoctorInfoCallback() {
+
+							@Override
+							public void onGet(DoctorInfo info) {
+								if (info != null) {
+									if (user != null) {
+										user.doctorInfo = info;
+									}
+									textView.setText(info.getDisplayName());
+
+								} else {
+									textView.setText(username);
+								}
+							}
+						});
+			} else if (user.doctorInfo.getDisplayName() != null) {
+				textView.setText(user.doctorInfo.getDisplayName());
+			} else {
+
+				textView.setText(user.getNick());
+
+			}
+		}
+	}
+
 }
