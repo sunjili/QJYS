@@ -52,6 +52,7 @@ public class QjHttp {
 	public static final String URL_DOCTOR_PASSLOGIN = "/doctor/passlogin";  
 	public static final String URL_DOCTOR_SEARCH = "/doctor/search";
 	public static final String URL_CREATE_PATIENT = "/patient/createpatient";
+	public static final String URL_DELETE_TREATEPROCEDURE = "/doctor/deletetreateprocedure";
 	public static final String URL_PATIENT_LIST = "/patient/patientlist";
 	public static final String URL_ADD_FRIEND = "/doctor/addfriend";
 	public static final String URL_FRIEND_LIST = "/doctor/friendlist";
@@ -328,6 +329,23 @@ public class QjHttp {
 		}
 		OkHttpUtils.post(URL_SAVE_TREATEPROCEDURE, params, callback);
 	}
+	
+	/**
+	 * 11 删除诊疗规范
+	 * 
+	 * @param flowInfo
+	 * @param callback
+	 */
+	public static void deletetreateprocedure(FlowInfo flowInfo, BaseModelCallback callback) {
+		if (flowInfo == null) {
+			return;
+		}
+		HashMap<String, String> params = new HashMap<>();
+		if (!TextUtils.isEmpty(flowInfo.id)) {
+			params.put("id", flowInfo.id);
+		}
+		OkHttpUtils.post(URL_DELETE_TREATEPROCEDURE, params, callback);
+	}
 
 	public static void updateAdmin(String patient_id, String admin_id, BaseModelCallback callback) {
 		// patient_id : 病例id
@@ -571,7 +589,7 @@ public class QjHttp {
 	public static void pwLogin(String inuptPhoneStr, String passwd, QjHttpCallback<MUser> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", inuptPhoneStr);
-		params.put("passwd ", passwd);
+		params.put("passwd", passwd);
 		OkHttpUtils.post(URL_DOCTOR_PASSLOGIN, params, callback);
 	}
 

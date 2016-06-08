@@ -177,7 +177,6 @@
         <!-- 设置临床诊疗规范及流程 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.MeFlowActivity"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
@@ -194,6 +193,11 @@
         </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.CaseFlowEditActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+        <activity
+            android:name="com.rmtech.qjys.ui.qjactivity.CaseFlowNewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>

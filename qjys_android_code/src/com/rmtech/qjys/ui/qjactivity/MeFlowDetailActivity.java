@@ -99,6 +99,9 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
+			if(data!=null&&data.getStringExtra("delete")!=null&&data.getStringExtra("delete").equals("success")){
+				MeFlowDetailActivity.this.finish();
+			}
 			switch (requestCode) {
 			case QjConstant.REQUEST_CODE_ME_FLOW:
 				FlowInfo tempflowInfo = data.getParcelableExtra("FlowInfo");

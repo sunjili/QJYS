@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 
 /***
@@ -22,6 +24,13 @@ public class CaseFlowSelectorActivity extends MeFlowActivity implements
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setLeftTitle("返回");
+		setRightTitle(R.drawable.btn_case_new, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				CaseFlowNewActivity.show(getActivity(), caseId, requestType);
+			}
+		});
 	}
 
 	@Override
@@ -29,15 +38,8 @@ public class CaseFlowSelectorActivity extends MeFlowActivity implements
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (resultCode == RESULT_OK) {
-			switch (requestCode) {
-			// case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
-			// finish();
-			// break;
-			case QjConstant.REQUEST_CODE_CASE_FLOW_LIST:
-				setResult(RESULT_OK, data);
-				finish();
-				break;
-			}
+			setResult(RESULT_OK, data);
+			finish();
 		}
 	}
 
@@ -53,6 +55,14 @@ public class CaseFlowSelectorActivity extends MeFlowActivity implements
 		intent.putExtra("requestType", QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);// (context,
 		setCaseId(intent, caseId);
 		context.startActivityForResult(intent, QjConstant.REQUEST_CODE_EDIT_CASE_FLOW);
+	}
+	
+	public static void show(Activity context, String caseId, int requstType) {
+		Intent intent = new Intent();
+		intent.setClass(context, CaseFlowSelectorActivity.class);
+		intent.putExtra("requestType", requstType);// (context,
+		setCaseId(intent, caseId);
+		context.startActivityForResult(intent, requstType);
 	}
 
 	public static void show(Activity context) {

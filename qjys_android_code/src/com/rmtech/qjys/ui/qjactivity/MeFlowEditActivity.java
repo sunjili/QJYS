@@ -50,7 +50,7 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 	private String title;
 	private String content;
 	private Context context;
-	private CheckBox iv_right;
+	public CheckBox iv_right;
 	protected int requestCode;
 	protected FlowInfo flowInfo;
 	protected boolean isSave = false;
@@ -249,7 +249,24 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_delete:
-			Toast.makeText(context, "删除此规范", Toast.LENGTH_SHORT).show();
+			QjHttp.deletetreateprocedure(flowInfo, new BaseModelCallback() {
+				
+				@Override
+				public void onResponseSucces(MBase response) {
+					// TODO Auto-generated method stub
+					Toast.makeText(context, "删除成功!", Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent();
+					intent.putExtra("delete", "success");
+					setResult(RESULT_OK, intent);
+					getActivity().finish();
+				}
+				
+				@Override
+				public void onError(Call call, Exception e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			break;
 		case R.id.iv_right:
 			Toast.makeText(context, "保存为模板", Toast.LENGTH_SHORT).show();

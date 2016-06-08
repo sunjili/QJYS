@@ -54,13 +54,6 @@
             app:visibleLinePadding="true" />
 
         <com.rmtech.qjys.ui.view.MeItemLayout
-            android:id="@+id/me_about_gongneng"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:leftText="功能简介"
-            app:visibleLinePadding="true" />
-
-        <com.rmtech.qjys.ui.view.MeItemLayout
             android:id="@+id/me_about_xieyi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -43,13 +43,13 @@ public class MeAboutActivity extends BaseActivity implements
 			jumpActivity(MeAboutErweimaActivity.class);
 			break;
 		case R.id.me_about_jianjie:
-			jumpToWebAty("jianjie", "http://www.baidu.com", WebViewActivity.class);
+			jumpToWebAty("jianjie", "http://m.qijiyisheng.com/?t=1", WebViewActivity.class);
 			break;
-		case R.id.me_about_gongneng:
-			jumpToWebAty("gongneng", "http://www.163.com", WebViewActivity.class);
-			break;
+//		case R.id.me_about_gongneng:
+//			jumpToWebAty("gongneng", "http://www.163.com", WebViewActivity.class);
+//			break;
 		case R.id.me_about_xieyi:
-			jumpToWebAty("xieyi", "http://www.qq.com", WebViewActivity.class);
+			jumpToWebAty("xieyi", "http://m.qijiyisheng.com/user_agreement.html", WebViewActivity.class);
 			break;
 		case R.id.me_about_fankui:
 			jumpActivity(MeAboutFankuiActivity.class);
@@ -86,8 +86,8 @@ public class MeAboutActivity extends BaseActivity implements
 		me_about_erweima.setOnClickListener(this);
 		me_about_jianjie = (MeItemLayout) findViewById(R.id.me_about_jianjie);
 		me_about_jianjie.setOnClickListener(this);
-		me_about_gongneng = (MeItemLayout) findViewById(R.id.me_about_gongneng);
-		me_about_gongneng.setOnClickListener(this);
+//		me_about_gongneng = (MeItemLayout) findViewById(R.id.me_about_gongneng);
+//		me_about_gongneng.setOnClickListener(this);
 		me_about_xieyi = (MeItemLayout) findViewById(R.id.me_about_xieyi);
 		me_about_xieyi.setOnClickListener(this);
 		me_about_fankui = (MeItemLayout) findViewById(R.id.me_about_fankui);

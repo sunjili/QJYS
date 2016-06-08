@@ -200,16 +200,21 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 
 		ImageLoader.getInstance().displayImage(doctorInfo.head, ivHead,
 				QjConstant.optionsHead);
-//		tv_name.setText(doctorInfo.remark!=null ? doctorInfo.remark : doctorInfo.name);
-
-		tvNickname.setText("昵称："+doctorInfo.getDisplayName());
+		tv_name.setText(doctorInfo.remark!=null ? doctorInfo.remark : doctorInfo.name);
+		// 这里改错了吧，昵称应该是用户名，没设用户名的话就应该是手机号
+		tvNickname.setText("昵称："+doctorInfo.name);
+		// tv_name 优先显示备注，没有备注就显示用户名，特别提醒：用户没设用户名的话 后台会自动把doctorInfo.name的内容设定为手机号，不需要咱们手动添加doctorInfo.phone
+		// 非好友的话一定是没有备注的，那就显示用户名
 		
-		tv_name.setText(TextUtils.isEmpty(doctorInfo.name)?doctorInfo.phone:doctorInfo.name);
-		if(TextUtils.isEmpty(doctorInfo.remark)) {
-			tvNickname.setVisibility(View.GONE);
-		} else {
-			tvNickname.setText("昵称：" + doctorInfo.remark);
-		}
+		
+//		tv_name.setText(TextUtils.isEmpty(doctorInfo.name)?doctorInfo.phone:doctorInfo.name);
+//		if(TextUtils.isEmpty(doctorInfo.remark)) {
+//			tvNickname.setVisibility(View.GONE);
+//		} else {
+//			// 礼哥这里改错了吧，昵称应该是用户名，没设用户名的话就应该是手机号
+//		    // 对于 昵称：18888888888 这种格式的昵称我问过奎哥，他说没问题，表示无语,我是崩溃的
+//			tvNickname.setText("昵称：" + doctorInfo.remark);
+//		}
 		
 		if(doctorInfo.remark!=null){
 			tvNickname.setVisibility(View.VISIBLE);

@@ -29,17 +29,52 @@ import com.sjl.lib.http.okhttp.OkHttpUtils;
  * @author Administrator
  * 
  */
+/**
+ * @author Homicide
+ *
+ */
 public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 		View.OnClickListener {
 	@Override
 	protected void onCreate(Bundle arg0) {
 
 		super.onCreate(arg0);
-		if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
-			if (flowInfo == null || flowInfo.isEmpty()) {
-				CaseFlowSelectorActivity.show(CaseFlowDetailActivity.this);
-				return;
+		if(getCaseInfo()==null){//新建
+			if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
+				if (flowInfo == null || flowInfo.isEmpty()) {
+					setRightTitle("", null);
+				}else {
+					setRightTitle("编辑", new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							CaseFlowEditActivity.show(getActivity(), caseId, flowInfo, requestType);
+						}
+					});
+				}
+			} 
+		}else if(caseId!=null && !UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
+			setRightTitle("", null);
+		}else{
+			if(getCaseInfo().procedure_title!=null && getCaseInfo().procedure_title.length() > 0){
+				setRightTitle("编辑", new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						CaseFlowEditActivity.show(getActivity(), caseId, flowInfo, requestType);
+					}
+				});
+			}else{
+				setRightTitle("", null);
 			}
+		}
+		if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
+//			if (flowInfo == null || flowInfo.isEmpty()) {
+//				CaseFlowSelectorActivity.show(CaseFlowDetailActivity.this);
+//				return;
+//			}
 		} else if (requestType == QjConstant.REQUEST_CODE_CASE_FLOW_LIST) {
 			View userbutton = findViewById(R.id.use_button);
 			userbutton.setVisibility(View.VISIBLE);
@@ -79,7 +114,6 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 				}
 			});
 		}
-
 	}
 
 	@Override
@@ -88,17 +122,17 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
 			case QjConstant.REQUEST_CODE_NEW_CASE_FLOW:
-				setResult(RESULT_OK, data);
-				finish();
+				bindView();
+//				finish();
 				break;
 			case QjConstant.REQUEST_CODE_EDIT_CASE_FLOW:
-				CaseInfo cas = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
-				if(cas == null) {
+				CaseInfo cas1 = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+				if(cas1 == null) {
 					finish();
 					return;
 				}
-				String result = cas.procedure_title;
-				if(TextUtils.isEmpty(result)) {
+				String result1 = cas1.procedure_title;
+				if(TextUtils.isEmpty(result1)) {
 					finish();
 				} else {
 					bindView();
@@ -126,10 +160,46 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_add_flow_detail:
-			CaseFlowSelectorActivity.show(CaseFlowDetailActivity.this, caseId);
+			CaseFlowSelectorActivity.show(CaseFlowDetailActivity.this, caseId, requestType);
 			break;
 		default:
 			break;
+		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(getCaseInfo()==null){//新建
+			if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
+				if (flowInfo == null || flowInfo.isEmpty()) {
+					setRightTitle("", null);
+				}else {
+					setRightTitle("编辑", new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							CaseFlowEditActivity.show(getActivity(), caseId, flowInfo, requestType);
+						}
+					});
+				}
+			} 
+		}else if(caseId!=null && !UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
+			setRightTitle("", null);
+		}else{
+			if(getCaseInfo().procedure_title!=null && getCaseInfo().procedure_title.length() > 0){
+				setRightTitle("编辑", new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						CaseFlowEditActivity.show(getActivity(), caseId, flowInfo, requestType);
+					}
+				});
+			}else{
+				setRightTitle("", null);
+			}
 		}
 	}
 

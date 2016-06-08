@@ -31,6 +31,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
@@ -100,8 +101,8 @@ public class MeAboutErweimaActivity extends BaseActivity {
 						mShareAPI.getFriend(MeAboutErweimaActivity.this, displaylist[posi], umGetfriendListener);
 					}
 					
-					new ShareAction(getActivity()).setPlatform(displaylist[posi]).withText("属于医生的奇迹！").withTitle("奇迹医生")
-							.withTargetUrl("http://www.ruimingtech.com").withMedia(image).setCallback(umShareListener)
+					new ShareAction(getActivity()).setPlatform(displaylist[posi]).withText("奇迹医生是一款专业服务于临床医生的严肃协作平台。").withTitle("奇迹医生-连接医生，创造奇迹。")
+							.withTargetUrl("http://m.qijiyisheng.com/").withMedia(image).setCallback(umShareListener)
 							.share();
 				}else {
 					// 将二维码压缩存到本地
@@ -134,8 +135,8 @@ public class MeAboutErweimaActivity extends BaseActivity {
 		ProgressDialog dialog =  new ProgressDialog(this);
         dialog.setMessage("跳转中，请稍候…");
         Config.dialog = dialog;
-		image = new UMImage(MeAboutErweimaActivity.this, 
-				"https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1465111288&di=b6dbc97c643c1f660a4607746c78c0be&src=http://b.hiphotos.baidu.com/zhidao/pic/item/ae51f3deb48f8c5425ab12013a292df5e0fe7fa0.jpg");
+		image = new UMImage(MeAboutErweimaActivity.this,
+                BitmapFactory.decodeResource(getResources(), R.drawable.ic_me_logo));
 		displaylist = new SHARE_MEDIA[] { SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE };
 		
 	}
