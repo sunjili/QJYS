@@ -95,30 +95,35 @@ public class MeAboutErweimaActivity extends BaseActivity {
 			final int posi = position;
 			if(posi != displaylist.length){
 				if (mShareAPI.isInstall(MeAboutErweimaActivity.this, displaylist[posi])){
-					if(!(displaylist[posi].equals(SHARE_MEDIA.WEIXIN)||displaylist[posi].equals(SHARE_MEDIA.WEIXIN_CIRCLE))){
-						mShareAPI.doOauthVerify(MeAboutErweimaActivity.this, displaylist[posi], umAuthListener);
-						mShareAPI.getPlatformInfo(MeAboutErweimaActivity.this, displaylist[posi], umAuthListener);
-						mShareAPI.getFriend(MeAboutErweimaActivity.this, displaylist[posi], umGetfriendListener);
+//					if(!(displaylist[posi].equals(SHARE_MEDIA.WEIXIN)||displaylist[posi].equals(SHARE_MEDIA.WEIXIN_CIRCLE))){
+//						mShareAPI.doOauthVerify(MeAboutErweimaActivity.this, displaylist[posi], umAuthListener);
+//						mShareAPI.getPlatformInfo(MeAboutErweimaActivity.this, displaylist[posi], umAuthListener);
+//						mShareAPI.getFriend(MeAboutErweimaActivity.this, displaylist[posi], umGetfriendListener);
+//					}
+					if((displaylist[posi].equals(SHARE_MEDIA.WEIXIN))){
+						new ShareAction(getActivity()).setPlatform(displaylist[posi]).withText("奇迹医生，一款专业服务于临床医生的严肃协作平台。").withTitle("奇迹医生-连接医生，创造奇迹。")
+						.withTargetUrl("http://m.qijiyisheng.com/").withMedia(image).setCallback(umShareListener)
+						.share();
+					}else if(displaylist[posi].equals(SHARE_MEDIA.WEIXIN_CIRCLE)){
+						new ShareAction(getActivity()).setPlatform(displaylist[posi]).withText("奇迹医生，一款专业服务于临床医生的严肃协作平台。").withTitle("奇迹医生，一款专业服务于临床医生的严肃协作平台。")
+						.withTargetUrl("http://m.qijiyisheng.com/").withMedia(image).setCallback(umShareListener)
+						.share();
 					}
-					
-					new ShareAction(getActivity()).setPlatform(displaylist[posi]).withText("奇迹医生是一款专业服务于临床医生的严肃协作平台。").withTitle("奇迹医生-连接医生，创造奇迹。")
-							.withTargetUrl("http://m.qijiyisheng.com/").withMedia(image).setCallback(umShareListener)
-							.share();
 				}else {
-					// 将二维码压缩存到本地
-					try {
-						String filePath = Environment.getExternalStorageDirectory() + "/qjys" + File.separator + "qrQJYSPic" + ".jpg";
-					    iv_qrcode.setDrawingCacheEnabled(true);
-					    Bitmap bitmap = Bitmap.createBitmap(iv_qrcode.getDrawingCache());
-					    iv_qrcode.setDrawingCacheEnabled(false);
-						bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(filePath));
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					
 				}
 			}else {
-				
+				// 将二维码压缩存到本地
+				try {
+					String filePath = Environment.getExternalStorageDirectory() + "/qjys" + File.separator + "qrQJYSPic" + ".jpg";
+				    iv_qrcode.setDrawingCacheEnabled(true);
+				    Bitmap bitmap = Bitmap.createBitmap(iv_qrcode.getDrawingCache());
+				    iv_qrcode.setDrawingCacheEnabled(false);
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(filePath));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 		}
@@ -136,11 +141,11 @@ public class MeAboutErweimaActivity extends BaseActivity {
         dialog.setMessage("跳转中，请稍候…");
         Config.dialog = dialog;
 		image = new UMImage(MeAboutErweimaActivity.this,
-                BitmapFactory.decodeResource(getResources(), R.drawable.ic_me_logo));
+                BitmapFactory.decodeResource(getResources(), R.drawable.logo_share));
 		displaylist = new SHARE_MEDIA[] { SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE };
 		
 	}
-
+ 
 	private UMFriendListener umGetfriendListener = new UMFriendListener() {
 
 		@Override

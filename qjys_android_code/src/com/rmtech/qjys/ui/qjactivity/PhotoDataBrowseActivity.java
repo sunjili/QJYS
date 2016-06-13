@@ -394,6 +394,13 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 		} else {
 			mTitleLayout.setVisibility(View.VISIBLE);
 			mBottomLayout.setVisibility(View.VISIBLE);
+			if(!PhotoDataBaseActivity.hasPermission(caseInfo, currentPhotoData)) {
+				mEditTv.setVisibility(View.GONE);
+				mDeleteImage.setVisibility(View.GONE);
+			} else {
+				mEditTv.setVisibility(View.VISIBLE);
+				mDeleteImage.setVisibility(View.VISIBLE);
+			}
 
 		}
 	}

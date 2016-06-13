@@ -106,6 +106,10 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 		// mCaseInfo=new CaseInfo();
 		mCaseInfo = (CaseInfo) getIntent().getParcelableExtra("case_info");
 		setTitle(mCaseInfo.name);
+		if(mCaseInfo == null || mCaseInfo.admin_doctor == null) {
+			finish();
+			return;
+		}
 		isOwner = TextUtils.equals(UserContext.getInstance().getUserId(), mCaseInfo.admin_doctor.id);
 		initView();
 	}

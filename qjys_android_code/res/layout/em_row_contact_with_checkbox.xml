@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:focusable="false"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:button="@drawable/em_checkbox_bg_selector" />
 
         <com.sjl.lib.roundedimageview.RoundedImageView

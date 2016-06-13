@@ -51,7 +51,11 @@ public class CaseFlowEditActivity extends MeFlowEditActivity implements
 	@Override
 	protected void initView() {
 		super.initView();
-		btn_delete.setVisibility(View.VISIBLE);
+		if(getIntent().getStringExtra("from")!=null && getIntent().getStringExtra("from").equals("usebutton")){
+			btn_delete.setVisibility(View.GONE);
+		}else {
+			btn_delete.setVisibility(View.VISIBLE);
+		}
 		findViewById(R.id.bottom_layout).setVisibility(View.GONE);
 
 	}
@@ -75,9 +79,9 @@ public class CaseFlowEditActivity extends MeFlowEditActivity implements
 			mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
 			if (mCaseInfo != null) {
 				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("procedure_title", "");
-				params.put("procedure_text", "");
-				params.put("patient_id", mCaseInfo.id);
+				params.put("patient_id", caseId);
+				params.put("procedure_title", " ");
+				params.put("procedure_text", " ");
 				OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
 
 					@Override
@@ -90,19 +94,31 @@ public class CaseFlowEditActivity extends MeFlowEditActivity implements
 					public void onResponseSucces(MBase response) {
 						Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_LONG).show();
 
-						CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
-						if (caseInfo != null) {
-							caseInfo.procedure_title = "";
-							caseInfo.procedure_text = "";
-						}
+//						CaseInfo caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id);
+//						if (caseInfo != null) {
+//							caseInfo.procedure_title = "";
+//							caseInfo.procedure_text = "";
+//						}
+						mCaseInfo.procedure_title = "";
+						mCaseInfo.procedure_text = "";
 						Intent data = new Intent();
-						data.putExtra("string", "");
 						setResult(MeNameActivity.RESULT_OK, data);
 						finish();
 					}
 				});
 
 				return;
+			}else {
+				if (flowInfo == null) {
+					flowInfo = new FlowInfo();
+				}
+				flowInfo.title = "";
+				flowInfo.procedure = "";
+				Intent intent = new Intent();
+				intent.putExtra("FlowInfo", (Parcelable) flowInfo);
+				intent.putExtra("flag", "delete");
+				setResult(RESULT_OK, intent);
+				finish();
 			}
 			break;
 		case R.id.iv_right:

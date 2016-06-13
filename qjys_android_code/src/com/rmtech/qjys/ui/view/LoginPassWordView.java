@@ -30,6 +30,7 @@ import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MUser;
 import com.rmtech.qjys.ui.MainActivity;
+import com.rmtech.qjys.ui.WebViewActivity;
 import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 
@@ -78,7 +79,17 @@ public class LoginPassWordView extends LoginBaseView implements View.OnClickList
 
 		usernameEditText = (EditText) findViewById(R.id.username);
 		passwordEditText = (EditText) findViewById(R.id.password);
-
+        findViewById(R.id.fuwu).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getContext(), WebViewActivity.class);
+				intent.putExtra("from", "xieyi");
+				intent.putExtra("url", "http://m.qijiyisheng.com/user_agreement.html");
+				getContext().startActivity(intent);
+			}
+		});
 		// 如果用户名改变，清空密码
 		usernameEditText.addTextChangedListener(new TextWatcher() {
 			@Override

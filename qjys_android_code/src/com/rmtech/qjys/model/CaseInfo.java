@@ -171,6 +171,6 @@ public class CaseInfo implements Serializable, Parcelable {
 	}
 	
 	public boolean hasFlow() {
-		return !TextUtils.isEmpty(procedure_title);
+		return !TextUtils.isEmpty(procedure_title.trim());
 	}
 }

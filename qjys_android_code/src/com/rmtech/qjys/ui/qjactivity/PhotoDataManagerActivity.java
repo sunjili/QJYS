@@ -56,7 +56,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 			return;
 		}
 		setContentView(R.layout.activity_qj_photo_manager);
-		String name = caseInfo.name;
+//		String name = ;
 //		if(QjUtil.getStringBytesLen(name)>12){
 //			if(name.length()>12){
 //				name = caseInfo.name.substring(0, 3)+"...";
@@ -64,15 +64,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 //				name = 
 //			}
 //		}
-		if (isRootFolder()) {
-			TextView textView = setTitle(name);
-			textView.setMaxEms(5);
-			textView.setEllipsize(TextUtils.TruncateAt.END);
-			textView.setSingleLine();
-		} else {
-			setTitle(folderDataInfo.name);
-			setLeftTitle("根目录");
-		}
+		
         setLeftTitle("病例列表");
 		mPhotoManagerFragment = new PhotoManagerFragment();
 		getSupportFragmentManager().beginTransaction().add(R.id.container, mPhotoManagerFragment).commit();
@@ -91,6 +83,13 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	}
 	
 	
+	
+	@Override
+	protected void onDestroy() {
+		unregisterReceiver(CaseDeleteReceiver);
+		super.onDestroy();
+	}
+
 	private BroadcastReceiver CaseDeleteReceiver = new BroadcastReceiver() {    
         public void onReceive(Context context, Intent intent) {    
             if(intent.getAction().equals("case_delete")) {    
@@ -119,6 +118,16 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 			}
 		}
 		isFirstCreate = false;
+		
+		if (isRootFolder()) {
+			TextView textView = setTitle(caseInfo.name);
+			textView.setMaxEms(5);
+			textView.setEllipsize(TextUtils.TruncateAt.END);
+			textView.setSingleLine();
+		} else {
+			setTitle(folderDataInfo.name);
+			setLeftTitle("根目录");
+		}
 		super.onResume();
 	}
 

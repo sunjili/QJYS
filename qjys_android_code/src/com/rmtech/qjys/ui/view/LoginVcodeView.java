@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.LoginActivity;
+import com.rmtech.qjys.ui.WebViewActivity;
 
 @SuppressLint("NewApi")
 public class LoginVcodeView extends LoginBaseView implements View.OnClickListener {
@@ -56,6 +58,17 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 		code_button.setOnClickListener(this);
 		phone_edit = (EditText) findViewById(R.id.phone_edit);
 		code_edit = (EditText) findViewById(R.id.code_edit);
+        findViewById(R.id.fuwu).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getContext(), WebViewActivity.class);
+				intent.putExtra("from", "xieyi");
+				intent.putExtra("url", "http://m.qijiyisheng.com/user_agreement.html");
+				getContext().startActivity(intent);
+			}
+		});
 		// findViewById(R.id.change_button).setOnClickListener(this);
 		isGettingCode = false;
 		mHandler = new Handler();

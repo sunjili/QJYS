@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginTop="3dp"
-            android:background="@drawable/ease_unread_count_bg"
+            android:background="@drawable/em_unread_count_bg"
             android:gravity="center"
             android:text="7"
             android:textColor="@android:color/white"

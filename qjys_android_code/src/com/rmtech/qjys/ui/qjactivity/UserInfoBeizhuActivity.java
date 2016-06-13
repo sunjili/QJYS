@@ -11,6 +11,8 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
@@ -85,9 +87,7 @@ public class UserInfoBeizhuActivity extends BaseActivity {
 	private void initView() {
 		et_name = (EditText) findViewById(R.id.et_name);
 		setTextWhacher(UserInfoBeizhuActivity.this, et_name, 30);
-		if (!TextUtils.isEmpty(mDoctorInfo.remark)) {
-			et_name.setText(mDoctorInfo.remark);
-		}
+		et_name.setText(TextUtils.isEmpty(mDoctorInfo.remark)?mDoctorInfo.name:mDoctorInfo.remark);
 	}
 
 	protected boolean showTitleBar() {

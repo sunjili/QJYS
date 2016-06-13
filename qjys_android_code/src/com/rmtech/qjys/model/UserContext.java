@@ -189,4 +189,14 @@ public class UserContext {
 		}
 	}
 
+	public DoctorInfo getDoctorInfo() {
+		DoctorInfo info = new DoctorInfo();
+		if (mUser != null) {
+			info.id = mUser.id;
+			info.head = mUser.head;
+			info.name = mUser.name;
+		}
+		return info;
+	}
+
 }

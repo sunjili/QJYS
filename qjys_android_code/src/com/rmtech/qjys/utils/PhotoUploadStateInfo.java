@@ -13,10 +13,10 @@ import com.rmtech.qjys.model.gson.MUploadImageInfo;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
 
 public class PhotoUploadStateInfo extends QjHttpCallback<MUploadImageInfo> {
-	private String caseId;
+	public String caseId;
 
-	private String folder_id = "";
-	private String localPath;
+	public String folder_id = "";
+	public String localPath;
 	public int progress;
 	public PhotoDataInfo imageInfo;
 	// private QjHttpCallback<MUploadImageInfo> callback;

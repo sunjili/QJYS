@@ -80,7 +80,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="200dp"
             android:textColor="@color/white"
-            android:background="@drawable/ease_unread_count_bg"
+            android:background="@drawable/em_unread_count_bg"
             android:gravity="center"
             android:visibility="invisible"
             android:textSize="12sp" />

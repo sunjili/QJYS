@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white" >
+    android:background="@color/cf4f5f9" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +12,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:background="@color/white" >
 
             <TextView
                 android:id="@+id/name_tv"
@@ -36,7 +37,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/qj_add_case_item_height" >
+            android:layout_height="@dimen/qj_add_case_item_height" 
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/gender_tv"
@@ -80,7 +82,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:background="@color/white" >
 
             <TextView
                 android:id="@+id/age_tv"
@@ -113,7 +116,8 @@
             android:id="@+id/hospital_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical" 
+            android:background="@color/white">
 
             <TextView
                 style="@style/qj_add_case_left_name_tv"
@@ -146,7 +150,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical" 
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/keshi_tv"
@@ -171,7 +176,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:background="@color/white" >
 
             <TextView
                 android:id="@+id/room_tv"
@@ -203,7 +209,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical" 
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/bed_tv"
@@ -235,7 +242,8 @@
         <com.rmtech.qjys.ui.view.DiagnoseAddView
             android:id="@+id/diagnose_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            android:background="@color/white"/>
 
         <View
             android:layout_width="match_parent"
@@ -251,13 +259,15 @@
             android:layout_height="wrap_content"
             app:leftText="就诊状态"
             app:rightText=""
-            app:visibleLinePadding="true" />
+            app:visibleLinePadding="false" 
+            android:background="@color/white"/>
 
         <RelativeLayout
             android:id="@+id/photo_data_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical" 
+            android:visibility="gone">
 
             <TextView
                 style="@style/qj_add_case_left_name_tv"
@@ -278,13 +288,15 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/cd9" />
+            android:background="@color/cd9" 
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/doctors_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 style="@style/qj_add_case_left_name_tv"
@@ -305,13 +317,15 @@
             android:layout_height="1px"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:background="@color/cd9" />
+            android:background="@color/cd9"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/rule_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical" 
+            android:visibility="gone">
 
             <TextView
                 style="@style/qj_add_case_left_name_tv"
@@ -330,23 +344,27 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/cd9" />
+            android:background="@color/cd9" 
+            android:visibility="gone"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="20dip"
-            android:background="@color/cf4f5f9" />
+            android:background="@color/cf4f5f9"
+            android:visibility="gone"/>
         
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/cd9" />
+            android:background="@color/cd9" 
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/abstract_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/qj_add_case_item_height"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/abstract_tv"
@@ -364,11 +382,12 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/cd9" />
+            android:background="@color/cd9"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dip"
+            android:layout_height="20dp"
             android:background="@color/cf4f5f9" />
     </LinearLayout>
 

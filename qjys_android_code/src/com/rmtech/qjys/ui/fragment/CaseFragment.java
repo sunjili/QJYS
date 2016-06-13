@@ -104,8 +104,8 @@ public class CaseFragment extends QjBaseFragment {
 
 				@Override
 				public void run() {
-					GroupAndCaseListManager.getPatientList(false, httpCallback);
-					mAdapter.notifyDataSetChanged();
+					GroupAndCaseListManager.getPatientList(true, httpCallback);
+//					mAdapter.notifyDataSetChanged();
 				}
 			});
 		}
@@ -379,6 +379,7 @@ public class CaseFragment extends QjBaseFragment {
 		public void onResponseSucces(boolean iscache, MPatientList response) {
 			if (response != null && response.hasData()) {
 				mAdapter.setData(response);
+				mAdapter.notifyDataSetChanged();
 			}
 			mPtrFrame.refreshComplete();
 			onDisplayData();
@@ -392,9 +393,7 @@ public class CaseFragment extends QjBaseFragment {
 	}
 
 	private void updateData() {
-		GroupAndCaseListManager.getPatientList(false, httpCallback);
-
-		mAdapter.notifyDataSetChanged();
+		GroupAndCaseListManager.getPatientList(true, httpCallback);
 		// TODO Auto-generated method stub
 		// mListView.postDelayed(new Runnable() {
 		//

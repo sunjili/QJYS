@@ -102,7 +102,6 @@ public class GroupAndCaseListManager {
 				if (callback != null) {
 					callback.onResponseSucces(iscache, response);
 				}
-
 				if (response != null && response.hasData()) {
 					for (HospitalCaseInfo hInfo : response.data.lists) {
 						if (hInfo != null) {

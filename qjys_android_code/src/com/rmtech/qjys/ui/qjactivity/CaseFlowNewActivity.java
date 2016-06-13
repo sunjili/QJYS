@@ -16,6 +16,7 @@ import com.sjl.lib.http.okhttp.OkHttpUtils;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -113,6 +114,28 @@ public class CaseFlowNewActivity extends MeFlowNewActivity {
 						}
 					});
 					return;
+				}else {
+					if (flowInfo == null) {
+						flowInfo = new FlowInfo();
+					}
+					flowInfo.title = et_title.getText().toString().trim();
+					flowInfo.procedure = et_content.getText().toString().trim();
+					if (!TextUtils.isEmpty(flowInfo.id)) {
+						FlowListManager.getInstance().updataFlowInfo(flowInfo);
+					}
+					setResult(RESULT_OK, new Intent().putExtra("FlowInfo",
+							(Parcelable) flowInfo));
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), CaseFlowDetailActivity.class);
+					intent.putExtra("FlowInfo", (Parcelable) flowInfo);
+					intent.putExtra("requestType", QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+					intent.putExtra("from", "111");
+					setCaseId(intent, caseId);
+					getActivity().startActivityForResult(intent, requestType);
+					CaseFlowNewActivity.this.finish();
+					if (isNew&&isSave) {
+						saveAsPlate();
+					}
 				}
 			}
 		});

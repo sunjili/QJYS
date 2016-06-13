@@ -3,6 +3,7 @@ package com.rmtech.qjys.ui.view;
 import com.rmtech.qjys.R;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -43,6 +44,7 @@ public class CleanableEditText extends EditText {
     }  
   
     public void init() {  
+    	setPadding(0, 0, 20, 0);
         mDrawable = mContext.getResources().getDrawable(R.drawable.btn_address_list_delect);  
         mDrawableSearch = mContext.getResources().getDrawable(R.drawable.ic_addresslist_findnewfirend); 
         setCompoundDrawablesWithIntrinsicBounds(mDrawableSearch, null, null, null); 
@@ -87,10 +89,10 @@ public class CleanableEditText extends EditText {
     public void updateCleanable(int length, boolean hasFocus){  
         if(length() > 0 && hasFocus){
             setCompoundDrawablesWithIntrinsicBounds(mDrawableSearch, null, mDrawable, null);
-            setCompoundDrawablePadding(10);
+            setCompoundDrawablePadding(20);
         }else  {
             setCompoundDrawablesWithIntrinsicBounds(mDrawableSearch, null, null, null);  
-            setCompoundDrawablePadding(10);
+            setCompoundDrawablePadding(20);
         }
     }  
       

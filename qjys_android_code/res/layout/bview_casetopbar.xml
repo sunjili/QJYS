@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_case_information_nor" />
+            android:src="@drawable/btn_case_information" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_case_abstract_nor" />
+            android:src="@drawable/btn_case_abstract" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_case_standard_nor" />
+            android:src="@drawable/btn_case_standard" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_case_people_nor" />
+            android:src="@drawable/btn_case_people" />
 
         <TextView
             android:layout_width="wrap_content"

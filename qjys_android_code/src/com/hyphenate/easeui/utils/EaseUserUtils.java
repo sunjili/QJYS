@@ -9,6 +9,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.utils.DoctorListManager;
@@ -43,32 +45,65 @@ public class EaseUserUtils {
 	 * @param username
 	 */
 	public static void setUserAvatar(Context context, String username,
-			ImageView imageView) {
-		EaseUser user = getUserInfo(username);
-		if (user != null) {
-			if (user.doctorInfo != null && user.doctorInfo.head != null) {
-				Glide.with(context).load(user.doctorInfo.head)
-						.diskCacheStrategy(DiskCacheStrategy.ALL)
-						.placeholder(R.drawable.ic_default_avatar)
-						.into(imageView);
+			final ImageView imageView) {
+		final EaseUser user = getUserInfo(username);
+		
+		DoctorListManager.getInstance().getDoctorInfoByHXid(username,
+				new OnGetDoctorInfoCallback() {
 
-			} else if (user.getAvatar() != null) {
-				try {
-					int avatarResId = Integer.parseInt(user.getAvatar());
-					Glide.with(context).load(avatarResId).into(imageView);
-				} catch (Exception e) {
-					// 正常的string路径
-					Glide.with(context).load(user.getAvatar())
-							.diskCacheStrategy(DiskCacheStrategy.ALL)
-							.placeholder(R.drawable.ic_default_avatar)
-							.into(imageView);
-				}
-			}
-
-		} else {
-			Glide.with(context).load(R.drawable.ic_default_avatar)
-					.into(imageView);
-		}
+					@Override
+					public void onGet(DoctorInfo info) {
+						if (info != null) {
+							if(user != null){
+								user.doctorInfo = info;
+							}
+							ImageLoader.getInstance().displayImage(info.head, imageView,
+									QjConstant.optionsHead);
+						} else {
+							
+						}
+					}
+				});
+//		if (user != null) {
+//			if (user.doctorInfo != null && user.doctorInfo.head != null) {
+//				Glide.with(context).load(user.doctorInfo.head)
+//						.diskCacheStrategy(DiskCacheStrategy.ALL)
+//						.placeholder(R.drawable.ic_default_avatar)
+//						.into(imageView);
+//
+//			} else {
+//				if(user.getAvatar() != null){
+//					try {
+//						int avatarResId = Integer.parseInt(user.getAvatar());
+//						Glide.with(context).load(avatarResId).into(imageView);
+//					} catch (Exception e) {
+//						// 正常的string路径
+//						Glide.with(context).load(user.getAvatar())
+//								.diskCacheStrategy(DiskCacheStrategy.ALL)
+//								.placeholder(R.drawable.ic_default_avatar)
+//								.into(imageView);
+//					}
+//				}else {
+//					DoctorListManager.getInstance().getDoctorInfoByHXid(username,
+//							new OnGetDoctorInfoCallback() {
+//
+//								@Override
+//								public void onGet(DoctorInfo info) {
+//									if (info != null) {
+//										user.doctorInfo = info;
+//										ImageLoader.getInstance().displayImage(info.head, imageView,
+//												QjConstant.optionsHead);
+//									} else {
+//										
+//									}
+//								}
+//							});
+//				}
+//			}
+//		} else {
+//			Glide.with(context).load(R.drawable.ic_default_avatar)
+//					.into(imageView);
+//		}
 	}
 
 	/**

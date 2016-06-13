@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -181,6 +182,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.procedure_title = mFlowInfo.title;
 		info.procedure_text = mFlowInfo.procedure;
 		info.abs = abstractEt.getEditableText().toString();
+		info.admin_doctor = UserContext.getInstance().getDoctorInfo();
 		info.participate_doctor = currentDoctorList;
 		info.state = state;
 		return info;
@@ -341,8 +343,25 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 			// if(TextUtils.isEmpty(mFlowInfo.title)) {
 			// MeFlowActivity.show(getActivity());
 			// } else {
-			CaseFlowDetailActivity.show(getActivity(), "", mFlowInfo,
-					QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+//			CaseFlowDetailActivity.show(getActivity(), "", mFlowInfo,
+//					QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+			if(mFlowInfo.isEmpty()){
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), CaseFlowSelectorActivity.class);
+				intent.putExtra("FlowInfo", (Parcelable) mFlowInfo);
+				intent.putExtra("requestType", QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+				intent.putExtra("from", "add");
+				intent.putExtra("patient_id", "");
+				getActivity().startActivityForResult(intent, QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+			}else {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), CaseFlowDetailActivity.class);
+				intent.putExtra("FlowInfo", (Parcelable) mFlowInfo);
+				intent.putExtra("requestType", QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+				intent.putExtra("from", "add");
+				intent.putExtra("patient_id", "");
+				getActivity().startActivityForResult(intent, QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+			}
 			// MeFlowEditActivity.show(getActivity(), mFlowInfo,
 			// QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
 			// }

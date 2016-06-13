@@ -208,9 +208,10 @@ public class EaseChatFragment extends QjBaseFragment {
         titleBar.setTitle(toChatUsername);
         if (chatType == EaseConstant.CHATTYPE_SINGLE) { // 单聊
             // 设置标题
-            if(EaseUserUtils.getUserInfo(toChatUsername) != null){
-                titleBar.setTitle(EaseUserUtils.getUserInfo(toChatUsername).getNick());
-            }
+        	EaseUserUtils.setUserNick(toChatUsername, titleBar.titleView);
+//            if(EaseUserUtils.getUserInfo(toChatUsername) != null){
+//                titleBar.setTitle(EaseUserUtils.getUserInfo(toChatUsername).doctorInfo.getDisplayName());
+//            }
             titleBar.setRightImageResource(R.drawable.btn_message_checkinformation);
         } else {
 //        	titleBar.setRightImageResource(R.drawable.ease_to_group_details_normal);

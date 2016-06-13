@@ -30,7 +30,9 @@ import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
 import com.rmtech.qjys.utils.BitmapUtils;
+import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.ExifUtils;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.rmtech.qjys.utils.PhotoUploadManager.OnPhotoUploadListener;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
@@ -96,7 +98,16 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_photo_uploading);
 		setTitle("传输列表");
-		setLeftTitle("返回");
+		setLeftTitle("");
+		setLeftGone();
+		setRightTitle("关闭", new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getActivity().finish();
+			}
+		});
 		PhotoUploadManager.getInstance().registerPhotoUploadListener(this);
 
 		mListView = (PinnedHeaderListView) findViewById(R.id.pinnedListView);
@@ -128,30 +139,12 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 
 			@Override
 			public void create(SwipeMenu menu) {
-				// create "open" item
-				SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
-				// set item background
-				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-						0xCE)));
-
-				// set item width
-				openItem.setWidth(ScreenUtil.dp2px(90));
-				// set item title
-				openItem.setTitle("取消上传");
-				// set item title fontsize
-				openItem.setTitleSize(18);
-				// set item title font color
-				openItem.setTitleColor(Color.RED);
-				// add to menu
-				menu.addMenuItem(openItem);
-
-				// create "delete" item
+				
 				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
 				// set item background
 				// deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
 				// 0x3F, 0x25)));
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xCC,
-						0xC9, 0xA0)));
+				deleteItem.setBackground(new ColorDrawable(R.color.cb2));
 
 				// set item width
 				deleteItem.setWidth(ScreenUtil.dp2px(90));
@@ -163,6 +156,23 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 				// deleteItem.setIcon(R.drawable.ic_delete);
 				// add to menu
 				menu.addMenuItem(deleteItem);
+				
+				
+				SwipeMenuItem openItem = new SwipeMenuItem(getActivity());
+				// set item background
+				openItem.setBackground(new ColorDrawable(Color.RED));
+
+				// set item width
+				openItem.setWidth(ScreenUtil.dp2px(90));
+				// set item title
+				openItem.setTitle("取消上传");
+				// set item title fontsize
+				openItem.setTitleSize(18);
+				// set item title font color
+				openItem.setTitleColor(Color.WHITE);
+				// add to menu
+				menu.addMenuItem(openItem);
+
 			}
 		};
 		// set creator
@@ -175,7 +185,7 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 					public boolean onMenuItemClick(int position,
 							SwipeMenu menu, int index) {
 						switch (index) {
-						case 0: {
+						case 1: {
 							PhotoUploadStateInfo info = (PhotoUploadStateInfo) mAdapter
 									.getItem(position);
 							PhotoUploadManager.getInstance().cancel(info);
@@ -184,7 +194,7 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 							mAdapter.notifyDataSetChanged();
 							break;
 						}
-						case 1: {
+						case 0: {
 							PhotoUploadStateInfo info = (PhotoUploadStateInfo) mAdapter
 									.getItem(position);
 							PhotoUploadManager.getInstance().retry(info);
@@ -335,6 +345,7 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 		private TextView tvPercent;
 		private ImageView avatar;
 		private TextView name;
+		private TextView casename;
 		private TextView speed_tv;
 		private TextView state_tv;
 		private PhotoUploadStateInfo info;
@@ -344,7 +355,7 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 			crpv = (ColorfulRingProgressView) container.findViewById(R.id.crpv);
 
 			tvPercent = (TextView) container.findViewById(R.id.tvPercent);
-
+			casename = (TextView) container.findViewById(R.id.casename);
 			avatar = (ImageView) container.findViewById(R.id.avatar);
 			name = (TextView) container.findViewById(R.id.name);
 			state_tv = (TextView) container.findViewById(R.id.state_tv);
@@ -373,7 +384,13 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 		public void build(final PhotoUploadStateInfo info) {
 			if (info.imageInfo != null) {
 				name.setText(info.imageInfo.name);
-				
+				String caseName = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(info.caseId).name;
+				if(caseName.length()>4){
+					caseName = "(" + caseName.substring(0, 4) + "…" + "病例" + ")";
+				}else {
+					caseName = "(" + caseName + "病例" + ")";
+				}
+				casename.setText(caseName);
 				ImageLoader.getInstance().displayImage(
 						"file://" + info.imageInfo.localPath, avatar, options);
 

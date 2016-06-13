@@ -21,7 +21,7 @@ public class EaseTitleBar extends RelativeLayout {
 	protected TextView leftImage;
 	protected RelativeLayout rightLayout;
 	protected TextView rightImage;
-	protected TextView titleView;
+	public TextView titleView;
 	protected RelativeLayout titleLayout;
 
 	public EaseTitleBar(Context context, AttributeSet attrs, int defStyle) {

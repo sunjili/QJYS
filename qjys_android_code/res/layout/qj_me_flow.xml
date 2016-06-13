@@ -25,7 +25,7 @@
             style="@style/qj_text_small_explain_style"
             android:layout_width="match_parent"
             android:layout_height="27dp"
-            android:text="" />
+            android:text="以下是你的诊疗规范模板" />
         
         <include layout="@layout/qj_me_split_line"/>
         

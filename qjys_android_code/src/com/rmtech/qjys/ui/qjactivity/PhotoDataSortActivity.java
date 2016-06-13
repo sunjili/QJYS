@@ -33,26 +33,22 @@ import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.sjl.lib.dynamicgrid.DynamicGridView;
 
 @SuppressLint("NewApi")
-public class PhotoDataSortActivity extends CaseWithIdActivity implements
-		OnClickListener {
+public class PhotoDataSortActivity extends CaseWithIdActivity implements OnClickListener {
 
-	protected static final String TAG = PhotoDataSortActivity.class
-			.getSimpleName();
+	protected static final String TAG = PhotoDataSortActivity.class.getSimpleName();
 	protected BaseModelCallback callback = new BaseModelCallback() {
-		
+
 		@Override
 		public void onResponseSucces(MBase response) {
 			Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
 
-			PhotoDataEvent event = new PhotoDataEvent(
-					PhotoDataEvent.TYPE_MOVE);
-			event.setMovedImageList(caseId, folderId,
-					null);
+			PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_MOVE);
+			event.setMovedImageList(caseId, folderId, null);
 			EventBus.getDefault().post(event);
-			
+
 			finish();
 		}
-		
+
 		@Override
 		public void onError(Call call, Exception e) {
 			Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_LONG).show();
@@ -64,33 +60,32 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qj_photo_sort);
 		setTitle("文件排序");
-		if(imageDataList != null) {
+		if (imageDataList == null) {
 			setRightTitle("保存", null).setTextColor(Color.GRAY);
 		} else {
-		setRightTitle("保存", new OnClickListener() {
+			setRightTitle("保存", new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				switch (sortType) {
-				case R.id.wjm_sort_view:
-					QjHttp.sortImage(folderId, caseId, 1, null, callback );
-					break;
-				case R.id.scsj_sort_view:
-					QjHttp.sortImage(folderId, caseId, 0, null, callback );
-					break;
-				case R.id.zdy_sort_view:
-					QjHttp.sortImage(folderId, caseId, 2, getSortedImageIds(), callback );
-					break;
+				@Override
+				public void onClick(View v) {
+					switch (sortType) {
+					case R.id.wjm_sort_view:
+						QjHttp.sortImage(folderId, caseId, 1, null, callback);
+						break;
+					case R.id.scsj_sort_view:
+						QjHttp.sortImage(folderId, caseId, 0, null, callback);
+						break;
+					case R.id.zdy_sort_view:
+						QjHttp.sortImage(folderId, caseId, 2, getSortedImageIds(), callback);
+						break;
+					}
 				}
-			}
-		});
+			});
 		}
 		initViews();
 	}
 
 	protected String getSortedImageIds() {
-		if (mAdapter != null && mAdapter.getItems() != null
-				&& !mAdapter.getItems().isEmpty()) {
+		if (mAdapter != null && mAdapter.getItems() != null && !mAdapter.getItems().isEmpty()) {
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < mAdapter.getItems().size(); i++) {
 				sb.append(((PhotoDataInfo) mAdapter.getItems().get(i)).id);
@@ -107,7 +102,7 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 		return true;
 	}
 
-	public static void show(Activity context,String caseId, String folderId, ImageDataList imageDataList) {
+	public static void show(Activity context, String caseId, String folderId, ImageDataList imageDataList) {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataSortActivity.class);
 		setCaseId(intent, caseId);
@@ -137,24 +132,24 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 		mZdySortImageview = (ImageView) findViewById(R.id.zdy_sort_imageview);
 		mGridView = (com.sjl.lib.dynamicgrid.DynamicGridView) findViewById(R.id.dynamic_grid);
 		mGridView.setEditModeEnabled(false);
-		if(imageDataList != null) {
-		mDataList = imageDataList.images;
-		int order = imageDataList.order;
-		switch (order) {
-		// : 0时间 1名称 2自定义
-		case 0:
-			sortType = R.id.scsj_sort_view;
-			mScsjSortView.performClick();
-			break;
-		case 1:
-			sortType = R.id.wjm_sort_view;
-			mWjmSortView.performClick();
-			break;
-		case 2:
-			sortType = R.id.zdy_sort_view;
-			mZdySortView.performClick();
-			break;
-		}
+		if (imageDataList != null) {
+			mDataList = imageDataList.images;
+			int order = imageDataList.order;
+			switch (order) {
+			// : 0时间 1名称 2自定义
+			case 0:
+				sortType = R.id.scsj_sort_view;
+				mScsjSortView.performClick();
+				break;
+			case 1:
+				sortType = R.id.wjm_sort_view;
+				mWjmSortView.performClick();
+				break;
+			case 2:
+				sortType = R.id.zdy_sort_view;
+				mZdySortView.performClick();
+				break;
+			}
 		}
 
 		// add callback to stop edit mode if needed
@@ -174,27 +169,26 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 
 			@Override
 			public void onDragPositionsChanged(int oldPosition, int newPosition) {
-				Log.d(TAG, String.format(
-						"drag item position changed from %d to %d",
-						oldPosition, newPosition));
+				Log.d(TAG, String.format("drag item position changed from %d to %d", oldPosition, newPosition));
+				if (mGridView.isEditMode()) {
+					mGridView.stopEditMode();
+				}
 			}
 		});
-		mGridView
-				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-					@Override
-					public boolean onItemLongClick(AdapterView<?> parent,
-							View view, int position, long id) {
-						mGridView.startEditMode(position);
-						return true;
-					}
-				});
+		mGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				mGridView.startEditMode(position);
+				return true;
+			}
+		});
 
 		initAdapter();
 
 	}
 
 	private void initAdapter() {
-		if(mDataList != null) {
+		if (mDataList != null) {
 			mAdapter = new PhotoDataGridAdapter(getActivity(), mDataList);
 			mGridView.setAdapter(mAdapter);
 		}
@@ -215,32 +209,27 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 		sortType = v.getId();
 		switch (sortType) {
 		case R.id.wjm_sort_view:
-			
-			mWjmSortView
-					.setCompoundDrawablesWithIntrinsicBounds(getResources()
-							.getDrawable(R.drawable.btn_choice_press), null,
-							null, null);
+
+			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getResources()
+					.getDrawable(R.drawable.btn_choice_press), null, null, null);
 			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(
-					getResources().getDrawable(R.drawable.btn_choice_nor),
-					null, null, null);
+					getResources().getDrawable(R.drawable.btn_choice_nor), null, null, null);
 			mZdySortImageview.setImageResource(R.drawable.btn_choice_nor);
 			sort(R.id.wjm_sort_view);
 			break;
 		case R.id.scsj_sort_view:
-			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getResources()
-					.getDrawable(R.drawable.btn_choice_nor), null, null, null);
-			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(
-					getResources().getDrawable(R.drawable.btn_choice_press),
+			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor),
 					null, null, null);
+			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(
+					getResources().getDrawable(R.drawable.btn_choice_press), null, null, null);
 			mZdySortImageview.setImageResource(R.drawable.btn_choice_nor);
 			sort(R.id.scsj_sort_view);
 			break;
 		case R.id.zdy_sort_view:
-			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getResources()
-					.getDrawable(R.drawable.btn_choice_nor), null, null, null);
-			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(
-					getResources().getDrawable(R.drawable.btn_choice_nor),
+			mWjmSortView.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_choice_nor),
 					null, null, null);
+			mScsjSortView.setCompoundDrawablesWithIntrinsicBounds(
+					getResources().getDrawable(R.drawable.btn_choice_nor), null, null, null);
 			mZdySortImageview.setImageResource(R.drawable.btn_choice_press);
 			mGridView.setEditModeEnabled(true);
 
@@ -250,7 +239,7 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements
 
 	public void sort(final int sortType) {
 		// 排序
-		if(mDataList == null) {
+		if (mDataList == null) {
 			return;
 		}
 		Collections.sort(mDataList, new Comparator<PhotoDataInfo>() {

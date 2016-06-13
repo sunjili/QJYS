@@ -91,7 +91,8 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 					showDialog("请填写规范内容");
 					return;
 				}
-				if (requestType == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW) {
+				if (requestType == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW
+						|| requestType == QjConstant.REQUEST_CODE_CASE_FLOW_LIST) {
 
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("patient_id", caseId);

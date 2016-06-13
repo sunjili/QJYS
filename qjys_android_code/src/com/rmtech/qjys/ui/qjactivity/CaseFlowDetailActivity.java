@@ -40,8 +40,9 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 
 		super.onCreate(arg0);
 		if(getCaseInfo()==null){//新建
-			if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
-				if (flowInfo == null || flowInfo.isEmpty()) {
+			if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW ) {
+				if ((getIntent().getStringExtra("from")!=null&&getIntent().getStringExtra("from").equals("caseSelector"))
+						|| flowInfo == null || flowInfo.isEmpty()) {
 					setRightTitle("", null);
 				}else {
 					setRightTitle("编辑", new OnClickListener() {
@@ -54,10 +55,10 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 					});
 				}
 			} 
-		}else if(caseId!=null && !UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
+		}else if(!UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
 			setRightTitle("", null);
-		}else{
-			if(getCaseInfo().procedure_title!=null && getCaseInfo().procedure_title.length() > 0){
+		}else if (!TextUtils.isEmpty(caseId) && UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
+			if(getCaseInfo().hasFlow()){
 				setRightTitle("编辑", new OnClickListener() {
 					
 					@Override
@@ -70,47 +71,62 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 				setRightTitle("", null);
 			}
 		}
-		if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
-//			if (flowInfo == null || flowInfo.isEmpty()) {
-//				CaseFlowSelectorActivity.show(CaseFlowDetailActivity.this);
-//				return;
-//			}
-		} else if (requestType == QjConstant.REQUEST_CODE_CASE_FLOW_LIST) {
+//		if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
+////			if (flowInfo == null || flowInfo.isEmpty()) {
+////				CaseFlowSelectorActivity.show(CaseFlowDetailActivity.this);
+////				return;
+////			}
+//		} else 
+		if (requestType == QjConstant.REQUEST_CODE_CASE_FLOW_LIST
+			|| requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
 			View userbutton = findViewById(R.id.use_button);
-			userbutton.setVisibility(View.VISIBLE);
+			if(flowInfo!=null && !flowInfo.isEmpty()){
+				userbutton.setVisibility(View.VISIBLE);
+			}
 			userbutton.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					if (!TextUtils.isEmpty(caseId) && getCaseInfo() != null) {
-						HashMap<String, String> params = new HashMap<String, String>();
-						params.put("patient_id", caseId);
-						params.put("procedure_title", flowInfo.title);
-						params.put("procedure_text", flowInfo.procedure);
-						OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
-
-							@Override
-							public void onError(Call call, Exception e) {
-								Toast.makeText(getActivity(), "保存失败",
-										Toast.LENGTH_LONG).show();
-							}
-
-							@Override
-							public void onResponseSucces(MBase response) {
-								Toast.makeText(getActivity(), "保存成功",
-										Toast.LENGTH_LONG).show();
-								CaseInfo tempCaseInfo = getCaseInfo();
-								if (tempCaseInfo != null) {
-									tempCaseInfo.procedure_title = flowInfo.title;
-									tempCaseInfo.procedure_text = flowInfo.procedure;
-								}
-								onFinish();
-							}
-
-						});
-					} else {
-						onFinish();
-					}
+//					if (!TextUtils.isEmpty(caseId) && getCaseInfo() != null) {
+//						CaseFlowEditActivity.show(getActivity(), caseId, flowInfo, requestType);
+						Intent intent = new Intent();
+						intent.setClass(getActivity(), CaseFlowEditActivity.class);
+						intent.putExtra("requestType", requestType);
+						intent.putExtra("from", "usebutton");
+						setCaseId(intent, caseId);
+						intent.putExtra("FlowInfo", (Parcelable) flowInfo);
+						getActivity().startActivityForResult(intent, requestType);
+//						onFinish();
+						
+						
+//						HashMap<String, String> params = new HashMap<String, String>();
+//						params.put("patient_id", caseId);
+//						params.put("procedure_title", flowInfo.title);
+//						params.put("procedure_text", flowInfo.procedure);
+//						OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
+//
+//							@Override
+//							public void onError(Call call, Exception e) {
+//								Toast.makeText(getActivity(), "保存失败",
+//										Toast.LENGTH_LONG).show();
+//							}
+//
+//							@Override
+//							public void onResponseSucces(MBase response) {
+//								Toast.makeText(getActivity(), "保存成功",
+//										Toast.LENGTH_LONG).show();
+//								CaseInfo tempCaseInfo = getCaseInfo();
+//								if (tempCaseInfo != null) {
+//									tempCaseInfo.procedure_title = flowInfo.title;
+//									tempCaseInfo.procedure_text = flowInfo.procedure;
+//								}
+//								onFinish();
+//							}
+//
+//						});
+//					} else {
+//						onFinish();
+//					}
 				}
 			});
 		}
@@ -121,7 +137,20 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
+			case QjConstant.REQUEST_CODE_CASE_FLOW_LIST:
+				findViewById(R.id.use_button).setVisibility(View.GONE);
+				Intent intent = new Intent();
+				setResult(RESULT_OK, intent);
+				finish();
+				break;
 			case QjConstant.REQUEST_CODE_NEW_CASE_FLOW:
+				setResult(RESULT_OK, data);
+//				FlowInfo flowInfo = data.getParcelableExtra("FlowInfo");
+				if(data.getStringExtra("flag")!=null&&data.getStringExtra("flag").equals("delete")){
+					finish();
+				}
+				flowInfo = data.getParcelableExtra("FlowInfo");
+				onResult = true;
 				bindView();
 //				finish();
 				break;
@@ -170,11 +199,11 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		bindView();
 		if(getCaseInfo()==null){//新建
-			if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
-				if (flowInfo == null || flowInfo.isEmpty()) {
-					setRightTitle("", null);
-				}else {
+			if (requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW ) {
+				if (flowInfo != null && !flowInfo.isEmpty()
+						&& (onResult||!(getIntent().getStringExtra("from")!=null&&getIntent().getStringExtra("from").equals("caseSelector")))){
 					setRightTitle("编辑", new OnClickListener() {
 						
 						@Override
@@ -183,12 +212,14 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 							CaseFlowEditActivity.show(getActivity(), caseId, flowInfo, requestType);
 						}
 					});
+				}else {
+					setRightTitle("", null);
 				}
 			} 
-		}else if(caseId!=null && !UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
+		}else if(!UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
 			setRightTitle("", null);
-		}else{
-			if(getCaseInfo().procedure_title!=null && getCaseInfo().procedure_title.length() > 0){
+		}else if (!TextUtils.isEmpty(caseId) && UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
+			if(getCaseInfo().hasFlow()){
 				setRightTitle("编辑", new OnClickListener() {
 					
 					@Override
@@ -201,6 +232,7 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 				setRightTitle("", null);
 			}
 		}
+		
 	}
 
 	@Override

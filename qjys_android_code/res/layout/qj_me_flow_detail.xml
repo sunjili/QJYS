@@ -10,9 +10,10 @@
         android:layout_height="match_parent"
         android:background="@color/cf4f5f9"
         android:orientation="vertical"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:paddingBottom="42dp" >
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp">
 
         <RelativeLayout
             android:id="@+id/rl_empty"
@@ -45,8 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
-            android:layout_marginBottom="25dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:selectAllOnFocus="true"
             android:singleLine="true"
@@ -55,6 +56,7 @@
             android:textSize="17sp" />
 
         <ScrollView
+            android:id="@+id/sv_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

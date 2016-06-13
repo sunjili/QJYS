@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -45,8 +46,20 @@ public class CaseFlowSelectorActivity extends MeFlowActivity implements
 
 	@Override
 	protected void onFlowItemClick(final FlowInfo item) {
-		CaseFlowDetailActivity.show(getActivity(), caseId, item,
-				QjConstant.REQUEST_CODE_CASE_FLOW_LIST);
+		if(requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW){
+//			CaseFlowDetailActivity.show(getActivity(), caseId, item,
+//					QjConstant.REQUEST_CODE_NEW_CASE_FLOW);
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), CaseFlowDetailActivity.class);
+			intent.putExtra("FlowInfo", (Parcelable) item);
+			intent.putExtra("requestType", requestType);
+			intent.putExtra("from", "caseSelector");
+			setCaseId(intent, caseId);
+			getActivity().startActivityForResult(intent, requestType);
+		}else{
+			CaseFlowDetailActivity.show(getActivity(), caseId, item,
+					QjConstant.REQUEST_CODE_CASE_FLOW_LIST);
+		}
 	}
 
 	public static void show(Activity context, String caseId) {

@@ -216,7 +216,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 //			tvNickname.setText("昵称：" + doctorInfo.remark);
 //		}
 		
-		if(doctorInfo.remark!=null){
+		if(!TextUtils.isEmpty(doctorInfo.remark)){
 			tvNickname.setVisibility(View.VISIBLE);
 			vNikename.setVisibility(View.VISIBLE);
 		}else {
@@ -412,6 +412,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 											
 											@Override
 											public void run() {
+												pd.dismiss();
 												Toast.makeText(getActivity(),st2, 1).show();
 											}
 										});

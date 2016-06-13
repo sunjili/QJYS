@@ -8,7 +8,9 @@ import android.os.Parcelable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.rmtech.qjys.QjConstant;
@@ -26,13 +28,14 @@ import com.rmtech.qjys.utils.GroupAndCaseListManager;
  */
 public class MeFlowDetailActivity extends MeFlowBaseActivity {
 	protected Button btn_add_flow_detail;
-
-	private TextView tv_title;
-	private TextView tv_content;
+	
+	public TextView tv_title;
+	public TextView tv_content;
 	// private String title;
 	// private String content;
 	private Context context;
-	private RelativeLayout rl_empty;
+	public RelativeLayout rl_empty;
+	public boolean onResult = false;
 	protected FlowInfo flowInfo;
 
 	protected CaseInfo getCaseInfo() {
@@ -85,10 +88,8 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 	};
 
 	protected void initView() {
-
 		tv_title = (TextView) findViewById(R.id.tv_title);
 		tv_content = (TextView) findViewById(R.id.tv_content);
-
 		btn_add_flow_detail = (Button) findViewById(R.id.btn_add_flow_detail);
 		btn_add_flow_detail.setVisibility(View.GONE);
 		rl_empty = (RelativeLayout) findViewById(R.id.rl_empty);
@@ -119,18 +120,33 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 	}
 
 	protected void bindView() {
-		if (requestType == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW) {
+		if (requestType == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW
+				|| requestType == QjConstant.REQUEST_CODE_NEW_CASE_FLOW) {
 			CaseInfo tempcaseInfo = getCaseInfo();
 			if (tempcaseInfo != null && tempcaseInfo.hasFlow()) {
 				tv_title.setText(tempcaseInfo.procedure_title);
 				tv_content.setText(tempcaseInfo.procedure_text);
 				tv_title.setVisibility(View.VISIBLE);
 				tv_content.setVisibility(View.VISIBLE);
+//				findViewById(R.id.use_button).setVisibility(View.GONE);
 				rl_empty.setVisibility(View.GONE);
 				btn_add_flow_detail.setVisibility(View.GONE);
-			} else if(tempcaseInfo == null){
-				
-			}else if(tempcaseInfo != null && !tempcaseInfo.hasFlow() &&
+			} else if(tempcaseInfo == null && (flowInfo == null || flowInfo.isEmpty())){
+				tv_title.setVisibility(View.GONE);
+				tv_content.setVisibility(View.GONE);
+				rl_empty.setVisibility(View.VISIBLE);
+				btn_add_flow_detail.setVisibility(View.VISIBLE);
+			}else if(tempcaseInfo == null && (flowInfo != null && !flowInfo.isEmpty())){
+				tv_title.setText(flowInfo.title);
+				tv_content.setText(flowInfo.procedure);
+				rl_empty.setVisibility(View.GONE);
+				findViewById(R.id.use_button).setVisibility(View.VISIBLE);
+				if(getIntent().getStringExtra("from")!=null
+						&&(getIntent().getStringExtra("from").equals("add")||getIntent().getStringExtra("from").equals("111"))||onResult){
+					findViewById(R.id.use_button).setVisibility(View.GONE);
+				}
+				btn_add_flow_detail.setVisibility(View.GONE);
+			} else if(tempcaseInfo != null && !tempcaseInfo.hasFlow() &&
 					!UserContext.getInstance().isMyself(getCaseInfo().admin_doctor.id)){
 				tv_title.setVisibility(View.GONE);
 				tv_content.setVisibility(View.GONE);
@@ -147,6 +163,7 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 			tv_title.setText(flowInfo.title);
 			tv_content.setText(flowInfo.procedure);
 			rl_empty.setVisibility(View.GONE);
+//			findViewById(R.id.use_button).setVisibility(View.GONE);
 			btn_add_flow_detail.setVisibility(View.GONE);
 		} else {
 			tv_title.setVisibility(View.GONE);

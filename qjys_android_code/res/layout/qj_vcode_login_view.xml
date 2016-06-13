@@ -14,14 +14,15 @@
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_margin="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:src="@drawable/logo" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="12dp"
         android:src="@drawable/slogan" />
 
     <RelativeLayout
@@ -180,30 +181,13 @@
             android:textColor="@color/c7e"
             android:textSize="11sp" />
 
-        <View
-            android:id="@+id/center"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/top"
-            android:layout_centerHorizontal="true" />
-
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/fuwu"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_below="@id/top"
-            android:layout_toLeftOf="@id/center"
-            android:gravity="center_vertical|right"
+            android:layout_centerHorizontal="true" 
             android:text="《服务协议》"
-            android:textColor="@color/c3264aa"
-            android:textSize="11sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_below="@id/top"
-            android:layout_toRightOf="@id/center"
-            android:gravity="center_vertical|left"
-            android:text="《隐私政策》"
             android:textColor="@color/c3264aa"
             android:textSize="11sp" />
     </RelativeLayout>

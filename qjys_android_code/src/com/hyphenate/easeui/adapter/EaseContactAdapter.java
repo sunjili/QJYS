@@ -23,6 +23,9 @@ import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.util.EMLog;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 
 public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements SectionIndexer{
     private static final String TAG = "ContactAdapter";
@@ -99,8 +102,6 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
 //        holder.nameView.setText(user.getNick());
         //设置头像
         EaseUserUtils.setUserAvatar(getContext(), username, holder.avatar);
-        
-       
 //        if(primaryColor != 0)
 //            holder.nameView.setTextColor(primaryColor);
 //        if(primarySize != 0)
