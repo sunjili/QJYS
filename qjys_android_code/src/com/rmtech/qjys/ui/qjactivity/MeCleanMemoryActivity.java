@@ -1,8 +1,10 @@
 package com.rmtech.qjys.ui.qjactivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +30,7 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 	private TextView tv_memory;
 	private PackageManager pm;
 	private TextView tv_top;
+	private ProgressDialog mProgressDialog;
 	
 
 	@Override
@@ -38,7 +41,7 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 		setLeftTitle("我");
 		context = MeCleanMemoryActivity.this;
 		initView();
-		if("PhotoDataSettingActivity".equals(getIntent().getStringExtra("from"))){
+		if(isFromSetting()){
 			setTitle("本地控件清理");
 			setLeftTitle("返回");
 			tv_memory.setText("缓存");
@@ -61,9 +64,8 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 	}
 	
 	public void showBytes(){
-		if(getIntent().getStringExtra("from").equals("PhotoDataSettingActivity")){
+		if(isFromSetting()){
 			//TODO 获取病例缓存
-			
 			tv_memory_value.setText("(" + "已使用" + "123.4" + "M" + ")");
 		}else{
 			//TODO 获取程序总存储
@@ -82,17 +84,51 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 		context.startActivity(intent);
 	}
 
+	private boolean isFromSetting() {
+		return "PhotoDataSettingActivity".equals(getIntent().getStringExtra("from"));
+	}
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_clean:
-			if(getIntent().getStringExtra("from").equals("PhotoDataSettingActivity")){
-				ImageLoader.getInstance().clearMemoryCache();
-				ImageLoader.getInstance().clearDiskCache();
-			}else{
-				ImageLoader.getInstance().clearMemoryCache();
-				ImageLoader.getInstance().clearDiskCache();
+			if(mProgressDialog != null && mProgressDialog.isShowing()) {
+				return;
 			}
+			mProgressDialog = ProgressDialog.show(getActivity(), null, "正在清理");
+			new AsyncTask<Void, Void, Void>() {
+
+				@Override
+				protected Void doInBackground(Void... params) {
+					if(isFromSetting()){
+						ImageLoader.getInstance().clearMemoryCache();
+						ImageLoader.getInstance().clearDiskCache();
+					}else{
+						ImageLoader.getInstance().clearMemoryCache();
+						ImageLoader.getInstance().clearDiskCache();
+					}
+					return null;
+				}
+
+				@Override
+				protected void onPreExecute() {
+					super.onPreExecute();
+				}
+
+				@Override
+				protected void onPostExecute(Void result) {
+					// TODO Auto-generated method stub
+					try {
+						tv_memory_value.setText("(" + "已使用" + "0" + "M" + ")");
+						mProgressDialog.dismiss();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					super.onPostExecute(result);
+				}
+				
+				
+			}.execute();
+			
 			break;
 
 		default:
