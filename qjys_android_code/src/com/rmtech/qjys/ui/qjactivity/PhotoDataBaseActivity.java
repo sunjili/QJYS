@@ -41,8 +41,11 @@ import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.ChatActivity;
+import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataBaseActivity.OnDeleteCallback;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow.ListPopupWindowAdapter;
 import com.rmtech.qjys.utils.NewFolderManager;
 import com.rmtech.qjys.utils.NewFolderManager.OnNewFolderListener;
@@ -76,11 +79,39 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getActivity(), ChatActivity.class);
-					intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
-					intent.putExtra(QjConstant.EXTRA_USER_ID, caseInfo.group_id);
-					startActivity(intent);
-					finish();
+					
+					 if(caseInfo.admin_doctor.isMyself() && 
+				        		(caseInfo.participate_doctor == null || caseInfo.participate_doctor.isEmpty())){
+				        	CustomSimpleDialog.Builder builder = new Builder(getActivity());  
+				            builder.setTitle("");  
+				            builder.setMessage("请先添加医护组成员后\n再进行群聊");
+				            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+				    			
+				    			@Override
+				    			public void onClick(DialogInterface dialog, int which) {
+				    				// TODO Auto-generated method stub
+				    				dialog.dismiss();
+				    			}
+
+				    		});  
+				            builder.setPositiveButton("去添加", new DialogInterface.OnClickListener() {
+				    			
+				    			@Override
+				    			public void onClick(DialogInterface dialog, int which) {
+				    				// TODO 添加医护组成员页面
+				    				GroupDetailsActivity.show(getActivity(), caseInfo);
+
+				    			}
+
+				    		});
+				            builder.create().show();
+				        } else {
+							Intent intent = new Intent(getActivity(), ChatActivity.class);
+							intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
+							intent.putExtra(QjConstant.EXTRA_USER_ID, caseInfo.group_id);
+							startActivity(intent);
+							finish();
+				        }
 				}
 			});
 		}
