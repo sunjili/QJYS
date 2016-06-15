@@ -227,9 +227,9 @@
                 android:id="@+id/bed_et"
                 style="@style/qj_add_case_right_hit_et"
                 android:gravity="right"
+                android:singleLine="true"
                 android:layout_toLeftOf="@id/bed_title_tv"
-                android:hint="输入患者床号"
-                android:numeric="integer" />
+                android:hint="输入患者床号"/>
         </RelativeLayout>
 
         <View

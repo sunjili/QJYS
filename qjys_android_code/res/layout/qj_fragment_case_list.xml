@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#fdf0b7"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
         <ImageView
             android:layout_width="18dp"

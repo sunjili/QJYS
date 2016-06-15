@@ -89,7 +89,7 @@ public class CaseFragment extends QjBaseFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		updateData();
+		mAdapter.notifyDataSetChanged();
 	}
 
 	@Subscribe
@@ -104,8 +104,7 @@ public class CaseFragment extends QjBaseFragment {
 
 				@Override
 				public void run() {
-					GroupAndCaseListManager.getPatientList(true, httpCallback);
-//					mAdapter.notifyDataSetChanged();
+					updateData();
 				}
 			});
 		}
@@ -393,16 +392,7 @@ public class CaseFragment extends QjBaseFragment {
 	}
 
 	private void updateData() {
-		GroupAndCaseListManager.getPatientList(true, httpCallback);
-		// TODO Auto-generated method stub
-		// mListView.postDelayed(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// displayData();
-		// }
-		// }, 1000);
-
+		GroupAndCaseListManager.getPatientList(false, httpCallback);
 	}
 
 	private void onDisplayData() {
@@ -452,9 +442,10 @@ public class CaseFragment extends QjBaseFragment {
 									if (position == 0) {
 										hosList.patients
 												.remove(positionInSection);
-										QjHttp.deletePatient(caseinfo.id, null);
-										CaseFragment.deleteGrop(getActivity(),
-												caseinfo.group_id);
+										QjHttp.deletePatient("2", caseinfo.id, null);
+										QjHttp.deleteMembers(caseinfo.id, caseinfo.getParticipateDoctorIds(), null);
+//										CaseFragment.deleteGrop(getActivity(),
+//												caseinfo.group_id);
 										if (hosList.patients.size() == 0) {
 											mPatientList.remove(hosList);
 
@@ -487,7 +478,7 @@ public class CaseFragment extends QjBaseFragment {
 				if (hosList != null && hosList.patients != null) {
 					final CaseInfo caseinfo = hosList.patients
 							.get(position);
-					QjHttp.deletePatient(caseinfo.id, null);
+					QjHttp.deletePatient("2", caseinfo.id, null);
 				}
 				hosList.patients.remove(position);
 

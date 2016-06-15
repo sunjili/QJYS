@@ -165,7 +165,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		abstractLayout = (RelativeLayout) findViewById(R.id.abstract_layout);
 		abstractTv = (TextView) findViewById(R.id.abstract_tv);
 		abstractEt = (EditText) findViewById(R.id.abstract_et);
-		setTextWhacher(AddCaseActivity.this, bedEt, 8000);
+		setTextWhacher(AddCaseActivity.this, abstractEt, 8000);
 	}
 
 	private CaseInfo createCaseInfo(int state) {

@@ -303,14 +303,14 @@ public class QjHttp {
 	 * @param patient_id
 	 * @param callback
 	 */
-	public static void deletePatient(String patient_id, BaseModelCallback callback) {
+	public static void deletePatient(String type, String patient_id, BaseModelCallback callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("patient_ids", patient_id);
-		params.put("type", 2 + "");
+		params.put("type", type);
 		// patient_ids : 病例id,以逗号分隔
 		// type : 2 回收站 3彻底删除
 		OkHttpUtils.post(URL_DELETE_PATIENT, params, callback);
-	}
+	}  
 
 	/**
 	 * 10 添加诊疗规范

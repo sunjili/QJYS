@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.hx.QjHelper;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.umeng.analytics.MobclickAgent;
@@ -59,7 +60,7 @@ public class MeQRCreatActivity extends BaseActivity {
 		setTitle("二维码名片");
 		setLeftTitle("我");
 		filePath = getFileRoot() + File.separator  
-                + "qrImage" + ".jpg";  
+                + "qrImage_" + QjHelper.getInstance().getCurrentUsernName() + ".jpg";  
 		context = MeQRCreatActivity.this;
 		setRightTitle("", null);
 		initView();
@@ -97,7 +98,7 @@ public class MeQRCreatActivity extends BaseActivity {
         new Thread(new Runnable() {  
             @Override  
             public void run() {  
-                boolean success = createQRImage(url + UserContext.getInstance().getUserId(), 1000, 1000, null, filePath);
+                boolean success = createQRImage(url + QjHelper.getInstance().getCurrentUsernName(), 1000, 1000, null, filePath);
 
                 if (success) {  
                     runOnUiThread(new Runnable() {  

@@ -244,6 +244,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 					}
 					PhotoDataBrowseActivity.show(getActivity(), imagePosition, list, caseInfo.id, caseInfo, folderId);
 				} else if (itemInfo instanceof FolderDataInfo) {
+					getActivity().overridePendingTransition(R.anim.hold, R.anim.hold);
 					PhotoDataManagerActivity.show(getActivity(), caseInfo, (FolderDataInfo) itemInfo);
 				}
 			}

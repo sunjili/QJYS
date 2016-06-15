@@ -89,7 +89,7 @@ public class ContactListFragment extends EaseContactListFragment {
 		loadingView = LayoutInflater.from(getActivity()).inflate(R.layout.em_layout_loading_data, null);
 		contentContainer.addView(loadingView);
 		// 注册上下文菜单
-		registerForContextMenu(listView);
+//		registerForContextMenu(listView);
 		EventBus.getDefault().register(this);
 		EMClient.getInstance().chatManager().addMessageListener(messageListener);
 	}

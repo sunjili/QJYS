@@ -14,6 +14,7 @@
 package com.rmtech.qjys.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import android.app.Activity;
@@ -37,6 +38,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import okhttp3.Call;
 
 import com.hyphenate.EMGroupChangeListener;
 import com.hyphenate.chat.EMClient;
@@ -51,10 +53,13 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.fragment.ChatFragment;
 import com.rmtech.qjys.ui.qjactivity.DoctorPickActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
@@ -491,36 +496,67 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	 */
 	private void deleteGrop() {
 		final String st5 = getResources().getString(R.string.Dissolve_group_chat_tofail);
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					EMClient.getInstance().groupManager().destroyGroup(groupId);
-					runOnUiThread(new Runnable() {
-						public void run() {
-							progressDialog.dismiss();
-							setResult(RESULT_OK);
-							GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(groupId);
-							caseInfo.participate_doctor = null;
-							DoctorListManager.addDeletedGroupIds(groupId);
-							finish();
-							if (PhotoDataManagerActivity.activityInstance != null) {
-								PhotoDataManagerActivity.activityInstance.finish();
-							}
-							if (ChatActivity.activityInstance != null) {
-								ChatActivity.activityInstance.finish();
-							}
-						}
-					});
-				} catch (final Exception e) {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							progressDialog.dismiss();
-							Toast.makeText(getApplicationContext(), st5 + e.getMessage(), 1).show();
-						}
-					});
+		if(caseInfo.participate_doctor==null){
+			Toast.makeText(getApplicationContext(), "已经没有其他群组成员", 1).show();
+		}else if(caseInfo.participate_doctor.size()<=0){
+			Toast.makeText(getApplicationContext(), "已经没有其他群组成员", 1).show();
+		}else {
+			QjHttp.deleteMembers(caseInfo.id, caseInfo.getParticipateDoctorIds(), new BaseModelCallback() {
+				
+				@Override
+				public void onResponseSucces(MBase response) {
+					// TODO Auto-generated method stub
+					caseInfo.participate_doctor.removeAll(caseInfo.participate_doctor);
+					refreshMembers();
+					Toast.makeText(getApplicationContext(), "解散成功！！！", 1).show();
+					progressDialog.dismiss();
+					setResult(RESULT_OK);
+					GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(groupId);
+					caseInfo.participate_doctor = null;
+					DoctorListManager.addDeletedGroupIds(groupId);
+					finish();
+					if (PhotoDataManagerActivity.activityInstance != null) {
+						PhotoDataManagerActivity.activityInstance.finish();
+					}
+					if (ChatActivity.activityInstance != null) {
+						ChatActivity.activityInstance.finish();
+					}
 				}
-			}
-		}).start();
+				
+				@Override
+				public void onError(Call call, Exception e) {
+					// TODO Auto-generated method stub
+					progressDialog.dismiss();
+					Toast.makeText(getApplicationContext(), st5 + e.getMessage(), 1).show();
+				}
+			});
+		}
+//		final String st5 = getResources().getString(R.string.Dissolve_group_chat_tofail);
+//		new Thread(new Runnable() {
+//			public void run() {
+//				try {
+//					EMClient.getInstance().groupManager().destroyGroup(groupId);
+//					runOnUiThread(new Runnable() {
+//						public void run() {
+//							progressDialog.dismiss();
+//							setResult(RESULT_OK);
+//							DoctorListManager.addDeletedGroupIds(groupId);
+//							finish();
+//							if (ChatActivity.activityInstance != null) {
+//								ChatActivity.activityInstance.finish();
+//							}
+//						}
+//					});
+//				} catch (final Exception e) {
+//					runOnUiThread(new Runnable() {
+//						public void run() {
+//							progressDialog.dismiss();
+//							Toast.makeText(getApplicationContext(), st5 + e.getMessage(), 1).show();
+//						}
+//					});
+//				}
+//			}
+//		}).start();
 	}
 
 	/**

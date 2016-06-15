@@ -184,6 +184,10 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ll_diagnose_add:
+            if(ll_layout.getChildCount()>8){
+            	Toast.makeText(getActivity(), "您不能添加更多的诊断！！！", Toast.LENGTH_SHORT).show();
+            	return;
+            }
 			String trim = et_diagnose.getText().toString().trim();
 			if (!TextUtils.isEmpty(trim)) {
 				if (!TextUtils.isEmpty(stringExtra)) {

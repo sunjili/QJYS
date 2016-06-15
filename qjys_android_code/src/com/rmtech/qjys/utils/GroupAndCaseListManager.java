@@ -88,7 +88,7 @@ public class GroupAndCaseListManager {
 	// }
 
 	public static void getPatientList(boolean needCache, final QjHttpCallbackNoParse<MPatientList> callback) {
-		QjHttp.getPatientList("0", true, new QjHttpCallbackNoParse<MPatientList>() {
+		QjHttp.getPatientList("0", needCache, new QjHttpCallbackNoParse<MPatientList>() {
 
 			@Override
 			public void onError(Call call, Exception e) {

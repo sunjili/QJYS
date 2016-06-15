@@ -7,6 +7,10 @@ import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.PtrUIHandler;
 import in.srain.cube.views.ptr.indicator.PtrIndicator;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -15,30 +19,45 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hyphenate.easeui.widget.EaseTitleBar;
 import com.nostra13.universalimageloader.utils.L;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.model.UserContext;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MPatientList;
 import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.fragment.CaseFragment;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.sjl.lib.alertview.AlertView;
+import com.sjl.lib.http.okhttp.OkHttpUtils;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView.OnItemClickListener;
 import com.sjl.lib.pinnedheaderlistview.SectionedBaseAdapter;
@@ -55,6 +74,8 @@ import com.umeng.analytics.MobclickAgent;
  * 
  */
 public class MeRecycleActivity extends BaseActivity {
+	
+	
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
@@ -62,6 +83,7 @@ public class MeRecycleActivity extends BaseActivity {
 		setTitle("我的回收站");
 		setLeftTitle("我");
 		setRightTitle("", null);
+		QjHttp.getPatientList("2", false, httpCallback);
 		initView();
 	}
 
@@ -80,6 +102,9 @@ public class MeRecycleActivity extends BaseActivity {
 	private ImageView mImageView;
 	private PinnedHeaderListView mListView;
 	private CaseSectionedAdapter mAdapter;
+	private Button btn_delete;
+	private LinearLayout ll_btn_delete;
+	private View mNodataView;
 
 	@Subscribe
 	public void onEvent(CaseEvent event) {
@@ -102,14 +127,17 @@ public class MeRecycleActivity extends BaseActivity {
 		mImageView = (ImageView) findViewById(R.id.list_view_with_empty_view_fragment_empty_view);
 		mImageView.setVisibility(View.GONE);
 		mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.list_view_with_empty_view_fragment_ptr_frame);
-
-//		mImageView.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				mPtrFrame.setVisibility(View.VISIBLE);
-//				mPtrFrame.autoRefresh();
-//			}
-//		});
+		ll_btn_delete = (LinearLayout) findViewById(R.id.ll_btn_delete);
+		btn_delete = (Button) findViewById(R.id.btn_delete);
+		btn_delete.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mAdapter.removeAllData();
+			}
+		});
+		
 		mListView = (PinnedHeaderListView) findViewById(R.id.pinnedListView);
 		mAdapter = new CaseSectionedAdapter();
 		mListView.setAdapter(mAdapter);
@@ -122,9 +150,34 @@ public class MeRecycleActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
+			public void onItemClick(AdapterView<?> adapterView, View view, final int section, final int position, long id) {
 				// TODO Auto-generated method stub
-				PhotoDataManagerActivity.show(getActivity(), "", null);
+//				CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
+//				if (DoctorListManager.isGroupDeleted(info.group_id) || DoctorListManager.isGroupBeDeleted(info.group_id) ) {
+//					CustomSimpleDialog.Builder builder = new Builder(
+//							getActivity());
+//					builder.setTitle("提示");
+//					String str = "群组已解散";
+//					if(DoctorListManager.isGroupBeDeleted(info.group_id)) {
+//						str = "你已被移除群组";
+//					}
+//					builder.setMessage(str);
+//					
+//					builder.setNegativeButton("确定",
+//							new DialogInterface.OnClickListener() {
+//
+//								@Override
+//								public void onClick(DialogInterface dialog,
+//										int which) {
+//									mAdapter.deleteItem(section, position);
+//									dialog.dismiss();
+//								}
+//
+//							});
+//					builder.create().show();
+//					return;
+//				}
+//				PhotoDataManagerActivity.show(getActivity(), info, null);
 
 			}
 		});
@@ -138,9 +191,9 @@ public class MeRecycleActivity extends BaseActivity {
 				// set item background
 				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
 				// set item width
-				openItem.setWidth(dp2px(90));
+				openItem.setWidth(dp2px(100));
 				// set item title
-				openItem.setTitle("Open");
+				openItem.setTitle("恢复");
 				// set item title fontsize
 				openItem.setTitleSize(18);
 				// set item title font color
@@ -153,9 +206,13 @@ public class MeRecycleActivity extends BaseActivity {
 				// set item background
 				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
 				// set item width
-				deleteItem.setWidth(dp2px(90));
+				deleteItem.setWidth(dp2px(100));
 				// set a icon
-				deleteItem.setIcon(R.drawable.ic_delete);
+				deleteItem.setTitle("删除");
+				
+				deleteItem.setTitleSize(18);
+				// set item title font color
+				deleteItem.setTitleColor(Color.WHITE);
 				// add to menu
 				menu.addMenuItem(deleteItem);
 			}
@@ -166,17 +223,13 @@ public class MeRecycleActivity extends BaseActivity {
 		// step 2. listener item click event
 		mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
 			@Override
-			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) { 
 				switch (index) {
 				case 0:
-					// open
-					// open(null);
+					mAdapter.restoreData(position);
 					break;
 				case 1:
-					// delete
-					// delete(item);
-					// mAppList.remove(position);
-					mAdapter.notifyDataSetChanged();
+					mAdapter.removeData(position);
 					break;
 				}
 				return false;
@@ -271,12 +324,6 @@ public class MeRecycleActivity extends BaseActivity {
 		// }
 		// });
 
-		QjHttp.getPatientList("2", true, httpCallback);
-
-	}
-
-	public void getPatientList() {
-
 	}
 
 	QjHttpCallbackNoParse<MPatientList> httpCallback = new QjHttpCallbackNoParse<MPatientList>() {
@@ -285,7 +332,7 @@ public class MeRecycleActivity extends BaseActivity {
 		public void onError(Call call, Exception e) {
 			// TODO Auto-generated method stub
 			mPtrFrame.refreshComplete();
-
+			onDisplayData();
 		}
 
 		@Override
@@ -293,6 +340,7 @@ public class MeRecycleActivity extends BaseActivity {
 			if (response != null && response.hasData()) {
 				mAdapter.setData(response);
 			}
+			onDisplayData();
 			mPtrFrame.refreshComplete();
 
 		}
@@ -329,6 +377,18 @@ public class MeRecycleActivity extends BaseActivity {
 	// titleBar.setTitle("我的病例");
 	//
 	// }
+	
+
+	private void onDisplayData() {
+		
+		if (mAdapter != null && mAdapter.getCount() > 0) {
+			mImageView.setVisibility(View.GONE);
+			ll_btn_delete.setVisibility(View.VISIBLE);
+		} else {
+			mImageView.setVisibility(View.GONE);
+			ll_btn_delete.setVisibility(View.GONE);
+		}
+	}
 
 	public class CaseSectionedAdapter extends SectionedBaseAdapter {
 
@@ -351,7 +411,157 @@ public class MeRecycleActivity extends BaseActivity {
 			// keyPositionList.addAll(mPatientList.keySet());
 			notifyDataSetChanged();
 		}
+		
+		public void restoreData(int position){
+			int section = getSectionForPosition(position);
+			final int positionInSection = getPositionInSectionForPosition(position);
+			final HospitalCaseInfo hosList = mPatientList.get(section);
+			if (hosList != null && hosList.patients != null) {
+				final CaseInfo caseinfo = hosList.patients
+						.get(positionInSection);
+				if (caseinfo != null
+						&& caseinfo.admin_doctor != null
+						&& UserContext.getInstance().isMyself(
+								caseinfo.admin_doctor.id)) {
+					new AlertView("确定还原？", null, "取消", new String[] { "确定" },
+							null, getActivity(), AlertView.Style.Alert,
+							new com.sjl.lib.alertview.OnItemClickListener() {
 
+								@Override
+								public void onItemClick(Object o, int position) {
+									if (position == 0) {
+										HashMap<String, String> params = new HashMap<String, String>();
+										params.put("patient_id", caseinfo.id);
+										params.put("state", 0 + "");
+										OkHttpUtils.post(QjHttp.URL_UPDATE_PATIENT, params, new BaseModelCallback() {
+
+											@Override
+											public void onError(Call call, Exception e) {
+												Toast.makeText(getActivity(), "还原失败", Toast.LENGTH_LONG).show();
+
+											}
+
+											@Override
+											public void onResponseSucces(MBase response) {
+												Toast.makeText(getActivity(), "还原成功", Toast.LENGTH_LONG).show();
+												hosList.patients.remove(positionInSection);
+												if (hosList.patients.size() == 0) {
+													mPatientList.remove(hosList);
+												}
+												notifyDataSetChanged();
+												onDisplayData();
+											}
+										});
+									}
+								}
+							}).setCancelable(true).show();
+				} 
+			} else {
+				Toast.makeText(getActivity(), "还原失败", 1).show();
+			}
+		}
+		
+		public void removeData(int position) {
+			int section = getSectionForPosition(position);
+			final int positionInSection = getPositionInSectionForPosition(position);
+			final HospitalCaseInfo hosList = mPatientList.get(section);
+			if (hosList != null && hosList.patients != null) {
+				final CaseInfo caseinfo = hosList.patients
+						.get(positionInSection);
+				if (caseinfo != null
+						&& caseinfo.admin_doctor != null
+						&& UserContext.getInstance().isMyself(
+								caseinfo.admin_doctor.id)) {
+					new AlertView("确定删除？", null, "取消", new String[] { "确定" },
+							null, getActivity(), AlertView.Style.Alert,
+							new com.sjl.lib.alertview.OnItemClickListener() {
+
+								@Override
+								public void onItemClick(Object o, int position) {
+									if (position == 0) {
+										hosList.patients
+												.remove(positionInSection);
+										QjHttp.deletePatient("3", caseinfo.id, null);
+										CaseFragment.deleteGrop(getActivity(),
+												caseinfo.group_id);
+										if (hosList.patients.size() == 0) {
+											mPatientList.remove(hosList);
+
+										}
+										notifyDataSetChanged();
+										onDisplayData();
+
+									}
+
+								}
+							}).setCancelable(true).show();
+				} else {
+					Toast.makeText(getActivity(), "没有权限，只有管理员才能删除", 1).show();
+				}
+
+			} else {
+				Toast.makeText(getActivity(), "删除失败", 1).show();
+
+			}
+			Log.d("ssssssssss", "removeData position=" + position);
+			Log.d("ssssssssss", "removeData section=" + section);
+			Log.d("ssssssssss", "removeData positionInSection="
+					+ positionInSection);
+		}
+		
+		public void removeAllData(){
+			List<CaseInfo> caseinfos = new ArrayList();
+			String ids = "";
+			for(int i = 0;i<getSectionCount();i++){
+				for(int j=0;j<getCountForSection(i);j++){
+					caseinfos.add(getCaseInfoByPos(i, j));
+					ids = ids + getCaseInfoByPos(i, j).id + ",";
+				}
+			}
+			ids = ids.substring(0, ids.length()-1);
+			Log.e("ids", ids);
+	        QjHttp.deletePatient("3", ids, new BaseModelCallback() {
+				
+				@Override
+				public void onResponseSucces(MBase response) {
+					// TODO Auto-generated method stub
+					Log.e("deletePatient", "onResponseSucces");
+					mPatientList.removeAll(mPatientList);
+			        notifyDataSetChanged();
+			        onDisplayData();
+				}
+				
+				@Override
+				public void onError(Call call, Exception e) {
+					Log.e("deletePatient", "onError");
+				}
+			});
+		}
+		
+		private void deleteItem(int section, int position) {
+			final HospitalCaseInfo hosList = mPatientList.get(section);
+
+			try {
+				if (hosList != null && hosList.patients != null) {
+					final CaseInfo caseinfo = hosList.patients
+							.get(position);
+					QjHttp.deletePatient("3", caseinfo.id, null);
+				}
+				hosList.patients.remove(position);
+
+				if (hosList.patients.size() == 0) {
+					mPatientList.remove(hosList);
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+
+			notifyDataSetChanged();
+			onDisplayData();
+		}
+		
 		@Override
 		public long getItemId(int section, int position) {
 			// TODO Auto-generated method stub
@@ -412,7 +622,8 @@ public class MeRecycleActivity extends BaseActivity {
 			}
 			CaseInfo info = getCaseInfoByPos(section, position);
 			if (info != null) {
-				viewHolder.nameTv.setText(info.name);
+//				viewHolder.nameTv.setText(info.name);
+				viewHolder.build(info);
 			}
 			//
 			// ((TextView)
@@ -452,6 +663,72 @@ public class MeRecycleActivity extends BaseActivity {
 			doctorsTv = (TextView) container.findViewById(R.id.doctors_tv);
 			statusTv = (TextView) container.findViewById(R.id.status_tv);
 			contentTv = (TextView) container.findViewById(R.id.content_tv);
+		}
+		
+		public void build(CaseInfo info) {
+
+			nameTv.setText(info.getShowName());
+			String genderStr = "";
+			if (info.sex == 1) {
+				genderStr = "男";// 99
+				genderTv.setBackgroundResource(R.drawable.bg_gender_man);
+			} else if (info.sex == 2) {
+				genderStr = "女";
+				genderTv.setBackgroundResource(R.drawable.bg_gender_woman);
+			} else {
+				genderStr = "未知";
+				genderTv.setBackgroundResource(R.drawable.bg_gender_weizhi);
+			}
+			if (!TextUtils.isEmpty(info.age)
+					&& !TextUtils.equals("0", info.age)) {
+				genderStr = genderStr + info.age;
+			}
+			genderTv.setText(genderStr);
+
+			String doctorsStr = "主管医生:" + info.admin_doctor.getDisplayName();
+			if (info.participate_doctor != null
+					&& !info.participate_doctor.isEmpty()) {
+				StringBuilder sb = new StringBuilder();
+				for (DoctorInfo doc : info.participate_doctor) {
+					sb.append(doc.name + "、");
+				}
+				sb.append("等");
+				if (!TextUtils.isEmpty(sb)) {
+					doctorsStr = doctorsStr + " 参与医生:" + sb;
+				}
+			}
+			doctorsTv.setText(doctorsStr);
+
+			if (info.create_time > 0) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				String timeStr = format.format(new Date(
+						info.create_time * 1000L));
+				timeTv.setText(timeStr);
+				timeTv.setVisibility(View.VISIBLE);
+			} else {
+				timeTv.setVisibility(View.GONE);
+			}
+
+			if (!TextUtils.isEmpty(info.treat_state)) {
+				statusTv.setVisibility(View.VISIBLE);
+				statusTv.setText(info.treat_state);
+			} else {
+				statusTv.setVisibility(View.GONE);
+			}
+
+			String contentStr = null;
+			if (!TextUtils.isEmpty(info.department)) {
+				contentStr = "[" + info.department + "]";
+			} else {
+				contentStr = "[未知科室]";
+			}
+
+			if (!TextUtils.isEmpty(info.diagnose)) {
+				contentStr = contentStr + " 诊断:" + info.diagnose;
+			} else {
+				contentStr = contentStr + " " + "暂无诊断";
+			}
+			contentTv.setText(contentStr);
 		}
 	}
 	
