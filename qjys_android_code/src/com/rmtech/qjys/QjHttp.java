@@ -766,7 +766,7 @@ public class QjHttp {
 		params.put("type", type);
 		String cacheKey = null;
 		if (needCache) {
-			cacheKey = URL_PATIENT_LIST + UserContext.getInstance().getCookie();
+			cacheKey = URL_PATIENT_LIST + UserContext.getInstance().getCookie() + type;
 		}
 		postWitchCache(cacheKey, URL_PATIENT_LIST, params, new QjHttpCallbackNoParse<MPatientList>() {
 

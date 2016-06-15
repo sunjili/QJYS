@@ -92,9 +92,19 @@ public class PhotoView extends ImageView implements IPhotoView {
         return mAttacher.getDisplayMatrix();
     }
     
+    public ImageView getImageView() {
+    	return mAttacher.getImageView();
+    }
     public Matrix getDrawMatrix() {
         return mAttacher.getDrawMatrix();
     }
+    public Matrix getBaseMatrix() {
+    	return mAttacher.getBaseMatrix();
+    }
+    public Matrix getSuppMatrix() {
+    	return mAttacher.getSuppMatrix();
+    }
+    
     public int getMatrixWidth() {
     	RectF rect = getDisplayRect();
     	if(rect != null) {

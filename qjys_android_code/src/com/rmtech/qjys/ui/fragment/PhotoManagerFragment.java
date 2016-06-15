@@ -169,6 +169,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 				if (obj instanceof PhotoDataInfo) {
 					PhotoDataInfo info = (PhotoDataInfo) obj;
 					if (TextUtils.equals(info.id, event.dataInfo.id)) {
+						info.localPath = null;
 						info.origin_url = event.dataInfo.origin_url;
 						info.thumb_url = event.dataInfo.thumb_url;
 						if (mAdapter != null) {

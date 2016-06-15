@@ -712,6 +712,15 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
 		return mDrawMatrix;
 	}
 
+	public Matrix getSuppMatrix() {
+		return new Matrix(mSuppMatrix);
+	}
+	
+	public Matrix getBaseMatrix() {
+		return new Matrix(mBaseMatrix);
+	}
+
+
 	private void cancelFling() {
 		if (null != mCurrentFlingRunnable) {
 			mCurrentFlingRunnable.cancelFling();
@@ -954,13 +963,13 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
 		resetMatrix();
 	}
 
-	private int getImageViewWidth(ImageView imageView) {
+	public static int getImageViewWidth(ImageView imageView) {
 		if (null == imageView)
 			return 0;
 		return imageView.getWidth() - imageView.getPaddingLeft() - imageView.getPaddingRight();
 	}
 
-	private int getImageViewHeight(ImageView imageView) {
+	public static  int getImageViewHeight(ImageView imageView) {
 		if (null == imageView)
 			return 0;
 		return imageView.getHeight() - imageView.getPaddingTop() - imageView.getPaddingBottom();

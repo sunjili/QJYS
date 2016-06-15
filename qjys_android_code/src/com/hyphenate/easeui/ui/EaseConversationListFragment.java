@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -45,7 +46,9 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.widget.EaseConversationList;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
+import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.model.gson.MGroupList;
+import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 import com.rmtech.qjys.ui.fragment.CaseFragment.MyNetworkReceiver;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
@@ -194,11 +197,23 @@ public class EaseConversationListFragment extends QjBaseFragment {
 			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
 				switch (index) {
 				case 0:
-					// delete
-					// delete(item);
-					// mAppList.remove(position);
-					// mAdapter.notifyDataSetChanged();
-					break;
+					EMConversation tobeDeleteCons = conversationListView
+							.getItem(position);
+					if (tobeDeleteCons == null) {
+						return true;
+					}
+					try {
+						// 删除此会话
+						EMClient.getInstance().chatManager().deleteConversation(tobeDeleteCons.getUserName(), false);
+						InviteMessgeDao inviteMessgeDao = new InviteMessgeDao(getActivity());
+						inviteMessgeDao.deleteMessage(tobeDeleteCons.getUserName());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					refresh();
+
+					// 更新消息未读数
+					((MainActivity) getActivity()).updateUnreadLabel();
 				}
 				return false;
 			}

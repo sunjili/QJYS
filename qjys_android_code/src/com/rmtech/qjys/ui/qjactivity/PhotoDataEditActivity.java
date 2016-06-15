@@ -1,30 +1,26 @@
 package com.rmtech.qjys.ui.qjactivity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import okhttp3.Call;
 
 import org.greenrobot.eventbus.EventBus;
 
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,12 +28,15 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.sjl.lib.filechooser.FileUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -84,8 +83,17 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 			finish();
 			return;
 		}
-		ImageLoader.getInstance().displayImage(photoData.origin_url, photoView, optionsThumb);
+		if(!TextUtils.isEmpty(photoData.localPath)) {
+			ImageLoader.getInstance().displayImage("file://" + photoData.localPath, photoView, optionsThumb);
+		} else {
+			ImageLoader.getInstance().displayImage(photoData.origin_url, photoView, optionsThumb);
+		}
+		caseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+		if(caseInfo != null) {
+			titleTv.setText(caseInfo.name);
+		}
 	}
+	
 
 	public static void show(Activity context, PhotoDataInfo photoData, String caseId, String folderId) {
 
@@ -101,7 +109,9 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 	protected boolean showTitleBar() {
 		return false;
 	}
-	
+	boolean isDebug = false;
+	private float mRotation = 0;
+	private boolean isMirror = false;
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -110,9 +120,11 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 			break;
 		case R.id.mirror_tv:
 			photoView.setMirror();
+			isMirror = !isMirror;
 			break;
 		case R.id.rotate_tv:
 			photoView.setRotationBy(-90);
+			mRotation  += -90;
 			break;
 		case R.id.edit_tv:
 			final ProgressDialog pd = new ProgressDialog(this);
@@ -130,48 +142,94 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 			// @Override
 			// protected void onPostExecute(String path) {
 			// super.onPostExecute(path);
-			Bitmap bitmap = convertViewToBitmap(photoView);
+			
+			ImageLoadingListener listener = new ImageLoadingListener() {
+				
+				@Override
+				public void onLoadingStarted(String arg0, View arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingComplete(String arg0, View arg1, Bitmap bitmap) {
+					
+					Matrix matrix = new Matrix(photoView.getBaseMatrix());
+					int degree = (int) (mRotation % 360);
+					Log.d("sssssssssss","degree = "+degree);
+					matrix.setRotate(degree);
+					if(isMirror) {
+						matrix.setScale(-1, 1);
+					}
+					final Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+					
+					String path = FileUtils.saveImage(getActivity(), newbitmap);
+					if (TextUtils.isEmpty(path)) {
+						pd.dismiss();
+						return;
+					}
+					int tag = PhotoUploadManager.createKey(caseId, folderId, path);
+					int index = path.lastIndexOf('/');
+					String name = path.substring(index + 1, path.length());
+					if(isDebug) {
+						pd.dismiss();
+						return;
+					}
+					QjHttp.uploadImage(tag, caseId, folderId, photoData.id, name, path, new QjHttpCallback<MUploadImageInfo>() {
 
-			String path = FileUtils.saveImage(getActivity(), bitmap);
-			if (TextUtils.isEmpty(path)) {
-				pd.dismiss();
-				return;
+						@Override
+						public MUploadImageInfo parseNetworkResponse(String str) throws Exception {
+							return new Gson().fromJson(str, MUploadImageInfo.class);
+						}
+
+						@Override
+						public void onResponseSucces(MUploadImageInfo response) {
+							PhotoDataInfo data = response.data;
+							PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_EDIT, data);
+							event.setMovedImageList(caseId, folderId, null);
+							EventBus.getDefault().post(event);
+							try {
+								pd.dismiss();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							finish();
+						}
+
+						@Override
+						public void onError(Call call, Exception e) {
+							Toast.makeText(getActivity(), "保存失败 "+e.toString(), 1)
+							.show();
+							try {
+								pd.dismiss();
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+						}
+					});
+				}
+				
+				@Override
+				public void onLoadingCancelled(String arg0, View arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+			};
+			if(!TextUtils.isEmpty(photoData.localPath)) {
+				ImageLoader.getInstance().loadImage("file://" + photoData.localPath, listener);
+			} else {
+				ImageLoader.getInstance().loadImage(photoData.origin_url, listener);
 			}
-			int tag = PhotoUploadManager.createKey(caseId, folderId, path);
-			int index = path.lastIndexOf('/');
-			String name = path.substring(index + 1, path.length());
-			QjHttp.uploadImage(tag, caseId, folderId, photoData.id, name, path, new QjHttpCallback<MUploadImageInfo>() {
+			
+//			Bitmap bitmap = convertViewToBitmap(photoView);
 
-				@Override
-				public MUploadImageInfo parseNetworkResponse(String str) throws Exception {
-					return new Gson().fromJson(str, MUploadImageInfo.class);
-				}
-
-				@Override
-				public void onResponseSucces(MUploadImageInfo response) {
-					PhotoDataInfo data = response.data;
-					PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_EDIT, data);
-					event.setMovedImageList(caseId, folderId, null);
-					EventBus.getDefault().post(event);
-					try {
-						pd.dismiss();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					finish();
-				}
-
-				@Override
-				public void onError(Call call, Exception e) {
-					Toast.makeText(getActivity(), "保存失败 "+e.toString(), 1)
-					.show();
-					try {
-						pd.dismiss();
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				}
-			});
+			
 			// }
 
 			// }.execute();
@@ -180,7 +238,36 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 
 	}
 
-	public static Bitmap convertViewToBitmap(PhotoView view) {
+	public Bitmap convertViewToBitmap(PhotoView view) {
+		
+		
+		
+		Matrix matrix = view.getDrawMatrix();
+//		Log.d("sssssssssss","getDrawMatrix = "+matrix.toString());
+//		Log.d("sssssssssss","getSuppMatrix = "+view.getSuppMatrix().toString());
+//		Log.d("sssssssssss","getBaseMatrix = "+view.getBaseMatrix().toString());
+//		Log.d("sssssssssss","getDisplayMatrix = "+view.getDisplayMatrix().toString());
+		ImageView imageview = view.getImageView();
+	
+//		ImageLoader.getInstance().loadImage(photoData.origin_url, new ImageLoadingListener() );
+		Drawable drawable = imageview.getDrawable();
+		Log.d("sssssssssss","getImageViewHeight = "+PhotoViewAttacher.getImageViewHeight(imageview));//.get.getDisplayMatrix().toString());
+		Log.d("sssssssssss","getImageViewWidth = "+PhotoViewAttacher.getImageViewWidth(imageview));//.get.getDisplayMatrix().toString());
+		Log.d("sssssssssss","drawable.getIntrinsicWidth() = "+drawable.getIntrinsicWidth());
+		Log.d("sssssssssss","drawable.getIntrinsicHeight() = "+drawable.getIntrinsicHeight());
+
+		Matrix mBaseMatrix = new Matrix(view.getBaseMatrix());
+		int degree = (int) (mRotation % 360);
+		Log.d("sssssssssss","degree = "+degree);
+		mBaseMatrix.setRotate(degree);
+		if(isMirror) {
+			mBaseMatrix.setScale(-1, 1);
+		}
+//		matrix.getValues(values );
+//		Log.d("sssssssssss","mBaseMatrix = "+mBaseMatrix.toString());
+//		ImageLoader.getInstance().getMemoryCache().get(arg0);
+//		Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		
 //		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
 //				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 //		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());

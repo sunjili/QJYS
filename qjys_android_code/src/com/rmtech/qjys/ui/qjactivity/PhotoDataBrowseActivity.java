@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -34,6 +35,8 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
@@ -327,13 +330,40 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 			PhotoDataInfo info = dataList.get(position);
 			// ImageLoader.getInstance().displayImage(info.thumb_url, photoView,
 			// optionsThumb);
-			ImageView smallView = (ImageView) root.findViewById(R.id.small_image);
+			final ImageView smallView = (ImageView) root.findViewById(R.id.small_image);
+			final View progressBar =  root.findViewById(R.id.progressBar);
+			smallView.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.VISIBLE);
 			PhotoView photoView = (PhotoView) root.findViewById(R.id.big_image);
 			ImageLoader.getInstance().displayImage(info.thumb_url, smallView, optionsThumb);
 			if(!TextUtils.isEmpty(info.localPath)) {
 				ImageLoader.getInstance().displayImage("file://"+info.localPath, photoView, optionsOrigin);
 			} else {
-				ImageLoader.getInstance().displayImage(info.origin_url, photoView, optionsOrigin);
+				ImageLoader.getInstance().displayImage(info.origin_url, photoView, optionsOrigin, new ImageLoadingListener() {
+					
+					@Override
+					public void onLoadingStarted(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
+						smallView.setVisibility(View.GONE);
+						progressBar.setVisibility(View.GONE);
+					}
+					
+					@Override
+					public void onLoadingCancelled(String arg0, View arg1) {
+						
+					}
+				});
 			}
 			photoView.setOnViewTapListener(listener);
 			container.addView(root, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);

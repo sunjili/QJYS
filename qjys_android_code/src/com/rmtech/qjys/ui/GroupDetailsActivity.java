@@ -57,6 +57,7 @@ import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.fragment.ChatFragment;
 import com.rmtech.qjys.ui.qjactivity.DoctorPickActivity;
+import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
 import com.rmtech.qjys.ui.qjactivity.UserInfoActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
@@ -237,6 +238,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			exitBtn.setVisibility(View.VISIBLE);
 			deleteBtn.setVisibility(View.GONE);
 		}
+		groupId = caseInfo.group_id;
+		group = EMClient.getInstance().groupManager().getGroup(groupId);
 	}
 
 
@@ -282,8 +285,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			}
 			case QjConstant.REQUEST_CODE_ADD_DOCTORS: {// 添加群成员
 				ArrayList<DoctorInfo> currentDoctorList = data.getParcelableArrayListExtra("selectedDoctorList");
+				groupId = data.getStringExtra("group_id");
+
 				if(requestType == QjConstant.REQUEST_CODE_NEW_CASE_DOCTOR) {
-					groupId = data.getStringExtra("group_id");
 					if (caseInfo != null) {
 						if (caseInfo.participate_doctor == null) {
 							caseInfo.participate_doctor = new ArrayList<DoctorInfo>();
@@ -495,8 +499,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						public void run() {
 							progressDialog.dismiss();
 							setResult(RESULT_OK);
+							GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(groupId);
+							caseInfo.participate_doctor = null;
 							DoctorListManager.addDeletedGroupIds(groupId);
 							finish();
+							if (PhotoDataManagerActivity.activityInstance != null) {
+								PhotoDataManagerActivity.activityInstance.finish();
+							}
 							if (ChatActivity.activityInstance != null) {
 								ChatActivity.activityInstance.finish();
 							}

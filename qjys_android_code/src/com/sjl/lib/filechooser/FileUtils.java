@@ -177,6 +177,7 @@ public class FileUtils {
 			e.printStackTrace();
 		} finally {
 			try {
+				bitmap.recycle();
 				fos.close();
 			} catch (Exception e) {
 				e.printStackTrace();

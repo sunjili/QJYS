@@ -85,6 +85,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 				        		(caseInfo.participate_doctor == null || caseInfo.participate_doctor.isEmpty())){
 				        	CustomSimpleDialog.Builder builder = new Builder(getActivity());  
 				            builder.setTitle("");  
+				            
 				            builder.setMessage("请先添加医护组成员后\n再进行群聊");
 				            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 				    			
@@ -105,7 +106,9 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 				    			}
 
 				    		});
-				            builder.create().show();
+				            CustomSimpleDialog dialog = builder.create();
+				            dialog.setCanceledOnTouchOutside(false);
+				            dialog.show();
 				        } else {
 							Intent intent = new Intent(getActivity(), ChatActivity.class);
 							intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
@@ -248,50 +251,56 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 		case QjConstant.REQUEST_CAMERA:
 
 			if (resultCode == Activity.RESULT_OK) {
-				if (mTmpFile != null) {
+				try {
 					if (mTmpFile != null) {
-						String path =  mTmpFile.getAbsolutePath();
-						Bitmap srcBitmap = BitmapFactory.decodeFile(path);
+						if (mTmpFile != null) {
+							String path =  mTmpFile.getAbsolutePath();
+						    BitmapFactory.Options options = new BitmapFactory.Options();
+					        options.inPreferredConfig = Bitmap.Config.RGB_565;
+							Bitmap srcBitmap = BitmapFactory.decodeFile(path,options);
 
-						int degree = ExifUtils.getExifOrientation(path);
-						if (degree != 0) {
-							Bitmap resBitmap = BitmapUtils.rotateBitmap(srcBitmap,
-									degree, true);
-							path = FileUtils.saveImage(getActivity(), resBitmap);
+							int degree = ExifUtils.getExifOrientation(path);
+							if (degree != 0) {
+								Bitmap resBitmap = BitmapUtils.rotateBitmap(srcBitmap,
+										degree, true);
+								path = FileUtils.saveImage(getActivity(), resBitmap);
 
-						} else {
-							path = FileUtils.saveImage(getActivity(), srcBitmap);
+							} else {
+								path = FileUtils.saveImage(getActivity(), srcBitmap);
 
+							}
+
+							while (mTmpFile != null && mTmpFile.exists()) {
+								boolean success = mTmpFile.delete();
+								if (success) {
+									mTmpFile = null;
+								}
+							}
+							
+							sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(path))));
+							ArrayList<String> list = new ArrayList<String>();
+							list.add(path);
+
+							onImagePicked(list);
+
+							// Intent data = new Intent();
+							// resultList.add(imageFile.getAbsolutePath());
+							// data.putStringArrayListExtra(EXTRA_RESULT,
+							// resultList);
+							// setResult(RESULT_OK, data);
+							// finish();
+							// mCallback.onCameraShot(mTmpFile);
 						}
-
+					} else {
 						while (mTmpFile != null && mTmpFile.exists()) {
 							boolean success = mTmpFile.delete();
 							if (success) {
 								mTmpFile = null;
 							}
 						}
-						
-						sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(path))));
-						ArrayList<String> list = new ArrayList<String>();
-						list.add(path);
-
-						onImagePicked(list);
-
-						// Intent data = new Intent();
-						// resultList.add(imageFile.getAbsolutePath());
-						// data.putStringArrayListExtra(EXTRA_RESULT,
-						// resultList);
-						// setResult(RESULT_OK, data);
-						// finish();
-						// mCallback.onCameraShot(mTmpFile);
 					}
-				} else {
-					while (mTmpFile != null && mTmpFile.exists()) {
-						boolean success = mTmpFile.delete();
-						if (success) {
-							mTmpFile = null;
-						}
-					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 			break;
@@ -419,11 +428,22 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 	protected ImageDataList getImageDataList() {
 		return null;
 	}
+	
+	private boolean isMyself() {
+		CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
+		if(tempCase == null && tempCase.admin_doctor == null) {
+			return true;
+		}
+		if(tempCase.admin_doctor.isMyself()) {
+			return true;
+		}
+		return false;
+	}
 	protected void showPopWindow(View anchorView) {
 
 		if (mFolderPopupWindow == null) {
 			final ListPopupWindowAdapter mFolderAdapter = new ListPopupWindowAdapter(getActivity(),
-					isRootFolder());
+					isRootFolder(),isMyself());
 			mFolderPopupWindow = PhotoManangerPopWindow.createPopupList(getActivity(), anchorView,
 					mFolderAdapter, new OnItemClickListener() {
 
@@ -441,8 +461,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 								showNewFolderDialog(folders);
 								break;
 							case 1: {
-								CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
-								if(tempCase != null && tempCase.admin_doctor != null && !tempCase.admin_doctor.isMyself()) {
+								if(!isMyself()) {
 									Toast.makeText(getActivity(), "非管理员，没有权限", Toast.LENGTH_LONG).show();
 									return;
 								}
@@ -451,8 +470,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 								break;
 							}
 							case 2:{
-								CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId);
-								if(tempCase != null && tempCase.admin_doctor != null && !tempCase.admin_doctor.isMyself()) {
+								if(!isMyself()) {
 									Toast.makeText(getActivity(), "非管理员，没有权限", Toast.LENGTH_LONG).show();
 									return;
 								}

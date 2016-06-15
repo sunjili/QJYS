@@ -273,4 +273,14 @@ public class GroupAndCaseListManager {
 		return null;
 	}
 
+	public void deleteGroupInfoInCase(String groupId) {
+		CaseInfo info = getCaseInfoByGroupId(groupId);
+		if(info != null) {
+			info.participate_doctor = null;
+			CaseEvent event = new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED_DELETE);
+			event.setCaseInfoId(info.id);
+			EventBus.getDefault().post(event);
+		}
+	}
+
 }
