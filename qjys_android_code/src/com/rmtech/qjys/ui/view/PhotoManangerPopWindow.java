@@ -49,15 +49,20 @@ public class PhotoManangerPopWindow {
 
 		private Context mContext;
 		private boolean isRoot;
+		private boolean isMyself = true;
 
-		public ListPopupWindowAdapter(Context context, boolean isRoot) {
+		public ListPopupWindowAdapter(Context context, boolean isRoot, boolean isMyself) {
 			super();
 			this.mContext = context;
 			this.isRoot = isRoot;
+			this.isMyself  = isMyself;
 		}
 
 		@Override
 		public int getCount() {
+			if(!isMyself) {
+				return 1;
+			}
 			if (mStringList == null) {
 				return 0;
 			} else {
@@ -83,8 +88,12 @@ public class PhotoManangerPopWindow {
 		public View getView(final int pos, View convertView,
 				ViewGroup parent) {
 			int position = pos;
-			if(!isRoot) {
-				position = pos+1;
+			if(!isMyself) {
+				position = 3;
+			} else {
+				if(!isRoot) {
+					position = pos+1;
+				}
 			}
 			ViewHolder holder = null;
 			if (convertView == null) {

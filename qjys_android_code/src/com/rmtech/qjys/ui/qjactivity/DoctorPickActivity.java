@@ -8,6 +8,7 @@ import okhttp3.Call;
 import org.greenrobot.eventbus.EventBus;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.widget.EaseSidebar;
+import com.hyphenate.exceptions.HyphenateException;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.QjHttp;
@@ -48,6 +50,7 @@ import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.model.gson.MGroupData;
+import com.rmtech.qjys.model.gson.MPatientList;
 import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
@@ -73,8 +76,17 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 	// public static final int TYPE_CHANGE_DOCTOR = 3;
 
 	public int type = QjConstant.REQUEST_CODE_ADD_DOCTORS;
+	private ProgressDialog mProgressDialog;
 
 	private void onActionFinish() {
+		try {
+			if(mProgressDialog != null) {
+				mProgressDialog.dismiss();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (type == QjConstant.REQUEST_CODE_DELETE_DOCTORS) {
 			Toast.makeText(getApplicationContext(), "删除失败！", 1).show();
 
@@ -353,12 +365,25 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 				@Override
 				public void onClick(View v) {
 					Log.d("sssssssssss", "setRightTitle onClick");
-					QjHttp.addMembers(caseInfo, getMembersString(), new QjHttpCallback<MGroupData>() {
+					String membersStr = getMembersString();
+					if(TextUtils.isEmpty(membersStr)) {
+						finish();
+						return;
+					}
+					if(mProgressDialog != null && mProgressDialog.isShowing()) {
+						return;
+					}
+					mProgressDialog = ProgressDialog.show(getActivity(), null, "正在添加");
+
+					QjHttp.addMembers(caseInfo, membersStr, new QjHttpCallback<MGroupData>() {
 
 						@Override
 						public void onResponseSucces(MGroupData response) {
+							
+							
 							ArrayList<DoctorInfo> resultList = getToBeAddMembers();
 							CaseEvent event = new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED_ADD);
+							String groupid =  response.data == null ? null : response.data.group_id;
 
 							CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
 							if (newCase != null) {
@@ -366,17 +391,37 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 									newCase.participate_doctor = new ArrayList<DoctorInfo>();
 								}
 								newCase.participate_doctor.addAll(resultList);
+								newCase.group_id = groupid;
 								event.setCaseInfoId(caseInfo.id);
 
 								EventBus.getDefault().post(event);
 							}
 				
-
 							Intent intent = new Intent();
 							intent.putParcelableArrayListExtra("selectedDoctorList", resultList);// ("newmembers",
-							intent.putExtra("group_id", response.data == null ? "" : response.data.group_id);
+							if(groupid != null) {
+								ArrayList<DoctorInfo> list = getToBeAddMembers();
+								
+								try {
+									String[] newmembers = new String[list.size()];
+									for (int i = 0; i < list.size(); i++) {
+										newmembers[i] = list.get(i).id;
+									}
+									EMClient.getInstance().groupManager().addUsersToGroup(groupid, newmembers);
+								} catch (HyphenateException e) {
+//									e.printStackTrace();
+								}
+	
+								intent.putExtra("group_id",groupid);
+							}
 							setResult(RESULT_OK, intent);
 							finish();
+							try {
+								mProgressDialog.dismiss();
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							// } else {
 							// onActionFinish();
 							// }

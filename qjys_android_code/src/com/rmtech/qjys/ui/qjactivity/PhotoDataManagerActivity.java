@@ -26,6 +26,7 @@ import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.fragment.PhotoManagerFragment;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
@@ -44,6 +45,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 
 	private PhotoManagerFragment mPhotoManagerFragment;
 	private CaseTopBarView mCaseTopBarView;
+    public static PhotoDataManagerActivity activityInstance;
 
 	
 	private View rightTitleView;
@@ -52,6 +54,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		activityInstance = this;
 		if(isNewCase) {
 			return;
 		}
@@ -86,6 +89,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	
 	@Override
 	protected void onDestroy() {
+		activityInstance = null;
 		unregisterReceiver(CaseDeleteReceiver);
 		super.onDestroy();
 	}
