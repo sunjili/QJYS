@@ -13,6 +13,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.EMLog;
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
@@ -134,4 +135,17 @@ public class DiagnoseActivity extends BaseActivity implements OnClickListener {
 
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

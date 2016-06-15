@@ -22,6 +22,7 @@ import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.MainActivity;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 设置新密码 页面
@@ -112,6 +113,7 @@ public class MePasswordNewActivity extends BaseActivity implements
 
 				@Override
 				public void onClick(View v) {
+					MobclickAgent.onEvent(MePasswordNewActivity.this, "btn_click_ignore_setpasswd");
 					Intent intent = new Intent(MePasswordNewActivity.this, MainActivity.class);
 					startActivity(intent);
 					finish();
@@ -177,5 +179,19 @@ public class MePasswordNewActivity extends BaseActivity implements
 			}
 			break;
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

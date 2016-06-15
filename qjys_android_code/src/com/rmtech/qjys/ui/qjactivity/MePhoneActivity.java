@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 编辑手机号 页面
@@ -83,5 +84,19 @@ public class MePhoneActivity extends BaseActivity implements
 			break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

@@ -11,6 +11,7 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.WebViewActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 关于奇迹医生 页面
@@ -104,5 +105,17 @@ public class MeAboutActivity extends BaseActivity implements
 		context.startActivity(intent);
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
 
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

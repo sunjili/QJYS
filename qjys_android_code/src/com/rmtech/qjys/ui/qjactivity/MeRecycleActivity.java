@@ -46,6 +46,7 @@ import com.sjl.lib.swipemenulistview.SwipeMenu;
 import com.sjl.lib.swipemenulistview.SwipeMenuCreator;
 import com.sjl.lib.swipemenulistview.SwipeMenuItem;
 import com.sjl.lib.swipemenulistview.SwipeMenuListView;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 病例回收站 页面
@@ -452,6 +453,20 @@ public class MeRecycleActivity extends BaseActivity {
 			statusTv = (TextView) container.findViewById(R.id.status_tv);
 			contentTv = (TextView) container.findViewById(R.id.content_tv);
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

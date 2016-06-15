@@ -18,6 +18,7 @@ import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 摘要
@@ -44,6 +45,7 @@ public class CaseAbstractActivity extends CaseWithIdActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		 MobclickAgent.onResume(this);
 		if (caseInfo != null) {
 			CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
 			if (tempCase != null) {
@@ -51,6 +53,13 @@ public class CaseAbstractActivity extends CaseWithIdActivity {
 			}
 		}
 		setValue();
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 MobclickAgent.onPause(this);
 	}
 
 	private void setValue() {

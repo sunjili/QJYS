@@ -17,6 +17,7 @@ import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnAddFriendCallback;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 添加新朋友 页面
@@ -118,5 +119,19 @@ public class CaseAddFriendActivity extends BaseActivity {
 		Intent intent = new Intent();
 		intent.setClass(context, CaseAddFriendActivity.class);
 		context.startActivity(intent);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		 MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 MobclickAgent.onPause(this);
 	}
 }

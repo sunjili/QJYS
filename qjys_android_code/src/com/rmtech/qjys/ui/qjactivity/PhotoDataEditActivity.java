@@ -40,6 +40,7 @@ import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.sjl.lib.filechooser.FileUtils;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("NewApi")
 public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClickListener {
@@ -193,7 +194,19 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 		return bitmap;
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
 
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 
 
 }

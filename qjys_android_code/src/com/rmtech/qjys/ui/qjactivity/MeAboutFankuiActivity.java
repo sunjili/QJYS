@@ -6,9 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.Toast;
+import okhttp3.Call;
 
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.callback.QjHttpCallback;
+import com.rmtech.qjys.model.gson.MBase;
+import com.rmtech.qjys.model.gson.MUser;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 反馈与建议 页面
@@ -37,7 +45,21 @@ public class MeAboutFankuiActivity extends BaseActivity {
 				// TODO 发送建议
 				string = et_string.getText().toString().trim();
 				phone = et_phone.getText().toString().trim();
-				finish();
+				QjHttp.feedBack(string, phone, new BaseModelCallback() {
+					
+					@Override
+					public void onResponseSucces(MBase response) {
+						// TODO Auto-generated method stub
+						Toast.makeText(getActivity(), "反馈成功！！！", Toast.LENGTH_SHORT).show();
+						finish();
+					}
+					
+					@Override
+					public void onError(Call call, Exception e) {
+						// TODO Auto-generated method stub
+						Toast.makeText(getActivity(), "反馈失败！！！", Toast.LENGTH_SHORT).show();
+					}
+				});
 			}
 		});
 		initView();
@@ -57,5 +79,19 @@ public class MeAboutFankuiActivity extends BaseActivity {
 		Intent intent = new Intent();
 		intent.setClass(context, MeAboutFankuiActivity.class);
 		context.startActivity(intent);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

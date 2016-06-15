@@ -35,6 +35,7 @@ import com.rmtech.qjys.ui.qjactivity.QjAddContactActivity;
 import com.rmtech.qjys.ui.qjactivity.UserInfoActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 申请与通知
@@ -103,6 +104,7 @@ public class NewFriendsMsgActivity extends BaseActivity{
 		//设置adapter
 		NewFriendsMsgAdapter adapter = new NewFriendsMsgAdapter(this, 1, msgs); 
 		listView.setAdapter(adapter);
+		MobclickAgent.onResume(this);
 	}
 
 	public void back(View view) {
@@ -111,6 +113,14 @@ public class NewFriendsMsgActivity extends BaseActivity{
 
 	protected boolean showTitleBar() {
 		return true;
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 }

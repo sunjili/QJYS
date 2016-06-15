@@ -30,6 +30,8 @@ import com.rmtech.qjys.hx.QjHelper;
 import com.sjl.lib.http.okhttp.AndroidDeviceManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
 import com.sjl.lib.utils.ScreenUtil;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.analytics.MobclickAgent.EScenarioType;
 import com.umeng.socialize.PlatformConfig;
 
 public class QjApplication extends Application {
@@ -59,6 +61,8 @@ public class QjApplication extends Application {
         QjHelper.getInstance().init(applicationContext);
         initImageLoader(getApplicationContext());
         ScreenUtil.init(applicationContext);
+        MobclickAgent.setScenarioType(getApplicationContext(), EScenarioType.E_UM_NORMAL);
+        MobclickAgent.enableEncrypt(false);//日志加密
 	}
 	
 	{

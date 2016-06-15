@@ -16,6 +16,7 @@ import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 设置新密码 页面
@@ -114,5 +115,19 @@ public class MePasswordChangeActivity extends BaseActivity implements
 
 	@Override
 	public void onClick(View v) {
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

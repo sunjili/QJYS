@@ -31,6 +31,7 @@ import com.rmtech.qjys.model.gson.MStateList;
 import com.rmtech.qjys.model.gson.MStateList.StateInfo;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.umeng.analytics.MobclickAgent;
 
 public class EditCaseStateActivity extends CaseEidtBaseActivity {
 	private EditText et_state_add;
@@ -121,6 +122,14 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 	protected void onResume() {
 		super.onResume();
 		loadData();
+		MobclickAgent.onResume(this);
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	private void loadData() {

@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:paddingBottom="14dip"
     android:paddingLeft="10dip"
+    android:background="@color/white"
     android:paddingRight="10dip"
     android:paddingTop="14dip" >
 

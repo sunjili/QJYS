@@ -58,6 +58,7 @@ import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.utils.DoctorListManager;
+import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends BaseActivity {
 
@@ -461,6 +462,7 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 
 		if (!isConflict && !isCurrentAccountRemoved) {
 			updateUnreadLabel();
@@ -638,6 +640,13 @@ public class MainActivity extends BaseActivity {
 		QjBaseFragment fragment = fragments[currentTabIndex];
 		fragment.onActivityResult(requestCode, resultCode, data);
 
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 

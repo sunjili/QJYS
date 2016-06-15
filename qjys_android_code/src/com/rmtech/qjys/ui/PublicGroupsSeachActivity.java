@@ -15,6 +15,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.exceptions.HyphenateException;
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class PublicGroupsSeachActivity extends BaseActivity{
     private RelativeLayout containerLayout;
@@ -89,4 +90,18 @@ public class PublicGroupsSeachActivity extends BaseActivity{
     public void enterToDetails(View view){
         startActivity(new Intent(this, GroupSimpleDetailActivity.class));
     }
+    
+    @Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

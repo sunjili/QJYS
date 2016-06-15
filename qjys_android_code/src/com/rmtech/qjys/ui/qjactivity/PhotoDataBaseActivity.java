@@ -61,6 +61,7 @@ import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 import com.sjl.lib.utils.L;
+import com.umeng.analytics.MobclickAgent;
 
 public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFolderListener, OnPhotoUploadListener {
 
@@ -110,6 +111,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 							intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
 							intent.putExtra(QjConstant.EXTRA_USER_ID, caseInfo.group_id);
 							startActivity(intent);
+							overridePendingTransition(R.anim.hold, R.anim.hold); 
 							finish();
 				        }
 				}
@@ -493,6 +495,20 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 
 		} 
 		return false;
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 }

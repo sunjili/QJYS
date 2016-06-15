@@ -37,6 +37,7 @@ import com.rmtech.qjys.db.DemoDBManager;
 import com.rmtech.qjys.hx.QjHelper;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
 import com.sjl.lib.http.okhttp.callback.Callback;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 登陆页面
@@ -232,5 +233,13 @@ public class LoginActivity extends BaseActivity {
 		if (autoLogin) {
 			return;
 		}
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

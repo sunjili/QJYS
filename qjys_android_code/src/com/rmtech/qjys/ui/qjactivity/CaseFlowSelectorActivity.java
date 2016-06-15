@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 新建 编辑 病例时 设置临床诊疗规范及流程 页面
@@ -88,5 +89,19 @@ public class CaseFlowSelectorActivity extends MeFlowActivity implements
 
 	@Override
 	public void onClick(View v) {
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		 MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 MobclickAgent.onPause(this);
 	}
 }

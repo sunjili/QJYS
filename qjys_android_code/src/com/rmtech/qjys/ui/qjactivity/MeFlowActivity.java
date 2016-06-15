@@ -22,6 +22,7 @@ import com.rmtech.qjys.adapter.ViewHolder;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.gson.MFlowList;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 设置临床诊疗规范及流程 页面
@@ -59,6 +60,14 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 	protected void onResume() {
 		super.onResume();
 		initData();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	private void onDisplayView() {

@@ -53,6 +53,7 @@ import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
+import com.umeng.analytics.MobclickAgent;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
 public class DoctorPickActivity extends CaseWithIdActivity {
@@ -81,6 +82,20 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		} else {
 			Toast.makeText(getApplicationContext(), "添加失败！", 1).show();
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	private void loadData() {

@@ -27,6 +27,7 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMGroupInfo;
 import com.hyphenate.exceptions.HyphenateException;
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class GroupSimpleDetailActivity extends BaseActivity {
 	private Button btn_add_group;
@@ -150,5 +151,19 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 	
 	public void back(View view){
 		finish();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

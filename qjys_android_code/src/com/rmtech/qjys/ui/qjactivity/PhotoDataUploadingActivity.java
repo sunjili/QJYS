@@ -44,6 +44,7 @@ import com.sjl.lib.swipemenulistview.SwipeMenuCreator;
 import com.sjl.lib.swipemenulistview.SwipeMenuItem;
 import com.sjl.lib.swipemenulistview.SwipeMenuListView;
 import com.sjl.lib.utils.ScreenUtil;
+import com.umeng.analytics.MobclickAgent;
 
 public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 		OnPhotoUploadListener {
@@ -459,6 +460,20 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 				// }
 			}
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

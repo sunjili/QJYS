@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import com.hyphenate.easeui.ui.EaseBaseActivity;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.view.TopTitleView;
+import com.umeng.analytics.MobclickAgent;
 
 public class BaseActivity extends EaseBaseActivity {
 
@@ -33,6 +34,7 @@ public class BaseActivity extends EaseBaseActivity {
 		super.onCreate(arg0);
 		
 	}
+	
 
 	protected boolean showTitleBar() {
 		return false;
@@ -182,15 +184,21 @@ public class BaseActivity extends EaseBaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// umeng
-		// MobclickAgent.onResume(this);
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 		// umeng
-		// MobclickAgent.onPause(this);
 	}
 
 }

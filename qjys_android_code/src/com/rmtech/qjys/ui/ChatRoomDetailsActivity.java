@@ -46,6 +46,7 @@ import com.hyphenate.easeui.widget.EaseExpandGridView;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.NetUtils;
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class ChatRoomDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "ChatRoomDetailsActivity";
@@ -487,6 +488,20 @@ public class ChatRoomDetailsActivity extends BaseActivity implements OnClickList
 	    ImageView imageView;
 	    TextView textView;
 	    ImageView badgeDeleteView;
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

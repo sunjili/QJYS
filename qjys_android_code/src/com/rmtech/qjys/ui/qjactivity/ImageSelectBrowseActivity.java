@@ -24,6 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.view.HackyViewPager;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("NewApi")
 public class ImageSelectBrowseActivity extends BaseActivity {
@@ -144,6 +145,20 @@ public class ImageSelectBrowseActivity extends BaseActivity {
 			outState.putBoolean(ISLOCKED_ARG, ((HackyViewPager) mViewPager).isLocked());
 		}
 		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

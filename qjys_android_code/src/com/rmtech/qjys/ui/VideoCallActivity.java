@@ -41,6 +41,7 @@ import com.hyphenate.media.EMLocalSurfaceView;
 import com.hyphenate.media.EMOppositeSurfaceView;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
+import com.umeng.analytics.MobclickAgent;
 
 public class VideoCallActivity extends CallActivity implements OnClickListener {
 
@@ -424,5 +425,19 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
     void stopMonitor(){
         monitor = false;
     }
+    
+    @Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 
 }

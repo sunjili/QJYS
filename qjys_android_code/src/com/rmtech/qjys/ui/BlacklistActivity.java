@@ -23,6 +23,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.exceptions.HyphenateException;
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 黑名单列表页面
@@ -139,5 +140,19 @@ public class BlacklistActivity extends Activity {
 	 */
 	public void back(View view) {
 		finish();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

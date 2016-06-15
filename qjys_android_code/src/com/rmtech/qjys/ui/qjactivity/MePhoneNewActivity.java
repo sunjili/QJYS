@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 更换手机号 页面
@@ -105,5 +106,19 @@ public class MePhoneNewActivity extends BaseActivity implements
 					.setBackgroundResource(R.drawable.qj_me_greenbutton_selector);
 		}
 	};
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	
 }

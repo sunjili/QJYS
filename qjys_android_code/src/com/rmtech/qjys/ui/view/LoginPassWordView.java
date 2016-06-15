@@ -33,6 +33,7 @@ import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.WebViewActivity;
 import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("NewApi")
 public class LoginPassWordView extends LoginBaseView implements View.OnClickListener {
@@ -135,6 +136,7 @@ public class LoginPassWordView extends LoginBaseView implements View.OnClickList
 		}
 		
 		logining = true;
+		MobclickAgent.onEvent(getContext(), "action_login_by_password");
 		QjHttp.pwLogin(currentUsername, currentPassword, mOnLoginListener);
 
 //		progressShow = true;

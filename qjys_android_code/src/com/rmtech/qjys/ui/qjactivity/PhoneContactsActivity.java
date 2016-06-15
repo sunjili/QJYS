@@ -38,6 +38,7 @@ import com.rmtech.qjys.ui.view.BladeView.OnItemClickListener;
 import com.rmtech.qjys.ui.view.MySectionIndexer;
 import com.rmtech.qjys.ui.view.PinnedHeaderListView;
 import com.rmtech.qjys.utils.DoctorListManager;
+import com.umeng.analytics.MobclickAgent;
 
 public class PhoneContactsActivity extends BaseActivity {
 	/** 用于保存已设置的手机号 */
@@ -484,6 +485,20 @@ public class PhoneContactsActivity extends BaseActivity {
 				db.close();
 			}
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

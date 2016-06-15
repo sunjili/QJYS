@@ -32,6 +32,7 @@ import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.FlowListManager;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 编辑临床诊疗规范及流程 页面
@@ -128,6 +129,20 @@ public class CaseFlowEditActivity extends MeFlowEditActivity implements
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		 MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 MobclickAgent.onPause(this);
 	}
 
 }

@@ -33,6 +33,7 @@ import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.zbarlib.camera.CameraManager;
 import com.rmtech.qjys.zbarlib.decode.CaptureActivityHandler;
 import com.rmtech.qjys.zbarlib.decode.InactivityTimer;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * sunjili
@@ -172,6 +173,7 @@ public class ScanActivity extends FragmentActivity implements Callback, OnClickL
 		}
 		initBeepSound();
 		vibrate = true;
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
@@ -182,6 +184,7 @@ public class ScanActivity extends FragmentActivity implements Callback, OnClickL
 			handler = null;
 		}
 		CameraManager.get().closeDriver();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 public class CaseWithIdActivity extends BaseActivity {
 	protected String caseId;
@@ -53,6 +54,20 @@ public class CaseWithIdActivity extends BaseActivity {
 			imageDataList = (ImageDataList) intent.getParcelableExtra("imageDataList");
 
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

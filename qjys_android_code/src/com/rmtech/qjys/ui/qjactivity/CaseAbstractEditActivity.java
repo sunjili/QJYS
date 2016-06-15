@@ -26,6 +26,7 @@ import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 摘要
@@ -105,6 +106,20 @@ public class CaseAbstractEditActivity extends CaseWithIdActivity {
 		setCaseInfo(intent, caseInfo);
 		intent.setClass(context, CaseAbstractEditActivity.class);
 		context.startActivityForResult(intent, QjConstant.REQUEST_CODE_EDIT_CASE);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		 MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 MobclickAgent.onPause(this);
 	}
 
 }

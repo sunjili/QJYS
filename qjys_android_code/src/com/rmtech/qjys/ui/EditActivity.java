@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class EditActivity extends BaseActivity{
 	private EditText editText;
@@ -32,5 +33,19 @@ public class EditActivity extends BaseActivity{
 	public void save(View view){
 		setResult(RESULT_OK,new Intent().putExtra("data", editText.getText().toString()));
 		finish();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

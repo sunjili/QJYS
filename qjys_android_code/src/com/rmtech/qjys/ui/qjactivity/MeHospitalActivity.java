@@ -34,6 +34,7 @@ import com.rmtech.qjys.model.gson.MHosList;
 import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 医院 页面
@@ -281,5 +282,19 @@ public class MeHospitalActivity extends CaseEidtBaseActivity {
 		intent.putExtra("requestCode", QjConstant.REQUEST_CODE_ADD_HOSPITAL);
 		context.startActivityForResult(intent,
 				QjConstant.REQUEST_CODE_ADD_HOSPITAL);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

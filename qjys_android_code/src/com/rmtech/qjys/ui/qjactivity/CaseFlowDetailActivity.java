@@ -22,6 +22,7 @@ import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 临床诊疗规范及流程 详情页面
@@ -232,7 +233,16 @@ public class CaseFlowDetailActivity extends MeFlowDetailActivity implements
 				setRightTitle("", null);
 			}
 		}
-		
+
+		 MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 MobclickAgent.onPause(this);
 	}
 
 	@Override

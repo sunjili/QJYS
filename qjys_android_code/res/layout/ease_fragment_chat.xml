@@ -16,7 +16,7 @@
     <com.rmtech.qjys.ui.view.CaseTopBarView
         android:id="@+id/topbar_view"
         android:layout_width="match_parent"
-        android:layout_height="94.5dip"
+        android:layout_height="wrap_content"
         android:layout_below="@id/title_bar"
         android:visibility="gone" />
     

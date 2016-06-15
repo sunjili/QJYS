@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 
 import com.rmtech.qjys.ui.fragment.ImageGridFragment;
+import com.umeng.analytics.MobclickAgent;
 
 public class ImageGridActivity extends FragmentActivity {
 
@@ -36,5 +37,18 @@ public class ImageGridActivity extends FragmentActivity {
 		
 	}
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	
 }

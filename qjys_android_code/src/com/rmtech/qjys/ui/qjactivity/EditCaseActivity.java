@@ -30,6 +30,7 @@ import com.rmtech.qjys.ui.view.MeItemLayout;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.alertview.AlertView;
 import com.tencent.a.a.a.a.g;
+import com.umeng.analytics.MobclickAgent;
 
 public class EditCaseActivity extends BaseActivity implements View.OnClickListener {
 	private String tempStr = "";
@@ -125,6 +126,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 			}
 		}
 		setViewValue();
+		MobclickAgent.onResume(this);
 	}
 
 	private void setViewValue() {
@@ -374,6 +376,13 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 		intent.setClass(context, EditCaseActivity.class);
 		intent.putExtra("case_info", (Parcelable) caseInfo);
 		context.startActivity(intent);
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

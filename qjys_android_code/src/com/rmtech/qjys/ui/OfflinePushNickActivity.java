@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class OfflinePushNickActivity extends BaseActivity {
 
@@ -93,5 +94,19 @@ public class OfflinePushNickActivity extends BaseActivity {
 
 			}
 		});
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

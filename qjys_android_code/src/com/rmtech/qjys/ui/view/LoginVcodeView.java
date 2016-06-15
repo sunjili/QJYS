@@ -20,6 +20,7 @@ import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.LoginActivity;
 import com.rmtech.qjys.ui.WebViewActivity;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("NewApi")
 public class LoginVcodeView extends LoginBaseView implements View.OnClickListener {
@@ -155,6 +156,7 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 
 	private void httpLogin(String inuptPhoneStr, String codeStr) {
 		logining = true;
+		MobclickAgent.onEvent(getContext(), "action_login_by_verifycode");
 		QjHttp.login(inuptPhoneStr, codeStr, mOnLoginListener);
 	}
 

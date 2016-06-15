@@ -39,6 +39,7 @@ import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.db.DbOpenHelper;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 public class CopyOfPhoneContactsActivity extends BaseActivity {
 	private Context ctx;
@@ -411,5 +412,19 @@ public class CopyOfPhoneContactsActivity extends BaseActivity {
 				db.close();
 			}
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

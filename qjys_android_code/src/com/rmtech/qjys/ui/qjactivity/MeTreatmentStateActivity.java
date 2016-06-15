@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,6 +29,7 @@ import com.rmtech.qjys.model.gson.MStateList;
 import com.rmtech.qjys.model.gson.MStateList.StateInfo;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.sjl.lib.alertview.AlertView;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 病例就诊状态 页面
@@ -67,12 +70,14 @@ public class MeTreatmentStateActivity extends BaseActivity implements View.OnCli
 	protected void onResume() {
 		super.onResume();
 		loadData();
+		MobclickAgent.onResume(this);
 	}
 
 	private void initView() {
 		btn_state_add = (Button) findViewById(R.id.btn_state_add);
 		btn_state_add.setOnClickListener(this);
 		et_state_add = (EditText) findViewById(R.id.et_state_add);
+		getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		lv_state = (ListView) findViewById(R.id.lv_state);
 	}
 
@@ -178,6 +183,11 @@ public class MeTreatmentStateActivity extends BaseActivity implements View.OnCli
 				public void onResponseSucces(MBase response) {
 					Toast.makeText(context, "保存成功！", Toast.LENGTH_LONG).show();
 					loadData();
+					et_state_add.setText("");
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			        if (imm != null) {  
+			            imm.hideSoftInputFromWindow(et_state_add.getWindowToken(), 0);  
+			        }  
 					// if (!listems.contains(string)) {
 					// listems.add(string);
 					// mAdapter.notifyDataSetChanged();
@@ -201,5 +211,12 @@ public class MeTreatmentStateActivity extends BaseActivity implements View.OnCli
 		default:
 			break;
 		}
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

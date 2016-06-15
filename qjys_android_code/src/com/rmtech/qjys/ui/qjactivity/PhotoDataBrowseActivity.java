@@ -47,6 +47,7 @@ import com.rmtech.qjys.ui.view.HackyViewPager;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.sjl.lib.alertview.AlertView;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("NewApi")
 public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnViewTapListener {
@@ -403,6 +404,20 @@ public class PhotoDataBrowseActivity extends CaseWithIdActivity implements OnVie
 			}
 
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

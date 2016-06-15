@@ -8,6 +8,7 @@ import java.util.Date;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rmtech.qjys.R;
@@ -28,7 +30,7 @@ public class PtrClassicDefaultHeader extends FrameLayout implements PtrUIHandler
     private RotateAnimation mReverseFlipAnimation;
     private TextView mTitleTextView;
     private View mRotateView;
-    private View mProgressBar;
+    private ProgressBar mProgressBar;
     private long mLastUpdateTime = -1;
     private TextView mLastUpdateTextView;
     private String mLastUpdateTimeKey;
@@ -63,7 +65,7 @@ public class PtrClassicDefaultHeader extends FrameLayout implements PtrUIHandler
 
         mTitleTextView = (TextView) header.findViewById(R.id.ptr_classic_header_rotate_view_header_title);
         mLastUpdateTextView = (TextView) header.findViewById(R.id.ptr_classic_header_rotate_view_header_last_update);
-        mProgressBar = header.findViewById(R.id.ptr_classic_header_rotate_view_progressbar);
+        mProgressBar = (ProgressBar) header.findViewById(R.id.ptr_classic_header_rotate_view_progressbar);
 
         resetView();
     }
@@ -169,7 +171,6 @@ public class PtrClassicDefaultHeader extends FrameLayout implements PtrUIHandler
 
         hideRotateView();
         mProgressBar.setVisibility(INVISIBLE);
-
         mTitleTextView.setVisibility(VISIBLE);
         mTitleTextView.setText(getResources().getString(R.string.cube_ptr_refresh_complete));
 

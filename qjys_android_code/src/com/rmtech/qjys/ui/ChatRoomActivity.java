@@ -33,6 +33,7 @@ import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.ChatRoomAdapter;
+import com.umeng.analytics.MobclickAgent;
 
 public class ChatRoomActivity extends BaseActivity {
 	private ListView chatListView;
@@ -127,6 +128,14 @@ public class ChatRoomActivity extends BaseActivity {
 		chatRoomAdapter = new ChatRoomAdapter(this, 1, roomList);
 		chatListView.setAdapter(chatRoomAdapter);
 		chatRoomAdapter.notifyDataSetChanged();
+		MobclickAgent.onResume(this);
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override
@@ -143,4 +152,6 @@ public class ChatRoomActivity extends BaseActivity {
 	public void back(View view) {
 		finish();
 	}
+	
+	
 }

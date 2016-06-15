@@ -69,7 +69,7 @@
                 android:id="@+id/me_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:leftText="名字"
+                app:leftText="姓名"
                 app:rightText="测试111"
                 app:visibleLinePadding="true" />
 

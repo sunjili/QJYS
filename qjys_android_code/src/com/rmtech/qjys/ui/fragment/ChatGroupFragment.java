@@ -83,6 +83,7 @@ public class ChatGroupFragment extends ChatFragment implements
 		super.setUpView();
 		if (mCaseInfo != null) {
 			titleBar.setTitle(mCaseInfo.getShowName());
+			titleBar.setLeftTitle("返回");
 			titleBar.setRightLayoutClickListener(new OnClickListener() {
 
 				@Override
@@ -90,6 +91,7 @@ public class ChatGroupFragment extends ChatFragment implements
 					if(getActivity() != null) {
 						PhotoDataManagerActivity.show(getActivity(), mCaseInfo,
 								null);
+						getActivity().overridePendingTransition(R.anim.hold, R.anim.hold); 
 						getActivity().finish();
 					}
 				}

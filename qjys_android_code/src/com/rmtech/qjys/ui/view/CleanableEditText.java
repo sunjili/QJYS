@@ -45,7 +45,7 @@ public class CleanableEditText extends EditText {
   
     public void init() {  
     	setPadding(0, 0, 20, 0);
-        mDrawable = mContext.getResources().getDrawable(R.drawable.btn_address_list_delect);  
+        mDrawable = mContext.getResources().getDrawable(R.drawable.btn_addresslist_delete);  
         mDrawableSearch = mContext.getResources().getDrawable(R.drawable.ic_addresslist_findnewfirend); 
         setCompoundDrawablesWithIntrinsicBounds(mDrawableSearch, null, null, null); 
         mCallback = null;  

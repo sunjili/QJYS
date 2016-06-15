@@ -19,6 +19,7 @@ import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 临床诊疗规范及流程 详情页面
@@ -48,6 +49,15 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 	protected void onResume() {
 		super.onResume();
 		bindView();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

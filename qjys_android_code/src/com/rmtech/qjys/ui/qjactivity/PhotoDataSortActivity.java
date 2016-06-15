@@ -31,6 +31,7 @@ import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.sjl.lib.dynamicgrid.DynamicGridView;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("NewApi")
 public class PhotoDataSortActivity extends CaseWithIdActivity implements OnClickListener {
@@ -257,5 +258,19 @@ public class PhotoDataSortActivity extends CaseWithIdActivity implements OnClick
 			}
 		});
 		initAdapter();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

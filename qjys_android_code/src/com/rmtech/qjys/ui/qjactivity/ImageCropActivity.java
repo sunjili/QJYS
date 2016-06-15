@@ -21,6 +21,7 @@ import com.rmtech.qjys.utils.BitmapUtils;
 import com.rmtech.qjys.utils.ExifUtils;
 import com.rmtech.qjys.utils.PhotoUtil;
 import com.sjl.lib.utils.ScreenUtil;
+import com.umeng.analytics.MobclickAgent;
 
 
 public class ImageCropActivity extends BaseActivity {
@@ -238,5 +239,19 @@ public class ImageCropActivity extends BaseActivity {
 
 			finish();
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

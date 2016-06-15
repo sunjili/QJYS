@@ -15,6 +15,7 @@ import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.sjl.lib.multi_image_selector.view.SquaredImageView;
+import com.umeng.analytics.MobclickAgent;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -136,6 +137,20 @@ public class ChatDetailActivity  extends BaseActivity implements OnClickListener
 			UserInfoActivity.show(ChatDetailActivity.this, doctorInfo, "chat");
 			break;
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

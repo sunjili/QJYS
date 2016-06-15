@@ -40,6 +40,7 @@ import com.hyphenate.easeui.widget.EaseSidebar;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
+import com.umeng.analytics.MobclickAgent;
 
 public class GroupPickContactsActivity extends BaseActivity {
 	private ListView listView;
@@ -201,6 +202,20 @@ public class GroupPickContactsActivity extends BaseActivity {
 
 	public void back(View view){
 		finish();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 }

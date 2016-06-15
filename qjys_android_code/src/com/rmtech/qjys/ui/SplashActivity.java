@@ -16,6 +16,7 @@ import com.rmtech.qjys.model.gson.MDoctorList;
 import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 开屏页
@@ -34,7 +35,7 @@ public class SplashActivity extends BaseActivity {
 
 		rootLayout = (RelativeLayout) findViewById(R.id.splash_root);
 //		versionText = (TextView) findViewById(R.id.tv_version1);
-
+		MobclickAgent.setDebugMode(true);
 //		versionText.setText(getVersion());
 		AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
 		animation.setDuration(1500);
@@ -89,5 +90,19 @@ public class SplashActivity extends BaseActivity {
 	 */
 	private String getVersion() {
 	    return EMClient.getInstance().getChatConfig().getVersion();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

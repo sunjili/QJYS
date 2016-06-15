@@ -56,6 +56,7 @@ import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
 import com.sjl.lib.utils.L;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 我 界面
@@ -115,8 +116,10 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 		me_name.setRightText(meValue.name);
 		if (meValue.sex == 1) {
 			me_sex.setRightText("男");
-		} else {
+		} else if (meValue.sex == 2){
 			me_sex.setRightText("女");
+		} else {
+			me_sex.setRightText("");
 		}
 		me_hospital.setRightText(meValue.hos_fullname);
 		me_room.setRightText(meValue.department);
@@ -393,6 +396,8 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 					public void run() {
 						// 重新显示登陆页面
 						//((MainActivity) getActivity()).finish();
+						MobclickAgent.onEvent(getActivity(), "btn_click_logout");
+						MobclickAgent.onProfileSignOff();
 					}
 				});
 			}

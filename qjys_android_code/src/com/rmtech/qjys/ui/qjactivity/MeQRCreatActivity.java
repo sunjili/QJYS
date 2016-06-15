@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -70,9 +72,15 @@ public class MeQRCreatActivity extends BaseActivity {
 		name = (TextView) findViewById(R.id.name);
 		hospitalroom = (TextView) findViewById(R.id.hospital_and_room);
 		name.setText(UserContext.getInstance().getUser().name);
-		hospitalroom.setText(UserContext.getInstance().getUser().hos_fullname
-				+ "   " + UserContext.getInstance().getUser().department);
-		
+		if(TextUtils.isEmpty(UserContext.getInstance().getUser().hos_fullname)){
+			hospitalroom.setText("");
+		}else if(!TextUtils.isEmpty(UserContext.getInstance().getUser().hos_fullname)
+			&&TextUtils.isEmpty(UserContext.getInstance().getUser().department)){
+			hospitalroom.setText(UserContext.getInstance().getUser().hos_fullname);
+		}else {
+			hospitalroom.setText(UserContext.getInstance().getUser().hos_fullname
+					+ "   " + UserContext.getInstance().getUser().department);
+		}
 		ImageLoader.getInstance().displayImage(UserContext.getInstance().getUser().head, 
 				avator, QjConstant.optionsHead);
 		showQRImage();
@@ -89,7 +97,7 @@ public class MeQRCreatActivity extends BaseActivity {
         new Thread(new Runnable() {  
             @Override  
             public void run() {  
-                boolean success = createQRImage(url + UserContext.getInstance().getUser().id, 1000, 1000, null, filePath);  
+                boolean success = createQRImage(url + UserContext.getInstance().getUserId(), 1000, 1000, null, filePath);
 
                 if (success) {  
                     runOnUiThread(new Runnable() {  
@@ -204,5 +212,19 @@ public class MeQRCreatActivity extends BaseActivity {
 		Intent intent = new Intent();
 		intent.setClass(context, MeQRCreatActivity.class);
 		context.startActivity(intent);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

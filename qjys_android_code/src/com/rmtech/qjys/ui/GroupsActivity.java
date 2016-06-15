@@ -37,6 +37,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.GroupAdapter;
+import com.umeng.analytics.MobclickAgent;
 
 public class GroupsActivity extends BaseActivity {
 	public static final String TAG = "GroupsActivity";
@@ -155,6 +156,7 @@ public class GroupsActivity extends BaseActivity {
 	public void onResume() {
         refresh();
 		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 	
 	private void refresh(){
@@ -178,5 +180,12 @@ public class GroupsActivity extends BaseActivity {
 	 */
 	public void back(View view) {
 		finish();
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

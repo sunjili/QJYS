@@ -22,6 +22,7 @@ import com.hyphenate.util.EMLog;
 import com.hyphenate.util.NetUtils;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class CallActivity extends BaseActivity {
     protected final int MSG_CALL_MAKE_VIDEO = 0;
@@ -317,4 +318,18 @@ public class CallActivity extends BaseActivity {
     enum CallingState {
         CANCED, NORMAL, REFUESD, BEREFUESD, UNANSWERED, OFFLINE, NORESPONSE, BUSY
     }
+    
+    @Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

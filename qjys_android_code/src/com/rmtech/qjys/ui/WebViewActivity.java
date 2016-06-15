@@ -3,6 +3,8 @@ package com.rmtech.qjys.ui;
 import com.google.protobuf.micro.c;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.qjactivity.MeAboutActivity;
+import com.umeng.analytics.MobclickAgent;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -64,6 +66,20 @@ public class WebViewActivity extends BaseActivity{
 	protected boolean showTitleBar() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

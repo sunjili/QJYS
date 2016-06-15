@@ -23,6 +23,7 @@ import android.view.View;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.AddContactActivity;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 public class QjAddContactActivity extends BaseActivity {
 
@@ -138,6 +139,20 @@ public class QjAddContactActivity extends BaseActivity {
 			}
 		}
 		return result;
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

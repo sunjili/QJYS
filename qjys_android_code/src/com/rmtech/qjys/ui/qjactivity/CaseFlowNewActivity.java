@@ -12,6 +12,7 @@ import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.utils.FlowListManager;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -180,6 +181,20 @@ public class CaseFlowNewActivity extends MeFlowNewActivity {
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		 MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 MobclickAgent.onPause(this);
 	}
 
 }

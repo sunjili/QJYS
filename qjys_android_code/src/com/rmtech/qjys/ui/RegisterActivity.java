@@ -25,6 +25,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 注册页
@@ -118,6 +119,20 @@ public class RegisterActivity extends BaseActivity {
 
 	public void back(View view) {
 		finish();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

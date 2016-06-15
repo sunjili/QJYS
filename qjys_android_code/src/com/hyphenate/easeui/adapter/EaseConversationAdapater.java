@@ -108,7 +108,7 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
 //        }
         if (conversation.getType() == EMConversationType.GroupChat) {
             // 群聊消息，显示群聊头像
-            holder.avatar.setImageResource(R.drawable.ease_group_icon);
+            holder.avatar.setImageResource(R.drawable.ic_group);
             EMGroup group = EMClient.getInstance().groupManager().getGroup(username);
             CaseInfo info = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(username);
             if(info != null) {

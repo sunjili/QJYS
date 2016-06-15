@@ -33,8 +33,7 @@ import com.rmtech.qjys.ui.view.PhotoManangerPopWindow.ListPopupWindowAdapter;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.rmtech.qjys.utils.QjUtil;
-
-
+import com.umeng.analytics.MobclickAgent;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow.ListPopupWindowAdapter;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
@@ -65,7 +64,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 //			}
 //		}
 		
-        setLeftTitle("病例列表");
+        setLeftTitle("返回");
 		mPhotoManagerFragment = new PhotoManagerFragment();
 		getSupportFragmentManager().beginTransaction().add(R.id.container, mPhotoManagerFragment).commit();
 		mCaseTopBarView = (CaseTopBarView) findViewById(R.id.topbar_view);
@@ -107,6 +106,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 	
 	@Override
 	protected void onResume() {
+		MobclickAgent.onResume(this);
 		if(!isFirstCreate) {
 			if(caseInfo != null) {
 				CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
@@ -203,6 +203,13 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 		if(mPhotoManagerFragment != null) {
 			mPhotoManagerFragment.onImagePicked(paths);
 		}
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

@@ -39,6 +39,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.EMLog;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 语音通话页面
@@ -343,5 +344,19 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
 	@Override
 	public void onBackPressed() {
 		callDruationText = chronometer.getText().toString();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 奇迹医生-登录 页面
@@ -56,5 +57,19 @@ public class LoginPasswordActivity extends BaseActivity implements
 
 	@Override
 	public void onClick(View v) {
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

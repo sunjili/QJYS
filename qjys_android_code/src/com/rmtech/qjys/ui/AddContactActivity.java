@@ -47,6 +47,7 @@ import com.rmtech.qjys.ui.view.CleanableEditText;
 import com.rmtech.qjys.ui.view.CleanableEditText.TextWatcherCallBack;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
+import com.umeng.analytics.MobclickAgent;
 
 public class AddContactActivity extends BaseActivity implements TextWatcherCallBack {
 	private EditText editText;
@@ -259,5 +260,19 @@ public class AddContactActivity extends BaseActivity implements TextWatcherCallB
 		} else {
 			rl_search.setVisibility(View.GONE);
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

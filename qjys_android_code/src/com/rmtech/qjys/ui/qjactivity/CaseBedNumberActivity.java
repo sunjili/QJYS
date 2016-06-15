@@ -20,6 +20,7 @@ import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 编辑病床号 页面
@@ -101,5 +102,19 @@ public class CaseBedNumberActivity extends CaseEidtBaseActivity {
 		Intent intent = new Intent();
 		intent.setClass(context, CaseBedNumberActivity.class);
 		context.startActivity(intent);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		 MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 MobclickAgent.onPause(this);
 	}
 }

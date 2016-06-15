@@ -40,6 +40,7 @@ import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.view.DiagnoseAddView;
 import com.rmtech.qjys.ui.view.MeItemLayout;
 import com.sjl.lib.alertview.AlertView;
+import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("NewApi")
 public class AddCaseActivity extends BaseActivity implements OnClickListener {
@@ -405,5 +406,19 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 				break;
 			}
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// umeng
+		 MobclickAgent.onResume(this);
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		 MobclickAgent.onPause(this);
 	}
 }

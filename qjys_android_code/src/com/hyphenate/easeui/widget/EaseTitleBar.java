@@ -19,6 +19,7 @@ public class EaseTitleBar extends RelativeLayout {
 
 	protected RelativeLayout leftLayout;
 	protected TextView leftImage;
+	protected TextView leftTitle;
 	protected RelativeLayout rightLayout;
 	protected TextView rightImage;
 	public TextView titleView;
@@ -43,6 +44,7 @@ public class EaseTitleBar extends RelativeLayout {
 				this);
 		leftLayout = (RelativeLayout) findViewById(R.id.left_layout);
 		leftImage = (TextView) findViewById(R.id.left_image);
+		leftTitle = (TextView) findViewById(R.id.left_title);
 		rightLayout = (RelativeLayout) findViewById(R.id.right_layout);
 		rightImage = (TextView) findViewById(R.id.right_image);
 		titleView = (TextView) findViewById(R.id.title);
@@ -109,6 +111,10 @@ public class EaseTitleBar extends RelativeLayout {
 
 	public void setTitle(String title) {
 		titleView.setText(title);
+	}
+	
+	public void setLeftTitle(String title) {
+		leftTitle.setText(title);
 	}
 
 	public void setBackgroundColor(int color) {

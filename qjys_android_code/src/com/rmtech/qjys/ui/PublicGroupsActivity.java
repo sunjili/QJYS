@@ -40,6 +40,7 @@ import com.hyphenate.chat.EMCursorResult;
 import com.hyphenate.chat.EMGroupInfo;
 import com.hyphenate.exceptions.HyphenateException;
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class PublicGroupsActivity extends BaseActivity {
 	private ProgressBar pb;
@@ -196,5 +197,19 @@ public class PublicGroupsActivity extends BaseActivity {
 	
 	public void back(View view){
 		finish();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

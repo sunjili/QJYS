@@ -45,6 +45,7 @@ import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.ui.view.LoginBaseView;
 import com.rmtech.qjys.ui.view.LoginPassWordView;
 import com.rmtech.qjys.ui.view.LoginVcodeView;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 登陆页面
@@ -143,6 +144,7 @@ public class QjLoginActivity extends BaseActivity {
 				onLoginError();
 			} else {
 				onQjLogined(response.data);
+				MobclickAgent.onProfileSignIn(response.data.id);
 			}
 		}
 	};
@@ -151,6 +153,7 @@ public class QjLoginActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	protected void onQjLogined(UserInfo userinfo) {
@@ -176,7 +179,9 @@ public class QjLoginActivity extends BaseActivity {
 
 			// reset current user name before login
 			QjHelper.getInstance().setCurrentUserName(currentUsername);
-
+            if(UserContext.getInstance().getUser()!=null){
+            	UserContext.getInstance().setUserId(currentUsername);
+            }
 			final long start = System.currentTimeMillis();
 			// 调用sdk登陆方法登陆聊天服务器
 			Log.d(TAG, "EMClient.getInstance().login");
@@ -285,5 +290,12 @@ public class QjLoginActivity extends BaseActivity {
 		intent .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 		mainActivity.startActivity(intent);
 
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

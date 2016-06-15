@@ -56,6 +56,7 @@ import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.video.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 public class RecorderVideoActivity extends BaseActivity implements
 		OnClickListener, SurfaceHolder.Callback, OnErrorListener,
@@ -119,6 +120,7 @@ public class RecorderVideoActivity extends BaseActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 		if (mWakeLock == null) {
 			// 获取唤醒锁,保持屏幕常亮
 			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -218,6 +220,7 @@ public class RecorderVideoActivity extends BaseActivity implements
 			mWakeLock.release();
 			mWakeLock = null;
 		}
+		MobclickAgent.onPause(this);
 	}
 
 	@Override
@@ -602,5 +605,5 @@ public class RecorderVideoActivity extends BaseActivity implements
                     }
                 }).setCancelable(false).show();
 	}
-
+	
 }

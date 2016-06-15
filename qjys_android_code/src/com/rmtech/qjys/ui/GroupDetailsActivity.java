@@ -62,6 +62,7 @@ import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.multi_image_selector.view.SquaredImageView;
+import com.umeng.analytics.MobclickAgent;
 
 public class GroupDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "GroupDetailsActivity";
@@ -202,6 +203,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 		if(caseInfo != null) {
 			CaseInfo newCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
 			if(newCaseInfo != null) {
@@ -1080,6 +1082,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		intent.putExtra("caseInfo", (Parcelable) caseInfo2);
 		intent.putExtra("type", type);
 		activity.startActivityForResult(intent, type);
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

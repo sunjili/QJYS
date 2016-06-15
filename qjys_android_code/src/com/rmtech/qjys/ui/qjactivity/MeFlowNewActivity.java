@@ -6,6 +6,7 @@ import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MFlowList.FlowInfo;
 import com.rmtech.qjys.utils.FlowListManager;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -95,6 +96,20 @@ public class MeFlowNewActivity extends MeFlowEditActivity {
 		intent.putExtra("requestType", type);
 		setCaseId(intent, caseId);
 		context.startActivityForResult(intent,type);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

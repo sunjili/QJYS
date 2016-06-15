@@ -11,6 +11,7 @@ import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.view.SharePopWindow;
 import com.sjl.lib.alertview.OnItemClickListener;
 import com.tencent.map.b.m;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.ShareAction;
@@ -220,5 +221,19 @@ public class MeAboutErweimaActivity extends BaseActivity {
 		Intent intent = new Intent();
 		intent.setClass(context, MeAboutErweimaActivity.class);
 		context.startActivity(intent);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

@@ -10,6 +10,7 @@ import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.fragment.ChatFragment;
 import com.rmtech.qjys.ui.fragment.ChatGroupFragment;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 聊天页面，需要fragment的使用{@link #EaseChatFragment}
@@ -79,5 +80,19 @@ public class ChatActivity extends BaseActivity{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		chatFragment.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

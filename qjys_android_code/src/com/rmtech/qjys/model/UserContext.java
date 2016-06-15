@@ -160,6 +160,13 @@ public class UserContext {
 			saveCookie();
 		}
 	}
+	
+	public void setUserId(String id) {
+		if (mUser != null) {
+			mUser.id = id;
+			saveCookie();
+		}
+	}
 
 	public void setUserDepartment(String roomName) {
 		if (mUser != null) {

@@ -20,6 +20,7 @@ import android.view.View;
 import com.hyphenate.chat.EMMessage;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class ContextMenuActivity extends BaseActivity {
     public static final int RESULT_CODE_COPY = 1;
@@ -72,6 +73,20 @@ public class ContextMenuActivity extends BaseActivity {
 	public void forward(View view){
 		setResult(RESULT_CODE_FORWARD);
 		finish();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 }

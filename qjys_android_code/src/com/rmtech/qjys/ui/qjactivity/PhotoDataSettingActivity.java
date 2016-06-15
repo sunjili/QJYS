@@ -8,6 +8,7 @@ import android.view.View;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
+import com.umeng.analytics.MobclickAgent;
 
 public class PhotoDataSettingActivity extends BaseActivity {
 	
@@ -41,6 +42,20 @@ public class PhotoDataSettingActivity extends BaseActivity {
 		Intent intent = new Intent();
 		intent.setClass(context, PhotoDataSettingActivity.class);
 		context.startActivity(intent);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

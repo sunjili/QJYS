@@ -33,6 +33,7 @@ import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.sjl.lib.alertview.AlertView;
+import com.umeng.analytics.MobclickAgent;
 
 public class PhotoDataSelectActivity extends CaseWithIdActivity {
 
@@ -224,6 +225,20 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 			mSelectedImages.addAll(mDataList);
 			mAdapter.notifyDataSetChanged();
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	//
 	// public class SelectGridAdapter extends BaseAdapter {

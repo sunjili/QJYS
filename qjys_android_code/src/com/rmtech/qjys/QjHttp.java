@@ -45,6 +45,7 @@ public class QjHttp {
 
 	private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
+	public static final String URL_ABOUT_FANKUI = "/app/feedback";
 	public static final String URL_DOCTOR_SETPASS = "/doctor/setpass";
 	public static final String URL_DOCTOR_RESETPASS = "/doctor/resetpass";
 	public static final String URL_DOCTOR_APPLYCODE = "/doctor/applycode";
@@ -597,6 +598,13 @@ public class QjHttp {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", toAddUsername);
 		OkHttpUtils.post(URL_DOCTOR_SEARCH, params, callback);
+	}
+	
+	public static void feedBack(String content, String contact, BaseModelCallback callback) {
+		HashMap<String, String> params = new HashMap<>(); 
+		params.put("content", content);
+		params.put("contact", contact);
+		OkHttpUtils.post(URL_ABOUT_FANKUI, params, callback);
 	}
 
 	public static void updateUserinfo(HashMap<String, String> params, BaseModelCallback baseModelCallback) {

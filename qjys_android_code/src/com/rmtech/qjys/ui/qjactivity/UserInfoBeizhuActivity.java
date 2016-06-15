@@ -21,6 +21,7 @@ import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 编辑备注 页面
@@ -99,5 +100,19 @@ public class UserInfoBeizhuActivity extends BaseActivity {
 		intent.setClass(context, UserInfoBeizhuActivity.class);
 		intent.putExtra("DoctorInfo", (Parcelable) doctorInfo);
 		context.startActivityForResult(intent, requestCode);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

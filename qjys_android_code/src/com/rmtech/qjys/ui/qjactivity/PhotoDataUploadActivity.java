@@ -39,6 +39,7 @@ import com.rmtech.qjys.utils.PhotoUploadStateInfo;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.db.DBUtil;
 import com.sjl.lib.utils.L;
+import com.umeng.analytics.MobclickAgent;
 
 public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 
@@ -408,6 +409,20 @@ public class PhotoDataUploadActivity extends PhotoDataManagerActivity {
 //			EventBus.getDefault().post(event);
 			
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

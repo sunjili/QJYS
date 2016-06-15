@@ -30,6 +30,7 @@ import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.hx.QjHelper;
 import com.sjl.lib.roundedimageview.RoundedImageView;
+import com.umeng.analytics.MobclickAgent;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener{
 	
@@ -284,5 +285,19 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
 		return baos.toByteArray();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

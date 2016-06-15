@@ -51,6 +51,7 @@ import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.PreferenceManager;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.db.DBUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /***
  * 详细资料 页面
@@ -143,22 +144,22 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 				userPhone.setVisibility(View.VISIBLE);
 				btnSendmessage.setText("添加到通讯录");
 			}
-		}else{
+		}else{//btnDelete 暂时先隐藏掉
 			if(from.equals("contactList")){
 				setLeftTitle("通讯录");
-				btnDelete.setVisibility(View.VISIBLE);
+				btnDelete.setVisibility(View.GONE);
 				btnSendmessage.setText("发消息");
 			}else if(from.equals("chat")||from.equals("group")){
 				setLeftTitle("聊天");
-				btnDelete.setVisibility(View.VISIBLE);
+				btnDelete.setVisibility(View.GONE);
 				btnSendmessage.setText("发消息");
 			}else if(from.equals("newFriendsMsg")){
 				setLeftTitle("新的朋友");
-				btnDelete.setVisibility(View.VISIBLE);
+				btnDelete.setVisibility(View.GONE);
 				btnSendmessage.setText("发消息");
 			}else if(from.equals("qrcode")){
 				setLeftTitle("扫一扫");
-				btnDelete.setVisibility(View.VISIBLE);
+				btnDelete.setVisibility(View.GONE);
 				btnSendmessage.setText("发消息");
 			}
 		}
@@ -278,7 +279,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 							EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_ADD));
 							pd.dismiss();
 							doctorInfo.isFriend = 1;
-							btnDelete.setVisibility(View.VISIBLE);
+							btnDelete.setVisibility(View.GONE);
 							btnSendmessage.setText("发消息");
 							user_beizhu.setVisibility(View.VISIBLE);
 							userPhone.setVisibility(View.VISIBLE);
@@ -490,5 +491,19 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 
 	private void setViewValue() {
 		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }
