@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.view.CropImageView;
@@ -60,6 +63,8 @@ public class ImageCropActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 	}
+	
+	Bitmap srcBitmap = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +120,7 @@ public class ImageCropActivity extends BaseActivity {
 			break;
 		}
 
-		Uri imageUri = intent.getData();
+		final Uri imageUri = intent.getData();
 		if (imageUri == null) {
 //			ToastUtil.showToast(this, "参数错误");
 			finish();
@@ -145,7 +150,6 @@ public class ImageCropActivity extends BaseActivity {
 				return;
 			}
 
-			Bitmap srcBitmap = null;
 
 			// 图片分辨率相对屏幕分辨率的最大倍数
 			float maxRatio = 2.0f;
@@ -165,27 +169,57 @@ public class ImageCropActivity extends BaseActivity {
 
 				srcBitmap = BitmapFactory.decodeStream(getContentResolver()
 						.openInputStream(imageUri), null, opts);
+				mCropImageView.setImageBitmap(srcBitmap);
+				mImageLoaded = true;
+
+
 			} else {
 				// 原始大小
-				srcBitmap = BitmapFactory.decodeStream(getContentResolver()
-						.openInputStream(imageUri));
+				ImageLoader.getInstance().loadImage("file://"+imageUri.getPath(), new ImageLoadingListener() {
+					
+					@Override
+					public void onLoadingStarted(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
+						// TODO Auto-generated method stub
+						srcBitmap = arg2;
+						int degree = ExifUtils.getExifOrientation(getActivity(), imageUri);
+						if (degree != 0) {
+							Bitmap resBitmap = BitmapUtils.rotateBitmap(srcBitmap, degree,
+									true);
+							mCropImageView.setImageBitmap(resBitmap);
+
+						} else {
+							// 不需要旋转处理
+							mCropImageView.setImageBitmap(srcBitmap);
+						}
+
+						mImageLoaded = true;
+					}
+					
+					@Override
+					public void onLoadingCancelled(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+//				srcBitmap = BitmapFactory.decodeStream(getContentResolver()
+//						.openInputStream(imageUri));
 			}
 
 			// 判断是否需要对图像进行旋转处理
 
 
-			int degree = ExifUtils.getExifOrientation(this, imageUri);
-			if (degree != 0) {
-				Bitmap resBitmap = BitmapUtils.rotateBitmap(srcBitmap, degree,
-						true);
-				mCropImageView.setImageBitmap(resBitmap);
-
-			} else {
-				// 不需要旋转处理
-				mCropImageView.setImageBitmap(srcBitmap);
-			}
-
-			mImageLoaded = true;
 
 		} catch (Exception e) {
 			e.printStackTrace();
