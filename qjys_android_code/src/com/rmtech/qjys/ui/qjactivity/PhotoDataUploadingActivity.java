@@ -1,5 +1,6 @@
 package com.rmtech.qjys.ui.qjactivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,7 +38,10 @@ import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.PhotoUploadManager;
 import com.rmtech.qjys.utils.PhotoUploadManager.OnPhotoUploadListener;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
+import com.rmtech.qjys.utils.PhotoUtil;
 import com.rmtech.qjys.widget.ColorfulRingProgressView;
+import com.sjl.lib.alertview.AlertView;
+import com.sjl.lib.filechooser.FileUtils;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
 import com.sjl.lib.pinnedheaderlistview.SectionedBaseAdapter;
 import com.sjl.lib.swipemenulistview.SwipeMenu;
@@ -135,6 +140,54 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 
 					}
 				});
+		
+		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				// TODO Auto-generated method stub
+				final PhotoUploadStateInfo info = (PhotoUploadStateInfo) mAdapter.getItem(position);
+				if(info.imageInfo.state == PhotoDataInfo.STATE_UPLOAD_FAILED){
+					new AlertView(null, null, "取消", null, new String[] { "重新上传", "取消上传"}, getActivity(),
+							AlertView.Style.ActionSheet, new com.sjl.lib.alertview.OnItemClickListener() {
+
+								@Override
+								public void onItemClick(Object o, int position) {
+									switch (position) {
+									case 0:
+										PhotoUploadManager.getInstance().retry(info);
+										mAdapter.notifyDataSetChanged();
+										break;
+									case 1:
+										PhotoUploadManager.getInstance().cancel(info);
+										resetAdapter();
+										mAdapter.notifyDataSetChanged();
+										break;
+									}
+
+								}
+							}).show();
+				}else {
+					new AlertView(null, null, "取消", null, new String[] {"取消上传"}, getActivity(),
+							AlertView.Style.ActionSheet, new com.sjl.lib.alertview.OnItemClickListener() {
+
+								@Override
+								public void onItemClick(Object o, int position) {
+									switch (position) {
+									case 0:
+										PhotoUploadManager.getInstance().cancel(info);
+										resetAdapter();
+										mAdapter.notifyDataSetChanged();
+										break;
+									}
+								}
+							}).show();
+				}
+				return false;
+			}
+		});
+		
+		
 		// step 1. create a MenuCreator
 		SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -177,31 +230,26 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 			}
 		};
 		// set creator
-		mListView.setMenuCreator(creator);
+//		mListView.setMenuCreator(creator);
 
 		// step 2. listener item click event
-		mListView
-				.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+		mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
 					@Override
 					public boolean onMenuItemClick(int position,
 							SwipeMenu menu, int index) {
+						PhotoUploadStateInfo info = (PhotoUploadStateInfo) mAdapter
+								.getItem(position);
 						switch (index) {
-						case 1: {
-							PhotoUploadStateInfo info = (PhotoUploadStateInfo) mAdapter
-									.getItem(position);
+						case 1: 
 							PhotoUploadManager.getInstance().cancel(info);
-
 							resetAdapter();
 							mAdapter.notifyDataSetChanged();
 							break;
-						}
-						case 0: {
-							PhotoUploadStateInfo info = (PhotoUploadStateInfo) mAdapter
-									.getItem(position);
+						
+						case 0: 
 							PhotoUploadManager.getInstance().retry(info);
 							mAdapter.notifyDataSetChanged();
 							break;
-						}
 						}
 						return false;
 					}
@@ -222,8 +270,7 @@ public class PhotoDataUploadingActivity extends CaseWithIdActivity implements
 		});
 
 		// set MenuStateChangeListener
-		mListView
-				.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+		mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
 					@Override
 					public void onMenuOpen(int position) {
 					}

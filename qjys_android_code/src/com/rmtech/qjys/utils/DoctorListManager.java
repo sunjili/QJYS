@@ -294,7 +294,7 @@ public class DoctorListManager {
 						Uri smsToUri = Uri.parse("smsto:" + phoneNumber);    
 					    Intent mIntent = new Intent(android.content.Intent.ACTION_SENDTO, smsToUri);  
 					    mIntent.putExtra("sms_body", "您的好友 " + UserContext.getInstance().getUserName() 
-					        + " 正在使用奇迹医生App，并申请加您为好友，您可以访问此链接下载并安装奇迹医生App：" + " http://fir.im/qjysa "
+					        + " 正在使用奇迹医生App，并申请加您为好友，您可以访问此链接下载并安装奇迹医生App：" + "http://m.qijiyisheng.com "
 					    		+ "，然后通过搜索Ta的手机号就可以加Ta为好友了。【奇迹医生】");
 					    activity.startActivity(mIntent);
 						
@@ -322,13 +322,13 @@ public class DoctorListManager {
 			final OnAddFriendCallback callback) {
 
 		// final UserInfo info = (UserInfo) nameText.getTag();
-		if (TextUtils.isEmpty(tagUserId)) {
-			new EaseAlertDialog(context, R.string.not_add_myself).show();
-			if (callback != null) {
-				callback.onSendRequestError();
-			}
-			return;
-		}
+//		if (TextUtils.isEmpty(tagUserId)) {
+//			new EaseAlertDialog(context, R.string.not_add_myself).show();
+//			if (callback != null) {
+//				callback.onSendRequestError();
+//			}
+//			return;
+//		}
 		if (EMClient.getInstance().getCurrentUser().equals(tagUserId)) {
 			new EaseAlertDialog(context, R.string.not_add_myself).show();
 			if (callback != null) {
@@ -346,13 +346,13 @@ public class DoctorListManager {
 						callback.onSendRequestError();
 					}
 					// 提示已在好友列表中(在黑名单列表里)，无需添加
-					if (EMClient.getInstance().contactManager().getBlackListUsernames().contains(tagUserId)) {
-						new EaseAlertDialog(context, R.string.user_already_in_contactlist).show();
-
-						return;
-					}
-					new EaseAlertDialog(context, R.string.This_user_is_already_your_friend).show();
-					return;
+//					if (EMClient.getInstance().contactManager().getBlackListUsernames().contains(tagUserId)) {
+//						new EaseAlertDialog(context, R.string.user_already_in_contactlist).show();
+//
+//						return;
+//					}
+//					new EaseAlertDialog(context, R.string.This_user_is_already_your_friend).show();
+//					return;
 				}
 				
 			}

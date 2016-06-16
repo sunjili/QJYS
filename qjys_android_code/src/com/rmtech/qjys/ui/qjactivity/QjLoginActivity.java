@@ -69,34 +69,37 @@ public class QjLoginActivity extends BaseActivity {
 		mLoginPassWordView = (LoginPassWordView) findViewById(R.id.login_pw_layout);
 		mLoginVcodeView = (LoginVcodeView) findViewById(R.id.login_vcode_layout);
 
-		mLoginVcodeView.setOnLoginListener(mOnLoginListener);
-		mLoginPassWordView.setOnLoginListener(mOnLoginListener);
+		mLoginVcodeView.setOnLoginListener(mOnVcodeLoginListener);
+		mLoginPassWordView.setOnLoginListener(mOnPassWordLoginListener);
 		mCurrentLoginView = mLoginVcodeView;
-
+		mLoginVcodeView.setVisibility(View.VISIBLE);
+		Log.e(TAG, "QjLoginActivity   onCreate ");
 	}
 
-	private void onLoginError() {
+	private void onVcodeLoginError(String msg) {
 //		Toast.makeText(QjLoginActivity.this, "登录失败!", Toast.LENGTH_LONG).show();
 		mCurrentLoginView.logining = false;
 		if (mProgressDialog != null && !QjLoginActivity.this.isFinishing() && mProgressDialog.isShowing()) {
 			mProgressDialog.dismiss();
 		}
-		showDialog();
+		showErrorDialog(msg);
 	}
 	
-	private void showDialog(){
+	public void showErrorDialog(String string){
 		CustomSimpleDialog.Builder builder = new Builder(QjLoginActivity.this);  
         builder.setTitle("提示");  
-        builder.setMessage("验证码不正确，请重新输入");  
-        builder.setPositiveButton("好的", new OnClickListener() {
+        builder.setMessage(string);  
+        builder.setNegativeButton("好的", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				dialog.dismiss();
 			}
+
 		});  
         builder.create().show();
+		Toast.makeText(getActivity(), string, Toast.LENGTH_SHORT).show();
 	}
 
 	private void onLoginSuccess() {
@@ -124,11 +127,50 @@ public class QjLoginActivity extends BaseActivity {
 		
 	}
 
-	OnLoginListener mOnLoginListener = new OnLoginListener() {
+	OnLoginListener mOnVcodeLoginListener = new OnLoginListener() {
 
 		@Override
 		public void onError(Call call, Exception e) {
-			onLoginError();
+			onVcodeLoginError("验证码错误，请重新输入！");
+		}
+
+
+		@Override
+		public void onChange() {
+
+		}
+
+//		@Override
+//		public void onResponseSucces(MUser response) {}
+
+
+		@Override
+		public void onResponse(MUser response) {
+			// TODO Auto-generated method stub
+
+			mCurrentLoginView.logining = false;
+			if (response.data == null) {
+				if(response.ret > 0 && !TextUtils.isEmpty(response.msg)) {
+					onVcodeLoginError(response.msg);
+				} else {
+					onVcodeLoginError("验证码错误，请重新输入！");
+				}
+			} else {
+				onQjLogined(response.data);
+			}
+		
+		}
+	};
+	
+	OnLoginListener mOnPassWordLoginListener = new OnLoginListener() {
+
+		@Override
+		public void onError(Call call, Exception e) {
+			mCurrentLoginView.logining = false;
+			if (mProgressDialog != null && !QjLoginActivity.this.isFinishing() && mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+			}
+			showErrorDialog("账号或者密码错误，请重新输入！");
 		}
 
 
@@ -139,24 +181,22 @@ public class QjLoginActivity extends BaseActivity {
 
 		@Override
 		public void onResponse(MUser response) {
-
 			mCurrentLoginView.logining = false;
 			if (response.data == null) {
-				String mess = "登录失败";
-				if(!TextUtils.isEmpty(response.msg)) {
-					mess = response.msg;
-				}
-				Toast.makeText(getActivity(), mess, Toast.LENGTH_SHORT).show();
 				mCurrentLoginView.logining = false;
 				if (mProgressDialog != null && !QjLoginActivity.this.isFinishing() && mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
 				}
-
+				if(response.ret > 0 && !TextUtils.isEmpty(response.msg)) {
+					showErrorDialog(response.msg);
+				} else {
+					showErrorDialog("账号或者密码错误，请重新输入！");
+				}
 			} else {
 				onQjLogined(response.data);
-				MobclickAgent.onProfileSignIn(response.data.id);
 			}
 		
+			
 		}
 	};
 	private ProgressDialog mProgressDialog;
@@ -169,6 +209,7 @@ public class QjLoginActivity extends BaseActivity {
 
 	protected void onQjLogined(UserInfo userinfo) {
 		UserContext.getInstance().setUser(userinfo);
+		MobclickAgent.onProfileSignIn(userinfo.id);
 		if (QjHelper.getInstance().isLoggedIn()) {
 			autoLogin = true;
 			onLoginSuccess();
@@ -178,7 +219,10 @@ public class QjLoginActivity extends BaseActivity {
 			String currentPassword = userinfo.hxpasswd;
 
 			if (TextUtils.isEmpty(currentUsername) || TextUtils.isEmpty(currentPassword)) {
-				onLoginError();
+				mCurrentLoginView.logining = false;
+				if (mProgressDialog != null && !QjLoginActivity.this.isFinishing() && mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
 				Toast.makeText(this, "聊天服务器登录失败！", Toast.LENGTH_SHORT).show();
 				return;
 			}
@@ -233,7 +277,10 @@ public class QjLoginActivity extends BaseActivity {
 					// }
 					runOnUiThread(new Runnable() {
 						public void run() {
-							onLoginError();
+							mCurrentLoginView.logining = false;
+						    if (mProgressDialog != null && !QjLoginActivity.this.isFinishing() && mProgressDialog.isShowing()) {
+							    mProgressDialog.dismiss();
+						    }
 						}
 					});
 				}

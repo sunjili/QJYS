@@ -9,6 +9,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
+import android.R.integer;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
@@ -590,14 +591,14 @@ public class QjHttp {
 		OkHttpUtils.post(URL_ADD_FRIEND, params, callback);
 	}
 
-	public static void login(String inuptPhoneStr, String codeStr, OnLoginListener callback) {
+	public static void login(String inuptPhoneStr, String codeStr, Callback<MUser> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", inuptPhoneStr);
 		params.put("code", codeStr);
 		OkHttpUtils.post(URL_DOCTOR_SMSLOGIN, params, callback);
 	}
 	
-	public static void pwLogin(String inuptPhoneStr, String passwd, OnLoginListener callback) {
+	public static void pwLogin(String inuptPhoneStr, String passwd, Callback<MUser> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", inuptPhoneStr);
 		params.put("passwd", passwd);

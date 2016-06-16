@@ -64,7 +64,8 @@ public class CaseAbstractActivity extends CaseWithIdActivity {
 
 	private void setValue() {
 
-		if (caseInfo != null && !TextUtils.isEmpty(caseInfo.abs)) {
+		if (caseInfo != null && !TextUtils.isEmpty(caseInfo.abs)&&
+				UserContext.getInstance().isMyself(caseInfo.admin_doctor.id)) {
 			tv_content.setText(caseInfo.abs);
 			tv_content.setVisibility(View.VISIBLE);
 			empty_img.setVisibility(View.GONE);
@@ -76,6 +77,13 @@ public class CaseAbstractActivity extends CaseWithIdActivity {
 					CaseAbstractEditActivity.show(getActivity(), caseInfo);
 				}
 			});
+		} else if(caseInfo != null && !TextUtils.isEmpty(caseInfo.abs)&&
+				!UserContext.getInstance().isMyself(caseInfo.admin_doctor.id)){
+			tv_content.setText(caseInfo.abs);
+			tv_content.setVisibility(View.VISIBLE);
+			empty_img.setVisibility(View.GONE);
+			btn_add_abs_detail.setVisibility(View.GONE);
+			setRightTitle("", null);
 		} else if(caseInfo != null && TextUtils.isEmpty(caseInfo.abs)&&
 				UserContext.getInstance().isMyself(caseInfo.admin_doctor.id)){
 			tv_content.setVisibility(View.GONE);

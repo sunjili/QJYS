@@ -30,7 +30,7 @@ public class LoginBaseView extends RelativeLayout {
 		super(context, attrs, defStyleAttr, defStyleRes);
 	}
 
-	protected OnLoginListener mOnLoginListener;
+	public OnLoginListener mOnLoginListener;
 
 	public void setOnLoginListener(OnLoginListener listener) {
 		mOnLoginListener = listener;

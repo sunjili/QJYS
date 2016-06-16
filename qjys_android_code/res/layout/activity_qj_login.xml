@@ -20,6 +20,7 @@
     <com.rmtech.qjys.ui.view.LoginVcodeView
         android:id="@+id/login_vcode_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" 
+        android:visibility="gone" />
 
 </FrameLayout>
