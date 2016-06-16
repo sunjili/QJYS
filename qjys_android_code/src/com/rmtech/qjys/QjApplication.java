@@ -27,6 +27,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.rmtech.qjys.hx.QjHelper;
+import com.rmtech.qjys.utils.VersionManager;
 import com.sjl.lib.http.okhttp.AndroidDeviceManager;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
 import com.sjl.lib.utils.ScreenUtil;
@@ -63,6 +64,7 @@ public class QjApplication extends Application {
         ScreenUtil.init(applicationContext);
         MobclickAgent.setScenarioType(getApplicationContext(), EScenarioType.E_UM_NORMAL);
         MobclickAgent.enableEncrypt(false);//日志加密
+        VersionManager.getInstance().init(applicationContext);
 	}
 	
 	{

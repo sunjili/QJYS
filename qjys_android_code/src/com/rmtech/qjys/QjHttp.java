@@ -9,7 +9,6 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
-import android.R.integer;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
@@ -36,6 +35,7 @@ import com.rmtech.qjys.model.gson.MStateList;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
 import com.rmtech.qjys.model.gson.MUrlData;
 import com.rmtech.qjys.model.gson.MUser;
+import com.rmtech.qjys.model.gson.MVersionData;
 import com.sjl.lib.db.DBUtil;
 import com.sjl.lib.http.okhttp.HttpSetting;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
@@ -83,7 +83,15 @@ public class QjHttp {
 	public static final String URL_DOCTOR_SETREMARK = "/doctor/setremark";
 	public static final String URL_SORT_IMAGE = "/patient/sortimage";
 	public static final String URL_DOCTOR_DELETEFRIEND = "/doctor/deletefriend";
+	public static final String URL_APP_UPDATE = "/app/update";
 
+	/**
+	 * 47 版本更新 /app/update 参数
+	 */
+	public static void appUpdate(QjHttpCallback<MVersionData> callback) {
+		OkHttpUtils.post(URL_APP_UPDATE, null, callback);
+	}
+	
 	/**
 	 * 33.1 删除好友 /doctor/deletefriend 参数 doc_id: 要删除的用户id
 	 */

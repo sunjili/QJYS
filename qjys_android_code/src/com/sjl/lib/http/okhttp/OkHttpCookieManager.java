@@ -18,7 +18,7 @@ public class OkHttpCookieManager implements Serializable {
 
 	public static OkHttpCookieManager getInstance() {
 		if (mInstance == null) {
-			synchronized (AppGlobalSetting.class) {
+			synchronized (OkHttpCookieManager.class) {
 				if (mInstance == null) {
 					mInstance = new OkHttpCookieManager();
 				}

@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.ContextMenu;
@@ -58,6 +59,7 @@ import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.VersionManager;
 import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends BaseActivity {
@@ -152,6 +154,14 @@ public class MainActivity extends BaseActivity {
 		registerInternalDebugReceiver();
 
 		EMLog.d(TAG, "width:" + getScreenWidth(this) + "  height:" + getScreenHeight(this));
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				VersionManager.getInstance().checkVersionUpdate(getApplicationContext());
+			}
+		}, 500);
+		
 	}
 
 	public static int getScreenWidth(Context context) {

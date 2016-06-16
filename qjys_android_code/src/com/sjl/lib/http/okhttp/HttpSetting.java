@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.rmtech.qjys.model.UserContext;
+import com.rmtech.qjys.utils.VersionManager;
 
 public class HttpSetting {
 
@@ -22,18 +23,18 @@ public class HttpSetting {
 	// 测试环境
 	public static final String TEST_BASE_URL = "http://101.200.130.188";
 
-	public static String AGENT = "qijiyisheng/" + AppGlobalSetting.APP_VERSION_NAME + "(" + Build.MANUFACTURER + ";"
+	public static String AGENT = "qijiyisheng/" + VersionManager.APP_VERSION_NAME + "(" + Build.MANUFACTURER + ";"
 			+ Build.MODEL + ";" + "os" + Build.VERSION.RELEASE + ";" + AndroidDeviceManager.getCpuType() + ";"
-			+ AppGlobalSetting.APP_VERSION_CODE + ")".replaceAll(" ", "");
+			+ VersionManager.APP_VERSION_CODE + ")".replaceAll(" ", "");
 
 	public enum RequestType {
 		GET, POST
 	}
 
 	public static void refreshAgent() {
-		AGENT = "qijiyisheng/" + AppGlobalSetting.APP_VERSION_NAME + "(" + Build.MANUFACTURER + ";" + Build.MODEL + ";"
+		AGENT = "qijiyisheng/" + VersionManager.APP_VERSION_NAME + "(" + Build.MANUFACTURER + ";" + Build.MODEL + ";"
 				+ "os" + Build.VERSION.RELEASE + ";" + AndroidDeviceManager.getCpuType() + ";"
-				+ AppGlobalSetting.APP_VERSION_CODE + ")".replaceAll(" ", "");
+				+ VersionManager.APP_VERSION_CODE + ")".replaceAll(" ", "");
 	}
 
 	public static void addHttpParams(HashMap<String, String> params, String url) {
@@ -46,7 +47,7 @@ public class HttpSetting {
 		params.put("g_tk", getTK(url, sTime));
 		params.put("t", sTime);
 		params.put("g_net", AndroidDeviceManager.Instance().getNetAPN());
-		params.put("v", AppGlobalSetting.getVersion());
+		params.put("v", VersionManager.APP_VERSION);
 		params.put("w_tk", getWTK()); // 写操作
 		params.put("did", AndroidDeviceManager.Instance().getIMEI());
 
@@ -74,7 +75,7 @@ public class HttpSetting {
 		sb.append(time);
 		sb.append("__yisheng");
 		String md5_value = md5(sb.toString().toLowerCase());
-		Log.d("sssssssssssssss", "getTK=" + sb);
+//		Log.d("sssssssssssssss", "getTK=" + sb);
 		return md5_value;
 	}
 

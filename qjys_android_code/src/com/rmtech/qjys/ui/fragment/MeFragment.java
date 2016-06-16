@@ -202,7 +202,8 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 					break;
 				}
 
-				String path = new File(PhotoUtil.IMAGE_FINAL_FILE_DIR, mPhotoZoomFileName).getAbsolutePath();
+//				FileUtils.createImageFile(context)
+				String path = new File(FileUtils.getCacheDirectory(getActivity()), mPhotoZoomFileName).getAbsolutePath();
 
 				ImageLoader.getInstance().displayImage("file://" + path, iv_head, QjConstant.optionsHead);
 				QjHttp.uploadHead(path, new QjHttpCallback<MUrlData>() {
@@ -504,7 +505,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 
 		mPhotoZoomFileName = PhotoUtil.getPhotoFileName();
 
-		Uri imageUri = Uri.fromFile(new File(PhotoUtil.IMAGE_FINAL_FILE_DIR, mPhotoZoomFileName));
+		Uri imageUri = Uri.fromFile(new File(FileUtils.getCacheDirectory(getActivity()), mPhotoZoomFileName));
 		Intent intent = new Intent(getActivity(), ImageCropActivity.class);
 		intent.setDataAndType(uri, "image/*");
 		intent.putExtra("outputX", 120);// 输出图片大小

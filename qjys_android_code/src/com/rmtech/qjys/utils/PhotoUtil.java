@@ -76,22 +76,22 @@ public class PhotoUtil {
 		return dateFormat.format(date) + ".jpg";
 	}
 	
-	public static final String STORAGE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath();
-	public static final String SAILFISH_DIR = STORAGE_DIR + "/qjys";
-	public static final File IMAGE_CROP_TEMP_FILE = new File(SAILFISH_DIR, "crop_temp.jpg");
-	public static final File IMAGE_ORIGI_FILE_DIR = new File(SAILFISH_DIR + "/picture_original");
-	public static final File IMAGE_FINAL_FILE_DIR = new File(SAILFISH_DIR + "/picture_final");
+//	public static final String STORAGE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath();
+//	public static final String SAILFISH_DIR = STORAGE_DIR + "/qjys";
+//	public static final File IMAGE_CROP_TEMP_FILE = new File(SAILFISH_DIR, "crop_temp.jpg");
+//	public static final File IMAGE_ORIGI_FILE_DIR = new File(SAILFISH_DIR + "/picture_original");
+//	public static final File IMAGE_FINAL_FILE_DIR = new File(SAILFISH_DIR + "/picture_final");
 	public static final int PHOTO_REQUEST_CUT_HEADER = 6;
-	public static final String PIC_ZOOM_OUTPUT_FILE_KEY2 = "PIC_ZOOM_OUTPUT_FILE_KEY2";
-	static {
-		if (!IMAGE_ORIGI_FILE_DIR.exists()) {
-			IMAGE_ORIGI_FILE_DIR.mkdirs();
-		}
-		
-		if (!IMAGE_FINAL_FILE_DIR.exists()) {
-			IMAGE_FINAL_FILE_DIR.mkdirs();
-		}
-	}
+//	public static final String PIC_ZOOM_OUTPUT_FILE_KEY2 = "PIC_ZOOM_OUTPUT_FILE_KEY2";
+//	static {
+//		if (!IMAGE_ORIGI_FILE_DIR.exists()) {
+//			IMAGE_ORIGI_FILE_DIR.mkdirs();
+//		}
+//		
+//		if (!IMAGE_FINAL_FILE_DIR.exists()) {
+//			IMAGE_FINAL_FILE_DIR.mkdirs();
+//		}
+//	}
 
 
 }
