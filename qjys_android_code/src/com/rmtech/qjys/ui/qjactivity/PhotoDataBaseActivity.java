@@ -449,7 +449,10 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-							if(!isRootFolder()) {
+							if(!isMyself()) {
+								position = position+3;
+
+							} else if(!isRootFolder()) {
 								position = position+1;
 							}
 							switch (position) {
