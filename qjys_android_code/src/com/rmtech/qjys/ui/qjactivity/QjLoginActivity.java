@@ -138,14 +138,25 @@ public class QjLoginActivity extends BaseActivity {
 		}
 
 		@Override
-		public void onResponseSucces(MUser response) {
+		public void onResponse(MUser response) {
+
 			mCurrentLoginView.logining = false;
 			if (response.data == null) {
-				onLoginError();
+				String mess = "登录失败";
+				if(!TextUtils.isEmpty(response.msg)) {
+					mess = response.msg;
+				}
+				Toast.makeText(getActivity(), mess, Toast.LENGTH_SHORT).show();
+				mCurrentLoginView.logining = false;
+				if (mProgressDialog != null && !QjLoginActivity.this.isFinishing() && mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
+
 			} else {
 				onQjLogined(response.data);
 				MobclickAgent.onProfileSignIn(response.data.id);
 			}
+		
 		}
 	};
 	private ProgressDialog mProgressDialog;

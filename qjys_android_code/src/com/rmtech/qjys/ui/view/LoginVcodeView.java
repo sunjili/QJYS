@@ -1,6 +1,7 @@
 package com.rmtech.qjys.ui.view;
 
 import okhttp3.Call;
+import okhttp3.Response;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.LoginActivity;
 import com.rmtech.qjys.ui.WebViewActivity;
+import com.sjl.lib.http.okhttp.callback.Callback;
 import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("NewApi")
@@ -113,17 +116,28 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 				return;
 			}
 			isGettingCode = true;
-			QjHttp.getVcode(inuptPhoneStr, new BaseModelCallback() {
+			QjHttp.getVcode(inuptPhoneStr, new Callback<MBase>() {
 				
 				@Override
 				public void onError(Call call, Exception e) {
 					Toast.makeText(getContext(), "获取验证码失败", Toast.LENGTH_LONG).show();
 				}
 
+
 				@Override
-				public void onResponseSucces(MBase response) {
+				public MBase parseNetworkResponse(Response response)
+						throws Exception {
+					MBase user = new Gson().fromJson(response.body().string(), MBase.class);
+					return user;
+				}
+
+				@Override
+				public void onResponse(MBase response) {
 					// TODO Auto-generated method stub
-					
+					if(response != null && response.ret > 0 && !TextUtils.isEmpty(response.msg)) {
+						Toast.makeText(getContext(), response.msg, Toast.LENGTH_LONG).show();
+					}
+
 				}
 			});
 			mHandler.postDelayed(mTimerRunnable, 1000);

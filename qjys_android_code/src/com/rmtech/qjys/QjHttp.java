@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.callback.OnLoginListener;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.callback.QjHttpCallbackWitchSaveCache;
@@ -39,6 +40,7 @@ import com.rmtech.qjys.model.gson.MVersionData;
 import com.sjl.lib.db.DBUtil;
 import com.sjl.lib.http.okhttp.HttpSetting;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
+import com.sjl.lib.http.okhttp.callback.Callback;
 import com.sjl.lib.utils.L;
 
 public class QjHttp {
@@ -576,7 +578,7 @@ public class QjHttp {
 		OkHttpUtils.post(URL_ADD_MEMBERS, params, callback);
 	}
 
-	public static void getVcode(String phoneNumer, BaseModelCallback callback) {
+	public static void getVcode(String phoneNumer, Callback<MBase> callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", phoneNumer);
 		OkHttpUtils.post(URL_DOCTOR_APPLYCODE, params, callback);
@@ -588,14 +590,14 @@ public class QjHttp {
 		OkHttpUtils.post(URL_ADD_FRIEND, params, callback);
 	}
 
-	public static void login(String inuptPhoneStr, String codeStr, QjHttpCallback<MUser> callback) {
+	public static void login(String inuptPhoneStr, String codeStr, OnLoginListener callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", inuptPhoneStr);
 		params.put("code", codeStr);
 		OkHttpUtils.post(URL_DOCTOR_SMSLOGIN, params, callback);
 	}
 	
-	public static void pwLogin(String inuptPhoneStr, String passwd, QjHttpCallback<MUser> callback) {
+	public static void pwLogin(String inuptPhoneStr, String passwd, OnLoginListener callback) {
 		HashMap<String, String> params = new HashMap<>();
 		params.put("phone", inuptPhoneStr);
 		params.put("passwd", passwd);
