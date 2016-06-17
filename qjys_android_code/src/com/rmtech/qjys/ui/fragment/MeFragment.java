@@ -51,6 +51,8 @@ import com.rmtech.qjys.ui.qjactivity.MeSexActivity;
 import com.rmtech.qjys.ui.qjactivity.MeTreatmentStateActivity;
 import com.rmtech.qjys.ui.qjactivity.QjLoginActivity;
 import com.rmtech.qjys.ui.view.MeItemLayout;
+import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.rmtech.qjys.utils.PhotoUtil;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.filechooser.FileUtils;
@@ -389,6 +391,8 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 	void logout() {
 		UserContext.getInstance().clear();
 		QjLoginActivity.show(getActivity());
+		DoctorListManager.getInstance().clear();
+		GroupAndCaseListManager.getInstance().clear();
 		QjHelper.getInstance().logout(false, new EMCallBack() {
 
 			@Override

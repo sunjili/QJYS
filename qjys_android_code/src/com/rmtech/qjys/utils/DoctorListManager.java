@@ -45,6 +45,29 @@ public class DoctorListManager {
 	private static HashSet<String> mBeDeletedGroups;
 
 	private HashMap<String, DoctorInfo> mIdDoctorMap;
+	
+	private MDoctorList mMDoctorList;
+
+	private boolean isChanged;
+
+	
+	public void clear() {
+		if(mDeletedFriends != null) {
+			mDeletedFriends.clear();
+		}
+		if(mDeletedGroups != null) {
+			mDeletedGroups.clear();
+		}
+		if(mBeDeletedGroups != null) {
+			mBeDeletedGroups.clear();
+		}
+		if(mIdDoctorMap != null) {
+			mIdDoctorMap.clear();
+		}
+		if(mMDoctorList != null) {
+			mMDoctorList = null;
+		}
+	}
 
 	public static synchronized DoctorListManager getInstance() {
 		if (mInstance == null) {
@@ -53,10 +76,7 @@ public class DoctorListManager {
 		return mInstance;
 	}
 
-	private MDoctorList mMDoctorList;
-
-	private boolean isChanged;
-
+	
 	public void setIsChanged(boolean isChanged) {
 		this.isChanged = isChanged;
 	}

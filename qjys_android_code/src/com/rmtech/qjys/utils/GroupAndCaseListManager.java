@@ -283,4 +283,17 @@ public class GroupAndCaseListManager {
 		}
 	}
 
+	public void clear() {
+		if(mGIdCaseInfoMap != null) {
+			mGIdCaseInfoMap.clear();
+		}
+		if(mCaseIdCaseInfoMap != null) {
+			mCaseIdCaseInfoMap.clear();
+		}
+		if(mCaseInfoSet != null) {
+			mCaseInfoSet.clear();
+		}
+		mMGroupList = null;
+	}
+
 }

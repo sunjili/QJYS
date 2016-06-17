@@ -45,6 +45,7 @@ import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.ui.view.LoginBaseView;
 import com.rmtech.qjys.ui.view.LoginPassWordView;
 import com.rmtech.qjys.ui.view.LoginVcodeView;
+import com.rmtech.qjys.utils.DoctorListManager;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -112,7 +113,7 @@ public class QjLoginActivity extends BaseActivity {
 				if (mProgressDialog != null && !QjLoginActivity.this.isFinishing() && mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
 				}
-				
+				DoctorListManager.getInstance().getDoctorList(false, null);
 				//这里有疑问，打开这两个activity的条件分别是什么？
 				if (UserContext.getInstance().getUser().isset_passwd!=1){
 					Intent intent = new Intent(QjLoginActivity.this, MePasswordNewActivity.class);
