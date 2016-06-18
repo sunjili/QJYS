@@ -87,7 +87,16 @@ public class QjHttp {
 	public static final String URL_SORT_IMAGE = "/patient/sortimage";
 	public static final String URL_DOCTOR_DELETEFRIEND = "/doctor/deletefriend";
 	public static final String URL_APP_UPDATE = "/app/update";
+	public static final String URL_PATIENTS_INFO = "/patient/patientsinfo";
 
+	/**
+	 * 45 获取病例信息 /patient/patientsinfo 参数 patient_ids : 病例id，以逗号分割
+	 */
+	public static void getpatientsinfo(String caseid, QjHttpCallback<MGroupList> callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("patient_ids", caseid);
+		OkHttpUtils.post(URL_PATIENTS_INFO, params, callback);
+	}
 	/**
 	 * 47 版本更新 /app/update 参数
 	 */

@@ -9,16 +9,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-
-import android.widget.AdapterView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListPopupWindow;
 import android.widget.TextView;
-import android.text.TextUtils;
-import android.text.TextUtils.TruncateAt;
 
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
@@ -26,19 +20,12 @@ import com.rmtech.qjys.model.FolderDataInfo;
 import com.rmtech.qjys.model.PhotoDataInfo;
 import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
-import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.fragment.PhotoManagerFragment;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
-import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
-import com.rmtech.qjys.ui.view.PhotoManangerPopWindow.ListPopupWindowAdapter;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.rmtech.qjys.utils.GroupAndCaseListManager.OnGetCaseInfoCallback;
 import com.rmtech.qjys.utils.PhotoUploadStateInfo;
-import com.rmtech.qjys.utils.QjUtil;
 import com.umeng.analytics.MobclickAgent;
-import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
-import com.rmtech.qjys.ui.view.PhotoManangerPopWindow.ListPopupWindowAdapter;
-import com.rmtech.qjys.utils.GroupAndCaseListManager;
-import com.rmtech.qjys.utils.QjUtil;
 
 public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 
@@ -76,12 +63,22 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 		initPhotoSelector();
 
 		mCaseTopBarView.setCaseInfo(caseInfo);
-		mPhotoManagerFragment.setIds(caseInfo, folderDataInfo);
 		isFirstCreate = true;
 		
 		 IntentFilter filter= new IntentFilter();    
 	     filter.addAction("case_delete");
 	     registerReceiver(CaseDeleteReceiver , filter); 
+	     GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseId, new OnGetCaseInfoCallback() {
+			
+			@Override
+			public void onGet(CaseInfo info) {
+				// TODO Auto-generated method stub
+				if(info != null) {
+					caseInfo = info;
+				}
+				mPhotoManagerFragment.setIds(caseInfo, folderDataInfo);
+			}
+		});
 	}
 	
 	

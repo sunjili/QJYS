@@ -313,11 +313,10 @@ public class DoctorListManager {
 						// TODO 发短信操作
 						Uri smsToUri = Uri.parse("smsto:" + phoneNumber);    
 					    Intent mIntent = new Intent(android.content.Intent.ACTION_SENDTO, smsToUri);  
-					    mIntent.putExtra("sms_body", "您的好友 " + UserContext.getInstance().getUserName() 
-					        + " 正在使用奇迹医生App，并申请加您为好友，您可以访问此链接下载并安装奇迹医生App：" + "http://m.qijiyisheng.com "
-					    		+ "，然后通过搜索Ta的手机号就可以加Ta为好友了。【奇迹医生】");
+					    mIntent.putExtra("sms_body", "我是 " + UserContext.getInstance().getUserName() 
+					        + ",正在使用奇迹医生App，申请加你为好友，你可以访问此链接下载并安装奇迹医生App：" + "http://m.qijiyisheng.com "
+					    		+ "，然后通过搜索我的手机号就可以加我为好友了！【奇迹医生】");
 					    activity.startActivity(mIntent);
-						
 						dialog.dismiss();
 					}
 				});  
@@ -525,6 +524,7 @@ public class DoctorListManager {
 		mDeletedGroups.add(groupId);
 		DBUtil.saveCache("DeleteGroupIds", mDeletedGroups);
 	}
+	
 	public static void addBeDeletedGroupIds(String groupId) {
 		
 		mBeDeletedGroups = getBeDeleteGroupIds();

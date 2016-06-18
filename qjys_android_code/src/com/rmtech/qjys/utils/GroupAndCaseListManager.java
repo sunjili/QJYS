@@ -12,7 +12,6 @@ import java.util.Set;
 import okhttp3.Call;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import android.text.TextUtils;
 import android.util.Pair;
@@ -21,6 +20,7 @@ import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.rmtech.qjys.QjHttp;
+import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
@@ -266,6 +266,43 @@ public class GroupAndCaseListManager {
 
 	}
 
+	public void getCaseInfoByCaseId(final String caseId,final OnGetCaseInfoCallback callback) {
+		QjHttp.getpatientsinfo(caseId, new QjHttpCallback<MGroupList>() {
+			
+			@Override
+			public MGroupList parseNetworkResponse(String str) throws Exception {
+				return new Gson().fromJson(str, MGroupList.class);
+			}
+			
+			@Override
+			public void onResponseSucces(MGroupList response) {
+				if(response.data != null && !response.data.isEmpty()) {
+					CaseInfo info = response.data.get(0);
+					if (mCaseInfoSet.contains(info)) {
+						mCaseInfoSet.remove(info);
+						mCaseInfoSet.add(info);
+					}
+					mCaseIdCaseInfoMap.put(info.id, info);
+					
+					if(callback != null) {
+						callback.onGet(info);
+					}
+				} else {
+					if(callback != null) {
+						callback.onGet(getCaseInfoByCaseId(caseId));
+					}
+				}
+			}
+			
+			@Override
+			public void onError(Call call, Exception e) {
+				if(callback != null) {
+					callback.onGet(getCaseInfoByCaseId(caseId));
+				}
+			}
+		});
+	}
+	
 	public CaseInfo getCaseInfoByCaseId(String caseId) {
 		if (!TextUtils.isEmpty(caseId)) {
 			return mCaseIdCaseInfoMap.get(caseId);
@@ -294,6 +331,10 @@ public class GroupAndCaseListManager {
 			mCaseInfoSet.clear();
 		}
 		mMGroupList = null;
+	}
+	
+	public static interface OnGetCaseInfoCallback {
+		public void onGet(CaseInfo info);
 	}
 
 }

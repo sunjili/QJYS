@@ -100,7 +100,7 @@ public class QjLoginActivity extends BaseActivity {
 
 		});  
         builder.create().show();
-		Toast.makeText(getActivity(), string, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getActivity(), string, Toast.LENGTH_SHORT).show();
 	}
 
 	private void onLoginSuccess() {

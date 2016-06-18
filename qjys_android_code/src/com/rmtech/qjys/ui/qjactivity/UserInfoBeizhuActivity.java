@@ -45,6 +45,7 @@ public class UserInfoBeizhuActivity extends BaseActivity {
 		}
 		setContentView(R.layout.qj_userinfo_beizhu);
 		setTitle("备注信息");
+		setLeftTitle("返回");
 		setRightTitle("保存", new OnClickListener() {
 
 			@Override

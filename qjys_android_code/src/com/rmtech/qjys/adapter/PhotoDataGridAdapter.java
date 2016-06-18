@@ -1,5 +1,6 @@
 package com.rmtech.qjys.adapter;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,14 +28,20 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 	public static final int SHOW_TYPE_SELECT = 1;
 
 	private boolean debug = false;
+    // 用来控制CheckBox的选中状况 
+    private static HashMap<Integer, Boolean> isSelected;
 
 	private int showType = SHOW_TYPE_NORMAL;
+	private List<?> items;
 	private HashSet<PhotoDataInfo> mSelectedImages;
 
 	public PhotoDataGridAdapter(Context context, List<?> items,  HashSet<PhotoDataInfo> mSelectedImages, int type) {
 		super(context, items, context.getResources().getInteger(R.integer.column_count));
+		this.items = items;
 		showType = type;
 		this.mSelectedImages = mSelectedImages;
+        isSelected = new HashMap<Integer, Boolean>(); 
+		initData();
 	}
 
 	public PhotoDataGridAdapter(Context context, List<?> items) {
@@ -53,6 +63,13 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 		}
 		return super.getCount();
 	}
+	
+	// 初始化isSelected的数据 
+    private void initData() { 
+        for (int i = 0; i < items.size(); i++) { 
+            getIsSelected().put(i, false); 
+        } 
+    } 
 
 	@Override
 	public Object getItem(int position) {
@@ -101,29 +118,38 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.build(convertView, info);
+		holder.build(convertView, info, position);
 		return convertView;
 	}
+	
+	 public static HashMap<Integer, Boolean> getIsSelected() { 
+	     return isSelected; 
+	 } 
+	 
+	 
+	 public static void setIsSelected(HashMap<Integer, Boolean> isSelected) { 
+	     PhotoDataGridAdapter.isSelected = isSelected; 
+	 }
 
 	DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.drawable.default_error)
 			.showImageOnFail(R.drawable.default_error).showImageOnLoading(null).resetViewBeforeLoading(true).cacheOnDisk(true)
 			.cacheInMemory(true).build();
 	
-	private class ViewHolder {
+	public class ViewHolder {
 		public ImageView itemImg;
-		public ImageView checkmark;
+		public CheckBox checkmark;
 		public TextView itemName;
 		public TextView number;
 		
 
 		public ViewHolder(View container) {
 			itemImg = (ImageView) container.findViewById(R.id.item_img);
-			checkmark = (ImageView) container.findViewById(R.id.checkmark);
+			checkmark = (CheckBox) container.findViewById(R.id.checkmark);
 			itemName = (TextView) container.findViewById(R.id.item_name);
 			number = (TextView) container.findViewById(R.id.number);
 		}
 
-		public void build(View view, FolderDataInfo data) {
+		public void build(View view, FolderDataInfo data, final int position) {
 			if (debug) {
 				itemImg.setImageResource(R.drawable.ic_launcher);
 				itemName.setText("ssssssss");
@@ -140,13 +166,26 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 				
 				if(showType == SHOW_TYPE_SELECT) {
 					checkmark.setVisibility(View.VISIBLE);
-					if(mSelectedImages != null) {
-						if(mSelectedImages.contains(data)) {
-							checkmark.setImageResource(R.drawable.btn_choice_press);
-						} else {
-							checkmark.setImageResource(R.drawable.btn_choice_nor);
+					
+					 // 根据isSelected来设置checkbox的选中状况 
+					checkmark.setChecked(getIsSelected().get(position));
+					checkmark.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			            
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+							// TODO Auto-generated method stub
+							if(isChecked){
+								
+							}
 						}
-					}
+			        });
+//					if(mSelectedImages != null) {
+//						if(mSelectedImages.contains(data)) {
+//							checkmark.setImageResource(R.drawable.btn_choice_press);
+//						} else {
+//							checkmark.setImageResource(R.drawable.btn_choice_nor);
+//						}
+//					}
 					
 				}
 			} else if(data instanceof FolderDataInfo) {
@@ -156,8 +195,6 @@ public class PhotoDataGridAdapter extends BaseDynamicGridAdapter {
 				number.setText(data.image_count+"");
 			}
 			itemName.setText(data.name);
-			
-			
 		}
 	}
 

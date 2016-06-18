@@ -15,13 +15,13 @@ import com.rmtech.qjys.utils.VersionManager;
 public class HttpSetting {
 
 	public static int TIME_OUT_SPAN = 25000;
-	public static final String REFER_URL = "http://qijiyisheng.com";
+	public static final String REFER_URL = "http://api.qijiyisheng.com";
 
 	// 正式环境
-	public static final String BASE_URL = "http://101.200.130.188";
+	public static final String BASE_URL = "http://api.qijiyisheng.com";
 
 	// 测试环境
-	public static final String TEST_BASE_URL = "http://101.200.130.188";
+//	public static final String TEST_BASE_URL = "http://101.200.130.188";
 
 	public static String AGENT = "qijiyisheng/" + VersionManager.APP_VERSION_NAME + "(" + Build.MANUFACTURER + ";"
 			+ Build.MODEL + ";" + "os" + Build.VERSION.RELEASE + ";" + AndroidDeviceManager.getCpuType() + ";"

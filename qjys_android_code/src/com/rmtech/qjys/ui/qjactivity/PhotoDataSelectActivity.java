@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.adapter.PhotoDataGridAdapter;
+import com.rmtech.qjys.adapter.PhotoDataGridAdapter.ViewHolder;
 import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.event.PhotoDataEvent;
 import com.rmtech.qjys.model.FolderDataInfo;
@@ -44,6 +45,7 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 		setTitle("文件多选");
 		setLeftTitle("取消");
 		setBackImageGone();
+		initViews();
 		if(imageDataList == null) {
 			setRightTitle("全选", null).setTextColor(Color.GRAY);
 
@@ -53,11 +55,16 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 				@Override
 				public void onClick(View arg0) {
 					// TODO 全选功能
-					selectAll();
+					if(mSelectedImages.size() != mDataList.size()){
+						for (int i = 0; i < mDataList.size(); i++) { 
+		                    PhotoDataGridAdapter.getIsSelected().put(i, true); 
+		                }
+						mAdapter.notifyDataSetChanged();
+						selectAll();
+					}
 				}
 			});
 		}
-		initViews();
 		EventBus.getDefault().register(this);
 
 	}
@@ -132,9 +139,25 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 		mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-				selectImageFromGrid(i);
+				
+				ViewHolder holder = (ViewHolder) view.getTag(); 
+	            holder.checkmark.toggle(); 
+	            PhotoDataGridAdapter.getIsSelected().put(i, holder.checkmark.isChecked());
+				PhotoDataInfo select = (PhotoDataInfo) mAdapter.getItem(i);
+	            if(holder.checkmark.isChecked()){
+					mSelectedImages.add(select);
+	            }else {
+	            	if (mSelectedImages.contains(select)) {
+						mSelectedImages.remove(select);
+					}
+				}
+//				if (mSelectedImages.contains(select)) {
+//					mSelectedImages.remove(select);
+//				} else {
+//					mSelectedImages.add(select);
+//				}
+//				mAdapter.notifyDataSetChanged();
 			}
-
 		});
 
 		mDeleteTv.setOnClickListener(new OnClickListener() {
@@ -163,19 +186,16 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 										public void onResponseSucces(MBase response) {
 											Toast.makeText(getApplicationContext(), "删除成功！", 1).show();
 											ArrayList<PhotoDataInfo> imagelist = new ArrayList<PhotoDataInfo>(mSelectedImages);
+											mSelectedImages.removeAll(imagelist);
 											mAdapter.removeAll(imagelist);
 											PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_DELETE);
 											event.setMovedImageList(caseId, folderId, imagelist);
 											EventBus.getDefault().post(event);
 										}
-
 									});
-									
 								}
-
 							}
 						}).setCancelable(true).show();
-
 			}
 		});
 		mMoveTv.setOnClickListener(new OnClickListener() {
@@ -191,7 +211,6 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 				if (imageDataList.folders != null) {
 					folderList.addAll(imageDataList.folders);
 				}
-
 				PhotoDataMoveActivity.show(getActivity(), folderList, imageList, caseId, folderId);
 			}
 		});
@@ -211,19 +230,11 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 	}
 
 	private void selectImageFromGrid(int i) {
-		PhotoDataInfo select = (PhotoDataInfo) mAdapter.getItem(i);
-		if (mSelectedImages.contains(select)) {
-			mSelectedImages.remove(select);
-		} else {
-			mSelectedImages.add(select);
-		}
-		mAdapter.notifyDataSetChanged();
 	}
 	
 	private void selectAll(){
 		if(mDataList != null) {
 			mSelectedImages.addAll(mDataList);
-			mAdapter.notifyDataSetChanged();
 		}
 	}
 	

@@ -89,7 +89,7 @@ public class CaseFragment extends QjBaseFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		mAdapter.notifyDataSetChanged();
+		updateData();
 	}
 
 	@Subscribe

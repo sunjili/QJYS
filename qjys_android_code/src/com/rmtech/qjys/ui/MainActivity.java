@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity {
 			
 			@Override
 			public void run() {
-				VersionManager.getInstance().checkVersionUpdate(getApplicationContext());
+				VersionManager.getInstance().checkVersionUpdate(getActivity());
 			}
 		}, 500);
 		

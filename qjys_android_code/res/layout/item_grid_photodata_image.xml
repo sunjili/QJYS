@@ -29,15 +29,21 @@
             android:textColor="@color/white"
             android:textSize="12sp" />
 
-        <ImageView
+        <CheckBox
             android:id="@+id/checkmark"
+            android:checked="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="false" 
+            android:focusable="false" 
+            android:focusableInTouchMode="false" 
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="5.5dp"
             android:layout_marginTop="5.5dp"
-            android:src="@drawable/btn_choice_nor"
+            android:background="@drawable/qj_checkbox_selector"
+            android:button="@null"
+            android:text=""
             android:visibility="gone" />
     </RelativeLayout>
 

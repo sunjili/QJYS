@@ -172,7 +172,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			((TextView) findViewById(R.id.group_name)).setText("创建" + "病例讨论组");
 
 		} else {
-			((TextView) findViewById(R.id.group_name)).setText(caseInfo.name);
+			((TextView) findViewById(R.id.group_name)).setText("医护组成员");
 		}
 
 		
