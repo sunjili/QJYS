@@ -13,7 +13,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -110,8 +112,21 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 		return false;
 	}
 	boolean isDebug = false;
-	private float mRotation = 0;
+	private float mRotation = -90;
 	private boolean isMirror = false;
+	private ProgressDialog mProgressDialog;
+	
+	private void dismissDialog() {
+		try {
+			if(mProgressDialog != null) {
+				mProgressDialog.dismiss();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -123,7 +138,30 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 			isMirror = !isMirror;
 			break;
 		case R.id.rotate_tv:
-			photoView.setRotationBy(-90);
+//			if(isMirror) {
+//				mProgressDialog = ProgressDialog.show(getActivity(), null, "处理中");
+//				isMirror = false;
+//				new AsyncTask<Void, Void, Bitmap>(){
+//
+//					@Override
+//					protected Bitmap doInBackground(Void... params) {
+//						
+//						
+//						return null;
+//					}
+//					
+//				}.execute();
+				
+//			}
+//			if(!TextUtils.isEmpty(photoData.localPath)) {
+//				ImageLoader.getInstance().displayImage("file://" + photoData.localPath, photoView, optionsThumb);
+//			} else {
+//				ImageLoader.getInstance().displayImage(photoData.origin_url, photoView, optionsThumb);
+//			}
+//			if(mRotation%360 == -90) {
+//				photoView.setBaseRotation(-90);
+//			}
+			photoView.setRotationTo(mRotation);
 			mRotation  += -90;
 			break;
 		case R.id.edit_tv:
@@ -158,61 +196,92 @@ public class PhotoDataEditActivity extends CaseWithIdActivity implements OnClick
 				}
 				
 				@Override
-				public void onLoadingComplete(String arg0, View arg1, Bitmap bitmap) {
-					
-					Matrix matrix = new Matrix(photoView.getBaseMatrix());
-					int degree = (int) (mRotation % 360);
-					Log.d("sssssssssss","degree = "+degree);
-					matrix.setRotate(degree);
-					if(isMirror) {
-						matrix.setScale(-1, 1);
-					}
-					final Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-					
-					String path = FileUtils.saveImage(getActivity(), newbitmap);
-					if (TextUtils.isEmpty(path)) {
-						pd.dismiss();
-						return;
-					}
-					int tag = PhotoUploadManager.createKey(caseId, folderId, path);
-					int index = path.lastIndexOf('/');
-					String name = path.substring(index + 1, path.length());
-					if(isDebug) {
-						pd.dismiss();
-						return;
-					}
-					QjHttp.uploadImage(tag, caseId, folderId, photoData.id, name, path, new QjHttpCallback<MUploadImageInfo>() {
+				public void onLoadingComplete(String arg0, View arg1,final Bitmap bitmap) {
+					new AsyncTask<Void, Void, String>(){
 
 						@Override
-						public MUploadImageInfo parseNetworkResponse(String str) throws Exception {
-							return new Gson().fromJson(str, MUploadImageInfo.class);
-						}
+						protected String doInBackground(Void... params) {
+							Matrix matrix = new Matrix(photoView.getSuppMatrix());
+							Bitmap finalBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+							 
+//							Log.d("sssssssssss","degree = "+degree);
+//							Bitmap newbitmap = null;
+//							if(isMirror) {
+//						  
+//						        Matrix mirrormatrix = new Matrix(); 
+//						        mirrormatrix.postScale(-1, 1);
+//						        newbitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mirrormatrix, true);
+//								
+//
+//							} else {
+//								newbitmap = bitmap;
+//							}
+//
+//							Bitmap finalBitmap = newbitmap;
+//							int degree = (int) (mRotation % 360);
+//							if(degree!= 0 ) {
+//								Matrix degreematrix = new Matrix();
+//								degreematrix.setRotate(degree);
+//								finalBitmap = Bitmap.createBitmap(newbitmap, 0, 0, newbitmap.getWidth(), newbitmap.getHeight(), degreematrix, false);
+//								newbitmap.recycle();
+//							}
 
-						@Override
-						public void onResponseSucces(MUploadImageInfo response) {
-							PhotoDataInfo data = response.data;
-							PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_EDIT, data);
-							event.setMovedImageList(caseId, folderId, null);
-							EventBus.getDefault().post(event);
-							try {
+							String path = FileUtils.saveImage(getActivity(), finalBitmap);
+							if (TextUtils.isEmpty(path)) {
 								pd.dismiss();
-							} catch (Exception e) {
-								e.printStackTrace();
+								return null;
 							}
-							finish();
+							
+							return path;
 						}
 
 						@Override
-						public void onError(Call call, Exception e) {
-							Toast.makeText(getActivity(), "保存失败 "+e.toString(), 1)
-							.show();
-							try {
+						protected void onPostExecute(final String path) {
+							super.onPostExecute(path);
+							if(isDebug) {
 								pd.dismiss();
-							} catch (Exception e1) {
-								e1.printStackTrace();
+								return ;
 							}
-						}
-					});
+							int tag = PhotoUploadManager.createKey(caseId, folderId, path);
+							int index = path.lastIndexOf('/');
+							String name = path.substring(index + 1, path.length());
+
+							QjHttp.uploadImage(tag, caseId, folderId, photoData.id, name, path, new QjHttpCallback<MUploadImageInfo>() {
+
+								@Override
+								public MUploadImageInfo parseNetworkResponse(String str) throws Exception {
+									return new Gson().fromJson(str, MUploadImageInfo.class);
+								}
+
+								@Override
+								public void onResponseSucces(MUploadImageInfo response) {
+									PhotoDataInfo data = response.data;
+									PhotoDataEvent event = new PhotoDataEvent(PhotoDataEvent.TYPE_EDIT, data);
+									event.setMovedImageList(caseId, folderId, null);
+									EventBus.getDefault().post(event);
+									try {
+										pd.dismiss();
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									finish();
+								}
+
+								@Override
+								public void onError(Call call, Exception e) {
+									Toast.makeText(getActivity(), "保存失败 "+e.toString(), 1)
+									.show();
+									try {
+										pd.dismiss();
+									} catch (Exception e1) {
+										e1.printStackTrace();
+									}
+								}
+							});
+						
+						}}.execute();
+					
+					
 				}
 				
 				@Override

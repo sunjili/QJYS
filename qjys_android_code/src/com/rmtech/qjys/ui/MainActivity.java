@@ -45,6 +45,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.EMLog;
 import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.db.UserDao;
@@ -324,6 +325,7 @@ public class MainActivity extends BaseActivity {
 								.show();
 						ChatActivity.activityInstance.finish();
 					}
+					DoctorListManager.addDeletedFriends(username);
 				}
 			});
 		}
@@ -334,18 +336,19 @@ public class MainActivity extends BaseActivity {
 
 		@Override
 		public void onContactAgreed(String username) {
-			CustomSimpleDialog.Builder builder = new Builder(MainActivity.this);  
-	        builder.setTitle("提示");  
-	        builder.setMessage(username + "已经同意添加您为好友，现在可以聊天了！");  
-	        builder.setPositiveButton("好的", new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					dialog.dismiss();
-				}
-			});  
-	        builder.create().show();
+//			CustomSimpleDialog.Builder builder = new Builder(MainActivity.this);  
+//	        builder.setTitle("提示");  
+//	        builder.setMessage(username + "已经同意添加您为好友，现在可以聊天了！");  
+//	        builder.setPositiveButton("好的", new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					// TODO Auto-generated method stub
+//					dialog.dismiss();
+//				}
+//			});  
+//	        builder.create().show();
+	        QjHttp.addFriend(username, null);
 		}
 
 		@Override

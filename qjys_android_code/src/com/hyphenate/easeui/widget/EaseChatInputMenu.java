@@ -2,6 +2,7 @@ package com.hyphenate.easeui.widget;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import android.content.Context;
@@ -366,6 +367,11 @@ public class EaseChatInputMenu extends LinearLayout {
 
 	public void onAddAtFriend(DoctorInfo info) {
 		chatPrimaryMenu.onAddAtFriend(info);		
+	}
+
+	public HashSet<DoctorInfo> getAtDoctorList() {
+		// TODO Auto-generated method stub
+		return chatPrimaryMenu.getAtDoctorList();
 	}
     
 }

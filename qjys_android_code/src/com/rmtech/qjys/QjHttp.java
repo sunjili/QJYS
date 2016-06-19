@@ -452,7 +452,7 @@ public class QjHttp {
 
 				.addFile("image", "head", new File(path))
 				//
-				.url(HttpSetting.BASE_URL + URL_UPLOAD_HEAD)
+				.url(HttpSetting.getBaseUrl() + URL_UPLOAD_HEAD)
 				//
 				// .mediaType(MediaType.parse("application/json; charset=utf-8"))
 				.params(newparams)
@@ -492,7 +492,7 @@ public class QjHttp {
 
 				.addFile("image", name, new File(path))
 				//
-				.url(HttpSetting.BASE_URL + URL_UPLOAD_IMAGE)
+				.url(HttpSetting.getBaseUrl() + URL_UPLOAD_IMAGE)
 				//
 				// .mediaType(MediaType.parse("application/json; charset=utf-8"))
 				.params(newparams)

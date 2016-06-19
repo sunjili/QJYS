@@ -90,6 +90,7 @@ public class UserInfoBeizhuActivity extends BaseActivity {
 		et_name = (EditText) findViewById(R.id.et_name);
 		setTextWhacher(UserInfoBeizhuActivity.this, et_name, 30);
 		et_name.setText(TextUtils.isEmpty(mDoctorInfo.remark)?mDoctorInfo.name:mDoctorInfo.remark);
+		et_name.setSelection(et_name.getText().length());
 	}
 
 	protected boolean showTitleBar() {

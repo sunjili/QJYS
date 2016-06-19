@@ -60,7 +60,7 @@ import com.rmtech.qjys.R;
 
 		image = (EasePhotoView) findViewById(R.id.image);
 		loadLocalPb = (ProgressBar) findViewById(R.id.pb_load_local);
-		default_res = getIntent().getIntExtra("default_image", R.drawable.ic_default_avatar);
+		default_res = getIntent().getIntExtra("default_image", R.drawable.em_default_image);
 		Uri uri = getIntent().getParcelableExtra("uri");
 		String remotepath = getIntent().getExtras().getString("remotepath");
 		localFilePath = getIntent().getExtras().getString("localUrl");
@@ -140,7 +140,7 @@ import com.rmtech.qjys.R;
 							EaseImageCache.getInstance().put(localFilePath, bitmap);
 							isDownloaded = true;
 						}
-						if (EaseShowBigImageActivity.this.isFinishing() || EaseShowBigImageActivity.this.isDestroyed()) {
+						if (EaseShowBigImageActivity.this.isFinishing()) {
 						    return;
 						}
 						if (pd != null) {
@@ -159,7 +159,7 @@ import com.rmtech.qjys.R;
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						if (EaseShowBigImageActivity.this.isFinishing() || EaseShowBigImageActivity.this.isDestroyed()) {
+						if (EaseShowBigImageActivity.this.isFinishing()) {
 						    return;
 						}
                         image.setImageResource(default_res);
@@ -174,7 +174,7 @@ import com.rmtech.qjys.R;
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-                        if (EaseShowBigImageActivity.this.isFinishing() || EaseShowBigImageActivity.this.isDestroyed()) {
+                        if (EaseShowBigImageActivity.this.isFinishing()) {
                             return;
                         }
 						pd.setMessage(str2 + progress + "%");

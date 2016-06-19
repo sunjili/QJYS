@@ -25,7 +25,7 @@ public class UserInfo implements Serializable, Parcelable {
 
 	public static class AuthInfo implements Parcelable {
 		public String token;// ：加密串
-		public int expire;// : 过期时间 秒
+		public long expire;// : 过期时间 秒
 		public String uid;// : 用户id
 
 		@Override
@@ -36,7 +36,7 @@ public class UserInfo implements Serializable, Parcelable {
 		@Override
 		public void writeToParcel(Parcel dest, int flags) {
 			dest.writeString(this.token);
-			dest.writeInt(this.expire);
+			dest.writeLong(this.expire);
 			dest.writeString(this.uid);
 		}
 
@@ -45,7 +45,7 @@ public class UserInfo implements Serializable, Parcelable {
 
 		protected AuthInfo(Parcel in) {
 			this.token = in.readString();
-			this.expire = in.readInt();
+			this.expire = in.readLong();
 			this.uid = in.readString();
 		}
 

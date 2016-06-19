@@ -27,7 +27,8 @@ public interface IPhotoView {
 
     public static final float DEFAULT_MAX_SCALE = 3.0f;
     public static final float DEFAULT_MID_SCALE = 1.75f;
-    public static final float DEFAULT_MIN_SCALE = 1.0f;
+//    public static final float DEFAULT_MIN_SCALE = 1.0f;
+    public static final float DEFAULT_MIN_SCALE = 0.5f;
     public static final int DEFAULT_ZOOM_DURATION = 200;
     
     public void setMirror();

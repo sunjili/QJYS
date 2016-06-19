@@ -142,7 +142,12 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 					} else if (type == QjConstant.REQUEST_CODE_ADD_DOCTORS) {
 						DoctorListManager.initDoctorList(alluserList, response.data);
 						initAdapter();
-					} else {
+					} else if(type == QjConstant.REQUEST_CODE_AT){
+						ArrayList<DoctorInfo> exitingMembers = getIntent().getParcelableArrayListExtra(
+								"selectedDoctorList");
+						DoctorListManager.initDoctorList(alluserList, exitingMembers);
+						initAdapter();
+					}else {
 						
 						DoctorListManager.initDoctorList(alluserList, response.data);
 						initAdapter();
@@ -217,8 +222,9 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 		}else if(type==QjConstant.REQUEST_CODE_CHANGE_DOCTOR) {
 			setTitle("管理权限移交");
 			setLeftTitle("返回");
-		}else {
-			
+		}else if(type==QjConstant.REQUEST_CODE_AT){
+			setTitle("选择要提醒的人");
+			setLeftTitle("返回");
 		}
 		listView = (ListView) findViewById(R.id.list);
 

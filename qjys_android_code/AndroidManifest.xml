@@ -335,7 +335,6 @@
         </activity>
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.DoctorPickActivity"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
@@ -466,7 +465,6 @@
         <!-- 聊天页面 -->
         <activity
             android:name="com.rmtech.qjys.ui.ChatActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize" >

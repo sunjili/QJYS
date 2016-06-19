@@ -6,11 +6,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import okhttp3.Call;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.gson.MGroupList;
 import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
 import com.rmtech.qjys.ui.view.CaseTopBarView;
@@ -39,24 +44,41 @@ public class ChatGroupFragment extends ChatFragment implements
 		mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(
 				toChatUsername);
 		
-		
 		if(mCaseInfo == null) {
-			getActivity().finish();
-			return;
-		}
-		GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id, new OnGetCaseInfoCallback() {
-			
-			@Override
-			public void onGet(CaseInfo info) {
-				// TODO Auto-generated method stub
-				if(info != null) {
-					mCaseInfo = info;
-				}
-				bindView();
-			}
+			QjHttp.getGroupinfo(false, toChatUsername, new QjHttpCallbackNoParse<MGroupList>() {
 
-			
-		});
+				@Override
+				public MGroupList parseNetworkResponse(String str) throws Exception {
+					return new Gson().fromJson(str, MGroupList.class);
+				}
+
+				@Override
+				public void onResponseSucces(boolean isCache, MGroupList response) {
+					if (response != null && response.data != null && !response.data.isEmpty()) {
+						mCaseInfo = response.data.get(0);
+					}
+					bindView();
+				}
+
+				@Override
+				public void onError(Call call, Exception e) {
+					getActivity().finish();
+					return;
+				}
+			});
+		}else {
+			GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(mCaseInfo.id, new OnGetCaseInfoCallback() {
+				
+				@Override
+				public void onGet(CaseInfo info) {
+					// TODO Auto-generated method stub
+					if(info != null) {
+						mCaseInfo = info;
+					}
+					bindView();
+				}
+			});
+		}
        
 	}
 
@@ -92,7 +114,7 @@ public class ChatGroupFragment extends ChatFragment implements
 			mCaseTopBarView.setCaseInfo(mCaseInfo);
 			
 		if (mCaseInfo != null) {
-			titleBar.setTitle(mCaseInfo.getShowName());
+			titleBar.setTitle(mCaseInfo.name);
 			titleBar.setLeftTitle("返回");
 			titleBar.setRightLayoutClickListener(new OnClickListener() {
 

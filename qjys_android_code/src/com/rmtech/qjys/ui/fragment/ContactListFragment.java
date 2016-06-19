@@ -89,11 +89,11 @@ public class ContactListFragment extends EaseContactListFragment {
 		loadingView = LayoutInflater.from(getActivity()).inflate(R.layout.em_layout_loading_data, null);
 		contentContainer.addView(loadingView);
 		// 注册上下文菜单
-//		registerForContextMenu(listView);
+		// registerForContextMenu(listView);
 		EventBus.getDefault().register(this);
 		EMClient.getInstance().chatManager().addMessageListener(messageListener);
 	}
-	
+
 	@Subscribe
 	public void onEvent(DoctorEvent event) {
 		// mAdapter.add();
@@ -112,19 +112,30 @@ public class ContactListFragment extends EaseContactListFragment {
 
 	@Override
 	public void refresh() {
-		// super.refresh();
-		if (inviteMessgeDao == null) {
-			inviteMessgeDao = new InviteMessgeDao(getActivity());
-		}
-		if (inviteMessgeDao.getUnreadMessagesCount() > 0) {
-			applicationItem.showUnreadMsgView();
-			applicationItem.setUnreadCount(inviteMessgeDao.getUnreadMessagesCount());
-		} else {
-			applicationItem.hideUnreadMsgView();
-		}
-		loadData(true);
+
+		getActivity().runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				// super.refresh();
+				if (inviteMessgeDao == null) {
+					inviteMessgeDao = new InviteMessgeDao(getActivity());
+				}
+				if (inviteMessgeDao.getUnreadMessagesCount() > 0) {
+					applicationItem.showUnreadMsgView();
+					applicationItem.setUnreadCount(inviteMessgeDao.getUnreadMessagesCount());
+				} else {
+					applicationItem.hideUnreadMsgView();
+				}
+
+				loadData(true);
+			}
+		});
 	}
-	
+
 	EMMessageListener messageListener = new EMMessageListener() {
 
 		@Override
@@ -158,14 +169,14 @@ public class ContactListFragment extends EaseContactListFragment {
 		public void onMessageChanged(EMMessage message, Object change) {
 		}
 	};
-	
+
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 		refresh();
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -230,9 +241,8 @@ public class ContactListFragment extends EaseContactListFragment {
 		loadData(true);
 
 	}
-	
 
-	private void loadData(boolean needCache) {
+	private synchronized void loadData(boolean needCache) {
 
 		loadingView.setVisibility(View.VISIBLE);
 		DoctorListManager.getInstance().getDoctorList(needCache, new QjHttpCallbackNoParse<MDoctorList>() {
@@ -262,7 +272,6 @@ public class ContactListFragment extends EaseContactListFragment {
 		super.onDestroy();
 		EventBus.getDefault().unregister(this);
 		EMClient.getInstance().chatManager().removeMessageListener(messageListener);
-
 
 		// if (contactSyncListener != null) {
 		// QjHelper.getInstance().removeSyncContactListener(contactSyncListener);

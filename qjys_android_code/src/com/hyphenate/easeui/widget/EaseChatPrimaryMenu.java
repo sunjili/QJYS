@@ -1,5 +1,6 @@
 package com.hyphenate.easeui.widget;
 
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -160,10 +161,10 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     								if (!TextUtils.isEmpty(lastChar)) {
     									Pattern p = Pattern.compile("[0-9]*");
     									Matcher m = p.matcher(lastChar);
-    									if (m.matches()) { // 在数字后面输入的@无效，同微信一致 by henryrhe
+    									if (m.matches()) { // 在数字后面输入的@无效
     										needToSelect = false;
     									} else {
-    										p = Pattern.compile("[a-zA-Z]"); // 在字母后面输入的@无效，同微信一致 by henryrhe
+    										p = Pattern.compile("[a-zA-Z]"); // 在字母后面输入的@无效，同微信一致
     										m = p.matcher(lastChar);
     										if (m.matches()) {
     											needToSelect = false;
@@ -205,6 +206,8 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 //		if (mRmdVideoItem != null && !StringUtils.isEmptyStr(mRmdVideoItem.getVid())) {
 //			RemindFriendNotes.getInstance().removeAFriend(friendNode, mRmdVideoItem.getVid());
 //		}
+		mAtMap.add(friendNode);
+
 	}
     
     /**
@@ -246,6 +249,8 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
                 editText.setText("");
                 listener.onSendBtnClicked(s);
             }
+        	mAtMap.clear();
+
 //        } else if (id == R.id.btn_set_mode_voice) {
 //            setModeVoice();
 //            showNormalFaceImage();
@@ -383,11 +388,11 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 		}
 	};
 
+	public HashSet<DoctorInfo> mAtMap = new HashSet<DoctorInfo> ();
 	@Override
 	public void onAddAtFriend(DoctorInfo data) {
 		int index = editText.getSelectionStart();
 		Editable editable = editText.getText();
-
 		String appendStr = data.getDisplayName() + " ";
 		if(index == 0) {
 			appendStr = "@"+appendStr;
@@ -399,6 +404,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 		editable.insert(index, appendStr);
 		String editStr = editText.getText().toString();
 		editText.setText(getSpannableStringBuilder(index, appendStr, editStr, data));
+		mAtMap.add(data);
 		editText.requestFocus();
 		editText.setSelection(editStr.length());
 	}
@@ -426,6 +432,10 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 			}
 		}
 		return stringBuilder;
+	}
+	
+	public HashSet<DoctorInfo> getAtDoctorList() {
+		return mAtMap;
 	}
 //    protected void toggleFaceImage(){
 //        if(faceNormal.getVisibility() == View.VISIBLE){

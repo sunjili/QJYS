@@ -1,6 +1,7 @@
 package com.rmtech.qjys.callback;
 
 import okhttp3.Response;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.rmtech.qjys.model.gson.MUser;
@@ -11,7 +12,9 @@ public abstract class OnLoginListener extends Callback<MUser> {
 
 	@Override
 	public MUser parseNetworkResponse(Response response) throws Exception {
-		MUser user = new Gson().fromJson(response.body().string(), MUser.class);
+		String str = response.body().string();
+		Log.d("ssssssssssss","OnLoginListener response = "+str);
+		MUser user = new Gson().fromJson(str, MUser.class);
 		return user;
 
 	}

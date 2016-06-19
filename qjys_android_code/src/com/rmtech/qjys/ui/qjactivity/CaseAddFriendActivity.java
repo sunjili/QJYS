@@ -101,6 +101,7 @@ public class CaseAddFriendActivity extends BaseActivity {
 	private void initView() {
 		et_name = (EditText) findViewById(R.id.et_name);
 		et_name.setText("我是 " +UserContext.getInstance().getUserName());
+		et_name.setSelection(et_name.getText().length());
 		setTextWhacher(CaseAddFriendActivity.this, et_name, 30);
 		iv_clean = (ImageView) findViewById(R.id.iv_clean);
 		iv_clean.setOnClickListener(new OnClickListener() {

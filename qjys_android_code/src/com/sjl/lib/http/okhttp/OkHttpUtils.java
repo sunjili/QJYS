@@ -289,7 +289,7 @@ public class OkHttpUtils {
 		HashMap<String, String> params = new HashMap<String, String>();
 		HttpSetting.addHttpParams(params, url);
 		params.put("phone", "18612984620");
-		OkHttpUtils.post().url(HttpSetting.BASE_URL + url).headers(headers).params(params).build().execute(callback);
+		OkHttpUtils.post().url(HttpSetting.getBaseUrl() + url).headers(headers).params(params).build().execute(callback);
 	}
 
 	public static <T> void post(String url, HashMap<String, String> params, Callback<T> callback) {
@@ -305,7 +305,7 @@ public class OkHttpUtils {
 		if(params != null && params.size() > 0) {
 			newparams.putAll(params);
 		}
-		OkHttpUtils.post().url(HttpSetting.BASE_URL + url).headers(headers).params(newparams).build().execute(callback);
+		OkHttpUtils.post().url(HttpSetting.getBaseUrl() + url).headers(headers).params(newparams).build().execute(callback);
 	}
 
 	public static class METHOD {

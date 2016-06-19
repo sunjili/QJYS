@@ -5,7 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +29,7 @@ import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.utils.EaseSmileUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.DateUtils;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
@@ -78,6 +83,14 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         return position;
     }
 
+    private SpannableStringBuilder createAtMeStr(Spannable message) {
+    	String attext = "[有人@我]";
+        SpannableStringBuilder style=new SpannableStringBuilder(attext); 
+        style.setSpan(new ForegroundColorSpan(Color.RED),0,attext.length(),Spannable.SPAN_EXCLUSIVE_INCLUSIVE); 
+        style.append(message);
+        return style;
+    }
+    
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -132,26 +145,61 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         } else {
             holder.unreadLabel.setVisibility(View.INVISIBLE);
         }
-
+        boolean someoneAtme  = false;
         if (conversation.getAllMsgCount() != 0) {
             // 把最后一条消息的内容作为item的message内容
             EMMessage lastMessage = conversation.getLastMessage();
             final String lastStr =  EaseCommonUtils.getMessageDigest(lastMessage, (this.getContext()));
+            String atStr = null;
+            try {
+				atStr = lastMessage.getStringAttribute("at");
+			} catch (HyphenateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            holder.message.setText("");
+            String[] atArray = null;
+            if(!TextUtils.isEmpty(atStr)) {
+            	atArray = atStr.split(",");
+            	if(atArray != null) {
+	            	for(String str : atArray) {
+	            		if(UserContext.getInstance().isMyself(str)) {
+	            			someoneAtme = true;
+	            			break;
+	            		}
+	            	}
+            	}
+            }
+            
+           
+            
             if(UserContext.getInstance().isMyself(lastMessage.getFrom())) {
-            	 holder.message.setText(EaseSmileUtils.getSmiledText(getContext(),"我: " + lastStr),
-		                    BufferType.SPANNABLE);
+            	
+            	Spannable ss = EaseSmileUtils.getSmiledText(getContext(),"我: " + lastStr);
+            	if(someoneAtme) {
+            		ss = createAtMeStr(ss);
+            	}
+                
+            	 holder.message.setText(ss,BufferType.SPANNABLE);
             } else {
+            	final boolean fsomeoneAtme = someoneAtme;
+ 
             	DoctorListManager.getInstance().getDoctorInfoByHXid(lastMessage.getFrom(), new OnGetDoctorInfoCallback() {
 					
 					@Override
 					public void onGet(DoctorInfo info) {
 						if(info != null) {
-							
-							holder.message.setText(EaseSmileUtils.getSmiledText(getContext(), info.getDisplayName() +": " +lastStr),
-					                    BufferType.SPANNABLE);
+							Spannable ss = EaseSmileUtils.getSmiledText(getContext(), info.getDisplayName() +": " +lastStr);
+							if(fsomeoneAtme) {
+			            		ss = createAtMeStr(ss);
+			            	}
+							holder.message.setText(ss,BufferType.SPANNABLE);
 						} else {
-							holder.message.setText(EaseSmileUtils.getSmiledText(getContext(), lastStr),
-				                    BufferType.SPANNABLE);
+							Spannable ss = EaseSmileUtils.getSmiledText(getContext(), lastStr);
+							if(fsomeoneAtme) {
+			            		ss = createAtMeStr(ss);
+			            	}
+							holder.message.setText(ss, BufferType.SPANNABLE);
 						}
 					}
 				});

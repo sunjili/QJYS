@@ -21,7 +21,7 @@ public class HttpSetting {
 	public static final String BASE_URL = "http://api.qijiyisheng.com";
 
 	// 测试环境
-//	public static final String TEST_BASE_URL = "http://101.200.130.188";
+	public static final String TEST_BASE_URL = "http://123.56.244.178:8080";
 
 	public static String AGENT = "qijiyisheng/" + VersionManager.APP_VERSION_NAME + "(" + Build.MANUFACTURER + ";"
 			+ Build.MODEL + ";" + "os" + Build.VERSION.RELEASE + ";" + AndroidDeviceManager.getCpuType() + ";"
@@ -100,6 +100,11 @@ public class HttpSetting {
 		} catch (Error e) {
 			return "";
 		}
+	}
+
+	public static String getBaseUrl() {
+		return TEST_BASE_URL;
+//		return BASE_URL;
 	}
 
 }

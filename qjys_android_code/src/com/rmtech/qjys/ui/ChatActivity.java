@@ -32,7 +32,6 @@ public class ChatActivity extends BaseActivity{
         //可以直接new EaseChatFratFragment使用
         if(chatType == QjConstant.CHATTYPE_GROUP) {
         	chatFragment = new ChatGroupFragment();
-
         } else {
         	chatFragment = new ChatFragment();
         }

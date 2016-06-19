@@ -9,6 +9,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -73,6 +74,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	private CaseInfo caseInfo;
 	protected ImageDataList imageDataList;
 	private String caseId;
+	private ProgressDialog mProgressDialog;
 
 	public ImageDataList getImageDataList() {
 		return imageDataList;
@@ -81,10 +83,21 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	public PhotoManagerFragment() {
 	}
 
+	private void dismissDialog() {
+		try {
+			if(mProgressDialog != null) {
+				mProgressDialog.dismiss();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.bfragment_photo_manager, container, false);
 		EventBus.getDefault().register(this);
+		mProgressDialog = ProgressDialog.show(getActivity(), null, "正在加载");
 		return rootView;
 	}
 
@@ -450,6 +463,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 
 	private void loadData() {
 		if(TextUtils.isEmpty(caseId)) {
+			dismissDialog();
 			return;
 		}
 		QjHttp.getImageList(true, caseId, folderId, new QjHttpCallbackNoParse<MImageList>() {
@@ -458,6 +472,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 			public void onError(Call call, Exception e) {
 				// TODO Auto-generated method stub
 				//错误吗303
+				dismissDialog();
 			}
 
 			@Override
@@ -465,6 +480,8 @@ public class PhotoManagerFragment extends QjBaseFragment {
 				if (getActivity() == null || getActivity().isFinishing()) {
 					return;
 				}
+				dismissDialog();
+
 				ArrayList<FolderDataInfo> list = new ArrayList<FolderDataInfo>();
 				imageDataList = response.data;
 				if(isRootFolder()) {
@@ -519,6 +536,12 @@ public class PhotoManagerFragment extends QjBaseFragment {
 
 	public void onUploadComplete(PhotoUploadStateInfo state) {
 		if(TextUtils.equals(state.getCaseId(),caseId) && TextUtils.equals(state.getFolder_id(),folderId)) {
+			if(imageDataList == null) {
+				return;
+			}
+			if(imageDataList.images == null) {
+				imageDataList.images = new ArrayList<PhotoDataInfo>();
+			}
 			imageDataList.images.add(state.getPhotoInfo());
 			mAdapter.add(state.getPhotoInfo());
 			onDataChanged();

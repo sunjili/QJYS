@@ -314,8 +314,82 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
 
 	@Override
 	public void setRotationTo(float degrees) {
-		mSuppMatrix.setRotate(degrees % 360);
+		int degr = (int) (degrees % 360);
+		ImageView imageView = getImageView();
+		Drawable d = null;
+		if(imageView != null) {
+			d  = imageView.getDrawable();
+		}
+		if (null == imageView || null == d) {
+			return;
+		}
+
+		final float viewWidth = getImageViewWidth(imageView);
+		final float viewHeight = getImageViewHeight(imageView);
+		final int drawableWidth = d.getIntrinsicWidth();
+		final int drawableHeight = d.getIntrinsicHeight();
+		
+//		Log.d("sssssssss","degr = "+degr);
+//		Log.d("sssssssss","viewWidth = "+viewWidth);
+//		Log.d("sssssssss","viewHeight = "+viewHeight);
+//		Log.d("sssssssss","drawableWidth = "+drawableWidth);
+//		Log.d("sssssssss","drawableHeight = "+drawableHeight);
+		
+//		float widthScale = viewWidth / drawableWidth;
+//		float heightScale = viewHeight / drawableHeight;
+//		
+//		if(degr == 0 || degr == -180) {
+//			if(drawableHeight > drawableWidth) {
+//				 widthScale = viewWidth / drawableHeight;
+//				 heightScale = viewHeight / drawableWidth;
+//			}
+//		} else {
+//			if(drawableWidth > drawableHeight) {
+//				 widthScale = getMediumScale();
+//				 heightScale = getMediumScale();
+//			}
+//		}
+		float scale = 1.0f;
+		if(degr == 0 || degr == -180) {
+			
+		} else {
+			if(drawableWidth > drawableHeight) {
+				scale = getMediumScale();
+			} else if(drawableHeight > drawableWidth) {
+				scale = 0.5f;
+			}
+		}
+		
+		Log.d("sssssssss","scale = "+scale);
+		mSuppMatrix.setRotate(degr);
+
+
 		checkAndDisplayMatrix();
+		
+//		mSuppMatrix.setScale(scale, scale, viewWidth/2, viewHeight/2);
+		imageView.post(new AnimatedZoomRunnable(getScale(), scale, viewWidth/2, viewHeight/2));
+
+//		if(degr == 0 || degr == -180) {
+//			if(drawableHeight > drawableWidth) {
+//				mDisplayRect.set(0, 0, d.getIntrinsicHeight(), d.getIntrinsicWidth());
+//				Matrix matrix = getDrawMatrix();
+//				matrix .mapRect(mDisplayRect);
+//				setImageViewMatrix(matrix);
+//			}
+//		} else {
+//			if(drawableWidth > drawableHeight) {
+//				mDisplayRect.set(0, 0, d.getIntrinsicHeight(), d.getIntrinsicWidth());
+//				Matrix matrix = getDrawMatrix();
+//				matrix .mapRect(mDisplayRect);
+//				setImageViewMatrix(matrix);
+//			}
+//		}
+		
+		
+
+//		checkAndDisplayMatrix();
+
+
 	}
 
 	@Override

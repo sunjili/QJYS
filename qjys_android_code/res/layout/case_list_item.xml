@@ -21,6 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:singleLine="true"
+            android:maxWidth="200dp"
+            android:ellipsize="end"
             android:text="19病房 10床 孙悟空"
             android:textColor="@color/c3"
             android:textSize="17sp" />
@@ -63,7 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingRight="40dip"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:paddingRight="50dip"
             android:text="主管医生:孙医生 参与医生:王大夫、朱大夫、等"
             android:textColor="@color/c7e"
             android:textSize="13sp" />
@@ -85,6 +89,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="50dip"
         android:layout_marginTop="10dip"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:text="骨科 在急诊检查，诊断：肚子疼，腿部骨折，大脑缺水"
         android:textColor="@color/cb2"
         android:textSize="13sp" />

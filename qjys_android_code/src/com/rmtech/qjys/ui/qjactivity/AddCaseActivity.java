@@ -125,6 +125,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		if (TextUtils.isEmpty(str)) {
 			nameEt.setText("新病人"+ ((((int)(Math.random()*10))%9) +1));
 		}
+		nameEt.setSelection(nameEt.getText().length());
 		setTextWhacher(AddCaseActivity.this, nameEt, 60);
 		genderTv = (TextView) findViewById(R.id.gender_tv);
 		genderWomanTv = (TextView) findViewById(R.id.gender_woman_tv);

@@ -1,5 +1,7 @@
 package com.hyphenate.easeui.widget;
 
+import java.util.HashSet;
+
 import com.rmtech.qjys.model.DoctorInfo;
 
 import android.app.Activity;
@@ -112,6 +114,10 @@ public abstract class EaseChatPrimaryMenuBase extends RelativeLayout{
 
 	public void onAddAtFriend(DoctorInfo info) {
 		
+	}
+
+	public HashSet<DoctorInfo> getAtDoctorList() {
+		return null;
 	}
 
 }

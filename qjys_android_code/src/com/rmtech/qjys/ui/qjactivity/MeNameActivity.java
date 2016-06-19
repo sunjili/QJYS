@@ -113,6 +113,7 @@ public class MeNameActivity extends CaseEidtBaseActivity {
 		et_name = (EditText) findViewById(R.id.et_name);
 		setTextWhacher(MeNameActivity.this, et_name, 60);
 		et_name.setText(name);
+		et_name.setSelection(et_name.getText().length());
 	}
 
 	protected boolean showTitleBar() {

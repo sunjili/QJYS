@@ -2,6 +2,7 @@ package com.hyphenate.easeui.ui;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import android.app.Activity;
@@ -10,13 +11,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.ClipboardManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -58,15 +60,16 @@ import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 import com.rmtech.qjys.ui.qjactivity.ChatDetailActivity;
 import com.rmtech.qjys.ui.qjactivity.DoctorPickActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
-import com.rmtech.qjys.utils.PhotoUtil;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.rmtech.qjys.utils.PhotoUtil;
 import com.sjl.lib.multi_image_selector.MultiImageSelectorActivity;
-
 /**
  * 可以直接new出来使用的聊天对话页面fragment，
  * 使用时需调用setArguments方法传入chatType(会话类型)和userId(用户或群id)
@@ -194,14 +197,25 @@ public class EaseChatFragment extends QjBaseFragment {
 
         inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
-    
-    protected void onAtShowing() {
-    	DoctorPickActivity.show(getActivity(), toChatUsername, null, QjConstant.REQUEST_CODE_AT);
-    }
+		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	}
 
-    /**
+	protected void onAtShowing() {
+		CaseInfo mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(toChatUsername);
+		Intent intent = new Intent(getActivity(), DoctorPickActivity.class);//
+		intent.putExtra("case_info", (Parcelable) mCaseInfo);
+		intent.putExtra("patient_id", toChatUsername);
+		intent.putExtra("type", QjConstant.REQUEST_CODE_AT);
+		if (mCaseInfo.participate_doctor != null) {
+			intent.putParcelableArrayListExtra("selectedDoctorList",
+					new ArrayList<DoctorInfo>(mCaseInfo.participate_doctor));
+		}
+		startActivityForResult(intent, QjConstant.REQUEST_CODE_AT);
+		// DoctorPickActivity.show(getActivity(), toChatUsername, null,
+		// QjConstant.REQUEST_CODE_AT);
+	}
+
+	/**
      * 设置属性，监听等
      */
     protected void setUpView() {
@@ -682,6 +696,20 @@ public class EaseChatFragment extends QjBaseFragment {
     //==========================================================================
     protected void sendTextMessage(String content) {
         EMMessage message = EMMessage.createTxtSendMessage(content, toChatUsername);
+        
+        HashSet<DoctorInfo> atset = inputMenu.getAtDoctorList();
+        StringBuilder sb  = new StringBuilder();
+        if(atset != null) {
+        	for(DoctorInfo info :atset) {
+        		if(info != null) {
+        			sb.append(info.id).append(",");
+        		}
+        	}
+        }
+        String atstr = sb.toString(); 
+        if(!TextUtils.isEmpty(atstr)) {
+        	message.setAttribute("at", atstr.substring(0, atstr.length()-1));
+        }
         sendMessage(message);
     }
     
@@ -867,7 +895,7 @@ public class EaseChatFragment extends QjBaseFragment {
                     messageList.refresh();
                 }
             }
-        }, true).show();;
+        }, true).show();
     }
 
     /**
