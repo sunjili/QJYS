@@ -50,7 +50,7 @@ public class MeCleanMemoryActivity extends BaseActivity implements
 		context = MeCleanMemoryActivity.this;
 		initView();
 		if(isFromSetting()){
-			setTitle("本地控件清理");
+			setTitle("本地空间清理");
 			setLeftTitle("返回");
 			tv_memory.setText("缓存");
 			tv_top.setText("");

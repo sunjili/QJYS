@@ -87,6 +87,7 @@ public class QjHttp {
 	public static final String URL_SORT_IMAGE = "/patient/sortimage";
 	public static final String URL_DOCTOR_DELETEFRIEND = "/doctor/deletefriend";
 	public static final String URL_APP_UPDATE = "/app/update";
+	public static final String URL_APP_QRURL = "/app/qrurl";
 	public static final String URL_PATIENTS_INFO = "/patient/patientsinfo";
 
 	/**
@@ -102,6 +103,13 @@ public class QjHttp {
 	 */
 	public static void appUpdate(QjHttpCallback<MVersionData> callback) {
 		OkHttpUtils.post(URL_APP_UPDATE, null, callback);
+	}
+	
+	/**
+	 * 47二维码地址 /app/qrurl 参数
+	 */
+	public static void qrUrl(QjHttpCallback<MUrlData> callback) {
+		OkHttpUtils.post(URL_APP_QRURL, null, callback);
 	}
 	
 	/**

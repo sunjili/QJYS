@@ -62,7 +62,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 							continue;
 						}
 						if(!TextUtils.isEmpty(stringExtra)) {
-							stringExtra = stringExtra + "&&"+ itemStr;//(strings[i]);
+							stringExtra = stringExtra + ","+ itemStr;//(strings[i]);
 						} else {
 							stringExtra = itemStr;
 						}
@@ -70,7 +70,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 					String trim = et_diagnose.getText().toString().trim();
 					if(!TextUtils.isEmpty(trim)) {
 						if(!TextUtils.isEmpty(stringExtra)) {
-							stringExtra = stringExtra + "&&"+ trim;//(strings[i]);
+							stringExtra = stringExtra + ","+ trim;//(strings[i]);
 						} else {
 							stringExtra = trim;
 						}
@@ -127,7 +127,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 		ll_layout.removeAllViews();
 		if (TextUtils.isEmpty(tempStr)) {
 		} else {
-			String[] strings = tempStr.split("&&");
+			String[] strings = tempStr.split(",");
 			final List<String> list = new ArrayList<String>();
 			for (int i = 0; i < strings.length; i++) {
 				if(TextUtils.isEmpty(strings[i])) {
@@ -151,7 +151,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 							if(newString.equals("")){
 								newString = s;
 							}else{
-								newString = newString + "&&" + s;
+								newString = newString + "," + s;
 							}
 						}
 						stringExtra = newString;
@@ -191,7 +191,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 			String trim = et_diagnose.getText().toString().trim();
 			if (!TextUtils.isEmpty(trim)) {
 				if (!TextUtils.isEmpty(stringExtra)) {
-					stringExtra = stringExtra + "&&" + trim;
+					stringExtra = stringExtra + "," + trim;
 				} else {
 					stringExtra = trim;
 				}

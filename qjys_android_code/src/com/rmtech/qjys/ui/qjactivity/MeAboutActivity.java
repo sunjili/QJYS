@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rmtech.qjys.R;
@@ -33,6 +34,8 @@ public class MeAboutActivity extends BaseActivity implements
 	private MeItemLayout me_about_xieyi;
 	/***  反馈建议  */
 	private MeItemLayout me_about_fankui;
+	
+	private TextView versioncode;
 	
 	
 	
@@ -93,6 +96,8 @@ public class MeAboutActivity extends BaseActivity implements
 		me_about_xieyi.setOnClickListener(this);
 		me_about_fankui = (MeItemLayout) findViewById(R.id.me_about_fankui);
 		me_about_fankui.setOnClickListener(this);
+		versioncode = (TextView) findViewById(R.id.versioncode);
+		versioncode.setText("奇迹医生  V" + getVersionName(getActivity()));
 	}
 
 	protected boolean showTitleBar() {

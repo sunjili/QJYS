@@ -245,11 +245,12 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 						public void run() {
 							EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_ADD));
 							pd.dismiss();
-							buttonAgree.setText(str2);
-							buttonAgree.setTextColor(context.getResources().getColor(R.color.c9));
-							buttonAgree.setBackgroundDrawable(null);
-							buttonAgree.setEnabled(false);
-							buttonRefuse.setVisibility(View.INVISIBLE);
+							buttonAgree.setVisibility(View.GONE);
+							buttonRefuse.setVisibility(View.VISIBLE);
+							buttonRefuse.setText(str2);
+							buttonRefuse.setTextColor(context.getResources().getColor(R.color.c9));
+							buttonRefuse.setBackgroundDrawable(null);
+							buttonRefuse.setEnabled(false);
 						}
 					});
 				} catch (final Exception e) {

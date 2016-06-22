@@ -533,6 +533,17 @@ public class QjHelper {
 		public void onUserRemoved(String groupId, String groupName) {
 			// TODO 提示用户被T了，demo省略此步骤
 			DoctorListManager.addBeDeletedGroupIds(groupId);
+			EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
+			msg.setChatType(ChatType.GroupChat);
+			msg.setFrom(groupId);
+			msg.setTo(groupId);
+			msg.setMsgId(UUID.randomUUID().toString());
+			msg.addBody(new EMTextMessageBody("您已被管理员移出了讨论组 "));
+			msg.setStatus(Status.SUCCESS);
+			// 保存同意消息
+			EMClient.getInstance().chatManager().saveMessage(msg);
+			// 提醒新消息
+			getNotifier().viberateAndPlayTone(msg);
 			broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
 		}
 
@@ -589,53 +600,55 @@ public class QjHelper {
 
 		@Override
 		public void onAutoAcceptInvitationFromGroup(final String groupId, final String inviter, String inviteMessage) {
-			// 被邀请
-			isMyself = false;
-			final String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
-			if (TextUtils.equals(inviter, UserContext.getInstance().getUserId())) {
-				isMyself = true;// st3 = "你创建了讨论组";
-			}
-			final EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
-			msg.setChatType(ChatType.GroupChat);
-			msg.setFrom(inviter);
-			msg.setTo(groupId);
-			msg.setMsgId(UUID.randomUUID().toString());
-			if (isMyself) {
-				msg.addBody(new EMTextMessageBody("你创建了讨论组"));
-				msg.setStatus(EMMessage.Status.SUCCESS);
-				// 保存邀请消息
-				EMClient.getInstance().chatManager().saveMessage(msg);
-				// 提醒新消息
-				if (!isMyself) {
-					getNotifier().viberateAndPlayTone(msg);
-				}
-				EMLog.d(TAG, "onAutoAcceptInvitationFromGroup groupId:" + groupId);
-				// 发送local广播
-				broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
-			} else {
-				DoctorListManager.getInstance().getDoctorInfoByHXid(inviter, new OnGetDoctorInfoCallback() {
-
-					@Override
-					public void onGet(DoctorInfo info) {
-						if (info != null && !TextUtils.isEmpty(info.getDisplayName())) {
-							msg.addBody(new EMTextMessageBody(info.getDisplayName() + " " + st3));
-						} else {
-							msg.addBody(new EMTextMessageBody(inviter + " " + st3));
-						}
-
-						msg.setStatus(EMMessage.Status.SUCCESS);
-						// 保存邀请消息
-						EMClient.getInstance().chatManager().saveMessage(msg);
-						// 提醒新消息
-						if (!isMyself) {
-							getNotifier().viberateAndPlayTone(msg);
-						}
-						EMLog.d(TAG, "onAutoAcceptInvitationFromGroup groupId:" + groupId);
-						// 发送local广播
-						broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
-					}
-				});
-			}
+//			// 被邀请
+//			isMyself = false;
+//			final String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
+//			if (TextUtils.equals(inviter, UserContext.getInstance().getUserId())) {
+//				isMyself = true;// st3 = "你创建了讨论组";
+//			}
+//			final EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
+//			msg.setChatType(ChatType.GroupChat);
+//			msg.setFrom(inviter);
+//			msg.setTo(groupId);
+//			msg.setMsgId(UUID.randomUUID().toString());
+//			if (isMyself) {
+//				msg.addBody(new EMTextMessageBody("你创建了讨论组"));
+//				msg.setStatus(EMMessage.Status.SUCCESS);
+//				// 保存邀请消息
+//				EMClient.getInstance().chatManager().saveMessage(msg);
+//				// 提醒新消息
+//				if (!isMyself) {
+//					getNotifier().viberateAndPlayTone(msg);
+//				}
+//				EMLog.d(TAG, "onAutoAcceptInvitationFromGroup groupId:" + groupId);
+//				// 发送local广播
+//				broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
+//			} else {
+//				DoctorListManager.getInstance().getDoctorInfoByHXid(inviter, new OnGetDoctorInfoCallback() {
+//
+//					@Override
+//					public void onGet(DoctorInfo info) {
+//						if (info != null && !TextUtils.isEmpty(info.getDisplayName())) {
+//							msg.addBody(new EMTextMessageBody(info.getDisplayName() + " " + st3));
+//						} else {
+//							msg.addBody(new EMTextMessageBody(inviter + " " + st3));
+//						}
+//
+//						msg.setStatus(EMMessage.Status.SUCCESS);
+//						// 保存邀请消息
+//						EMClient.getInstance().chatManager().saveMessage(msg);
+//						// 提醒新消息
+//						if (!isMyself) {
+//							getNotifier().viberateAndPlayTone(msg);
+//						}
+//						EMLog.d(TAG, "onAutoAcceptInvitationFromGroup groupId:" + groupId);
+//						// 发送local广播
+//						broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
+//					}
+//				});
+//			}
+			// 发送local广播
+			broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
 		}
 	}
 

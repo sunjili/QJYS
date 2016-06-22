@@ -181,7 +181,7 @@ public class CaseFragment extends QjBaseFragment {
 					final int section, final int position, long id) {
 
 				CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
-				if (DoctorListManager.isGroupDeleted(info.group_id) || DoctorListManager.isGroupBeDeleted(info.group_id) ) {
+				if (false && DoctorListManager.isGroupDeleted(info.group_id) || DoctorListManager.isGroupBeDeleted(info.group_id) ) {
 					CustomSimpleDialog.Builder builder = new Builder(
 							getActivity());
 					builder.setTitle("提示");
@@ -444,8 +444,9 @@ public class CaseFragment extends QjBaseFragment {
 												.remove(positionInSection);
 										QjHttp.deletePatient("2", caseinfo.id, null);
 										QjHttp.deleteMembers(caseinfo.id, caseinfo.getParticipateDoctorIds(), null);
-//										CaseFragment.deleteGrop(getActivity(),
-//												caseinfo.group_id);
+										GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(caseinfo.group_id);
+										CaseFragment.deleteGrop(getActivity(),
+												caseinfo.group_id);
 										if (hosList.patients.size() == 0) {
 											mPatientList.remove(hosList);
 

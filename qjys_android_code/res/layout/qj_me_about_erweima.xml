@@ -44,7 +44,9 @@
             android:id="@+id/iv_qrcode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_address_list_change_number" />
+            android:minHeight="240dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/default_error" />
 
         <View
             android:layout_width="match_parent"

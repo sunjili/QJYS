@@ -21,13 +21,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.protobuf.micro.e;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.R;
 
 /**
@@ -108,35 +116,63 @@ public class FileListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
-
+		final ViewHolder holder;
 		if (row == null) {
+			holder = new ViewHolder();
 			row = mInflater.inflate(R.layout.file, parent, false);
+			holder.view = (TextView) row.findViewById(R.id.textView);
+			holder.cbox = (ImageView) row.findViewById(R.id.checkbox);
+			holder.icon = (ImageView) row.findViewById(R.id.icon);
+			row.setTag(holder);
+		}else {
+			holder = (ViewHolder) row.getTag();
 		}
 
-		TextView view = (TextView) row.findViewById(R.id.textView);
-		ImageView cbox = (ImageView) row.findViewById(R.id.checkbox);
 
 		// Get the file at the current position
 		final File file = getItem(position);
 		if (file.isDirectory()) {
-			cbox.setVisibility(View.GONE);
+			holder.cbox.setVisibility(View.GONE);
 		} else {
 			if (getResultList().contains(file.getAbsolutePath())) {
-				cbox.setImageResource(R.drawable.btn_choice_press);
+				holder.cbox.setImageResource(R.drawable.btn_choice_press);
 			} else {
-				cbox.setImageResource(R.drawable.btn_choice_nor);
+				holder.cbox.setImageResource(R.drawable.btn_choice_nor);
 			}
-			cbox.setVisibility(View.VISIBLE);
+			holder.cbox.setVisibility(View.VISIBLE);
 		}
 
 		// Set the TextView as the file name
-		view.setText(file.getName());
+		holder.view.setText(file.getName());
 
 		// If the item is not a directory, use the file icon
-		int icon = file.isDirectory() ? ICON_FOLDER : ICON_FILE;
-		view.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
+		
+		if(file.isDirectory()){
+			holder.icon.setImageResource(ICON_FOLDER);
+		}else {
+			if(FileUtils.isImageFileType(file.getAbsolutePath())){
+				// 显示图片
+            	DisplayImageOptions options = new DisplayImageOptions.Builder()
+        		.showImageForEmptyUri(R.drawable.default_error)
+        		.showImageOnFail(R.drawable.default_error)
+        		.showImageOnLoading(R.drawable.default_error)
+        		//.resetViewBeforeLoading(true)
+        		.cacheInMemory(true)
+        		.build();
+            	
+            	ImageLoader.getInstance().displayImage("file://" + file.getAbsolutePath(), holder.icon, options);
+			}else {
+				holder.icon.setImageResource(ICON_FILE);
+			}
+		}
 
 		return row;
+	}
+	
+	private static class ViewHolder {
+		ImageView icon;
+		TextView view;
+		ImageView cbox;
 	}
 
 }

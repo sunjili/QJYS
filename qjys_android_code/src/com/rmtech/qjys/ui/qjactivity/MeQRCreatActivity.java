@@ -149,7 +149,7 @@ public class MeQRCreatActivity extends BaseActivity {
             bitmap.setPixels(pixels, 0, widthPix, 0, 0, widthPix, heightPix);  
   
             if (logoBm != null) {  
-                bitmap = addLogo(bitmap, logoBm);  
+                bitmap = addLogo(bitmap, logoBm);
             }  
             
             //必须使用compress方法将bitmap保存到文件中再进行读取。直接返回的bitmap是没有任何压缩的，内存消耗巨大！  

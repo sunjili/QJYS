@@ -66,6 +66,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	private int mState = STATE_ONSCREEN;
 	private int mScrollY;
 	private int mMinRawY = 0;
+	private int folderNumber = 0;
 	private TranslateAnimation anim;
 
 	private PhotoDataGridAdapter mAdapter;

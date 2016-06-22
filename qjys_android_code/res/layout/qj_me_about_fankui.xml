@@ -51,5 +51,38 @@
         android:singleLine="true" />
     
     <include layout="@layout/qj_me_split_line"/>
+    
+    <RelativeLayout 
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_margin="12dp"
+            android:layout_centerHorizontal="true">
+            
+            <TextView 
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="客服电话：010-82358668"
+                android:textColor="@color/c9"
+                android:textSize="12sp"/>
+            
+            <TextView 
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="电子邮件：yumh@qijiyisheng.com"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/c9"
+                android:textSize="12sp"/>
+            
+            
+        </LinearLayout>
+        
+    </RelativeLayout>
 
 </LinearLayout>

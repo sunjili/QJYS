@@ -25,6 +25,7 @@ public class CaseInfo implements Serializable, Parcelable {
 	public String name;// : 姓名
 	public String hos_id;// ：医院id
 	public String hos_name;// ：医院名
+	public String hos_fullname;// ：医院名
 	public int sex;// ：性别 0未知 1男 2女
 	public String age;// : 年龄
 	public String department;// ： 科室
@@ -73,6 +74,7 @@ public class CaseInfo implements Serializable, Parcelable {
 		dest.writeString(this.name);
 		dest.writeString(this.hos_id);
 		dest.writeString(this.hos_name);
+		dest.writeString(this.hos_fullname);
 		dest.writeInt(this.sex);
 		dest.writeString(this.age);
 		dest.writeString(this.department);
@@ -98,6 +100,7 @@ public class CaseInfo implements Serializable, Parcelable {
 		this.name = in.readString();
 		this.hos_id = in.readString();
 		this.hos_name = in.readString();
+		this.hos_fullname = in.readString();
 		this.sex = in.readInt();
 		this.age = in.readString();
 		this.department = in.readString();

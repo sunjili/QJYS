@@ -10,7 +10,7 @@
         style="@style/qj_add_case_right_hit_et"
         android:layout_height="@dimen/qj_add_case_item_height"
         android:layout_alignParentRight="true"
-        android:gravity="right"
+        android:gravity="right|center"
         android:hint="输入患者诊断信息" />
 
     <View

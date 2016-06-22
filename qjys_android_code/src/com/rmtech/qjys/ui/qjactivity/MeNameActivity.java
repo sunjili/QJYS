@@ -37,7 +37,11 @@ public class MeNameActivity extends CaseEidtBaseActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.qj_me_name);
-		setTitle("姓名");
+		if (mCaseInfo != null){
+			setTitle("病例名称");
+		}else {
+			setTitle("姓名");	
+		}
 		setLeftTitle("返回");
 		setRightTitle("保存", new OnClickListener() {
 
@@ -111,7 +115,11 @@ public class MeNameActivity extends CaseEidtBaseActivity {
 
 	private void initView() {
 		et_name = (EditText) findViewById(R.id.et_name);
-		setTextWhacher(MeNameActivity.this, et_name, 60);
+		if (mCaseInfo != null){
+			setTextWhacher(MeNameActivity.this, et_name, 60);
+		}else {
+			setTextWhacher(MeNameActivity.this, et_name, 45);
+		}
 		et_name.setText(name);
 		et_name.setSelection(et_name.getText().length());
 	}

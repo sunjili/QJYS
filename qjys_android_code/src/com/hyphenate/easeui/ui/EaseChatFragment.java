@@ -62,6 +62,7 @@ import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
+import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.ui.fragment.QjBaseFragment;
 import com.rmtech.qjys.ui.qjactivity.ChatDetailActivity;
 import com.rmtech.qjys.ui.qjactivity.DoctorPickActivity;
@@ -207,8 +208,17 @@ public class EaseChatFragment extends QjBaseFragment {
 		intent.putExtra("patient_id", toChatUsername);
 		intent.putExtra("type", QjConstant.REQUEST_CODE_AT);
 		if (mCaseInfo.participate_doctor != null) {
+			List<DoctorInfo> newDoctorInfos = new ArrayList<DoctorInfo>();
+			newDoctorInfos.addAll(mCaseInfo.participate_doctor);
+			newDoctorInfos.add(mCaseInfo.admin_doctor);
+			for( int i=0;i<newDoctorInfos.size();i++){
+				DoctorInfo doctorInfo = newDoctorInfos.get(i);
+				if(UserContext.getInstance().isMyself(doctorInfo.id)){
+					newDoctorInfos.remove(i);
+				}
+			}
 			intent.putParcelableArrayListExtra("selectedDoctorList",
-					new ArrayList<DoctorInfo>(mCaseInfo.participate_doctor));
+					new ArrayList<DoctorInfo>(newDoctorInfos));
 		}
 		startActivityForResult(intent, QjConstant.REQUEST_CODE_AT);
 		// DoctorPickActivity.show(getActivity(), toChatUsername, null,
@@ -708,7 +718,7 @@ public class EaseChatFragment extends QjBaseFragment {
         }
         String atstr = sb.toString(); 
         if(!TextUtils.isEmpty(atstr)) {
-        	message.setAttribute("at", atstr.substring(0, atstr.length()-1));
+//        	message.setAttribute("at", atstr.substring(0, atstr.length()-1));
         }
         sendMessage(message);
     }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.rmtech.qjys.R;
 
@@ -53,12 +54,17 @@ public class DiagnoseAddView extends RelativeLayout implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.diagnose_image:
+			if(mRootView.getChildCount()>10){
+				Toast.makeText(getContext(), "您不能添加更多的诊断！", Toast.LENGTH_SHORT).show();
+				return;
+			}
 			View addView = View.inflate(getContext(),
 					R.layout.bview_diagnose_add_item, null);
-			editViewList
-					.add((EditText) addView.findViewById(R.id.diagnose_et1));
-
-			int index = mRootView.getChildCount() - 1;
+			editViewList.add((EditText) addView.findViewById(R.id.diagnose_et1));
+			String string = ((EditText) findViewById(R.id.diagnose_et2)).getText().toString();
+			((EditText) addView.findViewById(R.id.diagnose_et1)).setText(string);
+			((EditText) findViewById(R.id.diagnose_et2)).setText("");
+			int index = mRootView.getChildCount()-1;
 			mRootView.addView(addView, index);
 			break;
 		}
@@ -74,7 +80,7 @@ public class DiagnoseAddView extends RelativeLayout implements
 				continue;
 			}
 			sb.append(str);
-			sb.append("&&");
+			sb.append(",");
 		}
 		if (sb.length() > 2) {
 			return sb.toString().substring(0, sb.length() - 2);

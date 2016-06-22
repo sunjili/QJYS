@@ -145,7 +145,7 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		keshiTv = (TextView) findViewById(R.id.keshi_tv);
 		keshiEt = (EditText) findViewById(R.id.keshi_et);
 		setTextWhacher(AddCaseActivity.this, keshiEt, 60);
-		keshiEt.setText(UserContext.getInstance().getUser().department);
+		keshiEt.setText(UserContext.getInstance().getUser().department.equals("0")?"":UserContext.getInstance().getUser().department);
 		roomTv = (TextView) findViewById(R.id.room_tv);
 		roomTitleTv = (TextView) findViewById(R.id.room_title_tv);
 		roomEt = (EditText) findViewById(R.id.room_et);
@@ -176,10 +176,10 @@ public class AddCaseActivity extends BaseActivity implements OnClickListener {
 		info.age = ageEt.getEditableText().toString();
 		info.hos_name = getHospitalName();
 		info.department = keshiEt.getEditableText().toString();
-		info.bed_no = bedEt.getEditableText().toString();
+		info.bed_no = TextUtils.isEmpty(bedEt.getEditableText().toString()) ? "0": bedEt.getEditableText().toString();
 		//
 		info.diagnose = createDiagnose();//
-		info.ward_no = roomEt.getEditableText().toString();
+		info.ward_no = TextUtils.isEmpty(roomEt.getEditableText().toString()) ? "0": roomEt.getEditableText().toString();
 		info.treat_state = treat_state;
 		info.procedure_title = mFlowInfo.title;
 		info.procedure_text = mFlowInfo.procedure;

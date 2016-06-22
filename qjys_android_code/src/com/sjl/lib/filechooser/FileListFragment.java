@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ListFragment;
@@ -92,7 +93,6 @@ public class FileListFragment extends ListFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		mAdapter = new FileListAdapter(getActivity());
 		mPath = getArguments() != null ? getArguments().getString(
 				FileChooserActivity.PATH) : Environment
@@ -102,6 +102,9 @@ public class FileListFragment extends ListFragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		setEmptyText(getString(R.string.empty_directory));
+        Drawable divider = getContext().getResources().getDrawable(R.color.cd9);
+        this.getListView().setDivider(divider);
+        this.getListView().setDividerHeight(1);//必须要把setDividerHeight放在setDivider的后面
 		setListAdapter(mAdapter);
 		setListShown(false);
 

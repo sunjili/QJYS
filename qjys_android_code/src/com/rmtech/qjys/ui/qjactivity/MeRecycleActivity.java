@@ -56,6 +56,7 @@ import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.utils.DoctorListManager;
+import com.rmtech.qjys.utils.GroupAndCaseListManager;
 import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.http.okhttp.OkHttpUtils;
 import com.sjl.lib.pinnedheaderlistview.PinnedHeaderListView;
@@ -482,8 +483,9 @@ public class MeRecycleActivity extends BaseActivity {
 										hosList.patients
 												.remove(positionInSection);
 										QjHttp.deletePatient("3", caseinfo.id, null);
-										CaseFragment.deleteGrop(getActivity(),
-												caseinfo.group_id);
+//										GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(caseinfo.group_id);
+//										CaseFragment.deleteGrop(getActivity(),
+//												caseinfo.group_id);
 										if (hosList.patients.size() == 0) {
 											mPatientList.remove(hosList);
 

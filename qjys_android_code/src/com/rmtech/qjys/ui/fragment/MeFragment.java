@@ -124,7 +124,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 			me_sex.setRightText("");
 		}
 		me_hospital.setRightText(meValue.hos_fullname);
-		me_room.setRightText(meValue.department);
+		me_room.setRightText(meValue.department.equals("0")?"":meValue.department);
 		ImageLoader.getInstance().displayImage(meValue.head, iv_head, QjConstant.optionsHead);
 
 		try {

@@ -6,7 +6,16 @@ import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.rmtech.qjys.QjConstant;
+import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.callback.QjHttpCallback;
+import com.rmtech.qjys.model.gson.MBase;
+import com.rmtech.qjys.model.gson.MUrlData;
+import com.rmtech.qjys.model.gson.MVersionData;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.view.SharePopWindow;
 import com.sjl.lib.alertview.OnItemClickListener;
@@ -45,6 +54,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import okhttp3.Call;
 
 /***
  * 二维码 页面
@@ -62,6 +72,7 @@ public class MeAboutErweimaActivity extends BaseActivity {
 	private ImageView iv_qrcode;
 	private RelativeLayout share_view;
 	private String qrImageUrl;
+	private SharePopWindow sharePopWindow;
 	
 	
 	@Override
@@ -72,6 +83,7 @@ public class MeAboutErweimaActivity extends BaseActivity {
 		setLeftTitle("返回");
 		initView();
 		initUMService();
+		loadQrUrl();
 		context = MeAboutErweimaActivity.this;
 		setRightTitle(R.drawable.btn_me_share, new OnClickListener() {
 
@@ -80,10 +92,35 @@ public class MeAboutErweimaActivity extends BaseActivity {
 			public void onClick(View v) {
 				// TODO 分享
 				
-				SharePopWindow sharePopWindow = new SharePopWindow(context, displaylist, mItemClickListener);
+				sharePopWindow = new SharePopWindow(context, displaylist, mItemClickListener);
 				sharePopWindow.setTouchable(true);
 				sharePopWindow.showAtLocation(share_view, Gravity.BOTTOM, 0, 0);
 				sharePopWindow.setBackgroundAlpha(0.5f);
+			}
+		});
+	}
+	
+	public void loadQrUrl(){
+		QjHttp.qrUrl(new QjHttpCallback<MUrlData>() {
+			
+			@Override
+			public MUrlData parseNetworkResponse(String str) throws Exception {
+				// TODO Auto-generated method stub
+				return new Gson().fromJson(str, MUrlData.class);
+			}
+			
+			@Override
+			public void onResponseSucces(MUrlData response) {
+				// TODO Auto-generated method stub
+				if(response != null && response.data != null){
+					ImageLoader.getInstance().displayImage(response.data.url, iv_qrcode, QjConstant.optionsImage);
+				}
+			}
+			
+			@Override
+			public void onError(Call call, Exception e) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 	}
@@ -117,6 +154,9 @@ public class MeAboutErweimaActivity extends BaseActivity {
 				// 将二维码压缩存到本地
 				try {
 					String filePath = Environment.getExternalStorageDirectory() + "/qjys" + File.separator + "qrQJYSPic" + ".jpg";
+					if(new File(filePath).exists()){
+						return;
+					}
 				    iv_qrcode.setDrawingCacheEnabled(true);
 				    Bitmap bitmap = Bitmap.createBitmap(iv_qrcode.getDrawingCache());
 				    iv_qrcode.setDrawingCacheEnabled(false);
@@ -126,7 +166,7 @@ public class MeAboutErweimaActivity extends BaseActivity {
 					e.printStackTrace();
 				}
 			}
-			
+			sharePopWindow.dismiss();
 		}
 		
 	};

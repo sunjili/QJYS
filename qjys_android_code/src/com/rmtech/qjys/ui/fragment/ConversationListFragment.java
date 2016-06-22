@@ -1,5 +1,6 @@
 package com.rmtech.qjys.ui.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.BroadcastReceiver;
@@ -8,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
+import android.text.style.TtsSpan.ElectronicBuilder;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -24,12 +27,15 @@ import android.widget.Toast;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMConversation.EMConversationType;
+import com.hyphenate.chat.EMGroup;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
+import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.NetUtils;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.db.InviteMessgeDao;
 import com.rmtech.qjys.model.CaseInfo;
+import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.MainActivity;
@@ -42,6 +48,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 	private TextView errorText;
 	private ImageView no_data_view;
 	private View errormsg_layout;
+	private boolean isContainsMyself = true;
 
 	@Override
 	protected void initView() {
@@ -107,7 +114,18 @@ public class ConversationListFragment extends EaseConversationListFragment {
 					Intent intent = new Intent(getActivity(), ChatActivity.class);
 					if (conversation.isGroup()) {
 						CaseInfo mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(username);
-						if (mCaseInfo == null) {
+						List<DoctorInfo> newDoctorInfos = new ArrayList<DoctorInfo>();
+//						if(mCaseInfo!=null){
+//							newDoctorInfos.add(mCaseInfo.admin_doctor);
+//							newDoctorInfos.addAll(mCaseInfo.participate_doctor);
+//							for(int i=0;i<newDoctorInfos.size();i++){
+//								if(TextUtils.equals(newDoctorInfos.get(i).id, EMClient.getInstance().getCurrentUser())){
+//									isContainsMyself = true;
+//									break;
+//								}
+//							}
+//						}
+						if (mCaseInfo == null){
 							CustomSimpleDialog.Builder builder = new Builder(getActivity());
 							DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
@@ -134,7 +152,33 @@ public class ConversationListFragment extends EaseConversationListFragment {
 							builder.setPositiveButton("确定", listener);
 							builder.create().show();
 							return;
-						} else {
+						} else if (!isContainsMyself){
+							CustomSimpleDialog.Builder builder = new Builder(getActivity());
+							DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									try {
+										// 删除此会话
+										EMClient.getInstance().chatManager().deleteConversation(username, false);
+										InviteMessgeDao inviteMessgeDao = new InviteMessgeDao(getActivity());
+										inviteMessgeDao.deleteMessage(username);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									refresh();
+
+									// 更新消息未读数
+									((MainActivity) getActivity()).updateUnreadLabel();
+								}
+							};
+							builder.setTitle("");
+							builder.setMessage("您已被管理员移出了讨论组");
+							builder.setNegativeButton("取消", listener);
+							builder.setPositiveButton("确定", listener);
+							builder.create().show();
+							return;
+						}else {
 							intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
 						}
 					}

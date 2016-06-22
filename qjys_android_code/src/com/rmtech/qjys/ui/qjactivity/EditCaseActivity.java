@@ -139,7 +139,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 			case_sex.setRightText("未知");
 		}
 		case_age.setRightText(mCaseInfo.age);
-		case_hospital.setRightText(mCaseInfo.hos_name
+		case_hospital.setRightText(TextUtils.isEmpty(mCaseInfo.hos_name)? mCaseInfo.hos_fullname: mCaseInfo.hos_name
 				);
 		case_room.setRightText(mCaseInfo.department);
 		case_room_number.setRightText(mCaseInfo.ward_no);
@@ -197,8 +197,9 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 										// TODO 病例列表需要更新，activity直接全退出
 										QjHttp.deleteMembers(mCaseInfo.id, mCaseInfo.getParticipateDoctorIds(), null);
 										Toast.makeText(getActivity(), "病例已删除！", Toast.LENGTH_SHORT).show();
-//										CaseFragment.deleteGrop(getActivity(),
-//												mCaseInfo.group_id);
+										CaseFragment.deleteGrop(getActivity(),
+												mCaseInfo.group_id);
+										GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(mCaseInfo.group_id);
 										Intent intent = new Intent("case_delete");
 										intent.putExtra("delete", "true");
 										getActivity().sendBroadcast(intent);

@@ -112,9 +112,9 @@ public class MeRoomActivity extends CaseEidtBaseActivity {
 		et_name = (EditText) findViewById(R.id.et_room_name);
 		setTextWhacher(MeRoomActivity.this, et_name, 60);
 		if (mCaseInfo != null) {
-			et_name.setText(mCaseInfo.department);
+			et_name.setText(mCaseInfo.department.equals("0")?"":mCaseInfo.department);
 		} else if (UserContext.getInstance().getUser().department != null) {
-			et_name.setText(UserContext.getInstance().getUser().department);
+			et_name.setText(UserContext.getInstance().getUser().department.equals("0")?"":UserContext.getInstance().getUser().department);
 		}
 	}
 

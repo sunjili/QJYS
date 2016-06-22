@@ -27,7 +27,8 @@
             android:paddingLeft="10dp"
             android:clickable="true"
             android:scaleType="centerInside"
-            android:src="@drawable/btn_back" />
+            android:src="@drawable/btn_back" 
+            android:visibility="gone"/>
        
        <TextView
            android:id="@+id/finish"

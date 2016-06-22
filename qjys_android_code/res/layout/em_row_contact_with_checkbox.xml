@@ -53,7 +53,7 @@
 
         <TextView
             android:id="@+id/name"
-            android:maxWidth="110dp"
+            android:maxWidth="220dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"

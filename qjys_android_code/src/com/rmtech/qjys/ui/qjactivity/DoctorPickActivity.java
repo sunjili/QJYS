@@ -2,6 +2,8 @@ package com.rmtech.qjys.ui.qjactivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.Call;
 
@@ -32,6 +34,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessage.ChatType;
+import com.hyphenate.chat.EMMessage.Type;
 import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
@@ -320,15 +325,17 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 							@Override
 							public void onResponseSucces(MBase response) {
 								
-								new Thread(new Runnable()  
-						        {  
-						            @Override  
-						            public void run()  
-						            {  
-						                // TODO Auto-generated method stub  
-						            	for (int i = 0; i < contactAdapter.isCheckedArray.length; i++) {
-										    String username = contactAdapter.getItem(i).getUsername();
-										    if (contactAdapter.isCheckedArray[i]) {
+								
+								for (int i = 0; i < contactAdapter.isCheckedArray.length; i++) {
+					            	final int index = i;
+									ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+									singleThreadExecutor.execute(new Runnable() {
+										
+										@Override
+										public void run() {
+											// TODO Auto-generated method stub
+											String username = contactAdapter.getItem(index).getUsername();
+										    if (contactAdapter.isCheckedArray[index]) {
 											    try {
 												    EMClient.getInstance().groupManager()
 														    .removeUserFromGroup(caseInfo.group_id, username);
@@ -336,10 +343,9 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 												    e.printStackTrace();
 											    }
 										    }
-									    }
-						            }  
-						        }).start();
-								
+										}
+									});
+							    }
 								ArrayList<DoctorInfo> resultList = getToBeAddMembers();
 								CaseEvent event = new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED_DELETE);
 								CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
@@ -404,7 +410,7 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 							
 							ArrayList<DoctorInfo> resultList = getToBeAddMembers();
 							CaseEvent event = new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED_ADD);
-							String groupid =  response.data == null ? null : response.data.group_id;
+							final String groupid =  response.data == null ? null : response.data.group_id;
 
 							CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
 							if (newCase != null) {
@@ -421,18 +427,28 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 							Intent intent = new Intent();
 							intent.putParcelableArrayListExtra("selectedDoctorList", resultList);// ("newmembers",
 							if(groupid != null) {
-								ArrayList<DoctorInfo> list = getToBeAddMembers();
+								final ArrayList<DoctorInfo> list = getToBeAddMembers();
 								
-								try {
-									String[] newmembers = new String[list.size()];
-									for (int i = 0; i < list.size(); i++) {
-										newmembers[i] = list.get(i).id;
+								new Thread(new Runnable() {
+									
+									@Override
+									public void run() {
+										// TODO Auto-generated method stub
+										try {
+											String[] newmembers = new String[list.size()];
+											for (int i = 0; i < list.size(); i++) {
+												newmembers[i] = list.get(i).id;
+											}
+											EMClient.getInstance().groupManager().addUsersToGroup(groupid, newmembers);
+										} catch (HyphenateException e) {
+//											e.printStackTrace();
+										}
 									}
-									EMClient.getInstance().groupManager().addUsersToGroup(groupid, newmembers);
-								} catch (HyphenateException e) {
-//									e.printStackTrace();
-								}
-	
+								}).start();
+								String content = "我邀请 " + getMemberNamesString() + "加入了病例讨论组";
+								EMMessage msg = EMMessage.createTxtSendMessage(content, groupid);
+								msg.setChatType(ChatType.GroupChat);
+								EMClient.getInstance().chatManager().sendMessage(msg);
 								intent.putExtra("group_id",groupid);
 							}
 							setResult(RESULT_OK, intent);
@@ -604,6 +620,18 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 			if (i < list.size() - 1) {
 				sb.append(",");
 
+			}
+		}
+		return sb.toString();
+	}
+	
+	private String getMemberNamesString() {
+		ArrayList<DoctorInfo> list = getToBeAddMembers();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < list.size(); i++) {
+			sb.append(list.get(i).name);
+			if (i < list.size() - 1) {
+				sb.append("、");
 			}
 		}
 		return sb.toString();
