@@ -90,8 +90,8 @@ public class CaseAbstractEditActivity extends CaseWithIdActivity {
 
 		tv_content = (EditText) findViewById(R.id.et_content);
 		setTextWhacher(CaseAbstractEditActivity.this, tv_content, 8000);
-		Editable etext = tv_content.getText();
-		Selection.setSelection(etext, etext.length());
+		Editable etext = tv_content.getEditableText();
+		tv_content.setSelection(etext.length());
 		if (caseInfo != null && !TextUtils.isEmpty(caseInfo.abs)) {
 			tv_content.setText(caseInfo.abs);
 		}

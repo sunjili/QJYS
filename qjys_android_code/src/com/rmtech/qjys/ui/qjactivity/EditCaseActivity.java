@@ -81,7 +81,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 		} else {
 			// tv_right.setText(tempStr);
 			tv_right.setTextColor(Color.rgb(126, 126, 126));
-			String[] strings = tempStr.split("&&");
+			String[] strings = tempStr.split(",");
 			for (int i = 0; i < strings.length; i++) {
 				if (i == 0) {
 					tv_right.setText(strings[0]);

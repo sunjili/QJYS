@@ -535,6 +535,17 @@ public class DoctorListManager {
 		DBUtil.saveCache("BeDeletedGroups", mBeDeletedGroups);
 	}
 	
+	public static void removeBeDeletedGroupIds(String groupId){
+		mBeDeletedGroups = getBeDeleteGroupIds();
+		if(mBeDeletedGroups==null){
+			mBeDeletedGroups = new HashSet<String>();
+		}
+		if(mBeDeletedGroups.contains(groupId)){
+			mBeDeletedGroups.remove(groupId);
+		}
+		DBUtil.saveCache("BeDeletedGroups", mBeDeletedGroups);
+	}
+	
 	public static void setMostUse(String doc_id, final boolean mostUse) {
 //		DoctorListManager.getInstance().setIsChanged(true);// = true;
 		DoctorListManager.getInstance().getDoctorInfoByHXid(doc_id, new OnGetDoctorInfoCallback() {

@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:clickable="true"
+        android:gravity="center_vertical"
         android:onClick="back"
         android:paddingLeft="10dp" >
 
@@ -37,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/white"
+        android:gravity="center"
         android:singleLine="true"
         android:ellipsize="end"
         android:maxEms="10"
@@ -72,6 +74,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_vertical|right"
+        android:gravity="center_vertical"
         android:layout_marginRight="10dip" >
 
         <TextView

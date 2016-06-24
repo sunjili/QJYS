@@ -113,6 +113,7 @@ public class PhotoDataManagerActivity extends PhotoDataBaseActivity {
 				CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
 				if(tempCase != null) {
 					caseInfo = tempCase;
+					GroupAndCaseListManager.getInstance().updateCaseInfo(caseInfo);
 					mCaseTopBarView.setCaseInfo(caseInfo);
 //					mPhotoManagerFragment.setIds(caseInfo, folderDataInfo);
 				}

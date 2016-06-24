@@ -191,7 +191,7 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
 							if(fsomeoneAtme) {
 			            		ss = createAtMeStr(ss);
 			            	}
-							holder.message.setText(ss,BufferType.SPANNABLE);
+							holder.message.setText(ss, BufferType.SPANNABLE);
 						} else {
 							Spannable ss = EaseSmileUtils.getSmiledText(getContext(), lastStr);
 							if(fsomeoneAtme) {

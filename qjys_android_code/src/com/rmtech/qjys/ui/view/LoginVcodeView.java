@@ -120,7 +120,7 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 				
 				@Override
 				public void onError(Call call, Exception e) {
-					Toast.makeText(getContext(), "获取验证码失败", Toast.LENGTH_LONG).show();
+					Toast.makeText(getContext(), "获取验证码失败，请检查网络设置", Toast.LENGTH_LONG).show();
 				}
 
 
@@ -136,11 +136,14 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 					// TODO Auto-generated method stub
 					if(response != null && response.ret > 0 && !TextUtils.isEmpty(response.msg)) {
 						Toast.makeText(getContext(), response.msg, Toast.LENGTH_LONG).show();
+						return;
 					}
-
+					if(response != null && response.ret == 0){
+						Toast.makeText(getContext(), "验证码发送成功，请注意查收！", Toast.LENGTH_LONG).show();
+						mHandler.postDelayed(mTimerRunnable, 1000);
+					}
 				}
 			});
-			mHandler.postDelayed(mTimerRunnable, 1000);
 			break;
 		}
 		}

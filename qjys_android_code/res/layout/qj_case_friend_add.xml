@@ -33,6 +33,8 @@
             style="@style/qj_et_style_nobg"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:singleLine="true"
+            android:ellipsize="middle"
             android:layout_toLeftOf="@id/iv_clean"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"

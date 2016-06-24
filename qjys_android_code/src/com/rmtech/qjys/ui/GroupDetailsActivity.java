@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -51,6 +52,7 @@ import com.hyphenate.easeui.widget.EaseExpandGridView;
 import com.hyphenate.easeui.widget.EaseSwitchButton;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
+import com.hyphenate.util.PathUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rmtech.qjys.QjConstant;
 import com.rmtech.qjys.QjHttp;
@@ -67,7 +69,9 @@ import com.rmtech.qjys.ui.qjactivity.UserInfoActivity;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
+import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.multi_image_selector.view.SquaredImageView;
+import com.sjl.lib.utils.StorageUtils;
 import com.umeng.analytics.MobclickAgent;
 
 public class GroupDetailsActivity extends BaseActivity implements OnClickListener {
@@ -334,14 +338,14 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 				break;
 			case REQUEST_CODE_EXIT: // 退出群
-				progressDialog.setMessage(st2);
-				progressDialog.show();
-				exitGrop();
+//				progressDialog.setMessage(st2);
+//				progressDialog.show();
+//				exitGrop();
 				break;
 			case REQUEST_CODE_EXIT_DELETE: // 解散群
-				progressDialog.setMessage(st3);
-				progressDialog.show();
-				deleteGrop();
+//				progressDialog.setMessage(st3);
+//				progressDialog.show();
+//				deleteGrop();
 				break;
 
 			case REQUEST_CODE_EDIT_GROUPNAME: // 修改群名称
@@ -426,8 +430,21 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	 * @param view
 	 */
 	public void exitGroup(View view) {
-		startActivityForResult(new Intent(this, ExitGroupDialog.class), REQUEST_CODE_EXIT);
+//		startActivityForResult(new Intent(this, ExitGroupDialog.class), REQUEST_CODE_EXIT);
+		new AlertView("退出后，将无法浏览此病例并参与讨论", null, "取消", null, new String[] {"退出"}, getActivity(),
+				AlertView.Style.ActionSheet, new com.sjl.lib.alertview.OnItemClickListener() {
 
+					@Override
+					public void onItemClick(Object o, int position) {
+						switch (position) {
+						case 0:
+							progressDialog.setMessage(getResources().getString(R.string.is_quit_the_group_chat));
+							progressDialog.show();
+							exitGrop();
+							break;
+						}
+					}
+				}).show();
 	}
 
 	/**
@@ -436,9 +453,22 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	 * @param view
 	 */
 	public void exitDeleteGroup(View view) {
-		startActivityForResult(new Intent(this, ExitGroupDialog.class).putExtra("deleteToast",
-				getString(R.string.dissolution_group_hint)), REQUEST_CODE_EXIT_DELETE);
+//		startActivityForResult(new Intent(this, ExitGroupDialog.class).putExtra("deleteToast",
+//				getString(R.string.dissolution_group_hint)), REQUEST_CODE_EXIT_DELETE);
+		new AlertView("解散后，所有成员将无法浏览此病例\n并参与讨论", null, "取消", null, new String[] {"解散"}, getActivity(),
+				AlertView.Style.ActionSheet, new com.sjl.lib.alertview.OnItemClickListener() {
 
+					@Override
+					public void onItemClick(Object o, int position) {
+						switch (position) {
+						case 0:
+							progressDialog.setMessage(getResources().getString(R.string.chatting_is_dissolution));
+							progressDialog.show();
+							deleteGrop();
+							break;
+						}
+					}
+				}).show();
 	}
 
 	/**

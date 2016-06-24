@@ -41,6 +41,7 @@ import com.rmtech.qjys.ui.GroupDetailsActivity;
 import com.rmtech.qjys.ui.MainActivity;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
+import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.GroupAndCaseListManager;
 
 public class ConversationListFragment extends EaseConversationListFragment {
@@ -48,7 +49,6 @@ public class ConversationListFragment extends EaseConversationListFragment {
 	private TextView errorText;
 	private ImageView no_data_view;
 	private View errormsg_layout;
-	private boolean isContainsMyself = true;
 
 	@Override
 	protected void initView() {
@@ -113,18 +113,11 @@ public class ConversationListFragment extends EaseConversationListFragment {
 					// 进入聊天页面
 					Intent intent = new Intent(getActivity(), ChatActivity.class);
 					if (conversation.isGroup()) {
+						boolean isContainsMyself = true;
 						CaseInfo mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(username);
-						List<DoctorInfo> newDoctorInfos = new ArrayList<DoctorInfo>();
-//						if(mCaseInfo!=null){
-//							newDoctorInfos.add(mCaseInfo.admin_doctor);
-//							newDoctorInfos.addAll(mCaseInfo.participate_doctor);
-//							for(int i=0;i<newDoctorInfos.size();i++){
-//								if(TextUtils.equals(newDoctorInfos.get(i).id, EMClient.getInstance().getCurrentUser())){
-//									isContainsMyself = true;
-//									break;
-//								}
-//							}
-//						}
+						if(DoctorListManager.isGroupBeDeleted(username)){
+							isContainsMyself = false;
+						}
 						if (mCaseInfo == null){
 							CustomSimpleDialog.Builder builder = new Builder(getActivity());
 							DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {

@@ -265,6 +265,11 @@ public class GroupAndCaseListManager {
 		this.isChanged = b;
 
 	}
+	
+	public void updateCaseInfo(CaseInfo caseInfo){
+		mCaseIdCaseInfoMap.put(caseInfo.id, caseInfo);
+		mGIdCaseInfoMap.put(caseInfo.group_id, caseInfo);
+	}
 
 	public void getCaseInfoByCaseId(final String caseId,final OnGetCaseInfoCallback callback) {
 		QjHttp.getpatientsinfo(caseId, new QjHttpCallback<MGroupList>() {

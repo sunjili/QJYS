@@ -211,7 +211,6 @@ public class EaseConversationListFragment extends QjBaseFragment {
 						e.printStackTrace();
 					}
 					refresh();
-
 					// 更新消息未读数
 					((MainActivity) getActivity()).updateUnreadLabel();
 				}

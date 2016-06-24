@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +23,7 @@ import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.MainActivity;
+import com.rmtech.qjys.utils.PasswordTextWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 /***
@@ -68,6 +70,10 @@ public class MePasswordNewActivity extends BaseActivity implements
 					password2=et_password_2.getText().toString().trim();
 					if(!password1.equals(password2)){
 						Toast.makeText(MePasswordNewActivity.this, "两次输入的密码不相同！", Toast.LENGTH_LONG).show();
+						return;
+					}
+					if(password1.length()==0||password2.length()==0){
+						Toast.makeText(MePasswordNewActivity.this, "输入的密码不能为空！", Toast.LENGTH_LONG).show();
 						return;
 					}
 					if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
@@ -127,6 +133,50 @@ public class MePasswordNewActivity extends BaseActivity implements
 		setTextWhacher(MePasswordNewActivity.this, et_password_1, 16);
 		et_password_2 = (EditText) findViewById(R.id.et_password_2);
 		setTextWhacher(MePasswordNewActivity.this, et_password_2, 16);
+		et_password_1.addTextChangedListener(new PasswordTextWatcher(et_password_1, getActivity()) {
+			
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                super.afterTextChanged(s);
+            }
+            
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+                // TODO Auto-generated method stub
+                super.beforeTextChanged(s, start, count, after);
+            }
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                    int count) {
+                // TODO Auto-generated method stub
+                super.onTextChanged(s, start, before, count);
+            }
+		});
+        et_password_2.addTextChangedListener(new PasswordTextWatcher(et_password_1, getActivity()) {
+			
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                super.afterTextChanged(s);
+            }
+            
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+                // TODO Auto-generated method stub
+                super.beforeTextChanged(s, start, count, after);
+            }
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                    int count) {
+                // TODO Auto-generated method stub
+                super.onTextChanged(s, start, before, count);
+            }
+		});
 		btn_set_password = (Button) findViewById(R.id.btn_set_password);
 		btn_set_password.setOnClickListener(this);
 		tv_top = (TextView) findViewById(R.id.tv_top);

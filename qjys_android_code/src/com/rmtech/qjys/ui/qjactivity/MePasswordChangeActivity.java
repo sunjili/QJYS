@@ -3,6 +3,7 @@ package com.rmtech.qjys.ui.qjactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,7 @@ import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.utils.PasswordTextWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 /***
@@ -53,11 +55,15 @@ public class MePasswordChangeActivity extends BaseActivity implements
 				password1=et_password_new_1.getText().toString().trim();
 				password2=et_password_new_2.getText().toString().trim();
 				if(password_old.length()<8){
-					//TODO 判断登录密码是否正确
-					
+					Toast.makeText(MePasswordChangeActivity.this, "请输入完整的密码！", Toast.LENGTH_LONG).show();
+					return;
 				}
 				if(!password1.equals(password2)){
 					Toast.makeText(MePasswordChangeActivity.this, "两次输入的密码不相同！", Toast.LENGTH_LONG).show();
+					return;
+				}
+				if(password1.length()==0||password2.length()==0){
+					Toast.makeText(MePasswordChangeActivity.this, "输入的密码不能为空！", Toast.LENGTH_LONG).show();
 					return;
 				}
 				if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
@@ -100,6 +106,50 @@ public class MePasswordChangeActivity extends BaseActivity implements
 		setTextWhacher(MePasswordChangeActivity.this, et_password_new_1, 16);
 		et_password_new_2 = (EditText) findViewById(R.id.et_password_new_2);
 		setTextWhacher(MePasswordChangeActivity.this, et_password_new_2, 16);
+		et_password_new_1.addTextChangedListener(new PasswordTextWatcher(et_password_new_1, getActivity()) {
+			
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                super.afterTextChanged(s);
+            }
+            
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+                // TODO Auto-generated method stub
+                super.beforeTextChanged(s, start, count, after);
+            }
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                    int count) {
+                // TODO Auto-generated method stub
+                super.onTextChanged(s, start, before, count);
+            }
+		});
+		et_password_new_2.addTextChangedListener(new PasswordTextWatcher(et_password_new_2, getActivity()) {
+			
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                super.afterTextChanged(s);
+            }
+            
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+                // TODO Auto-generated method stub
+                super.beforeTextChanged(s, start, count, after);
+            }
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                    int count) {
+                // TODO Auto-generated method stub
+                super.onTextChanged(s, start, before, count);
+            }
+		});
 
 	}
 

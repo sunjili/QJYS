@@ -100,9 +100,22 @@ public class CaseAddFriendActivity extends BaseActivity {
 
 	private void initView() {
 		et_name = (EditText) findViewById(R.id.et_name);
-		et_name.setText("我是 " +UserContext.getInstance().getUserName());
+		
+		String hos_fullname = TextUtils.isEmpty(UserContext.getInstance().getUser().hos_fullname)? "": 
+			UserContext.getInstance().getUser().hos_fullname + " ";
+		String department = TextUtils.isEmpty(UserContext.getInstance().getUser().department)? "": 
+			UserContext.getInstance().getUser().department + " ";
+		String name = UserContext.getInstance().getUserName();
+		if(hos_fullname.equals("")&&department.equals("")){
+			name = name;
+		}else {
+			name = "的 " + name;
+		}
+		
+		String reason = hos_fullname + department + name;
+		et_name.setText("我是 " + reason);
 		et_name.setSelection(et_name.getText().length());
-		setTextWhacher(CaseAddFriendActivity.this, et_name, 30);
+		setTextWhacher(CaseAddFriendActivity.this, et_name, 150);
 		iv_clean = (ImageView) findViewById(R.id.iv_clean);
 		iv_clean.setOnClickListener(new OnClickListener() {
 

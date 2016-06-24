@@ -601,6 +601,7 @@ public class QjHelper {
 		@Override
 		public void onAutoAcceptInvitationFromGroup(final String groupId, final String inviter, String inviteMessage) {
 //			// 被邀请
+			DoctorListManager.removeBeDeletedGroupIds(groupId);
 //			isMyself = false;
 //			final String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
 //			if (TextUtils.equals(inviter, UserContext.getInstance().getUserId())) {
@@ -668,20 +669,20 @@ public class QjHelper {
 //		EMMessage message = EMMessage.createTxtSendMessage(content, msg.getFrom());
 //		EMClient.getInstance().chatManager().sendMessage(message);
 
-		List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
-		for (InviteMessage inviteMessage : msgs) {
-			if (inviteMessage.getFrom().equals(username)) {
-				inviteMessgeDao.deleteMessage(username);
-				// return;
-			}
-		}
-		// 自己封装的javabean
-		InviteMessage msg = new InviteMessage();
-		msg.setFrom(username);
-		msg.setTime(System.currentTimeMillis());
-		Log.d(TAG, username + "同意了你的好友请求");
-		msg.setStatus(InviteMesageStatus.BEAGREED);
-		notifyNewIviteMessage(msg);
+//		List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
+//		for (InviteMessage inviteMessage : msgs) {
+//			if (inviteMessage.getFrom().equals(username)) {
+//				inviteMessgeDao.deleteMessage(username);
+//				// return;
+//			}
+//		}
+//		// 自己封装的javabean
+//		InviteMessage msg = new InviteMessage();
+//		msg.setFrom(username);
+//		msg.setTime(System.currentTimeMillis());
+//		Log.d(TAG, username + "同意了你的好友请求");
+//		msg.setStatus(InviteMesageStatus.BEAGREED);
+//		notifyNewIviteMessage(msg);
 		broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_CONTACT_CHANAGED));
 
 		EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_ADD));
