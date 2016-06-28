@@ -532,13 +532,17 @@ public class QjHelper {
 		@Override
 		public void onUserRemoved(String groupId, String groupName) {
 			// TODO 提示用户被T了，demo省略此步骤
-			DoctorListManager.addBeDeletedGroupIds(groupId);
 			EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
 			msg.setChatType(ChatType.GroupChat);
 			msg.setFrom(groupId);
 			msg.setTo(groupId);
 			msg.setMsgId(UUID.randomUUID().toString());
-			msg.addBody(new EMTextMessageBody("您已被管理员移出了讨论组 "));
+			if(DoctorListManager.getDeleteGroupIds().contains(groupId)){
+				msg.addBody(new EMTextMessageBody("您已退出了该讨论组 "));
+			}else {
+				DoctorListManager.addBeDeletedGroupIds(groupId);
+				msg.addBody(new EMTextMessageBody("您已被管理员移出了讨论组 "));
+			}
 			msg.setStatus(Status.SUCCESS);
 			// 保存同意消息
 			EMClient.getInstance().chatManager().saveMessage(msg);
@@ -551,7 +555,18 @@ public class QjHelper {
 		public void onGroupDestroy(String groupId, String groupName) {
 			// 群被解散
 			// TODO 提示用户群被解散,demo省略
-			DoctorListManager.addDeletedGroupIds(groupId);
+			DoctorListManager.addBeDeletedGroupIds(groupId);
+			EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
+			msg.setChatType(ChatType.GroupChat);
+			msg.setFrom(groupId);
+			msg.setTo(groupId);
+			msg.setMsgId(UUID.randomUUID().toString());
+			msg.addBody(new EMTextMessageBody("该病例讨论组已被管理员删除！"));
+			msg.setStatus(Status.SUCCESS);
+			// 保存同意消息
+			EMClient.getInstance().chatManager().saveMessage(msg);
+			// 提醒新消息
+			getNotifier().viberateAndPlayTone(msg);
 			broadcastManager.sendBroadcast(new Intent(QjConstant.ACTION_GROUP_CHANAGED));
 		}
 
@@ -602,6 +617,7 @@ public class QjHelper {
 		public void onAutoAcceptInvitationFromGroup(final String groupId, final String inviter, String inviteMessage) {
 //			// 被邀请
 			DoctorListManager.removeBeDeletedGroupIds(groupId);
+			DoctorListManager.removeDeletedGroupIds(groupId);
 //			isMyself = false;
 //			final String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
 //			if (TextUtils.equals(inviter, UserContext.getInstance().getUserId())) {

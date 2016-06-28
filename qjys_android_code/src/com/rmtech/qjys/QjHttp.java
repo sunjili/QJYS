@@ -48,6 +48,7 @@ public class QjHttp {
 
 	private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
+	public static final String URL_PATIENT_QUIT = "/patient/quitpatient";
 	public static final String URL_ABOUT_FANKUI = "/app/feedback";
 	public static final String URL_DOCTOR_SETPASS = "/doctor/setpass";
 	public static final String URL_DOCTOR_RESETPASS = "/doctor/resetpass";
@@ -89,6 +90,15 @@ public class QjHttp {
 	public static final String URL_APP_UPDATE = "/app/update";
 	public static final String URL_APP_QRURL = "/app/qrurl";
 	public static final String URL_PATIENTS_INFO = "/patient/patientsinfo";
+	
+	/**
+	 * 45 获取病例信息 /patient/patientsinfo 参数 patient_ids : 病例id，以逗号分割
+	 */
+	public static void quitGroup(String caseid, BaseModelCallback callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("patient_id", caseid);
+		OkHttpUtils.post(URL_PATIENT_QUIT, params, callback);
+	}
 
 	/**
 	 * 45 获取病例信息 /patient/patientsinfo 参数 patient_ids : 病例id，以逗号分割

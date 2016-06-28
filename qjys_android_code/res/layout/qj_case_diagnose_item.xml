@@ -11,13 +11,14 @@
         android:orientation="horizontal"
         android:background="@color/white" >
 
-        <TextView
+        <EditText
             android:id="@+id/tv_name"
             style="@style/qj_et_style_nobg"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:singleLine="true"
             android:paddingRight="60dp"
+            android:inputType="text" 
             android:ellipsize="end"/>
 
         <ImageView

@@ -10,6 +10,8 @@ import in.srain.cube.views.ptr.indicator.PtrIndicator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.zip.Inflater;
 
 import okhttp3.Call;
@@ -43,11 +45,13 @@ import android.widget.Toast;
 import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
+import com.rmtech.qjys.callback.BaseModelCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
+import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MPatientList;
 import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
 import com.rmtech.qjys.ui.qjactivity.AddCaseActivity;
@@ -191,7 +195,7 @@ public class CaseFragment extends QjBaseFragment {
 					}
 					builder.setMessage(str);
 					
-					builder.setNegativeButton("确定",
+					builder.setPositiveButton("确定",
 							new DialogInterface.OnClickListener() {
 
 								@Override
@@ -442,17 +446,47 @@ public class CaseFragment extends QjBaseFragment {
 									if (position == 0) {
 										hosList.patients
 												.remove(positionInSection);
-										QjHttp.deletePatient("2", caseinfo.id, null);
-										QjHttp.deleteMembers(caseinfo.id, caseinfo.getParticipateDoctorIds(), null);
-										GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(caseinfo.group_id);
-										CaseFragment.deleteGrop(getActivity(),
-												caseinfo.group_id);
-										if (hosList.patients.size() == 0) {
-											mPatientList.remove(hosList);
+//										new Thread(new Runnable() {
+//											
+//											@Override
+//											public void run() {
+//												// TODO Auto-generated method stub
+//												for (int i = 0; i < caseinfo.participate_doctor.size(); i++) {
+//													final int index = i;
+//													String username = caseinfo.participate_doctor.get(index).name;
+//													try {
+//													    EMClient.getInstance().groupManager()
+//															    .removeUserFromGroup(caseinfo.group_id, username);
+//												    } catch (Exception e) {
+//													    e.printStackTrace();
+//												    }
+//										        }
+//											}
+//										}).start();
+										QjHttp.deletePatient("2", caseinfo.id, new BaseModelCallback() {
+											
+											@Override
+											public void onResponseSucces(MBase response) {
+												// TODO 病例列表需要更新，activity直接全退出
+												QjHttp.deleteMembers(caseinfo.id, caseinfo.getParticipateDoctorIds(), null);
+												
+												Toast.makeText(getActivity(), "病例已删除！", Toast.LENGTH_SHORT).show();
+												deleteGrop(getActivity(), caseinfo.group_id);
+												GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(caseinfo.group_id);
+												if (hosList.patients.size() == 0) {
+													mPatientList.remove(hosList);
 
-										}
-										notifyDataSetChanged();
-										onDisplayData();
+												}
+												notifyDataSetChanged();
+												onDisplayData();
+											}
+											
+											@Override
+											public void onError(Call call, Exception e) {
+												// TODO Auto-generated method stub
+												
+											}
+										});
 
 									}
 

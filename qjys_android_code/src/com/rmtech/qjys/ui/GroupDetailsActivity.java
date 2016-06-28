@@ -16,6 +16,8 @@ package com.rmtech.qjys.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -62,6 +64,7 @@ import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
+import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.fragment.ChatFragment;
 import com.rmtech.qjys.ui.qjactivity.DoctorPickActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
@@ -73,6 +76,7 @@ import com.sjl.lib.alertview.AlertView;
 import com.sjl.lib.multi_image_selector.view.SquaredImageView;
 import com.sjl.lib.utils.StorageUtils;
 import com.umeng.analytics.MobclickAgent;
+import com.xiaomi.push.service.w;
 
 public class GroupDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "GroupDetailsActivity";
@@ -438,6 +442,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					public void onItemClick(Object o, int position) {
 						switch (position) {
 						case 0:
+							if (progressDialog == null) {
+							    progressDialog = new ProgressDialog(GroupDetailsActivity.this);
+						    }
 							progressDialog.setMessage(getResources().getString(R.string.is_quit_the_group_chat));
 							progressDialog.show();
 							exitGrop();
@@ -462,6 +469,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					public void onItemClick(Object o, int position) {
 						switch (position) {
 						case 0:
+							if (progressDialog == null) {
+						        progressDialog = new ProgressDialog(GroupDetailsActivity.this);
+					        }
 							progressDialog.setMessage(getResources().getString(R.string.chatting_is_dissolution));
 							progressDialog.show();
 							deleteGrop();
@@ -491,32 +501,30 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	 */
 	private void exitGrop() {
 		String st1 = getResources().getString(R.string.Exit_the_group_chat_failure);
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					EMClient.getInstance().groupManager().leaveGroup(groupId);
-					runOnUiThread(new Runnable() {
-						public void run() {
-							progressDialog.dismiss();
-							setResult(RESULT_OK);
-							finish();
-							if (ChatActivity.activityInstance != null)
-								ChatActivity.activityInstance.finish();
-						}
-					});
-				} catch (final Exception e) {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							progressDialog.dismiss();
-							Toast.makeText(
-									getApplicationContext(),
-									getResources().getString(R.string.Exit_the_group_chat_failure) + " "
-											+ e.getMessage(), 1).show();
-						}
-					});
+		QjHttp.quitGroup(caseInfo.id, new BaseModelCallback() {
+			
+			@Override
+			public void onResponseSucces(MBase response) {
+				// TODO Auto-generated method stub
+				if(response!=null && response.ret == 0){
+					DoctorListManager.addDeletedGroupIds(groupId);
+					progressDialog.dismiss();
+					finish();
+					if (PhotoDataManagerActivity.activityInstance != null) {
+						PhotoDataManagerActivity.activityInstance.finish();
+					}
+					if (ChatActivity.activityInstance != null)
+						ChatActivity.activityInstance.finish();
 				}
 			}
-		}).start();
+			
+			@Override
+			public void onError(Call call, Exception e) {
+				// TODO Auto-generated method stubToast.makeText(
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.Exit_the_group_chat_failure), 1).show();
+				progressDialog.dismiss();
+			}
+		});
 	}
 
 	/**
@@ -528,65 +536,79 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		final String st5 = getResources().getString(R.string.Dissolve_group_chat_tofail);
 		if(caseInfo.participate_doctor==null){
 			Toast.makeText(getApplicationContext(), "已经没有其他群组成员", 1).show();
+			progressDialog.dismiss();
 		}else if(caseInfo.participate_doctor.size()<=0){
 			Toast.makeText(getApplicationContext(), "已经没有其他群组成员", 1).show();
+			progressDialog.dismiss();
 		}else {
-			QjHttp.deleteMembers(caseInfo.id, caseInfo.getParticipateDoctorIds(), new BaseModelCallback() {
+			QjHttp.quitGroup(caseInfo.id, new BaseModelCallback() {
 				
 				@Override
 				public void onResponseSucces(MBase response) {
 					// TODO Auto-generated method stub
-					caseInfo.participate_doctor.removeAll(caseInfo.participate_doctor);
-					refreshMembers();
-					Toast.makeText(getApplicationContext(), "解散成功！！！", 1).show();
-					progressDialog.dismiss();
-					setResult(RESULT_OK);
-					GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(groupId);
-					caseInfo.participate_doctor = null;
-					DoctorListManager.addDeletedGroupIds(groupId);
-					finish();
-					if (PhotoDataManagerActivity.activityInstance != null) {
-						PhotoDataManagerActivity.activityInstance.finish();
-					}
-					if (ChatActivity.activityInstance != null) {
-						ChatActivity.activityInstance.finish();
+					if(response!=null && response.ret == 0){
+						DoctorListManager.addDeletedGroupIds(groupId);
+						QjHttp.deleteMembers(caseInfo.id, caseInfo.getParticipateDoctorIds(), null);
+						GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(groupId);
+						progressDialog.dismiss();
+						finish();
+						if (PhotoDataManagerActivity.activityInstance != null) {
+							PhotoDataManagerActivity.activityInstance.finish();
+						}
+						if (ChatActivity.activityInstance != null)
+							ChatActivity.activityInstance.finish();
 					}
 				}
 				
 				@Override
 				public void onError(Call call, Exception e) {
-					// TODO Auto-generated method stub
+					// TODO Auto-generated method stubToast.makeText(
+					Toast.makeText(getApplicationContext(), st5, 1).show();
 					progressDialog.dismiss();
-					Toast.makeText(getApplicationContext(), st5 + e.getMessage(), 1).show();
 				}
 			});
-		}
-//		final String st5 = getResources().getString(R.string.Dissolve_group_chat_tofail);
-//		new Thread(new Runnable() {
-//			public void run() {
-//				try {
-//					EMClient.getInstance().groupManager().destroyGroup(groupId);
-//					runOnUiThread(new Runnable() {
-//						public void run() {
-//							progressDialog.dismiss();
-//							setResult(RESULT_OK);
-//							DoctorListManager.addDeletedGroupIds(groupId);
-//							finish();
-//							if (ChatActivity.activityInstance != null) {
-//								ChatActivity.activityInstance.finish();
-//							}
-//						}
-//					});
-//				} catch (final Exception e) {
-//					runOnUiThread(new Runnable() {
-//						public void run() {
-//							progressDialog.dismiss();
-//							Toast.makeText(getApplicationContext(), st5 + e.getMessage(), 1).show();
-//						}
-//					});
+			
+//			new Thread(new Runnable() {
+//				
+//				@Override
+//				public void run() {
+//					// TODO Auto-generated method stub
+//					try {
+//						EMClient.getInstance().groupManager().destroyGroup(caseInfo.group_id);//需异步处理
+//				    } catch (Exception e) {
+//					    e.printStackTrace();
+//				    }
 //				}
-//			}
-//		}).start();
+//			}).start();
+//			QjHttp.deleteMembers(caseInfo.id, caseInfo.getParticipateDoctorIds(), new BaseModelCallback() {
+//				
+//				@Override
+//				public void onResponseSucces(MBase response) {
+//					// TODO Auto-generated method stub
+//					caseInfo.participate_doctor.removeAll(caseInfo.participate_doctor);
+//					refreshMembers();
+//					Toast.makeText(getApplicationContext(), "解散成功！！！", 1).show();
+//					progressDialog.dismiss();
+//					setResult(RESULT_OK);
+//					GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(groupId);
+//					caseInfo.participate_doctor = null;
+//					DoctorListManager.addDeletedGroupIds(groupId);
+//					finish();
+//					if (PhotoDataManagerActivity.activityInstance != null) {
+//						PhotoDataManagerActivity.activityInstance.finish();
+//					}
+//					if (ChatActivity.activityInstance != null) {
+//						ChatActivity.activityInstance.finish();
+//					}
+//				}
+//				@Override
+//				public void onError(Call call, Exception e) {
+//					// TODO Auto-generated method stub
+//					progressDialog.dismiss();
+//					Toast.makeText(getApplicationContext(), st5 + e.getMessage(), 1).show();
+//				}
+//			});
+		}
 	}
 
 	/**

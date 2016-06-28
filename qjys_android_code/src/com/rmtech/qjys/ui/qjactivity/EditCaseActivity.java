@@ -17,6 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import okhttp3.Call;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
@@ -190,21 +194,38 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 						@Override
 						public void onItemClick(Object o, int position) {
 							if (position == 0) {
+//								new Thread(new Runnable() {
+//									
+//									@Override
+//									public void run() {
+//										// TODO Auto-generated method stub
+//										for (int i = 0; i < mCaseInfo.participate_doctor.size(); i++) {
+//											final int index = i;
+//											String username = mCaseInfo.participate_doctor.get(index).name;
+//											try {
+//											    EMClient.getInstance().groupManager()
+//													    .removeUserFromGroup(mCaseInfo.group_id, username);
+//										    } catch (Exception e) {
+//											    e.printStackTrace();
+//										    }
+//								        }
+//									}
+//								}).start();
+								
 								QjHttp.deletePatient("2", mCaseInfo.id, new BaseModelCallback() {
 									
 									@Override
 									public void onResponseSucces(MBase response) {
 										// TODO 病例列表需要更新，activity直接全退出
 										QjHttp.deleteMembers(mCaseInfo.id, mCaseInfo.getParticipateDoctorIds(), null);
+										
 										Toast.makeText(getActivity(), "病例已删除！", Toast.LENGTH_SHORT).show();
-										CaseFragment.deleteGrop(getActivity(),
-												mCaseInfo.group_id);
+										CaseFragment.deleteGrop(getActivity(), mCaseInfo.group_id);
 										GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(mCaseInfo.group_id);
 										Intent intent = new Intent("case_delete");
 										intent.putExtra("delete", "true");
 										getActivity().sendBroadcast(intent);
 										getActivity().finish();
-										
 									}
 									
 									@Override

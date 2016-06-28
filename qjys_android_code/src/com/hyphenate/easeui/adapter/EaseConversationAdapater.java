@@ -155,21 +155,21 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
 				atStr = lastMessage.getStringAttribute("at");
 			} catch (HyphenateException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
             holder.message.setText("");
             String[] atArray = null;
-//            if(!TextUtils.isEmpty(atStr)) {
-//            	atArray = atStr.split(",");
-//            	if(atArray != null) {
-//	            	for(String str : atArray) {
-//	            		if(UserContext.getInstance().isMyself(str)) {
-//	            			someoneAtme = true;
-//	            			break;
-//	            		}
-//	            	}
-//            	}
-//            }
+            if(!TextUtils.isEmpty(atStr)) {
+            	atArray = atStr.split(",");
+            	if(atArray != null) {
+	            	for(String str : atArray) {
+	            		if(UserContext.getInstance().isMyself(str)) {
+	            			someoneAtme = true;
+	            			break;
+	            		}
+	            	}
+            	}
+            }
             
             if(UserContext.getInstance().isMyself(lastMessage.getFrom())) {
             	

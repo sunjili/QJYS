@@ -121,6 +121,7 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 				@Override
 				public void onError(Call call, Exception e) {
 					Toast.makeText(getContext(), "获取验证码失败，请检查网络设置", Toast.LENGTH_LONG).show();
+					isGettingCode = false;
 				}
 
 

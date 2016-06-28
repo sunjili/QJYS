@@ -113,12 +113,14 @@ public class ConversationListFragment extends EaseConversationListFragment {
 					// 进入聊天页面
 					Intent intent = new Intent(getActivity(), ChatActivity.class);
 					if (conversation.isGroup()) {
+						
 						boolean isContainsMyself = true;
 						CaseInfo mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(username);
-						if(DoctorListManager.isGroupBeDeleted(username)){
+						if(DoctorListManager.isGroupBeDeleted(username)||DoctorListManager.isGroupDeleted(username)){
 							isContainsMyself = false;
 						}
-						if (mCaseInfo == null){
+						if (mCaseInfo == null||conversation.getLastMessage().getBody().toString().
+								substring(5, conversation.getLastMessage().getBody().toString().length()-1).equals("该病例讨论组已被管理员删除！")){
 							CustomSimpleDialog.Builder builder = new Builder(getActivity());
 							DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
@@ -166,7 +168,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 								}
 							};
 							builder.setTitle("");
-							builder.setMessage("您已被管理员移出了讨论组");
+							builder.setMessage("您已不在该病例讨论组中！");
 							builder.setNegativeButton("取消", listener);
 							builder.setPositiveButton("确定", listener);
 							builder.create().show();

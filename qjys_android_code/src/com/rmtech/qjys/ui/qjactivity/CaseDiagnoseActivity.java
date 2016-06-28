@@ -8,6 +8,7 @@ import okhttp3.Call;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +57,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 				if(mCaseInfo != null) {
 					for(int i = 0 ; i< ll_layout.getChildCount();i++) {
 						View view = ll_layout.getChildAt(i);
-						TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
+						EditText tv_name = (EditText) view.findViewById(R.id.tv_name);
 						String itemStr = tv_name.getText().toString();
 						if(TextUtils.isEmpty(itemStr)) {
 							continue;
@@ -136,7 +137,7 @@ public class CaseDiagnoseActivity extends CaseEidtBaseActivity implements View.O
 				list.add(strings[i]);
 				final int posi = i;
 				View view = LayoutInflater.from(context).inflate(R.layout.qj_case_diagnose_item, null);
-				TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
+				EditText tv_name = (EditText) view.findViewById(R.id.tv_name);
 				ImageView btn_delete = (ImageView) view.findViewById(R.id.btn_delete);
 				tv_name.setText(strings[i]);
 				btn_delete.setOnClickListener(new OnClickListener() {

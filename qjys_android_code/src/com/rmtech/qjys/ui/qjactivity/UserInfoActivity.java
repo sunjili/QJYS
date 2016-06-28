@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,7 +46,9 @@ import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.ChatActivity;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.MeItemLayout;
+import com.rmtech.qjys.ui.view.CustomSimpleDialog.Builder;
 import com.rmtech.qjys.utils.DoctorListManager;
 import com.rmtech.qjys.utils.DoctorListManager.OnGetDoctorInfoCallback;
 import com.rmtech.qjys.utils.PreferenceManager;
@@ -149,7 +152,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 				setLeftTitle("通讯录");
 				btnDelete.setVisibility(View.GONE);
 				btnSendmessage.setText("发消息");
-			}else if(from.equals("chat")||from.equals("group")){
+			}else if(from.equals("chat")){
 				setLeftTitle("聊天");
 				btnDelete.setVisibility(View.GONE);
 				btnSendmessage.setText("发消息");
@@ -159,6 +162,10 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 				btnSendmessage.setText("发消息");
 			}else if(from.equals("qrcode")){
 				setLeftTitle("扫一扫");
+				btnDelete.setVisibility(View.GONE);
+				btnSendmessage.setText("发消息");
+			}else if(from.equals("group")){
+				setLeftTitle("群组详情");
 				btnDelete.setVisibility(View.GONE);
 				btnSendmessage.setText("发消息");
 			}
@@ -224,7 +231,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 			tvNickname.setVisibility(View.GONE);
 			vNikename.setVisibility(View.GONE);
 		}
-		tvDepartment.setText(doctorInfo.department);
+		tvDepartment.setText((TextUtils.isEmpty(doctorInfo.department)||doctorInfo.department.equals("0"))?"":doctorInfo.department);
 		tvHospital.setText(doctorInfo.hos_fullname);
 		userPhone.setRightText(doctorInfo.phone);
 		userPhone.setRightTextColor_c3264aa(UserInfoActivity.this);
@@ -343,11 +350,64 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		}
 		case R.id.user_phone:
 			if(isFriend){
-				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
-						+ doctorInfo.phone));
-				startActivity(intent);
+				CustomSimpleDialog.Builder builder = new Builder(
+						getActivity());
+				builder.setTitle("");
+				builder.setMessage(doctorInfo.phone);
+				builder.setNegativeButton("取消",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								
+							}
+
+						});
+				builder.setPositiveButton("呼叫",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+										+ doctorInfo.phone));
+								startActivity(intent);
+							}
+
+						});
+				builder.create().show();
 			}else{
 				//TODO 非好友，不能直接拨打电话
+				CustomSimpleDialog.Builder builder = new Builder(
+						getActivity());
+				builder.setTitle("提示");
+				builder.setMessage("Ta还不是您的好友，赶快添加好友吧！");
+				builder.setNegativeButton("", null);
+				builder.setPositiveButton("确定",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								if(!isFriend&&!from.equals("newFriendsMsg")){//TODO.
+							        Intent intent = new Intent(UserInfoActivity.this, CaseAddFriendActivity.class);
+							        intent.putExtra("userId", doctorInfo.id);
+							        intent.putExtra("from", "UserInfoActivity");
+							        startActivity(intent);
+								}else if(!isFriend&&from.equals("newFriendsMsg")){
+									//TODO 通过验证
+									location = getIntent().getIntExtra("location", 0);
+									msg = new InviteMessgeDao(getActivity()).getMessagesList().get(location);
+									acceptInvitation(msg);
+									line_padding.setVisibility(View.VISIBLE);
+									rl_changyong.setVisibility(View.VISIBLE);
+									tvHello.setText("");
+								}
+							}
+
+						});
+				builder.create().show();
 			}
 			break;
 		case R.id.btn_delete://删除好友功能

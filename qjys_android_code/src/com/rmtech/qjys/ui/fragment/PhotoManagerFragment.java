@@ -168,9 +168,23 @@ public class PhotoManagerFragment extends QjBaseFragment {
 
 			}
 		}
-		
+		loadData();
 	}
 
+	
+//	public int getImagesTotalCount(){
+//		int totalCount = 0;
+//		List<FolderDataInfo> folders = new ArrayList<FolderDataInfo>();
+//		if(isRootFolder()){
+//			if(folders.addAll(getImageDataList().folders)){
+//				for(int i=0;i<folders.size();i++){
+//					totalCount = totalCount + folders.get(i).image_count;
+//				}
+//			}
+//		}
+//		totalCount = totalCount + getImageDataList().images.size();
+//		return totalCount;
+//	}
 
 	@Subscribe
 	public void onEvent(PhotoDataEvent event) {
@@ -214,11 +228,11 @@ public class PhotoManagerFragment extends QjBaseFragment {
 				return;
 			}
 //			if (TextUtils.equals(folderId, event.folderId)) {
-				loadData();
 //				return;
 //			}
 
 		}
+		loadData();
 	}
 
 	@Override

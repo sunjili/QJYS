@@ -141,8 +141,9 @@ public class EditCaseStateActivity extends CaseEidtBaseActivity {
 				// for (int i = 0; i < userArray.length; i++) {
 				// listems.add(userArray[i]);
 				// }
-				listems.addAll(response.data);
-
+				if(response!=null&&response.data!=null){
+					listems.addAll(response.data);
+				}
 				mAdapter = new CommonAdapter<StateInfo>(getApplicationContext(), listems,
 						R.layout.qj_case_edit_state_item) {
 

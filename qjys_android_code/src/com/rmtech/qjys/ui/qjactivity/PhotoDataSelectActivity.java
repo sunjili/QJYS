@@ -212,6 +212,7 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 					folderList.addAll(imageDataList.folders);
 				}
 				PhotoDataMoveActivity.show(getActivity(), folderList, imageList, caseId, folderId);
+				getActivity().finish();
 			}
 		});
 
@@ -242,6 +243,7 @@ public class PhotoDataSelectActivity extends CaseWithIdActivity {
 	protected void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		mAdapter.notifyDataSetChanged();
 	}
 	
 

@@ -393,7 +393,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 	public void onAddAtFriend(DoctorInfo data) {
 		int index = editText.getSelectionStart();
 		Editable editable = editText.getText();
-		String appendStr = data.getDisplayName() + " ";
+		String appendStr = data.name + " ";
 		if(index == 0) {
 			appendStr = "@"+appendStr;
 		} else if (index > 0){

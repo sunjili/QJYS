@@ -43,7 +43,9 @@ public class ChatGroupFragment extends ChatFragment implements
 		mCaseTopBarView.setVisibility(View.VISIBLE);
 		mCaseInfo = GroupAndCaseListManager.getInstance().getCaseInfoByGroupId(
 				toChatUsername);
-		
+
+		titleBar.setLeftTitle("返回");
+		titleBar.setRightText("影像资料");
 		if(mCaseInfo == null) {
 			QjHttp.getGroupinfo(false, toChatUsername, new QjHttpCallbackNoParse<MGroupList>() {
 
@@ -110,12 +112,11 @@ public class ChatGroupFragment extends ChatFragment implements
 
 	    		});
 	            builder.create().show();
-	        }
-			mCaseTopBarView.setCaseInfo(mCaseInfo);
+	    }
+		mCaseTopBarView.setCaseInfo(mCaseInfo);
 			
 		if (mCaseInfo != null) {
 			titleBar.setTitle(mCaseInfo.name);
-			titleBar.setLeftTitle("返回");
 			titleBar.setRightLayoutClickListener(new OnClickListener() {
 
 				@Override
@@ -128,8 +129,6 @@ public class ChatGroupFragment extends ChatFragment implements
 					}
 				}
 			});
-			titleBar.setRightText("影像资料");
-
 		}
 	}
 	

@@ -3,6 +3,7 @@ package com.hyphenate.easeui.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -112,6 +113,9 @@ public class EaseTitleBar extends RelativeLayout {
 
 	public void setTitle(String title) {
 		titleView.setText(title);
+		titleView.setMaxEms(5);
+		titleView.setEllipsize(TextUtils.TruncateAt.END);
+		titleView.setSingleLine();
 	}
 	
 	public void setLeftTitle(String title) {

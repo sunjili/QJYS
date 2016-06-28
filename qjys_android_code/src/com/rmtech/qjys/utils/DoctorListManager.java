@@ -447,7 +447,7 @@ public class DoctorListManager {
 		return (HashSet<String>) DBUtil.getCache("changyong");
 	}
 	
-	private static HashSet<String> getDeleteGroupIds() {
+	public static HashSet<String> getDeleteGroupIds() {
 		try {
 			return (HashSet<String>) DBUtil.getCache("DeleteGroupIds");
 		} catch (Exception e) {
@@ -457,7 +457,7 @@ public class DoctorListManager {
 		return null;
 
 	}
-	private static HashSet<String> getBeDeleteGroupIds() {
+	public static HashSet<String> getBeDeleteGroupIds() {
 		try {
 			return (HashSet<String>) DBUtil.getCache("BeDeletedGroups");
 		} catch (Exception e) {
@@ -522,6 +522,17 @@ public class DoctorListManager {
 			mDeletedGroups = new HashSet<String>();
 		}
 		mDeletedGroups.add(groupId);
+		DBUtil.saveCache("DeleteGroupIds", mDeletedGroups);
+	}
+	
+	public static void removeDeletedGroupIds(String groupId){
+		mDeletedGroups = getDeleteGroupIds();
+		if(mDeletedGroups==null){
+			mDeletedGroups = new HashSet<String>();
+		}
+		if(mDeletedGroups.contains(groupId)){
+			mDeletedGroups.remove(groupId);
+		}
 		DBUtil.saveCache("DeleteGroupIds", mDeletedGroups);
 	}
 	

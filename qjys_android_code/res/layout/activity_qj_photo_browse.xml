@@ -91,8 +91,11 @@
                 android:id="@+id/bottom_auth_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="80dp"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="5dip"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:text="由张大夫上传"
                 android:textColor="@color/white"
@@ -107,7 +110,7 @@
             android:gravity="center"
             android:text="XXXX.jpg"
             android:singleLine="true"
-            android:ellipsize="end"
+            android:ellipsize="middle"
             android:textColor="@color/white"
             android:textSize="11sp" />
 

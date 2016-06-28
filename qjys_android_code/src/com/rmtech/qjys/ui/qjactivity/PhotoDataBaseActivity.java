@@ -42,6 +42,7 @@ import com.rmtech.qjys.model.gson.MImageList.ImageDataList;
 import com.rmtech.qjys.ui.BaseActivity;
 import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.GroupDetailsActivity;
+import com.rmtech.qjys.ui.fragment.PhotoManagerFragment;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataBaseActivity.OnDeleteCallback;
 import com.rmtech.qjys.ui.view.CustomSimpleDialog;
 import com.rmtech.qjys.ui.view.PhotoManangerPopWindow;
@@ -68,6 +69,8 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 	private NewFolderManager mNewFolderManager;
 	private ListPopupWindow mFolderPopupWindow;
 	protected boolean isNewCase = false;
+	public int totalCount;
+	private PhotoManagerFragment mPhotoManagerFragment;
 
 
 	@Override
@@ -113,6 +116,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 							Intent intent = new Intent(getActivity(), ChatActivity.class);
 							intent.putExtra(QjConstant.EXTRA_CHAT_TYPE, QjConstant.CHATTYPE_GROUP);
 							intent.putExtra(QjConstant.EXTRA_USER_ID, caseInfo.group_id);
+							intent.putExtra("caseName", caseInfo.name);
 							startActivity(intent);
 							overridePendingTransition(R.anim.hold, R.anim.hold); 
 							finish();
@@ -127,7 +131,7 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		PhotoUploadManager.getInstance().registerPhotoUploadListener(this);
-
+		mPhotoManagerFragment = new PhotoManagerFragment();
 	}
 
 	@Override
@@ -146,7 +150,9 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 
-					new AlertView(null, null, "取消", null, new String[] { "拍照", "从手机相册中选择", "从资源管理器中选择" },
+					new AlertView(null, null, "取消", null, new String[] { "拍照", "从手机相册中选择"
+//							, "从资源管理器中选择" 
+							},
 							getActivity(), AlertView.Style.ActionSheet,
 							new com.sjl.lib.alertview.OnItemClickListener() {
 
@@ -159,15 +165,25 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
-										PhotoUtil.showCameraAction(getActivity(), mTmpFile);
+//										if(mPhotoManagerFragment.getImagesTotalCount()>99){
+//											Toast.makeText(getActivity(), "该病例的图片总数已经达到了100张，不能再上传了", Toast.LENGTH_SHORT).show();
+//										}else
+											PhotoUtil.showCameraAction(getActivity(), mTmpFile);
 										break;
 									case 1:
-										PhotoUtil.startImageSelector(getActivity(), true);
+//										if(mPhotoManagerFragment.getImagesTotalCount()>99){
+//											Toast.makeText(getActivity(), "该病例的图片总数已经达到了100张，不能再上传了", Toast.LENGTH_SHORT).show();
+//										}else {
+											PhotoUtil.startImageSelector(getActivity(), true);
+											
 										// ImageSelectorMainActivity.show(PhotoDataManagerActivity.this);
 										break;
-									case 2:
-										PhotoUtil.showChooser(getActivity());
-										break;
+//									case 2:
+////										if(mPhotoManagerFragment.getImagesTotalCount()>99){
+////											Toast.makeText(getActivity(), "该病例的图片总数已经达到了100张，不能再上传了", Toast.LENGTH_SHORT).show();
+////										}else {
+//											PhotoUtil.showChooser(getActivity());
+//										break;
 									}
 
 								}
@@ -311,7 +327,11 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 	public void showNewFolderDialog(List<FolderDataInfo> folders) {
 		if (mNewFolderManager != null) {
 			String parentId = "";
-			mNewFolderManager.showNewFolderDialog(caseId, parentId, folders, this);
+			if(folders!=null&&folders.size()>19){
+				Toast.makeText(getActivity(), "您不能创建更多的文件夹！", Toast.LENGTH_SHORT).show();
+			}else {
+				mNewFolderManager.showNewFolderDialog(caseId, parentId, folders, this);
+			}
 		}
 
 	}

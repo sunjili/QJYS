@@ -156,7 +156,7 @@ public class FileUtils {
     		dir = getCacheDirectory(context, true);
     	}
     	Date date = new Date(System.currentTimeMillis());  
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("'IMG'_MMdd_HHmmss");  
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("MMdd_HHmmss");  
 		String strFileName = JPEG_FILE_PREFIX+dateFormat.format(date);
     	return File.createTempFile(strFileName, JPEG_FILE_SUFFIX, dir);
     }

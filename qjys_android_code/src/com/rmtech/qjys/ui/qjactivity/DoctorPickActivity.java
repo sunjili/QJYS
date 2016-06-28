@@ -275,12 +275,13 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 							event.setCaseInfoId(caseInfo.id);
 
 							EventBus.getDefault().post(event);
-							
+							String content = "我已将此病例的管理权限移交给 " + getMemberNamesString();
+							EMMessage msg = EMMessage.createTxtSendMessage(content, caseInfo.group_id);
+							msg.setChatType(ChatType.GroupChat);
+							EMClient.getInstance().chatManager().sendMessage(msg);
 							Intent intent = new Intent();
 							intent.putParcelableArrayListExtra("selectedDoctorList", resultList);
-
 							setResult(RESULT_OK, intent);
-
 							finish();
 						}
 

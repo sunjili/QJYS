@@ -77,7 +77,7 @@ public class MePasswordNewActivity extends BaseActivity implements
 						return;
 					}
 					if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
-							&&password1.length()>=8) {
+							&& password1.length() > 7) {
 						//  保存新密码到服务器
 						QjHttp.setPassword(password1, new BaseModelCallback() {
 							
@@ -200,19 +200,27 @@ public class MePasswordNewActivity extends BaseActivity implements
 		case R.id.btn_set_password:
 			password1=et_password_1.getText().toString().trim();
 			password2=et_password_2.getText().toString().trim();
-			if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)) {
-				// 保存新密码到服务器
+			if(!password1.equals(password2)){
+				Toast.makeText(MePasswordNewActivity.this, "两次输入的密码不相同！", Toast.LENGTH_LONG).show();
+				return;
+			}
+			if(password1.length()==0||password2.length()==0){
+				Toast.makeText(MePasswordNewActivity.this, "输入的密码不能为空！", Toast.LENGTH_LONG).show();
+				return;
+			}
+			if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
+					&& password1.length() > 7) {
+				//  保存新密码到服务器
 				QjHttp.setPassword(password1, new BaseModelCallback() {
 					
 					@Override
 					public void onResponseSucces(MBase response) {
-						// TODO 改变UserInfo中的isset_passwd值
-
-						UserContext.getInstance().getUser().isset_passwd = 1;
+						// TODO 改变UserInfo中的isset_passwd值？？怎么改
 						
-						Intent data=new Intent();
-						data.putExtra("boolean", true);
-						setResult(MeNameActivity.RESULT_OK, data);
+						UserContext.getInstance().setPasswordFlag(true);
+						finish();
+						Intent intent = new Intent(MePasswordNewActivity.this, MainActivity.class);
+						startActivity(intent);
 						finish();
 					}
 					
@@ -222,10 +230,11 @@ public class MePasswordNewActivity extends BaseActivity implements
 						Toast.makeText(MePasswordNewActivity.this, "密码设置失败!", Toast.LENGTH_LONG).show();
 					}
 				});
-				Intent intent = new Intent(MePasswordNewActivity.this, MainActivity.class);
-				startActivity(intent);
-				
-				finish();
+			}else if (!TextUtils.isEmpty(password1)&&!TextUtils.isEmpty(password2)&&password1.equals(password2)
+					&&password1.length() < 8){
+				Toast.makeText(MePasswordNewActivity.this, "您输入的密码不足8位，请重新输入!", Toast.LENGTH_LONG).show();
+				et_password_1.setText("");
+				et_password_2.setText("");
 			}
 			break;
 		}

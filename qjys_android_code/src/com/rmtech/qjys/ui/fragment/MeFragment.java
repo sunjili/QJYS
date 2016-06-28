@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,7 +125,7 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 			me_sex.setRightText("");
 		}
 		me_hospital.setRightText(meValue.hos_fullname);
-		me_room.setRightText(meValue.department.equals("0")?"":meValue.department);
+		me_room.setRightText((TextUtils.isEmpty(meValue.department)||meValue.department.equals("0"))?"":meValue.department);
 		ImageLoader.getInstance().displayImage(meValue.head, iv_head, QjConstant.optionsHead);
 
 		try {

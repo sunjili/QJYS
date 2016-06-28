@@ -93,6 +93,7 @@ public class EaseChatFragment extends QjBaseFragment {
     protected Bundle fragmentArgs;
     protected int chatType;
     protected String toChatUsername;
+    protected String caseName;
     protected EaseChatMessageList messageList;
     protected EaseChatInputMenu inputMenu;
 
@@ -138,7 +139,7 @@ public class EaseChatFragment extends QjBaseFragment {
         chatType = fragmentArgs.getInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
         // 会话人或群组id
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
-
+        caseName = fragmentArgs.getString("caseName");
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -188,7 +189,9 @@ public class EaseChatFragment extends QjBaseFragment {
 
 			@Override
 			public void onAtShow() {
-				onAtShowing();
+				if(chatType == EaseConstant.CHATTYPE_GROUP){
+					onAtShowing();
+				}
 			}
         });
 
@@ -229,7 +232,7 @@ public class EaseChatFragment extends QjBaseFragment {
      * 设置属性，监听等
      */
     protected void setUpView() {
-        titleBar.setTitle(toChatUsername);
+//        titleBar.setTitle(toChatUsername);
         if (chatType == EaseConstant.CHATTYPE_SINGLE) { // 单聊
             // 设置标题
         	EaseUserUtils.setUserNick(toChatUsername, titleBar.titleView);
@@ -243,7 +246,7 @@ public class EaseChatFragment extends QjBaseFragment {
                 // 群聊
                 EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
                 if (group != null)
-                    titleBar.setTitle(group.getGroupName());
+//                    titleBar.setTitle(group.getGroupName());
                 // 监听当前会话的群聊解散被T事件
                 groupListener = new GroupListener();
                 EMClient.getInstance().groupManager().addGroupChangeListener(groupListener);
@@ -380,17 +383,18 @@ public class EaseChatFragment extends QjBaseFragment {
 
 			@Override
 			public void onUserAvatarLongClick(String username) {
-				 DoctorListManager.getInstance().getDoctorInfoByHXid(username, new OnGetDoctorInfoCallback() {
-					
-					@Override
-					public void onGet(DoctorInfo info) {
-						if(info != null) {
-		                	inputMenu.onAddAtFriend(info);
-		                }
+				if(chatType == EaseConstant.CHATTYPE_GROUP){
+					DoctorListManager.getInstance().getDoctorInfoByHXid(username, new OnGetDoctorInfoCallback() {
 						
-					}
-				});
-	                
+						@Override
+						public void onGet(DoctorInfo info) {
+							if(info != null) {
+			                	inputMenu.onAddAtFriend(info);
+			                }
+							
+						}
+					});
+				}   
 			}
         });
     }
