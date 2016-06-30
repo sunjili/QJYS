@@ -28,6 +28,7 @@ import com.rmtech.qjys.model.CaseInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.ui.BaseActivity;
+import com.rmtech.qjys.ui.ChatActivity;
 import com.rmtech.qjys.ui.fragment.CaseFragment;
 import com.rmtech.qjys.ui.fragment.MeFragment;
 import com.rmtech.qjys.ui.view.MeItemLayout;
@@ -85,7 +86,7 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 		} else {
 			// tv_right.setText(tempStr);
 			tv_right.setTextColor(Color.rgb(126, 126, 126));
-			String[] strings = tempStr.split(",");
+			String[] strings = tempStr.split("&&");
 			for (int i = 0; i < strings.length; i++) {
 				if (i == 0) {
 					tv_right.setText(strings[0]);
@@ -222,10 +223,18 @@ public class EditCaseActivity extends BaseActivity implements View.OnClickListen
 										Toast.makeText(getActivity(), "病例已删除！", Toast.LENGTH_SHORT).show();
 										CaseFragment.deleteGrop(getActivity(), mCaseInfo.group_id);
 										GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(mCaseInfo.group_id);
+										GroupAndCaseListManager.getInstance().deleteCaseInfoByGroupId(mCaseInfo.group_id);
+										// 删除此会话
+										EMClient.getInstance().chatManager().deleteConversation(mCaseInfo.group_id, false);
 										Intent intent = new Intent("case_delete");
 										intent.putExtra("delete", "true");
 										getActivity().sendBroadcast(intent);
 										getActivity().finish();
+										if (PhotoDataManagerActivity.activityInstance != null) {
+											PhotoDataManagerActivity.activityInstance.finish();
+										}
+										if (ChatActivity.activityInstance != null)
+											ChatActivity.activityInstance.finish();
 									}
 									
 									@Override

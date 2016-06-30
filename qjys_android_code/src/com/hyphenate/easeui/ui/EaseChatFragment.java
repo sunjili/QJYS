@@ -996,8 +996,10 @@ public class EaseChatFragment extends QjBaseFragment {
 
                 public void run() {
                     if (toChatUsername.equals(groupId)) {
-                        Toast.makeText(getActivity(), R.string.you_are_group, 1).show();
-                        getActivity().finish();
+                    	if(getActivity() !=null ){
+                            Toast.makeText(getActivity(), R.string.you_are_group, 1).show();
+                            getActivity().finish();
+                    	}
                     }
                 }
             });
@@ -1009,8 +1011,10 @@ public class EaseChatFragment extends QjBaseFragment {
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
                     if (toChatUsername.equals(groupId)) {
-                        Toast.makeText(getActivity(), R.string.the_current_group, 1).show();
-                        getActivity().finish();
+                    	if(getActivity() !=null ){
+                            Toast.makeText(getActivity(), R.string.the_current_group, 1).show();
+                            getActivity().finish();
+                    	}
                     }
                 }
             });

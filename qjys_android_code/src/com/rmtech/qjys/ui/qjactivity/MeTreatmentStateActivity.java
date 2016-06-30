@@ -61,7 +61,7 @@ public class MeTreatmentStateActivity extends BaseActivity implements View.OnCli
 //				MeTreatmentStateActivity.this.finish();
 //			}
 //		});
-		setTitle("设置就诊状态");
+		setTitle("添加就诊状态");
 		setLeftTitle("我");
 		initView();
 	}

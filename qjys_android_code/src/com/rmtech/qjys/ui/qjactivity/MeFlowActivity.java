@@ -90,8 +90,8 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 
 			@Override
 			public void onResponseSucces(boolean iscache, MFlowList response) {
+				listems = new ArrayList<FlowInfo>();
 				if (response.hasData()) {
-					listems = new ArrayList<FlowInfo>();
 					listems.addAll(response.data);
 					setValue();
 				}
@@ -129,7 +129,7 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 	protected void onFlowItemClick(final FlowInfo item) {
 		MeFlowDetailActivity.show(getActivity(), item);
 	}
-
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -137,6 +137,7 @@ public class MeFlowActivity extends MeFlowBaseActivity implements
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
 			case QjConstant.REQUEST_CODE_ME_FLOW:
+				initData();
 				break;
 			}
 		}

@@ -137,6 +137,7 @@ public class LoginVcodeView extends LoginBaseView implements View.OnClickListene
 					// TODO Auto-generated method stub
 					if(response != null && response.ret > 0 && !TextUtils.isEmpty(response.msg)) {
 						Toast.makeText(getContext(), response.msg, Toast.LENGTH_LONG).show();
+						isGettingCode = false;
 						return;
 					}
 					if(response != null && response.ret == 0){

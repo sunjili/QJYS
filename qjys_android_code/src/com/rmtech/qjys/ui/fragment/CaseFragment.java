@@ -42,10 +42,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.rmtech.qjys.QjHttp;
 import com.rmtech.qjys.R;
 import com.rmtech.qjys.callback.BaseModelCallback;
+import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.event.CaseEvent;
 import com.rmtech.qjys.model.CaseInfo;
@@ -53,6 +55,8 @@ import com.rmtech.qjys.model.DoctorInfo;
 import com.rmtech.qjys.model.UserContext;
 import com.rmtech.qjys.model.gson.MBase;
 import com.rmtech.qjys.model.gson.MPatientList;
+import com.rmtech.qjys.model.gson.MStateAdd;
+import com.rmtech.qjys.model.gson.MVersionData;
 import com.rmtech.qjys.model.gson.MPatientList.HospitalCaseInfo;
 import com.rmtech.qjys.ui.qjactivity.AddCaseActivity;
 import com.rmtech.qjys.ui.qjactivity.PhotoDataManagerActivity;
@@ -184,33 +188,75 @@ public class CaseFragment extends QjBaseFragment {
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					final int section, final int position, long id) {
 
-				CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
-				if (false && DoctorListManager.isGroupDeleted(info.group_id) || DoctorListManager.isGroupBeDeleted(info.group_id) ) {
-					CustomSimpleDialog.Builder builder = new Builder(
-							getActivity());
-					builder.setTitle("提示");
-					String str = "群组已解散";
-					if(DoctorListManager.isGroupBeDeleted(info.group_id)) {
-						str = "你已被移除群组";
+				final CaseInfo info = mAdapter.getCaseInfoByPos(section, position);
+				if ( !UserContext.getInstance().isMyself(info.admin_doctor.id)) {
+					if(DoctorListManager.isGroupDeleted(info.group_id) || DoctorListManager.isGroupBeDeleted(info.group_id)){
+						CustomSimpleDialog.Builder builder = new Builder(
+								getActivity());
+						builder.setTitle("提示");
+						String str = "此病例已解散或者您已退出该病例讨论组！";
+						builder.setMessage(str);
+						
+						builder.setPositiveButton("确定",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										mAdapter.deleteItem(section, position);
+										dialog.dismiss();
+									}
+
+								});
+						builder.create().show();
+					}else {
+						PhotoDataManagerActivity.show(getActivity(), info, null);
 					}
-					builder.setMessage(str);
-					
-					builder.setPositiveButton("确定",
-							new DialogInterface.OnClickListener() {
+				}else if(UserContext.getInstance().isMyself(info.admin_doctor.id)){
+					QjHttp.getPatientState(info.id, new QjHttpCallback<MStateAdd>() {
+						
+						@Override
+						public MStateAdd parseNetworkResponse(String str) throws Exception {
+							// TODO Auto-generated method stub
+							return new Gson().fromJson(str, MStateAdd.class);
+						}
+						
+						@Override
+						public void onResponseSucces(MStateAdd response) {
+							// TODO Auto-generated method stub
+							if(response != null && response.data != null){
+								if(response.data.state==2){
+									CustomSimpleDialog.Builder builder = new Builder(
+											getActivity());
+									builder.setTitle("提示");
+									String str = "此病例已被您删除！";
+									builder.setMessage(str);
+									
+									builder.setPositiveButton("确定",
+											new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									mAdapter.deleteItem(section, position);
-									dialog.dismiss();
+												@Override
+												public void onClick(DialogInterface dialog,
+														int which) {
+													mAdapter.deleteItem(section, position);
+													dialog.dismiss();
+												}
+
+											});
+									builder.create().show();
+								}else {
+									PhotoDataManagerActivity.show(getActivity(), info, null);
 								}
-
-							});
-					builder.create().show();
-					return;
+							}
+						}
+						
+						@Override
+						public void onError(Call call, Exception e) {
+							// TODO Auto-generated method stub
+							PhotoDataManagerActivity.show(getActivity(), info, null);
+						}
+					});
 				}
-				PhotoDataManagerActivity.show(getActivity(), info, null);
-
 			}
 		});
 		// step 1. create a MenuCreator
@@ -381,12 +427,15 @@ public class CaseFragment extends QjBaseFragment {
 		@Override
 		public void onResponseSucces(boolean iscache, MPatientList response) {
 			if (response != null && response.hasData()) {
-				mAdapter.setData(response);
-				mAdapter.notifyDataSetChanged();
+				if(mAdapter!=null){
+					mAdapter.setData(response);
+					mAdapter.notifyDataSetChanged();
+				}
 			}
-			mPtrFrame.refreshComplete();
+			if(mPtrFrame != null){
+				mPtrFrame.refreshComplete();
+			}
 			onDisplayData();
-
 		}
 	};
 
@@ -395,7 +444,7 @@ public class CaseFragment extends QjBaseFragment {
 				getResources().getDisplayMetrics());
 	}
 
-	private void updateData() {
+	public void updateData() {
 		GroupAndCaseListManager.getPatientList(false, httpCallback);
 	}
 
@@ -404,8 +453,10 @@ public class CaseFragment extends QjBaseFragment {
 		if (mAdapter != null && mAdapter.getCount() > 0) {
 			mNodataView.setVisibility(View.GONE);
 		} else {
-			mNodataView.setVisibility(View.VISIBLE);
-			neterrorview.setVisibility(View.GONE);
+			if(mNodataView!=null&&neterrorview!=null){
+				mNodataView.setVisibility(View.VISIBLE);
+				neterrorview.setVisibility(View.GONE);
+			}
 		}
 	}
 
@@ -473,6 +524,9 @@ public class CaseFragment extends QjBaseFragment {
 												Toast.makeText(getActivity(), "病例已删除！", Toast.LENGTH_SHORT).show();
 												deleteGrop(getActivity(), caseinfo.group_id);
 												GroupAndCaseListManager.getInstance().deleteGroupInfoInCase(caseinfo.group_id);
+												GroupAndCaseListManager.getInstance().deleteCaseInfoByGroupId(caseinfo.group_id);
+												// 删除此会话
+												EMClient.getInstance().chatManager().deleteConversation(caseinfo.group_id, false);
 												if (hosList.patients.size() == 0) {
 													mPatientList.remove(hosList);
 

@@ -302,7 +302,9 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 		case R.id.rl_head:
 //			Toast.makeText(context, "头像", Toast.LENGTH_SHORT).show();
 
-			new AlertView(null, null, "取消", null, new String[] { "拍照", "从手机相册中选择", "从资源管理器中选择" }, getActivity(),
+			new AlertView(null, null, "取消", null, new String[] { "拍照", "从手机相册中选择"
+//					, "从资源管理器中选择"
+					}, getActivity(),
 					AlertView.Style.ActionSheet, new com.sjl.lib.alertview.OnItemClickListener() {
 
 						@Override
@@ -320,9 +322,9 @@ public class MeFragment extends QjBaseFragment implements OnClickListener {
 								PhotoUtil.startImageSelector(getActivity(), false);
 								// ImageSelectorMainActivity.show(PhotoDataManagerActivity.this);
 								break;
-							case 2:
-								PhotoUtil.showChooser(getActivity());
-								break;
+//							case 2:
+//								PhotoUtil.showChooser(getActivity());
+//								break;
 							}
 
 						}

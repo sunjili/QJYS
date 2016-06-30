@@ -483,18 +483,26 @@ public class PhotoDataBaseActivity extends CaseWithIdActivity implements OnNewFo
 								}
 								showNewFolderDialog(folders);
 								break;
-							case 1: {
+							case 2: {
 								if(!isMyself()) {
 									Toast.makeText(getActivity(), "非管理员，没有权限", Toast.LENGTH_LONG).show();
+									return;
+								}
+								if(getImageDataList()==null || getImageDataList().images==null || getImageDataList().images.size()==0){
+									Toast.makeText(getActivity(), "当前没有图片可以操作！", Toast.LENGTH_LONG).show();
 									return;
 								}
 								PhotoDataSortActivity.show(getActivity(),caseId,folderId,
 										getImageDataList());
 								break;
 							}
-							case 2:{
+							case 1:{
 								if(!isMyself()) {
 									Toast.makeText(getActivity(), "非管理员，没有权限", Toast.LENGTH_LONG).show();
+									return;
+								}
+								if(getImageDataList()==null || getImageDataList().images==null || getImageDataList().images.size()==0){
+									Toast.makeText(getActivity(), "当前没有图片可以操作！", Toast.LENGTH_LONG).show();
 									return;
 								}
 								PhotoDataSelectActivity.show(getActivity(),caseId,folderId,

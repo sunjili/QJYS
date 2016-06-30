@@ -243,14 +243,12 @@ public class DoctorListManager {
 								callback.onGet(doc);
 							}
 						}
-
 						if (mIdDoctorMap == null) {
 							mIdDoctorMap = new HashMap<String, DoctorInfo>();
 						}
-						for (DoctorInfo info : response.data) {
-							mIdDoctorMap.put(info.id, info);
-						}
+						mIdDoctorMap.put(doc.id, doc);
 					}
+					
 				} else {
 					if (callback != null) {
 						callback.onGet(null);

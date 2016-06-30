@@ -74,6 +74,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	private String folderId;
 	private CaseInfo caseInfo;
 	protected ImageDataList imageDataList;
+	protected List<FolderDataInfo> list;
 	private String caseId;
 	private ProgressDialog mProgressDialog;
 
@@ -117,6 +118,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	// }
 
 	private void onDataChanged() {
+		mAdapter.notifyDataSetChanged();
 		if (mAdapter.getCount() > 0) {
 			if (nodata_layout.getVisibility() == View.VISIBLE) {
 				nodata_layout.setVisibility(View.GONE);
@@ -125,8 +127,6 @@ public class PhotoManagerFragment extends QjBaseFragment {
 			nodata_layout.setVisibility(View.VISIBLE);
 		}
 		// mGridView.setScrollIsComputed(false);
-		mAdapter.notifyDataSetChanged();
-
 	}
 	
 	@Subscribe
@@ -172,19 +172,19 @@ public class PhotoManagerFragment extends QjBaseFragment {
 	}
 
 	
-//	public int getImagesTotalCount(){
-//		int totalCount = 0;
-//		List<FolderDataInfo> folders = new ArrayList<FolderDataInfo>();
-//		if(isRootFolder()){
-//			if(folders.addAll(getImageDataList().folders)){
-//				for(int i=0;i<folders.size();i++){
-//					totalCount = totalCount + folders.get(i).image_count;
-//				}
-//			}
-//		}
-//		totalCount = totalCount + getImageDataList().images.size();
-//		return totalCount;
-//	}
+	public int getImagesTotalCount(){
+		int totalCount = 0;
+		List<FolderDataInfo> folders = new ArrayList<FolderDataInfo>();
+		if(isRootFolder()){
+			if(folders.addAll(getImageDataList().folders)){
+				for(int i=0;i<folders.size();i++){
+					totalCount = totalCount + folders.get(i).image_count;
+				}
+			}
+		}
+		totalCount = totalCount + getImageDataList().images.size();
+		return totalCount;
+	}
 
 	@Subscribe
 	public void onEvent(PhotoDataEvent event) {
@@ -230,9 +230,8 @@ public class PhotoManagerFragment extends QjBaseFragment {
 //			if (TextUtils.equals(folderId, event.folderId)) {
 //				return;
 //			}
-
+			loadData();
 		}
-		loadData();
 	}
 
 	@Override
@@ -304,6 +303,9 @@ public class PhotoManagerFragment extends QjBaseFragment {
 												@Override
 												public void onDeleteSuccess(FolderDataInfo item) {
 													mAdapter.remove(item);
+													//TODO list.remove
+													list.remove(itemposition);
+													onDataChanged();
 												}
 
 											});
@@ -461,7 +463,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 		imageDataList.folders.add(0, info);
 
 		mAdapter.add(0, info);
-		mAdapter.notifyDataSetChanged();
+		onDataChanged();
 		// mGridView.setScrollIsComputed(false);
 	}
 
@@ -497,7 +499,7 @@ public class PhotoManagerFragment extends QjBaseFragment {
 				}
 				dismissDialog();
 
-				ArrayList<FolderDataInfo> list = new ArrayList<FolderDataInfo>();
+				list = new ArrayList<FolderDataInfo>();
 				imageDataList = response.data;
 				if(isRootFolder()) {
 					CaseInfo tempCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);

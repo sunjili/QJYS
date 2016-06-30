@@ -266,6 +266,12 @@ public class MainActivity extends BaseActivity {
 					if (conversationListFragment != null) {
 						conversationListFragment.refresh();
 					}
+					if (caseFragment != null) {
+						caseFragment.updateData();
+					}
+					if (contactListFragment != null) {
+						contactListFragment.refresh();
+					}
 				}
 			}
 		});

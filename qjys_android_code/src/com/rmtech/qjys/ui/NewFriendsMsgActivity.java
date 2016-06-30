@@ -68,6 +68,7 @@ public class NewFriendsMsgActivity extends BaseActivity{
 							intent.putExtra("DoctorInfo", (Parcelable) info);
 							intent.putExtra("from", "newFriendsMsg");
 							intent.putExtra("location", arg2);
+							intent.putExtra("message", msgs.get(arg2).getReason());
 							getActivity().startActivity(intent);
 						} 
 					}

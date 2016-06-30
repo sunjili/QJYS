@@ -69,7 +69,8 @@
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@id/msg_state"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:singleLine="true"
+            android:layout_marginRight="70dp"
             android:padding="7dp"
             android:textColor="@color/c9"
             android:textSize="13sp" />

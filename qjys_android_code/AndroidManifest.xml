@@ -266,6 +266,7 @@
         <!-- 编辑病例的就诊状态 -->
         <activity
             android:name="com.rmtech.qjys.ui.qjactivity.EditCaseStateActivity"
+            android:windowSoftInputMode="stateUnchanged"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
@@ -781,6 +782,8 @@
             android:name="UMENG_APPKEY"
             android:value="57453cf967e58eaaa6000a1f" >
         </meta-data>
+        
+        <!-- 正式：YingYongBao 测试：hyphenate -->
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="hyphenate" />

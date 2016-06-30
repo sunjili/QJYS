@@ -75,11 +75,11 @@ public class BaseActivity extends EaseBaseActivity {
 					if (temp.toString().getBytes("utf-8").length > maxLength) {  
 					    Toast.makeText(context,  
 					            "你输入的字数已经超过了限制！", Toast.LENGTH_SHORT)  
-					            .show();  
-					    s.delete(editStart-1, editEnd);  
+					            .show(); 
+					    s.delete(editStart - 1, editEnd);
 					    int tempSelection = editStart;  
 					    mEditText.setText(s);  
-					    mEditText.setSelection(tempSelection);  
+					    mEditText.setSelection(tempSelection);
 					}
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block

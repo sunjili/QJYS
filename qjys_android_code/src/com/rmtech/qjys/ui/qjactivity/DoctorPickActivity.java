@@ -387,99 +387,105 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 			}
 		} else if (type == QjConstant.REQUEST_CODE_ADD_DOCTORS) {
 			exitingMembers = getIntent().getParcelableArrayListExtra("selectedDoctorList");
+//			if(selectedDoctorList == null || selectedDoctorList.isEmpty()) {
+//				((TextView)setRightTitle("确认", null)).setTextColor(Color.GRAY);
+//			}else {
+				setRightTitle("确定", new OnClickListener() {
 
-			setRightTitle("确定", new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Log.d("sssssssssss", "setRightTitle onClick");
-					String membersStr = getMembersString();
-					if(TextUtils.isEmpty(membersStr)) {
-						finish();
-						return;
-					}
-					if(mProgressDialog != null && mProgressDialog.isShowing()) {
-						return;
-					}
-					mProgressDialog = ProgressDialog.show(getActivity(), null, "正在添加");
-
-					QjHttp.addMembers(caseInfo, membersStr, new QjHttpCallback<MGroupData>() {
-
-						@Override
-						public void onResponseSucces(MGroupData response) {
-							
-							
-							ArrayList<DoctorInfo> resultList = getToBeAddMembers();
-							CaseEvent event = new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED_ADD);
-							final String groupid =  response.data == null ? null : response.data.group_id;
-
-							CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
-							if (newCase != null) {
-								if (newCase.participate_doctor == null) {
-									newCase.participate_doctor = new ArrayList<DoctorInfo>();
-								}
-								newCase.participate_doctor.addAll(resultList);
-								newCase.group_id = groupid;
-								event.setCaseInfoId(caseInfo.id);
-
-								EventBus.getDefault().post(event);
-							}
-				
-							Intent intent = new Intent();
-							intent.putParcelableArrayListExtra("selectedDoctorList", resultList);// ("newmembers",
-							if(groupid != null) {
-								final ArrayList<DoctorInfo> list = getToBeAddMembers();
-								
-								new Thread(new Runnable() {
-									
-									@Override
-									public void run() {
-										// TODO Auto-generated method stub
-										try {
-											String[] newmembers = new String[list.size()];
-											for (int i = 0; i < list.size(); i++) {
-												newmembers[i] = list.get(i).id;
-											}
-											EMClient.getInstance().groupManager().addUsersToGroup(groupid, newmembers);
-										} catch (HyphenateException e) {
-//											e.printStackTrace();
-										}
-									}
-								}).start();
-								String content = "我邀请 " + getMemberNamesString() + "加入了病例讨论组";
-								EMMessage msg = EMMessage.createTxtSendMessage(content, groupid);
-								msg.setChatType(ChatType.GroupChat);
-								EMClient.getInstance().chatManager().sendMessage(msg);
-								intent.putExtra("group_id",groupid);
-							}
-							setResult(RESULT_OK, intent);
+					@Override
+					public void onClick(View v) {
+						Log.d("sssssssssss", "setRightTitle onClick");
+						String membersStr = getMembersString();
+						if(TextUtils.isEmpty(membersStr)) {
 							finish();
-							try {
-								mProgressDialog.dismiss();
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+							return;
+						}
+						if(mProgressDialog != null && mProgressDialog.isShowing()) {
+							return;
+						}
+						mProgressDialog = ProgressDialog.show(getActivity(), null, "正在添加");
+
+						QjHttp.addMembers(caseInfo, membersStr, new QjHttpCallback<MGroupData>() {
+
+							@Override
+							public void onResponseSucces(MGroupData response) {
+								
+								
+								ArrayList<DoctorInfo> resultList = getToBeAddMembers();
+								CaseEvent event = new CaseEvent(CaseEvent.TYPE_GROUP_CHANGED_ADD);
+								final String groupid =  response.data == null ? null : response.data.group_id;
+								DoctorListManager.removeBeDeletedGroupIds(groupid);
+								DoctorListManager.removeDeletedGroupIds(groupid);
+								CaseInfo newCase = GroupAndCaseListManager.getInstance().getCaseInfoByCaseId(caseInfo.id);
+								if (newCase != null) {
+									if (newCase.participate_doctor == null) {
+										newCase.participate_doctor = new ArrayList<DoctorInfo>();
+									}
+									newCase.participate_doctor.addAll(resultList);
+									newCase.group_id = groupid;
+									event.setCaseInfoId(caseInfo.id);
+
+									EventBus.getDefault().post(event);
+								}
+					
+								Intent intent = new Intent();
+								intent.putParcelableArrayListExtra("selectedDoctorList", resultList);// ("newmembers",
+								if(groupid != null) {
+									final ArrayList<DoctorInfo> list = getToBeAddMembers();
+									
+									new Thread(new Runnable() {
+										
+										@Override
+										public void run() {
+											// TODO Auto-generated method stub
+											try {
+												String[] newmembers = new String[list.size()];
+												for (int i = 0; i < list.size(); i++) {
+													newmembers[i] = list.get(i).id;
+												}
+												//changedGroupName 改变后的群组名称
+//												EMClient.getInstance().groupManager().changeGroupName(groupid, caseInfo.getShowName());//需异步处理
+												EMClient.getInstance().groupManager().addUsersToGroup(groupid, newmembers);
+											} catch (HyphenateException e) {
+//												e.printStackTrace();
+											}
+										}
+									}).start();
+									String content = "我邀请 " + getMemberNamesString() + "加入了病例讨论组";
+									EMMessage msg = EMMessage.createTxtSendMessage(content, groupid);
+									msg.setChatType(ChatType.GroupChat);
+									EMClient.getInstance().chatManager().sendMessage(msg);
+									intent.putExtra("group_id",groupid);
+								}
+								setResult(RESULT_OK, intent);
+								finish();
+								try {
+									mProgressDialog.dismiss();
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								// } else {
+								// onActionFinish();
+								// }
 							}
-							// } else {
-							// onActionFinish();
-							// }
-						}
 
-						@Override
-						public void onError(Call call, Exception e) {
-							// TODO Auto-generated method stub
-							onActionFinish();
-						}
+							@Override
+							public void onError(Call call, Exception e) {
+								// TODO Auto-generated method stub
+								onActionFinish();
+							}
 
-						@Override
-						public MGroupData parseNetworkResponse(String str) throws Exception {
-							// TODO Auto-generated method stub
-							return new Gson().fromJson(str, MGroupData.class);
-						}
+							@Override
+							public MGroupData parseNetworkResponse(String str) throws Exception {
+								// TODO Auto-generated method stub
+								return new Gson().fromJson(str, MGroupData.class);
+							}
 
-					});
-				}
-			});
+						});
+					}
+				});
+//			}
 		} else if(type == QjConstant.REQUEST_CODE_AT) {
 			isSignleChecked = true;
 			setRightTitle("确定", new OnClickListener() {
@@ -620,7 +626,6 @@ public class DoctorPickActivity extends CaseWithIdActivity {
 			sb.append(list.get(i).id);
 			if (i < list.size() - 1) {
 				sb.append(",");
-
 			}
 		}
 		return sb.toString();

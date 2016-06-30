@@ -556,6 +556,9 @@ public class QjHelper {
 			// 群被解散
 			// TODO 提示用户群被解散,demo省略
 			DoctorListManager.addBeDeletedGroupIds(groupId);
+			
+            EMGroup group = EMClient.getInstance().groupManager().getGroup(groupId);
+            Log.e("onGroupDestroy", group.getGroupName().toString());
 			EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
 			msg.setChatType(ChatType.GroupChat);
 			msg.setFrom(groupId);

@@ -324,6 +324,13 @@ public class GroupAndCaseListManager {
 			EventBus.getDefault().post(event);
 		}
 	}
+	
+	public void deleteCaseInfoByGroupId(String groupId) {
+		CaseInfo info = getCaseInfoByGroupId(groupId);
+		if(info != null) {
+			mGIdCaseInfoMap.remove(groupId);
+		}
+	}
 
 	public void clear() {
 		if(mGIdCaseInfoMap != null) {

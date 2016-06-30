@@ -41,11 +41,11 @@ public class PhotoManangerPopWindow {
 	}
 
 	public static class ListPopupWindowAdapter extends BaseAdapter {
-		private String[] mStringList = new String[] { "新建文件夹", "文件排序", "文件多选",
+		private String[] mStringList = new String[] { "新建文件夹", "删除、移动", "图片排序",
 				"设置" };
 		private int[] mImageList = new int[] {R.drawable.ic_case_newfolder,
-				R.drawable.ic_case_filesorting,
-				R.drawable.ic_case_filemultiselect, R.drawable.ic_case_setting };
+				R.drawable.ic_case_filemultiselect, R.drawable.ic_case_filesorting,
+				R.drawable.ic_case_setting };
 
 		private Context mContext;
 		private boolean isRoot;

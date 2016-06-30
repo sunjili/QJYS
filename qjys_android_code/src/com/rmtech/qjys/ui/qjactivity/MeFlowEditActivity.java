@@ -1,5 +1,6 @@
 package com.rmtech.qjys.ui.qjactivity;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import okhttp3.Call;
@@ -92,6 +93,15 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 					showDialog("请填写规范内容");
 					return;
 				}
+				try {
+					if (procedure_text.getBytes("utf-8").length > 8000) {
+						showDialog("你输入的字数已经超过了限制, 请删除部分内容！");
+						return;
+					}
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				if (requestType == QjConstant.REQUEST_CODE_EDIT_CASE_FLOW
 						|| requestType == QjConstant.REQUEST_CODE_CASE_FLOW_LIST) {
 
@@ -167,7 +177,6 @@ public class MeFlowEditActivity extends MeFlowBaseActivity implements
 		et_title = (EditText) findViewById(R.id.et_title);
 		setTextWhacher(MeFlowEditActivity.this, et_title, 75);
 		et_content = (EditText) findViewById(R.id.et_content);
-		setTextWhacher(MeFlowEditActivity.this, et_content, 8000);
 		btn_delete = (Button) findViewById(R.id.btn_delete);
 		btn_delete.setOnClickListener(this);
 		iv_right = (CheckBox) findViewById(R.id.iv_right);

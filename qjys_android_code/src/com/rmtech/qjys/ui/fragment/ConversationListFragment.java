@@ -168,7 +168,7 @@ public class ConversationListFragment extends EaseConversationListFragment {
 								}
 							};
 							builder.setTitle("");
-							builder.setMessage("您已不在该病例讨论组中！");
+							builder.setMessage("您已不在该病例讨论组中或者该讨论组已被解散！");
 							builder.setNegativeButton("取消", listener);
 							builder.setPositiveButton("确定", listener);
 							builder.create().show();

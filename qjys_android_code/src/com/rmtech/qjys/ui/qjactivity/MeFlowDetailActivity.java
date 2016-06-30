@@ -112,6 +112,9 @@ public class MeFlowDetailActivity extends MeFlowBaseActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			if(data!=null&&data.getStringExtra("delete")!=null&&data.getStringExtra("delete").equals("success")){
+				Intent intent = new Intent();
+				intent.putExtra("delete", "success");
+				setResult(RESULT_OK, intent);
 				MeFlowDetailActivity.this.finish();
 			}
 			switch (requestCode) {

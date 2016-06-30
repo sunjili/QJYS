@@ -148,28 +148,32 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         boolean someoneAtme  = false;
         if (conversation.getAllMsgCount() != 0) {
             // 把最后一条消息的内容作为item的message内容
-            EMMessage lastMessage = conversation.getLastMessage();
+   		 	EMMessage lastMessage = conversation.getLastMessage();
             final String lastStr =  EaseCommonUtils.getMessageDigest(lastMessage, (this.getContext()));
-            String atStr = null;
-            try {
-				atStr = lastMessage.getStringAttribute("at");
-			} catch (HyphenateException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			}
-            holder.message.setText("");
-            String[] atArray = null;
-            if(!TextUtils.isEmpty(atStr)) {
-            	atArray = atStr.split(",");
-            	if(atArray != null) {
-	            	for(String str : atArray) {
-	            		if(UserContext.getInstance().isMyself(str)) {
-	            			someoneAtme = true;
-	            			break;
-	            		}
-	            	}
-            	}
-            }
+
+        	if(conversation.getType() == EMConversationType.GroupChat) {
+                 String atStr = null;
+                 try {
+     				atStr = lastMessage.getStringAttribute("at");
+     			} catch (HyphenateException e) {
+     				// TODO Auto-generated catch block
+     				//e.printStackTrace();
+     			}
+                 holder.message.setText("");
+                 String[] atArray = null;
+                 if(!TextUtils.isEmpty(atStr)) {
+                 	atArray = atStr.split(",");
+                 	if(atArray != null) {
+     	            	for(String str : atArray) {
+     	            		if(UserContext.getInstance().isMyself(str)) {
+     	            			someoneAtme = true;
+     	            			break;
+     	            		}
+     	            	}
+                 	}
+                 }
+        	}
+           
             
             if(UserContext.getInstance().isMyself(lastMessage.getFrom())) {
             	
@@ -181,7 +185,9 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
             	 holder.message.setText(ss,BufferType.SPANNABLE);
             } else {
             	final boolean fsomeoneAtme = someoneAtme;
- 
+            	if(conversation.getType() == EMConversationType.GroupChat && TextUtils.equals(username, lastMessage.getFrom())) {
+					holder.message.setText(EaseSmileUtils.getSmiledText(getContext(), lastStr), BufferType.SPANNABLE);
+            	} else {
             	DoctorListManager.getInstance().getDoctorInfoByHXid(lastMessage.getFrom(), new OnGetDoctorInfoCallback() {
 					
 					@Override
@@ -201,6 +207,7 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
 						}
 					}
 				});
+            	}
             };
            
 

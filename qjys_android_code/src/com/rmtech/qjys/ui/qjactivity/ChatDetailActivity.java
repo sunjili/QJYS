@@ -83,11 +83,11 @@ public class ChatDetailActivity  extends BaseActivity implements OnClickListener
 			public void onGet(DoctorInfo info) {
 				if(info != null) {
 					doctorInfo = info;
-					name_tv.setText(TextUtils.isEmpty(info.name)?info.phone:info.name);
+					name_tv.setText(info.getDisplayName());
 					if(TextUtils.isEmpty(info.remark)) {
 						nike_tv.setVisibility(View.GONE);
 					} else {
-						nike_tv.setText("昵称：" + info.remark);
+						nike_tv.setText("昵称：" + info.name);
 					}
 					ImageLoader.getInstance().displayImage(info.head, avatar,
 							QjConstant.optionsHead);

@@ -88,6 +88,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 	private TextView tv_name;
 	private RelativeLayout rl_changyong;
 	private View line_padding;
+	private String message;
 	
 	private ArrayList<String> tempPhones = new ArrayList<String>();
 	private boolean isFriend = false;
@@ -101,6 +102,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		
 		doctorInfo = getIntent().getParcelableExtra("DoctorInfo");
 		from = getIntent().getStringExtra("from");
+		message = getIntent().getStringExtra("message");
 		if(doctorInfo == null) {
 			return;
 		}
@@ -128,7 +130,11 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 				user_beizhu.setVisibility(View.VISIBLE);
 				userPhone.setVisibility(View.VISIBLE);
 				btnSendmessage.setText("通过验证");
-				tvHello.setText(doctorInfo.getDisplayName() + "请求添加您为好友");
+				if(message!=null){
+					tvHello.setText(message);
+				}else {
+					tvHello.setText(doctorInfo.getDisplayName() + "请求添加您为好友");
+				}
 			}else if(from.equals("qrcode")){
 				setLeftTitle("扫一扫");
 				btnDelete.setVisibility(View.GONE);
@@ -213,16 +219,6 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 		tvNickname.setText("昵称："+doctorInfo.name);
 		// tv_name 优先显示备注，没有备注就显示用户名，特别提醒：用户没设用户名的话 后台会自动把doctorInfo.name的内容设定为手机号，不需要咱们手动添加doctorInfo.phone
 		// 非好友的话一定是没有备注的，那就显示用户名
-		
-		
-//		tv_name.setText(TextUtils.isEmpty(doctorInfo.name)?doctorInfo.phone:doctorInfo.name);
-//		if(TextUtils.isEmpty(doctorInfo.remark)) {
-//			tvNickname.setVisibility(View.GONE);
-//		} else {
-//			// 礼哥这里改错了吧，昵称应该是用户名，没设用户名的话就应该是手机号
-//		    // 对于 昵称：18888888888 这种格式的昵称我问过奎哥，他说没问题，表示无语,我是崩溃的
-//			tvNickname.setText("昵称：" + doctorInfo.remark);
-//		}
 		
 		if(!TextUtils.isEmpty(doctorInfo.remark)){
 			tvNickname.setVisibility(View.VISIBLE);
@@ -316,8 +312,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 //			startActivityForResult(intent, USER_BEIZHU);
 			break;
 		}
-		case R.id.btn_sendmessage: {
-
+		case R.id.btn_sendmessage:
 			// Intent intent = new Intent(this, UserInfoBeizhuActivity.class);
 			// startActivityForResult(intent, USER_BEIZHU);
 			// break;
@@ -345,76 +340,40 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 					intent.putExtra(QjConstant.EXTRA_USER_ID, doctorInfo.id);
 					startActivity(intent);
 				}
-				break;
 			}
-		}
+		    break;
 		case R.id.user_phone:
-			if(isFriend){
-				CustomSimpleDialog.Builder builder = new Builder(
-						getActivity());
-				builder.setTitle("");
-				builder.setMessage(doctorInfo.phone);
-				builder.setNegativeButton("取消",
-						new DialogInterface.OnClickListener() {
+			CustomSimpleDialog.Builder builder = new Builder(
+					getActivity());
+			builder.setTitle("");
+			builder.setMessage(doctorInfo.phone);
+			builder.setNegativeButton("取消",
+					new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								
-							}
+						@Override
+						public void onClick(DialogInterface dialog,
+								int which) {
+							
+						}
 
-						});
-				builder.setPositiveButton("呼叫",
-						new DialogInterface.OnClickListener() {
+					});
+			builder.setPositiveButton("呼叫",
+					new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
-										+ doctorInfo.phone));
-								startActivity(intent);
-							}
-
-						});
-				builder.create().show();
-			}else{
-				//TODO 非好友，不能直接拨打电话
-				CustomSimpleDialog.Builder builder = new Builder(
-						getActivity());
-				builder.setTitle("提示");
-				builder.setMessage("Ta还不是您的好友，赶快添加好友吧！");
-				builder.setNegativeButton("", null);
-				builder.setPositiveButton("确定",
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								if(!isFriend&&!from.equals("newFriendsMsg")){//TODO.
-							        Intent intent = new Intent(UserInfoActivity.this, CaseAddFriendActivity.class);
-							        intent.putExtra("userId", doctorInfo.id);
-							        intent.putExtra("from", "UserInfoActivity");
-							        startActivity(intent);
-								}else if(!isFriend&&from.equals("newFriendsMsg")){
-									//TODO 通过验证
-									location = getIntent().getIntExtra("location", 0);
-									msg = new InviteMessgeDao(getActivity()).getMessagesList().get(location);
-									acceptInvitation(msg);
-									line_padding.setVisibility(View.VISIBLE);
-									rl_changyong.setVisibility(View.VISIBLE);
-									tvHello.setText("");
-								}
-							}
-
-						});
-				builder.create().show();
-			}
+						@Override
+						public void onClick(DialogInterface dialog,
+								int which) {
+							Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+									+ doctorInfo.phone));
+							startActivity(intent);
+						}
+					});
+			builder.create().show();
 			break;
 		case R.id.btn_delete://删除好友功能
 			//TODO 一直感觉应该在doctorInfo加一个是否为好友的参数，相应的接口也需要改？暂时先这样写
-			//TODO 暂时先完成删除好友功能，上面灰色提示的文字还没做
 			
-			new AlertView(null, null, "取消", null, new String[] {"删除联系人"}, getActivity(),
+			new AlertView("将联系人 " + doctorInfo.getDisplayName() + " 删除，同时删除\n与该联系人的聊天记录！", null, "取消", null, new String[] {"删除联系人"}, getActivity(),
 					AlertView.Style.ActionSheet, new com.sjl.lib.alertview.OnItemClickListener() {
 
 						@Override
@@ -434,37 +393,37 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 									
 									@Override
 									public void onResponseSucces(MBase response) {
-												new Thread(new Runnable() {
-													@Override
-													public void run() {		
-														try {
-															EMClient.getInstance().contactManager().deleteContact(doctorInfo.id);
-															DoctorListManager.getInstance().deleteDoctorInfo(doctorInfo.id);
-															
-															// 删除db和内存中此用户的数据
-															UserDao dao = new UserDao(getActivity());
-															dao.deleteContact(doctorInfo.id);
-															QjHelper.getInstance().getContactList().remove(doctorInfo.id);
-															getActivity().runOnUiThread(new Runnable() {
-																public void run() {
-																	pd.dismiss();
-																	UserInfoActivity.this.finish();
-																	EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_DELETE));
+										new Thread(new Runnable() {
+											@Override
+											public void run() {		
+												try {
+													EMClient.getInstance().contactManager().deleteContact(doctorInfo.id);
+													DoctorListManager.getInstance().deleteDoctorInfo(doctorInfo.id);
+													
+													// 删除db和内存中此用户的数据
+													UserDao dao = new UserDao(getActivity());
+													dao.deleteContact(doctorInfo.id);
+													QjHelper.getInstance().getContactList().remove(doctorInfo.id);
+													getActivity().runOnUiThread(new Runnable() {
+														public void run() {
+															pd.dismiss();
+															UserInfoActivity.this.finish();
+															EventBus.getDefault().post(new DoctorEvent(DoctorEvent.TYPE_DELETE));
 
-																}
-															});
-															
-														} catch (final Exception e) {
-															getActivity().runOnUiThread(new Runnable() {
-																public void run() {
-																	pd.dismiss();
-																	Toast.makeText(getActivity(), st2 + e.getMessage(), 1).show();
-																}
-															});
-	
 														}
-													}
-												}).start();
+													});
+													
+												} catch (final Exception e) {
+													getActivity().runOnUiThread(new Runnable() {
+														public void run() {
+															pd.dismiss();
+															Toast.makeText(getActivity(), st2 + e.getMessage(), 1).show();
+														}
+													});
+
+												}
+											}
+										}).start();
 									}
 									
 									@Override
@@ -480,8 +439,6 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 
 									}
 								});
-								
-								break;
 							}
 						}
 					})
@@ -491,14 +448,10 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener {
 			if(tbPull.isSwitchOpen()){
 				tbPull.closeSwitch();
 				DoctorListManager.setMostUse(doctorInfo.id,false);
-				
 			}else{
 				tbPull.openSwitch();
 				DoctorListManager.setMostUse(doctorInfo.id,true);
-
 			}
-		
-
 			break;
 		}
 	}

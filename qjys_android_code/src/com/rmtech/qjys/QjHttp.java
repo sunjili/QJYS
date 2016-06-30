@@ -9,14 +9,12 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
-import android.R.integer;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.rmtech.qjys.callback.BaseModelCallback;
-import com.rmtech.qjys.callback.OnLoginListener;
 import com.rmtech.qjys.callback.QjHttpCallback;
 import com.rmtech.qjys.callback.QjHttpCallbackNoParse;
 import com.rmtech.qjys.callback.QjHttpCallbackWitchSaveCache;
@@ -33,6 +31,7 @@ import com.rmtech.qjys.model.gson.MHosList;
 import com.rmtech.qjys.model.gson.MIdData;
 import com.rmtech.qjys.model.gson.MImageList;
 import com.rmtech.qjys.model.gson.MPatientList;
+import com.rmtech.qjys.model.gson.MStateAdd;
 import com.rmtech.qjys.model.gson.MStateList;
 import com.rmtech.qjys.model.gson.MUploadImageInfo;
 import com.rmtech.qjys.model.gson.MUrlData;
@@ -48,6 +47,7 @@ public class QjHttp {
 
 	private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
+	public static final String URL_PATIENT_STATE = "/patient/patientstate";
 	public static final String URL_PATIENT_QUIT = "/patient/quitpatient";
 	public static final String URL_ABOUT_FANKUI = "/app/feedback";
 	public static final String URL_DOCTOR_SETPASS = "/doctor/setpass";
@@ -92,7 +92,16 @@ public class QjHttp {
 	public static final String URL_PATIENTS_INFO = "/patient/patientsinfo";
 	
 	/**
-	 * 45 获取病例信息 /patient/patientsinfo 参数 patient_ids : 病例id，以逗号分割
+	 * 44 病例状态/patient/patientstate 参数 patient_id : 病例id
+	 */
+	public static void getPatientState(String caseid, QjHttpCallback<MStateAdd> callback) {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("patient_id", caseid);
+		OkHttpUtils.post(URL_PATIENT_STATE, params, callback);
+	}
+	
+	/**
+	 * 43 退出病例 /patient/quitpatient 参数 patient_id : 病例id
 	 */
 	public static void quitGroup(String caseid, BaseModelCallback callback) {
 		HashMap<String, String> params = new HashMap<>();
